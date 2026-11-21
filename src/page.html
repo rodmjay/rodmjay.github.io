@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="{{@htmlLang}}" translate="no" class="notranslate" data-brand="should">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>{{{@langScript}}}</script>
+<title>{{meta.title}}</title>
+<meta name="description" content="{{meta.description}}">
+<meta name="google" content="notranslate">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="{{@canonical}}">
+<link rel="alternate" hreflang="en" href="{{@siteEn}}">
+<link rel="alternate" hreflang="es-419" href="{{@siteEs}}">
+<link rel="alternate" hreflang="x-default" href="{{@siteEn}}">
+<meta property="og:title" content="{{meta.title}}">
+<meta property="og:description" content="{{meta.description}}">
+<meta property="og:type" content="profile">
+<meta property="og:url" content="{{@canonical}}">
+<meta property="og:locale" content="{{meta.ogLocale}}">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231f3a5f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' font-weight='700' fill='%23fff' text-anchor='middle'%3ERJ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="{{@root}}ds/design-system.css">
+<link rel="stylesheet" href="{{@root}}site.css">
+</head>
+<body class="ds">
+<a class="skip" href="#main">{{nav.skip}}</a>
+
+<header class="bar">
+  <a class="mark" href="{{@home}}" aria-label="{{nav.home}}">Rod Johnson</a>
+  <nav aria-label="{{nav.label}}">
+    <a href="#about">{{nav.about}}</a><a href="#work">{{nav.work}}</a><a href="#building">{{nav.building}}</a><a href="#contact">{{nav.contact}}</a>
+  </nav>
+  <span class="ds-lang"><label><span class="ds-lang-label">{{nav.language}}</span><select id="lang" aria-label="{{nav.language}}" data-other="{{@otherPath}}">{{{@langOptions}}}</select></label></span>
+</header>
+
+<main id="main" class="ds-container">
+  <section class="hero">
+    <h1 class="ds-display-medium">{{hero.name}}</h1>
+    <p class="ds-title-large title">{{hero.title}}</p>
+    <p class="ds-body-large lede">{{hero.lede}}</p>
+    <p class="ds-label-large ds-variant">{{hero.where}}</p>
+    <div class="links">
+      <a class="ds-btn" href="https://www.linkedin.com/in/rodmjay" rel="me">{{hero.cta}}</a>
+      <a class="ds-btn outlined" href="https://github.com/rodmjay" rel="me">{{contact.github}}</a>
+      <a class="ds-btn outlined" href="https://x.com/rodmjay" rel="me">{{contact.x}}</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="ds-headline-small">{{about.heading}}</h2>
+    <p class="ds-body-large">{{about.p1}}</p>
+    <p class="ds-body-large">{{about.p2}}</p>
+  </section>
+
+  <section id="work">
+    <h2 class="ds-headline-small">{{work.heading}}</h2>
+    <ul class="grid">
+      {{#each work.items}}<li class="ds-card"><h3 class="ds-title-medium">{{.title}}</h3><p class="ds-body-medium ds-variant">{{.body}}</p></li>{{/each}}
+    </ul>
+  </section>
+
+  <section id="building">
+    <h2 class="ds-headline-small">{{building.heading}}</h2>
+    <p class="ds-body-large">{{building.lede}}</p>
+    <ul class="grid">
+      {{#each building.items}}<li class="ds-card"><h3 class="ds-title-medium">{{.title}}</h3><p class="ds-body-medium ds-variant">{{.body}}</p><a class="ds-btn text sm" href="{{.url}}">{{.link}}</a></li>{{/each}}
+    </ul>
+  </section>
+
+  <section id="how">
+    <h2 class="ds-headline-small">{{how.heading}}</h2>
+    <figure class="quote"><blockquote class="ds-title-large">“{{how.quote}}”</blockquote><figcaption class="ds-label-large ds-variant">{{how.cite}}</figcaption></figure>
+    <ul class="grid">
+      {{#each how.items}}<li><h3 class="ds-title-medium">{{.title}}</h3><p class="ds-body-medium ds-variant">{{.body}}</p></li>{{/each}}
+    </ul>
+    <p class="ds-body-medium ds-variant">{{how.stack}}</p>
+  </section>
+
+  <section id="contact">
+    <h2 class="ds-headline-small">{{contact.heading}}</h2>
+    <p class="ds-body-large">{{contact.body}}</p>
+    <div class="links">
+      <a class="ds-btn" href="https://www.linkedin.com/in/rodmjay" rel="me">{{contact.linkedin}}</a>
+      <a class="ds-btn outlined" href="https://x.com/rodmjay" rel="me">{{contact.x}}</a>
+      <a class="ds-btn outlined" href="https://github.com/rodmjay" rel="me">{{contact.github}}</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot ds-container"><p class="ds-body-small ds-variant">{{footer.copy}}</p></footer>
+<script src="{{@root}}site.js"></script>
+</body>
+</html>

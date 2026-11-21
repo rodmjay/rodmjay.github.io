@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es-419" translate="no" class="notranslate" data-brand="should">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>(function(){const SUPPORTED = ["en", "es"];
+const HTML_LANG = { en: "en", es: "es-419" };
+const NAMES = { en: "English", es: "Español" };
+const KEY = "ds-lang";
+
+const ES_ZONES = new Set([
+  "America/Costa_Rica", "America/Mexico_City", "America/Monterrey", "America/Merida", "America/Cancun", "America/Chihuahua",
+  "America/Tijuana", "America/Hermosillo", "America/Mazatlan", "America/Guatemala", "America/El_Salvador", "America/Tegucigalpa",
+  "America/Managua", "America/Panama", "America/Bogota", "America/Caracas", "America/Lima", "America/Guayaquil", "America/La_Paz",
+  "America/Santiago", "America/Asuncion", "America/Montevideo", "America/Argentina/Buenos_Aires", "America/Argentina/Cordoba",
+  "America/Argentina/Mendoza", "America/Santo_Domingo", "America/Havana", "America/Puerto_Rico", "Europe/Madrid", "Atlantic/Canary",
+]);
+
+const ok = (l) => (l && SUPPORTED.includes(l) ? l : null);
+const short = (l) => String(l || "").toLowerCase().split(/[-_]/)[0];
+
+function store(lang) {
+  try { lang ? localStorage.setItem(KEY, lang) : localStorage.removeItem(KEY); } catch (e) {  }
+}
+function stored() {
+  try { return localStorage.getItem(KEY); } catch (e) { return null; }
+}
+
+function pickLang({ fallback = "en", url = globalThis.location, doc = globalThis.document, nav = globalThis.navigator } = {}) {
+  if (url) {
+    const seg = url.pathname.split("/").map(short).find((s) => SUPPORTED.includes(s));
+    const q = ok(short(new URLSearchParams(url.search).get("lang")));
+    if (q) return q;
+    if (seg) return seg;
+  }
+  const mine = ok(stored());
+  if (mine) return mine;
+  const hint = ok(short(doc?.querySelector('meta[name="lang-hint"]')?.content));
+  if (hint) return hint;
+  for (const l of nav?.languages || [nav?.language]) { const s = ok(short(l)); if (s) return s; }
+  try { if (ES_ZONES.has(Intl.DateTimeFormat().resolvedOptions().timeZone)) return "es"; } catch (e) {  }
+  return fallback;
+}
+
+function applyLang(lang, doc = globalThis.document) {
+  const root = doc.documentElement;
+  root.lang = HTML_LANG[lang] || lang;
+  root.setAttribute("translate", "no");
+  root.classList.add("notranslate");
+}
+
+function t(dict, key, vars) {
+  let v = key.split(".").reduce((o, k) => (o == null ? o : o[k]), dict);
+  if (v == null) { console.warn(`i18n: missing "${key}"`); return key; }
+  if (typeof v === "string" && vars) v = v.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
+  return v;
+}
+
+function translate(dict, root = globalThis.document) {
+  root.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = t(dict, el.dataset.i18n); });
+  root.querySelectorAll("[data-i18n-html]").forEach((el) => { el.innerHTML = t(dict, el.dataset.i18nHtml); });
+  root.querySelectorAll("[data-i18n-attr]").forEach((el) => {
+    el.dataset.i18nAttr.split(";").forEach((pair) => {
+      const [attr, key] = pair.split(":").map((s) => s.trim());
+      if (attr && key) el.setAttribute(attr, t(dict, key));
+    });
+  });
+}
+
+function langMenu(container, { current, label = "Language", onChange } = {}) {
+  container.classList.add("ds-lang");
+  container.innerHTML = `<label><span class="ds-lang-label">${label}</span><select aria-label="${label}">${SUPPORTED
+    .map((l) => `<option value="${l}" lang="${HTML_LANG[l]}"${l === current ? " selected" : ""}>${NAMES[l]}</option>`)
+    .join("")}</select></label>`;
+  const sel = container.querySelector("select");
+  sel.addEventListener("change", () => {
+    const lang = sel.value;
+    store(lang);
+    try {
+      const u = new URL(globalThis.location.href);
+      u.searchParams.set("lang", lang);
+      history.replaceState(null, "", u);
+    } catch (e) {  }
+    onChange?.(lang);
+  });
+  return { set(lang, newLabel) { sel.value = lang; if (newLabel) { sel.setAttribute("aria-label", newLabel); container.querySelector(".ds-lang-label").textContent = newLabel; } } };
+}
+
+function compareDicts(a, b, names = ["en", "es"]) {
+  const out = [];
+  const walk = (x, y, path) => {
+    const tx = Array.isArray(x) ? "array" : typeof x, ty = Array.isArray(y) ? "array" : typeof y;
+    if (y === undefined) return out.push(`${path}: missing in ${names[1]}`);
+    if (x === undefined) return out.push(`${path}: missing in ${names[0]}`);
+    if (tx !== ty) return out.push(`${path}: ${names[0]} is ${tx}, ${names[1]} is ${ty}`);
+    if (tx === "array") {
+      if (x.length !== y.length) out.push(`${path}: ${names[0]} has ${x.length} items, ${names[1]} has ${y.length}`);
+      for (let i = 0; i < Math.max(x.length, y.length); i++) walk(x[i], y[i], `${path}[${i}]`);
+    } else if (tx === "object" && x && y) {
+      for (const k of new Set([...Object.keys(x), ...Object.keys(y)])) walk(x[k], y[k], path ? `${path}.${k}` : k);
+    } else if (tx === "string") {
+      if (!x.trim()) out.push(`${path}: empty in ${names[0]}`);
+      if (!y.trim()) out.push(`${path}: empty in ${names[1]}`);
+    }
+  };
+  walk(a, b, "");
+  return out;
+}
+
+var want=pickLang();
+try{var u=new URL(location.href),q=u.searchParams.get("lang");if(q==="en"||q==="es"){want=q;localStorage.setItem("ds-lang",q);u.searchParams.delete("lang");history.replaceState(null,"",u)}}catch(e){}if(want!=="es")location.replace("../"+location.search+location.hash);})();</script>
+<title>Rod Johnson · Director de Arquitectura</title>
+<meta name="description" content="Rod Johnson diseña cómo se construye el software: la arquitectura, los estándares y las herramientas de IA detrás. 21 años llevando sistemas del primer boceto en la pizarra a producción.">
+<meta name="google" content="notranslate">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://rodmjay.com/es/">
+<link rel="alternate" hreflang="en" href="https://rodmjay.com/">
+<link rel="alternate" hreflang="es-419" href="https://rodmjay.com/es/">
+<link rel="alternate" hreflang="x-default" href="https://rodmjay.com/">
+<meta property="og:title" content="Rod Johnson · Director de Arquitectura">
+<meta property="og:description" content="Rod Johnson diseña cómo se construye el software: la arquitectura, los estándares y las herramientas de IA detrás. 21 años llevando sistemas del primer boceto en la pizarra a producción.">
+<meta property="og:type" content="profile">
+<meta property="og:url" content="https://rodmjay.com/es/">
+<meta property="og:locale" content="es_419">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231f3a5f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' font-weight='700' fill='%23fff' text-anchor='middle'%3ERJ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../ds/design-system.css">
+<link rel="stylesheet" href="../site.css">
+</head>
+<body class="ds">
+<a class="skip" href="#main">Ir al contenido</a>
+
+<header class="bar">
+  <a class="mark" href="./" aria-label="Rod Johnson, inicio">Rod Johnson</a>
+  <nav aria-label="Secciones">
+    <a href="#about">Sobre mí</a><a href="#work">Trabajo</a><a href="#building">Proyectos</a><a href="#contact">Contacto</a>
+  </nav>
+  <span class="ds-lang"><label><span class="ds-lang-label">Idioma</span><select id="lang" aria-label="Idioma" data-other="../"><option value="en" lang="en">English</option><option value="es" lang="es-419" selected>Español</option></select></label></span>
+</header>
+
+<main id="main" class="ds-container">
+  <section class="hero">
+    <h1 class="ds-display-medium">Rod Johnson</h1>
+    <p class="ds-title-large title">Director de Arquitectura · Entrega de software con IA</p>
+    <p class="ds-body-large lede">Diseño cómo se construye el software: la arquitectura, los estándares y ahora las herramientas de IA detrás. Llevo 21 años llevando sistemas del primer boceto en la pizarra a producción.</p>
+    <p class="ds-label-large ds-variant">Salt Lake City · Inglés y español</p>
+    <div class="links">
+      <a class="ds-btn" href="https://www.linkedin.com/in/rodmjay" rel="me">Escríbeme en LinkedIn</a>
+      <a class="ds-btn outlined" href="https://github.com/rodmjay" rel="me">GitHub</a>
+      <a class="ds-btn outlined" href="https://x.com/rodmjay" rel="me">X</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="ds-headline-small">Sobre mí</h2>
+    <p class="ds-body-large">Soy arquitecto y líder de ingeniería. Hace poco ayudé a AMH a replantear cómo trabajan sus desarrolladores, con herramientas de IA como Claude y servidores MCP, DevOps automatizado y revisiones de seguridad más tempranas. Construí las herramientas y capacité a desarrolladores de toda la empresa para usarlas.</p>
+    <p class="ds-body-large">Se me da bien lograr que equipos distintos avancen en la misma dirección, fijar estándares que perduran y definir cómo los equipos contratan y evalúan. He trabajado en banca, bienes raíces, marketing, logística, compras, gobierno, salud y educación en línea.</p>
+  </section>
+
+  <section id="work">
+    <h2 class="ds-headline-small">Trabajo destacado</h2>
+    <ul class="grid">
+      <li class="ds-card"><h3 class="ds-title-medium">Arquitectura de IA para toda la empresa, AMH</h3><p class="ds-body-medium ds-variant">Entrega de software asistida por IA con Claude, servidores MCP y DevOps automatizado, con revisiones de seguridad más tempranas.</p></li><li class="ds-card"><h3 class="ds-title-medium">Plataforma de subvenciones y contratos, Estado de Indiana</h3><p class="ds-body-medium ds-variant">La dirigí de principio a fin.</p></li><li class="ds-card"><h3 class="ds-title-medium">Biblioteca de registros, Ingeniería de Confiabilidad de Sitios de Microsoft</h3><p class="ds-body-medium ds-variant">Se convirtió en el estándar del departamento. Mi microservicio de referencia fue el modelo para los siguientes.</p></li><li class="ds-card"><h3 class="ds-title-medium">Código base compartido de .NET, Solution Stream</h3><p class="ds-body-medium ds-variant">Todos los proyectos partían de él. También diseñé el proceso de entrevistas técnicas.</p></li>
+    </ul>
+  </section>
+
+  <section id="building">
+    <h2 class="ds-headline-small">Lo que estoy construyendo</h2>
+    <p class="ds-body-large">En mi tiempo libre construyo con agentes de IA, de principio a fin.</p>
+    <ul class="grid">
+      <li class="ds-card"><h3 class="ds-title-medium">Should</h3><p class="ds-body-medium ds-variant">Un sistema personal de agentes de IA que se encarga del trabajo rutinario de mi vida, para que mi mente quede libre para vivir y decidir.</p><a class="ds-btn text sm" href="https://rodmjay.github.io/should/">Ver Should</a></li><li class="ds-card"><h3 class="ds-title-medium">AgencyPro</h3><p class="ds-body-medium ds-variant">Tu IA hace el trabajo y personas reales cubren lo que falta. Un producto de Pro Squared Holdings, mi empresa.</p><a class="ds-btn text sm" href="https://agency.squared.pro/">Visitar AgencyPro</a></li><li class="ds-card"><h3 class="ds-title-medium">Agentic Squared</h3><p class="ds-body-medium ds-variant">Profesionales acreditados para los pasos que la IA no puede firmar, a través de AgencyPro.</p><a class="ds-btn text sm" href="https://rodmjay.github.io/agentic-squared/es/">Visitar Agentic Squared</a></li>
+    </ul>
+  </section>
+
+  <section id="how">
+    <h2 class="ds-headline-small">Cómo trabajo</h2>
+    <figure class="quote"><blockquote class="ds-title-large">“Sé ordenado y regular en tu vida, para que puedas ser violento y original en tu obra.”</blockquote><figcaption class="ds-label-large ds-variant">Gustave Flaubert</figcaption></figure>
+    <ul class="grid">
+      <li><h3 class="ds-title-medium">De la pizarra a producción</h3><p class="ds-body-medium ds-variant">Me quedo con un diseño hasta que sale a producción.</p></li><li><h3 class="ds-title-medium">Estándares que perduran</h3><p class="ds-body-medium ds-variant">Unas pocas reglas claras que los equipos sí siguen valen más que un manual grueso.</p></li><li><h3 class="ds-title-medium">La IA como compañera de equipo</h3><p class="ds-body-medium ds-variant">Agentes con permisos estrictos, revisión humana en todo lo importante y seguridad desde el inicio.</p></li>
+    </ul>
+    <p class="ds-body-medium ds-variant">Tecnologías: .NET y C#, TypeScript, Python, Azure, Docker, CI/CD, microservicios, Claude y MCP.</p>
+  </section>
+
+  <section id="contact">
+    <h2 class="ds-headline-small">Contacto</h2>
+    <p class="ds-body-large">La mejor forma de contactarme es un mensaje en LinkedIn. Leo todos.</p>
+    <div class="links">
+      <a class="ds-btn" href="https://www.linkedin.com/in/rodmjay" rel="me">LinkedIn</a>
+      <a class="ds-btn outlined" href="https://x.com/rodmjay" rel="me">X</a>
+      <a class="ds-btn outlined" href="https://github.com/rodmjay" rel="me">GitHub</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot ds-container"><p class="ds-body-small ds-variant">© 2026 Rod Johnson</p></footer>
+<script src="../site.js"></script>
+</body>
+</html>
