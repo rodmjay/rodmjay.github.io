@@ -41,11 +41,9 @@
     input.setAttribute("aria-invalid", "true"); err.textContent = msg; err.hidden = false; return false;
   }
   function check(name) {
-    if (name === "consent") { var c = F("consent"); return show(c, c.checked || d.errConsent); }
     return show(F(name), checks[name](F(name).value));
   }
   ["name", "email", "company", "role"].forEach(function (n) { F(n).addEventListener("blur", function () { if (form.dataset.tried) check(n); }); });
-  F("consent").addEventListener("change", function () { if (form.dataset.tried) check("consent"); });
 
   function reply() {
     var mock = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && new URLSearchParams(location.search).get("mock");
@@ -63,8 +61,8 @@
     e.preventDefault();
     form.dataset.tried = "1";
     banner.hidden = true;
-    var bad = ["name", "email", "company", "role", "consent"].filter(function (n) { return !check(n); });
-    if (bad.length) { (bad[0] === "consent" ? F("consent") : F(bad[0])).focus(); return; }
+    var bad = ["name", "email", "company", "role"].filter(function (n) { return !check(n); });
+    if (bad.length) { F(bad[0]).focus(); return; }
     var label = btn.textContent;
     btn.style.width = btn.offsetWidth + "px"; btn.disabled = true; btn.textContent = d.sending;
     reply().then(function (res) {
