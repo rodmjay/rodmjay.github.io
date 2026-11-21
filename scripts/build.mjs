@@ -77,8 +77,7 @@ writeFileSync("404.html", `<!doctype html>
 <html lang="en" translate="no" class="notranslate" data-brand="rod">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(nf("en").title)} · Rod Johnson</title><meta name="robots" content="noindex"><meta name="google" content="notranslate">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="/ds/design-system.css"><link rel="stylesheet" href="/site.css"></head>
+<link rel="stylesheet" href="/ds/fonts.css"><link rel="stylesheet" href="/ds/design-system.css"><link rel="stylesheet" href="/site.css"></head>
 <body class="ds"><main class="ds-container nf">
 <section lang="en"><h1>${esc(nf("en").title)}</h1><p class="ds-variant">${esc(nf("en").body)}</p><a class="ds-btn" href="/">${esc(nf("en").cta)}</a></section>
 <section lang="es-419"><h1>${esc(nf("es").title)}</h1><p class="ds-variant">${esc(nf("es").body)}</p><a class="ds-btn tonal" href="/es/">${esc(nf("es").cta)}</a></section>
@@ -99,7 +98,7 @@ for (const lang of ["en", "es"]) {
 <title>${esc(pv.title)} · Rod Johnson</title><meta name="google" content="notranslate">
 <link rel="canonical" href="${SITE}${lang === "en" ? "privacy/" : "privacy/es/"}">
 <link rel="alternate" hreflang="en" href="${SITE}privacy/"><link rel="alternate" hreflang="es-419" href="${SITE}privacy/es/">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<link rel="stylesheet" href="${root}ds/fonts.css">
 <link rel="stylesheet" href="${root}ds/design-system.css"><link rel="stylesheet" href="${root}site.css"></head>
 <body class="ds"><header class="bar"><a class="mark" href="${root}${lang === "en" ? "" : "es/"}">Rod Johnson</a></header>
 <main class="col"><section><h2 class="ds-title-large">${esc(pv.title)}</h2>
