@@ -88,12 +88,12 @@
     <h2 class="ds-title-large">{{resume.heading}}</h2>
     <p class="ds-body-large">{{resume.lede}}</p>
     <div class="rbox" id="rbox">
-      <form id="rform" novalidate data-err-name="{{resume.errName}}" data-err-email="{{resume.errEmail}}" data-err-company="{{resume.errCompany}}" data-err-role="{{resume.errRole}}" data-sending="{{resume.sending}}" data-rate="{{resume.rateLimited}}" data-server="{{resume.serverError}}" data-lang="{{@htmlLang}}">
+      <form id="rform" novalidate data-err-name="{{resume.errName}}" data-err-email="{{resume.errEmail}}" data-sending="{{resume.sending}}" data-rate="{{resume.rateLimited}}" data-server="{{resume.serverError}}" data-lang="{{@htmlLang}}">
         <div class="rgrid">
           <div class="ds-field"><label for="rf-name">{{resume.name}}</label><input class="ds-input" id="rf-name" name="name" type="text" autocomplete="name" required aria-describedby="rf-name-err"><p class="ds-supporting" id="rf-name-err" hidden></p></div>
           <div class="ds-field"><label for="rf-email">{{resume.email}}</label><input class="ds-input" id="rf-email" name="email" type="email" autocomplete="email" required aria-describedby="rf-email-err"><p class="ds-supporting" id="rf-email-err" hidden></p></div>
-          <div class="ds-field"><label for="rf-company">{{resume.company}}</label><input class="ds-input" id="rf-company" name="company" type="text" autocomplete="organization" required aria-describedby="rf-company-err"><p class="ds-supporting" id="rf-company-err" hidden></p></div>
-          <div class="ds-field"><label for="rf-role">{{resume.role}}</label><input class="ds-input" id="rf-role" name="role" type="text" autocomplete="organization-title" required aria-describedby="rf-role-err"><p class="ds-supporting" id="rf-role-err" hidden></p></div>
+          <div class="ds-field"><label for="rf-company">{{resume.company}}</label><input class="ds-input" id="rf-company" name="company" type="text" autocomplete="organization" aria-describedby="rf-company-err"><p class="ds-supporting" id="rf-company-err" hidden></p></div>
+          <div class="ds-field"><label for="rf-role">{{resume.role}}</label><input class="ds-input" id="rf-role" name="role" type="text" autocomplete="organization-title" aria-describedby="rf-role-err"><p class="ds-supporting" id="rf-role-err" hidden></p></div>
           <div class="ds-field full"><label for="rf-source">{{resume.source}}</label><input class="ds-input" id="rf-source" name="source" type="text" autocomplete="off" aria-describedby="rf-source-err"><p class="ds-supporting" id="rf-source-err" hidden></p></div>
         </div>
         <div class="hp" aria-hidden="true"><label for="rf-website">{{resume.honeypot}}</label><input id="rf-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>

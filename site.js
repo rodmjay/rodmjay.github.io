@@ -31,9 +31,7 @@
   var started = Date.now(), d = form.dataset, btn = document.getElementById("rf-submit"), banner = document.getElementById("rf-banner");
   var checks = {
     name: function (v) { return v.trim().length > 0 || d.errName; },
-    email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) || d.errEmail; },
-    company: function (v) { return v.trim().length > 0 || d.errCompany; },
-    role: function (v) { return v.trim().length > 0 || d.errRole; }
+    email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) || d.errEmail; }
   };
   function show(input, msg) {
     var err = document.getElementById(input.id + "-err");
@@ -43,7 +41,7 @@
   function check(name) {
     return show(F(name), checks[name](F(name).value));
   }
-  ["name", "email", "company", "role"].forEach(function (n) { F(n).addEventListener("blur", function () { if (form.dataset.tried) check(n); }); });
+  ["name", "email"].forEach(function (n) { F(n).addEventListener("blur", function () { if (form.dataset.tried) check(n); }); });
 
   function reply() {
     var mock = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && new URLSearchParams(location.search).get("mock");
@@ -51,7 +49,7 @@
       r(mock === "ok" ? { ok: true, url: "#mock-download" } : mock === "rate" ? { ok: false, error: "rate_limited", retry_minutes: 12 } : { ok: false, error: "server" });
     }, 600); });
     return fetch(window.RESUME_API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
-      name: F("name").value.trim(), email: F("email").value.trim(), company: F("company").value.trim(), role: F("role").value.trim(),
+      name: F("name").value.trim(), email: F("email").value.trim(), company: F("company").value.trim() || null, role: F("role").value.trim() || null,
       source: F("source").value.trim() || null, consent: F("consent").checked, hp: F("website").value, t: started,
       lang: d.lang.indexOf("es") === 0 ? "es" : "en"
     }) }).then(function (r) { return r.json(); });
@@ -61,7 +59,7 @@
     e.preventDefault();
     form.dataset.tried = "1";
     banner.hidden = true;
-    var bad = ["name", "email", "company", "role"].filter(function (n) { return !check(n); });
+    var bad = ["name", "email"].filter(function (n) { return !check(n); });
     if (bad.length) { F(bad[0]).focus(); return; }
     var label = btn.textContent;
     btn.style.width = btn.offsetWidth + "px"; btn.disabled = true; btn.textContent = d.sending;
