@@ -5,6 +5,9 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { compareDicts } from "../ds/i18n.js";
 
 const SITE = "https://rodmjay.com/";
+// Cache-busting: a short hash of the CSS and JS, appended to their links so a normal reload gets the new files.
+import { createHash } from "node:crypto";
+const ASSET_V = createHash("sha256").update(readFileSync("site.css")).update(readFileSync("site.js")).update(readFileSync("ds/design-system.css")).digest("hex").slice(0, 8);
 const HTML_LANG = { en: "en", es: "es-419" };
 const NAMES = { en: "English", es: "Español" };
 
@@ -57,7 +60,7 @@ for (const lang of ["en", "es"]) {
     langScript: langScript(lang),
     langOptions: ["en", "es"].map((l) => `<option value="${l}" lang="${HTML_LANG[l]}"${l === lang ? " selected" : ""}>${NAMES[l]}</option>`).join(""),
   };
-  const html = render(tpl, dicts[lang], at);
+  const html = render(tpl, dicts[lang], at).replace(/(site\.css|site\.js|ds\/design-system\.css)"/g, `$1?v=${ASSET_V}"`);
   if (/\{\{[#/@.\w]/.test(html)) throw new Error(`${lang}: unfilled placeholder`);
   const out = lang === "en" ? "index.html" : "es/index.html";
   mkdirSync("es", { recursive: true });
