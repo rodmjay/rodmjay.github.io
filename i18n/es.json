@@ -12,7 +12,8 @@
     "work": "Trabajo",
     "building": "Proyectos",
     "contact": "Contacto",
-    "language": "Idioma"
+    "language": "Idioma",
+    "resume": "Currículum"
   },
   "hero": {
     "name": "Rod Johnson",
@@ -109,5 +110,29 @@
     "title": "Página no encontrada",
     "body": "Esa página no existe.",
     "cta": "Ir al inicio"
+  },
+  "resume": {
+    "heading": "Obtenga mi currículum",
+    "lede": "Dígame quién es y el PDF es suyo.",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "company": "Empresa",
+    "role": "Cargo",
+    "source": "¿Cómo me encontró? (opcional)",
+    "consent": "Rod puede contactarme sobre esto",
+    "submit": "Obtener el currículum",
+    "sending": "Enviando…",
+    "note": "Se usa para enviarle el currículum y, si aceptó, para que Rod lo contacte. Nunca se vende ni se comparte.",
+    "errName": "Escriba su nombre",
+    "errEmail": "Escriba un correo como ana@empresa.com",
+    "errCompany": "Escriba su empresa",
+    "errRole": "Escriba su cargo",
+    "errConsent": "Marque esta casilla para obtener el currículum",
+    "rateLimited": "Demasiadas solicitudes desde aquí. Vuelva a intentarlo en {n} minutos.",
+    "serverError": "Algo falló de nuestro lado. Vuelva a intentarlo.",
+    "doneTitle": "Su currículum está listo",
+    "doneBody": "El enlace funciona durante 24 horas.",
+    "download": "Descargar currículum (PDF)",
+    "honeypot": "Deje esto vacío"
   }
 }

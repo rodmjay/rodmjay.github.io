@@ -12,7 +12,8 @@
     "work": "Work",
     "building": "Building",
     "contact": "Contact",
-    "language": "Language"
+    "language": "Language",
+    "resume": "Resume"
   },
   "hero": {
     "name": "Rod Johnson",
@@ -109,5 +110,29 @@
     "title": "Page not found",
     "body": "That page doesn't exist.",
     "cta": "Go to the home page"
+  },
+  "resume": {
+    "heading": "Get my resume",
+    "lede": "Tell me who you are and the PDF is yours.",
+    "name": "Name",
+    "email": "Email",
+    "company": "Company",
+    "role": "Role",
+    "source": "How did you find me? (optional)",
+    "consent": "Rod may contact me about this",
+    "submit": "Get the resume",
+    "sending": "Sending…",
+    "note": "Used to send you the resume and, if you said yes, for Rod to reach you. Never sold or shared.",
+    "errName": "Enter your name",
+    "errEmail": "Enter an email like ana@company.com",
+    "errCompany": "Enter your company",
+    "errRole": "Enter your role",
+    "errConsent": "Check this box to get the resume",
+    "rateLimited": "Too many requests from here. Try again in {n} minutes.",
+    "serverError": "Something went wrong on our side. Try again.",
+    "doneTitle": "Your resume is ready",
+    "doneBody": "The link works for 24 hours.",
+    "download": "Download resume (PDF)",
+    "honeypot": "Leave this empty"
   }
 }
