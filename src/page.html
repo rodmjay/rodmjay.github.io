@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{@htmlLang}}" translate="no" class="notranslate" data-brand="should">
+<html lang="{{@htmlLang}}" translate="no" class="notranslate" data-brand="rod">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -17,10 +17,10 @@
 <meta property="og:type" content="profile">
 <meta property="og:url" content="{{@canonical}}">
 <meta property="og:locale" content="{{meta.ogLocale}}">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231f3a5f'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' font-weight='700' fill='%23fff' text-anchor='middle'%3ERJ%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231d3a5f'/%3E%3Ctext x='16' y='22' font-family='Inter,Arial,sans-serif' font-size='16' font-weight='700' fill='%23fff' text-anchor='middle'%3ERJ%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="{{@root}}ds/design-system.css">
 <link rel="stylesheet" href="{{@root}}site.css">
 </head>
@@ -35,61 +35,55 @@
   <span class="ds-lang"><label><span class="ds-lang-label">{{nav.language}}</span><select id="lang" aria-label="{{nav.language}}" data-other="{{@otherPath}}">{{{@langOptions}}}</select></label></span>
 </header>
 
-<main id="main" class="ds-container">
+<main id="main" class="col">
   <section class="hero">
-    <h1 class="ds-display-medium">{{hero.name}}</h1>
-    <p class="ds-title-large title">{{hero.title}}</p>
-    <p class="ds-body-large lede">{{hero.lede}}</p>
-    <p class="ds-label-large ds-variant">{{hero.where}}</p>
-    <div class="links">
-      <a class="ds-btn" href="https://www.linkedin.com/in/rodmjay" rel="me">{{hero.cta}}</a>
-      <a class="ds-btn outlined" href="https://github.com/rodmjay" rel="me">{{contact.github}}</a>
-      <a class="ds-btn outlined" href="https://x.com/rodmjay" rel="me">{{contact.x}}</a>
-    </div>
+    <h1 class="ds-display-small">{{hero.name}}</h1>
+    <p class="ds-title-large ds-variant">{{hero.title}}</p>
+    <p class="ds-body-large">{{hero.lede}}</p>
   </section>
 
   <section id="about">
-    <h2 class="ds-headline-small">{{about.heading}}</h2>
+    <h2 class="ds-title-large">{{about.heading}}</h2>
     <p class="ds-body-large">{{about.p1}}</p>
     <p class="ds-body-large">{{about.p2}}</p>
   </section>
 
   <section id="work">
-    <h2 class="ds-headline-small">{{work.heading}}</h2>
-    <ul class="grid">
-      {{#each work.items}}<li class="ds-card"><h3 class="ds-title-medium">{{.title}}</h3><p class="ds-body-medium ds-variant">{{.body}}</p></li>{{/each}}
+    <h2 class="ds-title-large">{{work.heading}}</h2>
+    <ul class="stack">
+      {{#each work.items}}<li class="ds-card outlined"><h3 class="ds-title-medium">{{.title}}</h3><p class="ds-body-medium ds-variant">{{.body}}</p></li>{{/each}}
     </ul>
   </section>
 
   <section id="building">
-    <h2 class="ds-headline-small">{{building.heading}}</h2>
+    <h2 class="ds-title-large">{{building.heading}}</h2>
     <p class="ds-body-large">{{building.lede}}</p>
-    <ul class="grid">
-      {{#each building.items}}<li class="ds-card"><h3 class="ds-title-medium">{{.title}}</h3><p class="ds-body-medium ds-variant">{{.body}}</p><a class="ds-btn text sm" href="{{.url}}">{{.link}}</a></li>{{/each}}
+    <ul class="plain">
+      {{#each building.items}}<li><h3 class="ds-title-medium"><a href="{{.url}}">{{.title}}</a></h3><p class="ds-body-medium ds-variant">{{.body}}</p></li>{{/each}}
     </ul>
   </section>
 
   <section id="how">
-    <h2 class="ds-headline-small">{{how.heading}}</h2>
-    <figure class="quote"><blockquote class="ds-title-large">“{{how.quote}}”</blockquote><figcaption class="ds-label-large ds-variant">{{how.cite}}</figcaption></figure>
-    <ul class="grid">
+    <h2 class="ds-title-large">{{how.heading}}</h2>
+    <figure class="quote"><blockquote class="ds-title-medium">“{{how.quote}}”</blockquote><figcaption class="ds-label-large ds-variant">{{how.cite}}</figcaption></figure>
+    <ul class="plain">
       {{#each how.items}}<li><h3 class="ds-title-medium">{{.title}}</h3><p class="ds-body-medium ds-variant">{{.body}}</p></li>{{/each}}
     </ul>
     <p class="ds-body-medium ds-variant">{{how.stack}}</p>
   </section>
 
   <section id="contact">
-    <h2 class="ds-headline-small">{{contact.heading}}</h2>
+    <h2 class="ds-title-large">{{contact.heading}}</h2>
     <p class="ds-body-large">{{contact.body}}</p>
     <div class="links">
-      <a class="ds-btn" href="https://www.linkedin.com/in/rodmjay" rel="me">{{contact.linkedin}}</a>
-      <a class="ds-btn outlined" href="https://x.com/rodmjay" rel="me">{{contact.x}}</a>
-      <a class="ds-btn outlined" href="https://github.com/rodmjay" rel="me">{{contact.github}}</a>
+      <a class="ds-btn text" href="https://www.linkedin.com/in/rodmjay" rel="me"><svg class="ds-icon sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>{{contact.linkedin}}</a>
+      <a class="ds-btn text" href="https://x.com/rodmjay" rel="me"><svg class="ds-icon sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10h5v-2h-5c-4.34 0-8-3.66-8-8s3.66-8 8-8 8 3.66 8 8v1.43c0 .79-.71 1.57-1.5 1.57s-1.5-.78-1.5-1.57V12c0-2.76-2.24-5-5-5s-5 2.24-5 5 2.24 5 5 5c1.38 0 2.64-.56 3.54-1.47.65.89 1.77 1.47 2.96 1.47 1.97 0 3.5-1.6 3.5-3.57V12c0-5.52-4.48-10-10-10zm0 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg>{{contact.x}}</a>
+      <a class="ds-btn text" href="https://github.com/rodmjay" rel="me"><svg class="ds-icon sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>{{contact.github}}</a>
     </div>
   </section>
 </main>
 
-<footer class="foot ds-container"><p class="ds-body-small ds-variant">{{footer.copy}}</p></footer>
+<footer class="foot col"><p class="ds-body-small ds-variant">{{footer.copy}}</p></footer>
 <script src="{{@root}}site.js"></script>
 </body>
 </html>

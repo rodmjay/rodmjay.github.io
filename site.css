@@ -1,24 +1,27 @@
-/* Layout only; colors, type and components come from the design system. */
+/* Layout only; colors, type and components come from the design system (rod brand). */
 .skip { position: absolute; left: -9999px; }
 .skip:focus { left: var(--space-4); top: var(--space-4); z-index: 10; }
-.bar { display: flex; align-items: center; gap: var(--space-6); flex-wrap: wrap; max-width: var(--container); margin: 0 auto; padding: var(--space-4) var(--gutter); }
-.mark { font-family: var(--md-ref-typeface-brand); font-weight: 700; font-size: 1.125rem; color: var(--md-sys-color-on-surface); text-decoration: none; }
+.col { max-width: 40rem; margin: 0 auto; padding: 0 var(--gutter); }
+.bar { display: flex; align-items: center; gap: var(--space-6); flex-wrap: wrap; max-width: 40rem; margin: 0 auto; padding: var(--space-4) var(--gutter); }
+.mark { font-weight: 700; color: var(--md-sys-color-on-surface); text-decoration: none; }
 .bar nav { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-right: auto; }
 .bar nav a { color: var(--md-sys-color-on-surface-variant); text-decoration: none; font-weight: 500; }
-.bar nav a:hover { color: var(--md-sys-color-primary); }
-main { padding-bottom: var(--space-16); }
-main section { padding: var(--space-12) 0; border-top: 1px solid var(--md-sys-color-outline-variant); }
-main section.hero { border-top: 0; padding-top: var(--space-16); }
-.hero h1 { font-family: var(--md-ref-typeface-brand); margin: 0; }
-.hero .title { margin: var(--space-2) 0 var(--space-6); color: var(--md-sys-color-primary); }
-.hero .lede { max-width: 40rem; }
-section > p { max-width: 44rem; }
-h2 { font-family: var(--md-ref-typeface-brand); margin: 0 0 var(--space-4); }
-.links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
-.grid { list-style: none; padding: 0; margin: var(--space-6) 0 0; display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
-.grid h3 { margin: 0 0 var(--space-2); }
-.grid p { margin: 0 0 var(--space-3); }
-.quote { margin: var(--space-6) 0; padding-left: var(--space-6); border-left: 3px solid var(--md-sys-color-primary); }
-.quote blockquote { margin: 0 0 var(--space-2); font-family: var(--md-ref-typeface-brand); }
-.foot { padding: var(--space-8) var(--gutter); }
+a:hover, .bar nav a:hover { color: var(--md-sys-color-tertiary); text-decoration-color: var(--md-sys-color-tertiary); }
+main section { padding: var(--space-16) 0 0; }
+main section.hero { padding-top: var(--space-24); }
+.ds .hero h1 { margin: 0 0 var(--space-2); }
+.ds .hero .ds-title-large { margin: 0 0 var(--space-4); }
+.ds h2 { margin: 0 0 var(--space-4); }
+.ds main section > p { margin: 0 0 var(--space-4); }
+.ds main section > ul + p { margin-top: var(--space-6); }
+.ds h3 { margin: 0 0 var(--space-1); }
+h3 a { color: inherit; text-underline-offset: 3px; }
+.stack, .plain { list-style: none; padding: 0; margin: var(--space-6) 0 0; display: grid; gap: var(--space-4); }
+.plain { gap: var(--space-6); }
+.ds .stack p, .ds .plain p { margin: 0; }
+.quote { margin: var(--space-6) 0; }
+.ds .quote blockquote { margin: 0 0 var(--space-2); }
+.links { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-left: calc(-1 * var(--space-3)); }
+.links .ds-btn { gap: var(--space-2); }
+.foot { padding-top: var(--space-16); padding-bottom: var(--space-8); }
 .nf { padding: var(--space-16) var(--gutter); }

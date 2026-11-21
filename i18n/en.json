@@ -16,32 +16,57 @@
   },
   "hero": {
     "name": "Rod Johnson",
-    "title": "Director of Architecture · AI-driven software delivery",
-    "lede": "I design how software gets built: the architecture, the standards and now the AI tools behind it. I've spent 21 years taking systems from the first whiteboard sketch to production.",
-    "where": "Salt Lake City · English and Spanish",
-    "cta": "Message me on LinkedIn"
+    "title": "Director of Architecture",
+    "lede": "I design how software gets built: the architecture, the standards and now the AI tools behind it."
   },
   "about": {
     "heading": "About",
-    "p1": "I'm an architect and engineering leader. Most recently I helped AMH rethink how its developers work, bringing in AI tools like Claude and MCP servers, automated DevOps and earlier security checks. I built the tooling and trained developers across the company to use it.",
-    "p2": "I'm good at getting different teams pulling in the same direction, setting standards that stick, and shaping how teams hire and test. I've worked in banking, real estate, marketing, logistics, procurement, government, healthcare and e-learning."
+    "p1": "I'm an architect and engineering leader with 21 years of taking systems from the first whiteboard sketch to production. Most recently I helped AMH rethink how its developers work, bringing in AI tools like Claude and MCP servers, automated DevOps and earlier security checks. I built the tooling and trained developers across the company to use it.",
+    "p2": "I'm good at getting different teams pulling in the same direction, setting standards that stick, and shaping how teams hire and test. I've worked in banking, real estate, marketing, logistics, procurement, government, healthcare and e-learning. I'm based in Salt Lake City and work in English and Spanish."
   },
   "work": {
     "heading": "Selected work",
     "items": [
-      { "title": "Company-wide AI architecture, AMH", "body": "AI-assisted software delivery built on Claude, MCP servers and automated DevOps, with security checks earlier in the process." },
-      { "title": "Grants and contracts platform, State of Indiana", "body": "Led it from start to finish." },
-      { "title": "Logging library, Microsoft Site Reliability Engineering", "body": "Became the department's standard. My reference microservice became the model for later services." },
-      { "title": "Shared .NET codebase, Solution Stream", "body": "Every project started from it. I also designed the technical interview process." }
+      {
+        "title": "Company-wide AI architecture, AMH",
+        "body": "AI-assisted software delivery built on Claude, MCP servers and automated DevOps, with security checks earlier in the process."
+      },
+      {
+        "title": "Grants and contracts platform, State of Indiana",
+        "body": "Led it from start to finish."
+      },
+      {
+        "title": "Logging library, Microsoft Site Reliability Engineering",
+        "body": "Became the department's standard. My reference microservice became the model for later services."
+      },
+      {
+        "title": "Shared .NET codebase, Solution Stream",
+        "body": "Every project started from it. I also designed the technical interview process."
+      }
     ]
   },
   "building": {
     "heading": "What I'm building",
     "lede": "On my own time I build with AI agents, end to end.",
     "items": [
-      { "title": "Should", "body": "A personal system of AI agents that runs the busywork of my life, so my mind is free for living and deciding.", "url": "https://rodmjay.github.io/should/", "link": "See Should" },
-      { "title": "AgencyPro", "body": "Your AI does the work, and real people fill the gaps. A product of Pro Squared Holdings, my company.", "url": "https://agency.squared.pro/", "link": "Visit AgencyPro" },
-      { "title": "Agentic Squared", "body": "Credentialed people for the steps AI can't sign, routed through AgencyPro.", "url": "https://rodmjay.github.io/agentic-squared/", "link": "Visit Agentic Squared" }
+      {
+        "title": "Should",
+        "body": "A personal system of AI agents that runs the busywork of my life, so my mind is free for living and deciding.",
+        "url": "https://rodmjay.github.io/should/",
+        "link": "See Should"
+      },
+      {
+        "title": "AgencyPro",
+        "body": "Your AI does the work, and real people fill the gaps. A product of Pro Squared Holdings, my company.",
+        "url": "https://agency.squared.pro/",
+        "link": "Visit AgencyPro"
+      },
+      {
+        "title": "Agentic Squared",
+        "body": "Credentialed people for the steps AI can't sign, routed through AgencyPro.",
+        "url": "https://rodmjay.github.io/agentic-squared/",
+        "link": "Visit Agentic Squared"
+      }
     ]
   },
   "how": {
@@ -49,9 +74,18 @@
     "quote": "Be regular and orderly in your life, so that you may be violent and original in your work.",
     "cite": "Gustave Flaubert",
     "items": [
-      { "title": "Whiteboard to production", "body": "I stay with a design until it ships." },
-      { "title": "Standards that stick", "body": "A few clear rules teams actually follow beat a thick binder." },
-      { "title": "AI as a teammate", "body": "Agents with tight permissions, human review on anything that matters, and security checks early." }
+      {
+        "title": "Whiteboard to production",
+        "body": "I stay with a design until it ships."
+      },
+      {
+        "title": "Standards that stick",
+        "body": "A few clear rules teams actually follow beat a thick binder."
+      },
+      {
+        "title": "AI as a teammate",
+        "body": "Agents with tight permissions, human review on anything that matters, and security checks early."
+      }
     ],
     "stack": "Stack: .NET and C#, TypeScript, Python, Azure, Docker, CI/CD, microservices, Claude and MCP."
   },

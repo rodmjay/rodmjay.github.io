@@ -68,10 +68,10 @@ for (const lang of ["en", "es"]) {
 // One 404 for both languages: GitHub Pages serves it for any missing path, so links use the full site path.
 const nf = (l) => dicts[l].notFound;
 writeFileSync("404.html", `<!doctype html>
-<html lang="en" translate="no" class="notranslate" data-brand="should">
+<html lang="en" translate="no" class="notranslate" data-brand="rod">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(nf("en").title)} · Rod Johnson</title><meta name="robots" content="noindex"><meta name="google" content="notranslate">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="/ds/design-system.css"><link rel="stylesheet" href="/site.css"></head>
 <body class="ds"><main class="ds-container nf">
 <section lang="en"><h1>${esc(nf("en").title)}</h1><p class="ds-variant">${esc(nf("en").body)}</p><a class="ds-btn" href="/">${esc(nf("en").cta)}</a></section>
