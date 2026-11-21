@@ -5,19 +5,12 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { compareDicts } from "../ds/i18n.js";
 
 const SITE = "https://rodmjay.com/";
-<<<<<<< HEAD
 // Cache-busting: a short hash of the CSS and JS, appended to their links so a normal reload gets the new files.
 import { createHash } from "node:crypto";
 const ASSET_V = createHash("sha256").update(readFileSync("site.css")).update(readFileSync("site.js")).update(readFileSync("ds/design-system.css")).digest("hex").slice(0, 8);
-=======
-// Where privacy requests go (Compliance 11/21: an inbox someone reads). Set before publishing the form.
-<<<<<<< HEAD
-const PRIVACY_EMAIL = process.env.PRIVACY_EMAIL || "";
->>>>>>> e738245 (Privacy page builder (waits on PRIVACY_EMAIL); centered success state (Designer))
-=======
+// Where privacy requests go (Compliance 11/21: an inbox someone reads).
 const PRIVACY_EMAIL = process.env.PRIVACY_EMAIL || "admin@squared.pro"; // EA reads it (EA 11/21)
 const PRIVACY_SUBJECT = "Privacy request – rodmjay.com";
->>>>>>> 3f84f12 (Privacy page: admin@squared.pro with a filterable subject (EA 11/21))
 const HTML_LANG = { en: "en", es: "es-419" };
 const NAMES = { en: "English", es: "Español" };
 
