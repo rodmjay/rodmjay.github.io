@@ -86,3 +86,6 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 @media (max-width: 599.98px) { .scene { --amp: 0.5; height: min(72svh, 36rem); min-height: 28rem; } .layer svg { width: 100%; } .l-stars { display: none; } }
 @media (prefers-reduced-motion: reduce) { .layer, .title, .l-grid .rows { transform: none !important; } .title { opacity: 1; } }
 
+
+/* The sky runs up behind the header, full width (Designer 11/21). */
+.bar { background: var(--sky-top); box-shadow: 0 0 0 100vmax var(--sky-top); clip-path: inset(0 -100vmax); }
