@@ -25,3 +25,7 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .links .ds-btn { gap: var(--space-2); }
 .foot { padding-top: var(--space-16); padding-bottom: var(--space-8); }
 .nf { padding: var(--space-16) var(--gutter); }
+@media (max-width: 600px) {
+  .bar nav { display: none; }
+  .bar { justify-content: space-between; }
+}
