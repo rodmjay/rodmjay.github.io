@@ -54,7 +54,7 @@
     }, 600); });
     return fetch(window.RESUME_API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
       name: F("name").value.trim(), email: F("email").value.trim(), company: F("company").value.trim(), role: F("role").value.trim(),
-      source: F("source").value.trim() || null, consent: F("consent").checked, hp: F("website").value, t: Date.now() - started,
+      source: F("source").value.trim() || null, consent: F("consent").checked, hp: F("website").value, t: started,
       lang: d.lang.indexOf("es") === 0 ? "es" : "en"
     }) }).then(function (r) { return r.json(); });
   }
