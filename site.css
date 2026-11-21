@@ -62,7 +62,7 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 }
 
 /* ---- The hero scene: five layers, each moved by --p (0 at the top, 1 when the hero has scrolled away) ---- */
-.scene { position: relative; height: min(100svh, 56rem); min-height: 34rem; overflow: hidden; --p: 0; --amp: 1;
+.scene { position: relative; height: max(min(100svh, 56rem), calc(35.4vw + 16rem)); min-height: 34rem; /* tall enough that the art is never cropped above the sun, so the name stays in the sky */ overflow: hidden; --p: 0; --amp: 1;
   background: linear-gradient(var(--sky-top), var(--sky-low) 62%, var(--horizon) 70%, var(--floor) 70.1%); }
 .layer { position: absolute; inset: 0; will-change: transform; }
 .layer svg { position: absolute; left: 50%; bottom: 0; width: max(100%, 90rem); height: 100%; transform: translateX(-50%); }
@@ -74,9 +74,9 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .l-grid .rows { transform: translate3d(0, calc(var(--p) * var(--amp) * 90px), 0); }
 
 .title { position: absolute; inset: 0; display: grid; align-content: start; justify-items: center; text-align: center;
-  padding: clamp(3.5rem, 11svh, 7rem) var(--space-4) 0; transform: translate3d(0, calc(var(--p) * var(--amp) * -60px), 0);
+  padding: clamp(2rem, 7svh, 7rem) var(--space-4) 0; transform: translate3d(0, calc(var(--p) * var(--amp) * -60px), 0);
   opacity: calc(1 - var(--p) * 1.4); }
-.title h1 { margin: 0; font: 700 clamp(2.75rem, 9vw, 6.5rem)/0.95 var(--md-ref-typeface-brand); letter-spacing: -0.02em; text-transform: uppercase;
+.title h1 { margin: 0; font: 700 clamp(2.5rem, min(9vw, 12svh), 6.5rem)/0.95 var(--md-ref-typeface-brand); letter-spacing: -0.02em; text-transform: uppercase;
   /* chrome: a hard horizon line across the letters, no glow */
   background: linear-gradient(var(--chrome-hi) 0%, var(--chrome-mid) 52%, var(--chrome-lo) 52.5%, var(--chrome-floor) 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent; }
