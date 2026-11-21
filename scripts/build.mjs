@@ -5,9 +5,14 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { compareDicts } from "../ds/i18n.js";
 
 const SITE = "https://rodmjay.com/";
+<<<<<<< HEAD
 // Cache-busting: a short hash of the CSS and JS, appended to their links so a normal reload gets the new files.
 import { createHash } from "node:crypto";
 const ASSET_V = createHash("sha256").update(readFileSync("site.css")).update(readFileSync("site.js")).update(readFileSync("ds/design-system.css")).digest("hex").slice(0, 8);
+=======
+// Where privacy requests go (Compliance 11/21: an inbox someone reads). Set before publishing the form.
+const PRIVACY_EMAIL = process.env.PRIVACY_EMAIL || "";
+>>>>>>> e738245 (Privacy page builder (waits on PRIVACY_EMAIL); centered success state (Designer))
 const HTML_LANG = { en: "en", es: "es-419" };
 const NAMES = { en: "English", es: "Español" };
 
@@ -56,7 +61,7 @@ for (const lang of ["en", "es"]) {
   const at = {
     htmlLang: HTML_LANG[lang], root: lang === "en" ? "" : "../", home: "./",
     canonical: lang === "en" ? SITE : `${SITE}es/`, siteEn: SITE, siteEs: `${SITE}es/`,
-    otherPath: lang === "en" ? "es/" : "../",
+    otherPath: lang === "en" ? "es/" : "../", langPath: lang === "en" ? "" : "es/",
     langScript: langScript(lang),
     langOptions: ["en", "es"].map((l) => `<option value="${l}" lang="${HTML_LANG[l]}"${l === lang ? " selected" : ""}>${NAMES[l]}</option>`).join(""),
   };
@@ -82,3 +87,27 @@ writeFileSync("404.html", `<!doctype html>
 </main></body></html>
 `);
 console.log("wrote 404.html");
+
+// Privacy page, one per language, from the same dictionaries.
+if (!PRIVACY_EMAIL) { console.error("set PRIVACY_EMAIL to build the privacy page"); process.exit(1); }
+for (const lang of ["en", "es"]) {
+  const pv = dicts[lang].privacy, root = lang === "en" ? "../" : "../../";
+  const mail = `<a href="mailto:${esc(PRIVACY_EMAIL)}">${esc(PRIVACY_EMAIL)}</a>`;
+  const out = lang === "en" ? "privacy/index.html" : "privacy/es/index.html";
+  mkdirSync(lang === "en" ? "privacy" : "privacy/es", { recursive: true });
+  writeFileSync(out, `<!doctype html>
+<html lang="${HTML_LANG[lang]}" translate="no" class="notranslate" data-brand="rod">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(pv.title)} · Rod Johnson</title><meta name="google" content="notranslate">
+<link rel="canonical" href="${SITE}${lang === "en" ? "privacy/" : "privacy/es/"}">
+<link rel="alternate" hreflang="en" href="${SITE}privacy/"><link rel="alternate" hreflang="es-419" href="${SITE}privacy/es/">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<link rel="stylesheet" href="${root}ds/design-system.css"><link rel="stylesheet" href="${root}site.css"></head>
+<body class="ds"><header class="bar"><a class="mark" href="${root}${lang === "en" ? "" : "es/"}">Rod Johnson</a></header>
+<main class="col"><section><h2 class="ds-title-large">${esc(pv.title)}</h2>
+${pv.p.map((t) => `<p class="ds-body-large">${esc(t).replace("{email}", mail)}</p>`).join("\n")}
+<p class="ds-body-small ds-variant">${esc(pv.updated)}</p>
+<p><a href="${root}${lang === "en" ? "" : "es/"}">${esc(pv.back)}</a></p></section></main></body></html>
+`);
+  console.log(`wrote ${out}`);
+}

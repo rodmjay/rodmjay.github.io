@@ -193,7 +193,7 @@ try{var u=new URL(location.href),q=u.searchParams.get("lang");if(q==="en"||q==="
     <h2 class="ds-title-large">Get my resume</h2>
     <p class="ds-body-large">Tell me who you are and the PDF is yours.</p>
     <div class="rbox" id="rbox">
-      <form id="rform" novalidate data-err-name="Enter your name" data-err-email="Enter an email like ana@company.com" data-err-company="Enter your company" data-err-role="Enter your role" data-err-consent="Check this box to get the resume" data-sending="Sending…" data-rate="Too many requests from here. Try again in {n} minutes." data-server="Something went wrong on our side. Try again." data-lang="en">
+      <form id="rform" novalidate data-err-name="Enter your name" data-err-email="Enter an email like ana@company.com" data-err-company="Enter your company" data-err-role="Enter your role" data-sending="Sending…" data-rate="Too many requests from here. Try again in {n} minutes." data-server="Something went wrong on our side. Try again." data-lang="en">
         <div class="rgrid">
           <div class="ds-field"><label for="rf-name">Name</label><input class="ds-input" id="rf-name" name="name" type="text" autocomplete="name" required aria-describedby="rf-name-err"><p class="ds-supporting" id="rf-name-err" hidden></p></div>
           <div class="ds-field"><label for="rf-email">Email</label><input class="ds-input" id="rf-email" name="email" type="email" autocomplete="email" required aria-describedby="rf-email-err"><p class="ds-supporting" id="rf-email-err" hidden></p></div>
@@ -202,10 +202,10 @@ try{var u=new URL(location.href),q=u.searchParams.get("lang");if(q==="en"||q==="
           <div class="ds-field full"><label for="rf-source">How did you find me? (optional)</label><input class="ds-input" id="rf-source" name="source" type="text" autocomplete="off" aria-describedby="rf-source-err"><p class="ds-supporting" id="rf-source-err" hidden></p></div>
         </div>
         <div class="hp" aria-hidden="true"><label for="rf-website">Leave this empty</label><input id="rf-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-        <div class="ds-field consent"><label class="ds-check"><input type="checkbox" id="rf-consent" name="consent" required aria-describedby="rf-consent-err"> Rod may contact me about this</label><p class="ds-supporting" id="rf-consent-err" hidden></p></div>
+        <div class="ds-field consent"><label class="ds-check"><input type="checkbox" id="rf-consent" name="consent"> Rod may contact me about this (optional)</label></div>
         <div class="ds-banner error" id="rf-banner" role="alert" hidden><p></p></div>
         <button class="ds-btn" type="submit" id="rf-submit">Get the resume</button>
-        <p class="ds-supporting">Used to send you the resume and, if you said yes, for Rod to reach you. Never sold or shared.</p>
+        <p class="ds-supporting">Used to give you the resume link and, if you said yes, for Rod to reach you. Never sold or shared. <a href="privacy/">Privacy</a></p>
       </form>
       <div class="rdone" id="rdone" role="status" hidden>
         <svg class="rcheck" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"/><path d="M10 16.5l4 4 8-9"/></svg>

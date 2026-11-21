@@ -100,7 +100,7 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .ds .rbox #rf-banner p { margin: 0; }
 .ds .rbox #rf-submit { margin-bottom: var(--space-3); }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.rdone { display: grid; justify-items: start; gap: var(--space-2); }
+.rdone { display: grid; align-content: center; justify-items: center; text-align: center; gap: var(--space-2); min-height: inherit; }
 .ds .rdone h3, .ds .rdone p { margin: 0; }
 .ds .rdone .ds-btn { margin-top: var(--space-3); }
 .rdone h3:focus { outline: none; }

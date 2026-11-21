@@ -193,7 +193,7 @@ try{var u=new URL(location.href),q=u.searchParams.get("lang");if(q==="en"||q==="
     <h2 class="ds-title-large">Obtenga mi currículum</h2>
     <p class="ds-body-large">Dígame quién es y el PDF es suyo.</p>
     <div class="rbox" id="rbox">
-      <form id="rform" novalidate data-err-name="Escriba su nombre" data-err-email="Escriba un correo como ana@empresa.com" data-err-company="Escriba su empresa" data-err-role="Escriba su cargo" data-err-consent="Marque esta casilla para obtener el currículum" data-sending="Enviando…" data-rate="Demasiadas solicitudes desde aquí. Vuelva a intentarlo en {n} minutos." data-server="Algo falló de nuestro lado. Vuelva a intentarlo." data-lang="es-419">
+      <form id="rform" novalidate data-err-name="Escriba su nombre" data-err-email="Escriba un correo como ana@empresa.com" data-err-company="Escriba su empresa" data-err-role="Escriba su cargo" data-sending="Enviando…" data-rate="Demasiadas solicitudes desde aquí. Vuelva a intentarlo en {n} minutos." data-server="Algo falló de nuestro lado. Vuelva a intentarlo." data-lang="es-419">
         <div class="rgrid">
           <div class="ds-field"><label for="rf-name">Nombre</label><input class="ds-input" id="rf-name" name="name" type="text" autocomplete="name" required aria-describedby="rf-name-err"><p class="ds-supporting" id="rf-name-err" hidden></p></div>
           <div class="ds-field"><label for="rf-email">Correo electrónico</label><input class="ds-input" id="rf-email" name="email" type="email" autocomplete="email" required aria-describedby="rf-email-err"><p class="ds-supporting" id="rf-email-err" hidden></p></div>
@@ -202,10 +202,10 @@ try{var u=new URL(location.href),q=u.searchParams.get("lang");if(q==="en"||q==="
           <div class="ds-field full"><label for="rf-source">¿Cómo me encontró? (opcional)</label><input class="ds-input" id="rf-source" name="source" type="text" autocomplete="off" aria-describedby="rf-source-err"><p class="ds-supporting" id="rf-source-err" hidden></p></div>
         </div>
         <div class="hp" aria-hidden="true"><label for="rf-website">Deje esto vacío</label><input id="rf-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-        <div class="ds-field consent"><label class="ds-check"><input type="checkbox" id="rf-consent" name="consent" required aria-describedby="rf-consent-err"> Rod puede contactarme sobre esto</label><p class="ds-supporting" id="rf-consent-err" hidden></p></div>
+        <div class="ds-field consent"><label class="ds-check"><input type="checkbox" id="rf-consent" name="consent"> Rod puede contactarme sobre esto (opcional)</label></div>
         <div class="ds-banner error" id="rf-banner" role="alert" hidden><p></p></div>
         <button class="ds-btn" type="submit" id="rf-submit">Obtener el currículum</button>
-        <p class="ds-supporting">Se usa para enviarle el currículum y, si aceptó, para que Rod lo contacte. Nunca se vende ni se comparte.</p>
+        <p class="ds-supporting">Se usa para darle el enlace al currículum y, si aceptó, para que Rod lo contacte. Nunca se vende ni se comparte. <a href="../privacy/es/">Privacidad</a></p>
       </form>
       <div class="rdone" id="rdone" role="status" hidden>
         <svg class="rcheck" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"/><path d="M10 16.5l4 4 8-9"/></svg>
