@@ -143,7 +143,7 @@
       "Cuando solicita mi currículum en este sitio, guardo lo que escribe: su nombre, correo, empresa, cargo y, si lo agrega, cómo me encontró. También guardo si marcó “Rod puede contactarme” y cuándo.",
       "Lo uso para darle el enlace al currículum. Si marcó la casilla, también puedo contactarlo sobre esto. No lo uso para nada más, y nunca se vende ni se comparte.",
       "Todo se guarda en mi propia base de datos (Supabase). Su dirección IP nunca se guarda; solo conservo un hash con sal para limitar el abuso.",
-      "Si marcó la casilla, conservo sus datos durante 24 meses. Si no, durante 90 días. Las solicitudes bloqueadas o automatizadas se conservan 90 días.",
+      "Si marcó la casilla, conservo sus datos durante 12 meses. Si no, durante 90 días. Las solicitudes bloqueadas o automatizadas se conservan 90 días.",
       "Para ver o eliminar lo que tengo sobre usted, escriba a {email}. Le responderé en un plazo de 30 días.",
       "Este sitio no tiene analítica, anuncios ni rastreadores de terceros, así que no responde a las señales Do Not Track; no hay nada que desactivar."
     ]
