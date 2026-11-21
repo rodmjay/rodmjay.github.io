@@ -11,8 +11,13 @@ import { createHash } from "node:crypto";
 const ASSET_V = createHash("sha256").update(readFileSync("site.css")).update(readFileSync("site.js")).update(readFileSync("ds/design-system.css")).digest("hex").slice(0, 8);
 =======
 // Where privacy requests go (Compliance 11/21: an inbox someone reads). Set before publishing the form.
+<<<<<<< HEAD
 const PRIVACY_EMAIL = process.env.PRIVACY_EMAIL || "";
 >>>>>>> e738245 (Privacy page builder (waits on PRIVACY_EMAIL); centered success state (Designer))
+=======
+const PRIVACY_EMAIL = process.env.PRIVACY_EMAIL || "admin@squared.pro"; // EA reads it (EA 11/21)
+const PRIVACY_SUBJECT = "Privacy request – rodmjay.com";
+>>>>>>> 3f84f12 (Privacy page: admin@squared.pro with a filterable subject (EA 11/21))
 const HTML_LANG = { en: "en", es: "es-419" };
 const NAMES = { en: "English", es: "Español" };
 
@@ -92,7 +97,7 @@ console.log("wrote 404.html");
 if (!PRIVACY_EMAIL) { console.error("set PRIVACY_EMAIL to build the privacy page"); process.exit(1); }
 for (const lang of ["en", "es"]) {
   const pv = dicts[lang].privacy, root = lang === "en" ? "../" : "../../";
-  const mail = `<a href="mailto:${esc(PRIVACY_EMAIL)}">${esc(PRIVACY_EMAIL)}</a>`;
+  const mail = `<a href="mailto:${esc(PRIVACY_EMAIL)}?subject=${encodeURIComponent(PRIVACY_SUBJECT)}">${esc(PRIVACY_EMAIL)}</a>`;
   const out = lang === "en" ? "privacy/index.html" : "privacy/es/index.html";
   mkdirSync(lang === "en" ? "privacy" : "privacy/es", { recursive: true });
   writeFileSync(out, `<!doctype html>
