@@ -284,6 +284,8 @@
 .ds-input[aria-invalid="true"] { border-color: var(--md-sys-color-error); }
 .ds-field:focus-within > label { color: var(--md-sys-color-primary); }
 .ds-supporting { font: var(--md-sys-typescale-body-small-weight) var(--md-sys-typescale-body-small-size)/var(--md-sys-typescale-body-small-line-height) var(--md-ref-typeface-plain); color: var(--md-sys-color-on-surface-variant); }
+.ds-supporting.error, .ds-field:has(> [aria-invalid="true"]) > .ds-supporting { color: var(--md-sys-color-error); }
+.ds-field:has(> [aria-invalid="true"]) > label { color: var(--md-sys-color-error); }
 
 .ds-check { display: inline-flex; align-items: center; gap: var(--space-3); min-height: 2.5rem; cursor: pointer; font: var(--md-sys-typescale-body-large-weight) var(--md-sys-typescale-body-medium-size)/1.4 var(--md-ref-typeface-plain); }
 .ds-check input[type="checkbox"]:not(.ds-switch), .ds-check input[type="radio"] { width: 1.125rem; height: 1.125rem; margin: 0; accent-color: var(--md-sys-color-primary); }
