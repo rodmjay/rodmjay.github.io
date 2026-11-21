@@ -37,26 +37,26 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 /* ---- Synthwave hero, from Designer's prototype (design/specs/rodmjay-synthwave/hero.html) ---- */
 /* ---- Scene colors: night (dark) and dawn (light). Art only; UI colors come from the rod brand tokens. ---- */
 :root {
-  --sky-top: #fff1e4; --sky-low: #ffd6e4; --horizon: #ffb3cc;
+  --sky-top: #fff1e4; --sky-low: #f7d2ec; --horizon: #f0a8d6;
   --sun-1: #ffd23f; --sun-2: #ff8a3d; --sun-3: #ff3d8b;
-  --far: #f2a7c3; --far-rim: #00a9c7; --near: #e27aa3; --near-rim: #b8005c;
+  --far: #dcaee6; --far-rim: #00a9c7; --near: #e27aa3; --near-rim: #b8005c;
   --floor: #fff3f7; --grid: #1d3a5f; --star: transparent;
   --chrome-hi: #1d3a5f; --chrome-mid: #2f6aa8; --chrome-lo: #b8005c; --chrome-floor: #ff3d8b;
   --tag: #00687b;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --sky-top: #05071a; --sky-low: #0d1638; --horizon: #4a0f2e;
-    --far: #121a48; --far-rim: #19e3ff; --near: #0a0e2c; --near-rim: #ff3d8b;
-    --floor: #07091f; --grid: #ff3d8b; --star: #cfe9ff;
+    --sky-top: #05071a; --sky-low: #1b0f45; --horizon: #5b1a72;
+    --far: #2a1458; --far-rim: #19e3ff; --near: #0a0e2c; --near-rim: #ff3d8b;
+    --floor: #0b0720; --grid: #ff3d8b; --star: #cfe9ff;
     --chrome-hi: #f2fbff; --chrome-mid: #8fd8ff; --chrome-lo: #ff7aae; --chrome-floor: #ffd23f;
     --tag: #57d6f5;
   }
 }
 :root[data-theme="dark"] {
-  --sky-top: #05071a; --sky-low: #0d1638; --horizon: #4a0f2e;
-  --far: #121a48; --far-rim: #19e3ff; --near: #0a0e2c; --near-rim: #ff3d8b;
-  --floor: #07091f; --grid: #ff3d8b; --star: #cfe9ff;
+  --sky-top: #05071a; --sky-low: #1b0f45; --horizon: #5b1a72;
+  --far: #2a1458; --far-rim: #19e3ff; --near: #0a0e2c; --near-rim: #ff3d8b;
+  --floor: #0b0720; --grid: #ff3d8b; --star: #cfe9ff;
   --chrome-hi: #f2fbff; --chrome-mid: #8fd8ff; --chrome-lo: #ff7aae; --chrome-floor: #ffd23f;
   --tag: #57d6f5;
 }
