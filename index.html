@@ -123,8 +123,8 @@ try{var u=new URL(location.href),q=u.searchParams.get("lang");if(q==="en"||q==="
 <meta property="og:locale" content="en_US">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2305071a'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='16' font-weight='700' fill='%23ff3d8b' text-anchor='middle'%3ERJ%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="ds/fonts.css">
-<link rel="stylesheet" href="ds/design-system.css?v=d85b2a68">
-<link rel="stylesheet" href="site.css?v=d85b2a68">
+<link rel="stylesheet" href="ds/design-system.css?v=1f6470e7">
+<link rel="stylesheet" href="site.css?v=1f6470e7">
 </head>
 <body class="ds">
 <a class="skip" href="#main">Skip to content</a>
@@ -187,6 +187,33 @@ try{var u=new URL(location.href),q=u.searchParams.get("lang");if(q==="en"||q==="
     </ul>
   </section>
 
+  <section id="resume">
+    <h2 class="ds-title-large">Get my resume</h2>
+    <p class="ds-body-large">Tell me who you are and the PDF is yours.</p>
+    <div class="rbox" id="rbox">
+      <form id="rform" novalidate data-err-name="Enter your name" data-err-email="Enter an email like ana@company.com" data-sending="Sending…" data-rate="Too many requests from here. Try again in {n} minutes." data-server="Something went wrong on our side. Try again." data-lang="en">
+        <div class="rgrid">
+          <div class="ds-field"><label for="rf-name">Name</label><input class="ds-input" id="rf-name" name="name" type="text" autocomplete="name" required aria-describedby="rf-name-err"><p class="ds-supporting" id="rf-name-err" hidden></p></div>
+          <div class="ds-field"><label for="rf-email">Email</label><input class="ds-input" id="rf-email" name="email" type="email" autocomplete="email" required aria-describedby="rf-email-err"><p class="ds-supporting" id="rf-email-err" hidden></p></div>
+          <div class="ds-field"><label for="rf-company">Company (optional)</label><input class="ds-input" id="rf-company" name="company" type="text" autocomplete="organization" aria-describedby="rf-company-err"><p class="ds-supporting" id="rf-company-err" hidden></p></div>
+          <div class="ds-field"><label for="rf-role">Role (optional)</label><input class="ds-input" id="rf-role" name="role" type="text" autocomplete="organization-title" aria-describedby="rf-role-err"><p class="ds-supporting" id="rf-role-err" hidden></p></div>
+          <div class="ds-field full"><label for="rf-source">How did you find me? (optional)</label><input class="ds-input" id="rf-source" name="source" type="text" autocomplete="off" aria-describedby="rf-source-err"><p class="ds-supporting" id="rf-source-err" hidden></p></div>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="rf-website">Leave this empty</label><input id="rf-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <div class="ds-field consent"><label class="ds-check"><input type="checkbox" id="rf-consent" name="consent"> Rod may contact me about this (optional)</label></div>
+        <div class="ds-banner error" id="rf-banner" role="alert" hidden><p></p></div>
+        <button class="ds-btn" type="submit" id="rf-submit">Get the resume</button>
+        <p class="ds-supporting">Used to give you the resume link and, if you said yes, for Rod to reach you. Never sold or shared. <a href="privacy/">Privacy</a></p>
+      </form>
+      <div class="rdone" id="rdone" role="status" hidden>
+        <svg class="rcheck" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"/><path d="M10 16.5l4 4 8-9"/></svg>
+        <h3 class="ds-title-medium" id="rdone-title" tabindex="-1">Your resume is ready</h3>
+        <p class="ds-body-medium ds-variant">The link works for 24 hours.</p>
+        <a class="ds-btn" id="rdone-link" href="#" download>Download resume (PDF)</a>
+      </div>
+    </div>
+  </section>
+
   <section id="building">
     <h2 class="ds-title-large">What I'm building</h2>
     <p class="ds-body-large">On my own time I build with AI agents, end to end.</p>
@@ -216,6 +243,7 @@ try{var u=new URL(location.href),q=u.searchParams.get("lang");if(q==="en"||q==="
 </main>
 
 <footer class="foot col"><p class="ds-body-small ds-variant">© 2026 Rod Johnson</p></footer>
-<script src="site.js?v=d85b2a68"></script>
+<script>window.RESUME_API="https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/resume-request";</script>
+<script src="site.js?v=1f6470e7"></script>
 </body>
 </html>

@@ -13,6 +13,7 @@
     "building": "Building",
     "contact": "Contact",
     "language": "Language",
+    "resume": "Resume",
     "blog": "Blog"
   },
   "hero": {
@@ -110,5 +111,40 @@
     "title": "Page not found",
     "body": "That page doesn't exist.",
     "cta": "Go to the home page"
+  },
+  "resume": {
+    "heading": "Get my resume",
+    "lede": "Tell me who you are and the PDF is yours.",
+    "name": "Name",
+    "email": "Email",
+    "company": "Company (optional)",
+    "role": "Role (optional)",
+    "source": "How did you find me? (optional)",
+    "consent": "Rod may contact me about this (optional)",
+    "submit": "Get the resume",
+    "sending": "Sending…",
+    "note": "Used to give you the resume link and, if you said yes, for Rod to reach you. Never sold or shared.",
+    "errName": "Enter your name",
+    "errEmail": "Enter an email like ana@company.com",
+    "rateLimited": "Too many requests from here. Try again in {n} minutes.",
+    "serverError": "Something went wrong on our side. Try again.",
+    "doneTitle": "Your resume is ready",
+    "doneBody": "The link works for 24 hours.",
+    "download": "Download resume (PDF)",
+    "honeypot": "Leave this empty",
+    "privacyLink": "Privacy"
+  },
+  "privacy": {
+    "title": "Privacy",
+    "back": "Back to rodmjay.com",
+    "updated": "Last updated November 21, 2026.",
+    "p": [
+      "When you ask for my resume on this site, I keep what you type: your name, email, company, role and, if you add it, how you found me. I also keep whether you checked “Rod may contact me”, and when.",
+      "I use it to give you the resume link. If you checked the box, I may also reach out to you about it. I don't use it for anything else, and it's never sold or shared.",
+      "Everything is stored in my own database (Supabase). I don't keep your IP address; I keep only a salted hash of it to limit abuse. My hosting providers (GitHub and Supabase) may log it briefly for security.",
+      "If you checked the box, I keep your details for 12 months. If you didn't, I keep them for 90 days. Blocked or automated requests are kept for 90 days.",
+      "To see or delete what I hold about you, email {email}. I'll answer within 30 days.",
+      "This site has no analytics, ads or third-party trackers, so it doesn't respond to Do Not Track signals; there's nothing to turn off."
+    ]
   }
 }

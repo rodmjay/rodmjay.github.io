@@ -82,6 +82,33 @@
     </ul>
   </section>
 
+  <section id="resume">
+    <h2 class="ds-title-large">{{resume.heading}}</h2>
+    <p class="ds-body-large">{{resume.lede}}</p>
+    <div class="rbox" id="rbox">
+      <form id="rform" novalidate data-err-name="{{resume.errName}}" data-err-email="{{resume.errEmail}}" data-sending="{{resume.sending}}" data-rate="{{resume.rateLimited}}" data-server="{{resume.serverError}}" data-lang="{{@htmlLang}}">
+        <div class="rgrid">
+          <div class="ds-field"><label for="rf-name">{{resume.name}}</label><input class="ds-input" id="rf-name" name="name" type="text" autocomplete="name" required aria-describedby="rf-name-err"><p class="ds-supporting" id="rf-name-err" hidden></p></div>
+          <div class="ds-field"><label for="rf-email">{{resume.email}}</label><input class="ds-input" id="rf-email" name="email" type="email" autocomplete="email" required aria-describedby="rf-email-err"><p class="ds-supporting" id="rf-email-err" hidden></p></div>
+          <div class="ds-field"><label for="rf-company">{{resume.company}}</label><input class="ds-input" id="rf-company" name="company" type="text" autocomplete="organization" aria-describedby="rf-company-err"><p class="ds-supporting" id="rf-company-err" hidden></p></div>
+          <div class="ds-field"><label for="rf-role">{{resume.role}}</label><input class="ds-input" id="rf-role" name="role" type="text" autocomplete="organization-title" aria-describedby="rf-role-err"><p class="ds-supporting" id="rf-role-err" hidden></p></div>
+          <div class="ds-field full"><label for="rf-source">{{resume.source}}</label><input class="ds-input" id="rf-source" name="source" type="text" autocomplete="off" aria-describedby="rf-source-err"><p class="ds-supporting" id="rf-source-err" hidden></p></div>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="rf-website">{{resume.honeypot}}</label><input id="rf-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <div class="ds-field consent"><label class="ds-check"><input type="checkbox" id="rf-consent" name="consent"> {{resume.consent}}</label></div>
+        <div class="ds-banner error" id="rf-banner" role="alert" hidden><p></p></div>
+        <button class="ds-btn" type="submit" id="rf-submit">{{resume.submit}}</button>
+        <p class="ds-supporting">{{resume.note}} <a href="{{@root}}privacy/{{@langPath}}">{{resume.privacyLink}}</a></p>
+      </form>
+      <div class="rdone" id="rdone" role="status" hidden>
+        <svg class="rcheck" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14"/><path d="M10 16.5l4 4 8-9"/></svg>
+        <h3 class="ds-title-medium" id="rdone-title" tabindex="-1">{{resume.doneTitle}}</h3>
+        <p class="ds-body-medium ds-variant">{{resume.doneBody}}</p>
+        <a class="ds-btn" id="rdone-link" href="#" download>{{resume.download}}</a>
+      </div>
+    </div>
+  </section>
+
   <section id="building">
     <h2 class="ds-title-large">{{building.heading}}</h2>
     <p class="ds-body-large">{{building.lede}}</p>
@@ -111,6 +138,7 @@
 </main>
 
 <footer class="foot col"><p class="ds-body-small ds-variant">{{footer.copy}}</p></footer>
+<script>window.RESUME_API="https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/resume-request";</script>
 <script src="{{@root}}site.js"></script>
 </body>
 </html>
