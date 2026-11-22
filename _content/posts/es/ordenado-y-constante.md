@@ -4,61 +4,49 @@ title: Ordenado y constante
 dek: Por qué las partes más aburridas de mi semana son la razón de que pase el trabajo interesante, y qué tiene que ver eso con la arquitectura.
 date: 2026-11-21
 tags: [habits, architecture, focus]
-toc: true
-draft: true
+toc: false
+draft: false
 ---
-Este es un artículo de ejemplo mientras se construye el blog. El artículo real viene en camino. Mientras tanto, esta página muestra cómo se ve un artículo, con todo tipo de contenido que puede tener.
+Hay una frase de Gustave Flaubert en mi biografía de X: «Sea constante y ordenado en su vida, para que pueda ser violento y original en su trabajo».
 
-## Texto y listas {#texto}
+No la puse porque suene bien. La puse porque es la descripción más exacta de cómo trabajo.
 
-Un párrafo se lee como este, con [un enlace](/es/blog/), algunas **palabras en negrita** y un poco de `código en línea`.
+## La fuerza de voluntad es un mal lugar para guardar cosas
 
-- Un elemento de la lista.
-- Otro elemento.
-- Un tercero.
+Al principio de mi carrera, mi cabeza era el sistema. Las fechas límite, los seguimientos y lo que le prometí a alguien en un pasillo vivían en la memoria. En una buena semana funcionaba. En una mala semana algo se caía, y me pasaba la semana siguiente arreglándolo.
 
-> “Sea constante y ordenado en su vida, para que pueda ser violento y original en su trabajo.”
->
-> — Gustave Flaubert
+El problema no era el esfuerzo. La memoria es una pésima base de datos: no tiene respaldos ni búsqueda, y falla bajo carga, que es justo cuando más la necesita.
 
-## Código {#codigo}
+Así que dejé de pedirle ese trabajo. Todo lo que tendría que recordar dos veces ahora queda por escrito o automatizado. Las cuentas se pagan solas. El trabajo recurrente vive en un calendario. Cada pendiente tiene un solo lugar, y reviso ese lugar con un horario fijo, no cada vez que me da ansiedad.
 
-Un bloque de código tiene una etiqueta y un botón para copiar:
+## Lo aburrido es lo importante
 
-```yaml title="_content/posts/en/regular-and-orderly.md" {3}
-# _content/posts/en/regular-and-orderly.md: the Spanish twin shares its id
----
-id: regular-and-orderly
-title: Regular and orderly
-date: 2026-11-21
-tags: [habits, architecture, focus]
-draft: true
----
-```
+Nada de esto es interesante. Ese es el punto.
 
-Uno corto, sin etiqueta:
+Cuando las partes ordinarias de la vida van sobre rieles, dejan de competir por la atención. Mis mañanas empiezan igual. Mi semana tiene la misma forma. El sábado es para revisar lo que pasó y decidir qué importa después. El domingo es para descansar, y lo protejo.
 
-```sh bare
-node scripts/build-blog.mjs   # fails if a live post has no twin
-git push                      # GitHub Pages publishes it
-```
+Lo que gano es espacio. Cuando aparece un problema de diseño difícil, un sistema que tiene que aguantar diez años de cambios, tengo toda mi atención para dárselo. Nada en el fondo me está preguntando en voz baja si pagué la luz.
 
-::: pullquote
-Una cita destacada se ve así, en grande entre dos líneas.
-:::
+## Es lo mismo que hago en el trabajo
 
-## Figuras y tablas {#figuras}
+Me tomó más tiempo del que debería notarlo. La forma en que llevo mi semana es la forma en que hago arquitectura.
 
-<figure class="wide"><svg viewBox="0 0 832 200" role="img" aria-label="Borrador, luego los dos idiomas escritos, luego publicado" style="display:block;width:100%;height:auto"><g font-family="var(--md-ref-typeface-plain)" font-size="18" text-anchor="middle"><rect x="16" y="60" width="200" height="80" rx="12" fill="none" stroke="var(--md-sys-color-outline)" stroke-width="2"/><text x="116" y="106" fill="var(--md-sys-color-on-surface)">Borrador</text><rect x="316" y="60" width="200" height="80" rx="12" fill="none" stroke="var(--md-sys-color-tertiary)" stroke-width="2"/><text x="416" y="106" fill="var(--md-sys-color-on-surface)">EN + ES escritos</text><rect x="616" y="60" width="200" height="80" rx="12" fill="none" stroke="var(--md-sys-color-primary)" stroke-width="2"/><text x="716" y="106" fill="var(--md-sys-color-on-surface)">Publicado</text><path d="M224 100h84M524 100h84" stroke="var(--md-sys-color-on-surface-variant)" stroke-width="2"/><path d="M300 92l8 8-8 8M600 92l8 8-8 8" fill="none" stroke="var(--md-sys-color-on-surface-variant)" stroke-width="2"/></g></svg><figcaption>Un diagrama de ejemplo.</figcaption></figure>
+Una buena plataforma hace que el camino común sea aburrido. El registro de eventos funciona igual en cada servicio. Los proyectos nuevos empiezan del mismo código compartido. Los despliegues se ven idénticos, así que nadie tiene que pensar en ellos. Los equipos no gastan su creatividad en la plomería.
 
-| Columna | Columna | Columna |
-| --- | --- | --- |
-| Ejemplo | Sí | Los dos idiomas |
-| Ejemplo | Sí | Los dos idiomas |
-| Ejemplo | No | No |
+La gastan en el problema que solo ellos pueden resolver.
 
----
+He visto equipos intentarlo al revés. Cada servicio inventa su propio registro. Cada proyecto empieza desde una carpeta vacía. Se siente como libertad durante unos seis meses, y después se vuelve la razón por la que nada sale. La gente quema su mejor energía en decisiones que debieron tomarse una sola vez.
 
-Una oración con una nota al pie.[^1]
+Ordenado y constante abajo. Original arriba.
 
-[^1]: Una nota al pie de ejemplo.
+## Tres cosas que sí ayudan
+
+Si quiere probarlo, aquí es donde yo empezaría:
+
+1. **Elija un solo lugar para cada tipo de cosa.** Tareas en un lugar, fechas en otro, notas en otro. Dos lugares para lo mismo significa que no confiará en ninguno.
+2. **Revise con horario, no por sensación.** Una revisión semanal corta es mejor que un pánico largo. Yo hago la mía el sábado en la mañana.
+3. **Automatice la segunda vez.** La primera vez que hace algo a mano, solo hágalo. La segunda, escríbalo. La tercera, haga que funcione sin usted.
+
+Nada de esto lo vuelve brillante. Despeja el espacio donde ocurre el buen trabajo.
+
+Flaubert escribió *Madame Bovary* con una rutina diaria estricta. La rutina no era el arte. Era lo que hacía posible el arte.

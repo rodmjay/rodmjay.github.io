@@ -58,6 +58,7 @@ const TU_WORDS = new Set(("tú tu tus contigo te tuyo tuya tuyos tuyas vos eres 
   "necesitas debes crees piensas sientes dices hablas buscas usas lees escribes vienes conoces encuentras quieras puedas tengas " +
   "seas estés hagas sepas").split(" "));
 const TU_ENCLITIC = /^[a-zñ]*[áéíóú][a-zñ]{0,3}(ate|ete|ite|ame|eme)$/; // regístrate, suscríbete, cuéntame
+const NOT_TU = new Set(["límite", "límites"]); // nouns that look like enclitics ("fechas límite")
 function checkUsted(text, where) {
   const plain = String(text ?? "")
     .replace(/^(```|~~~)[\s\S]*?^\1/gm, " ")     // code isn't translated
@@ -66,7 +67,7 @@ function checkUsted(text, where) {
     .replace(/<[^>]+>/g, " ");                      // tags (attribute text like aria-label is checked below)
   const attrs = [...String(text ?? "").matchAll(/(?:aria-label|alt|title)="([^"]*)"/g)].map((m) => m[1]).join(" ");
   for (const w of `${plain} ${attrs}`.toLowerCase().match(/[a-záéíóúñü]+/g) || []) {
-    if (TU_WORDS.has(w) || TU_ENCLITIC.test(w)) fail(`${where}: "${w}" is the "tú" form; the Spanish uses "usted"`);
+    if (TU_WORDS.has(w) || (TU_ENCLITIC.test(w) && !NOT_TU.has(w))) fail(`${where}: "${w}" is the "tú" form; the Spanish uses "usted"`);
   }
 }
 for (const [k, s] of Object.entries(dict.es.blog)) checkUsted(s, `i18n/es.json blog.${k}`);

@@ -6,5 +6,36 @@
 <description>Notas sobre arquitectura, IA y una vida ordenada</description>
 <language>es-419</language>
 <atom:link href="https://rodmjay.com/es/blog/feed.xml" rel="self" type="application/rss+xml"/>
+<lastBuildDate>Sat, 21 Nov 2026 12:00:00 GMT</lastBuildDate>
+<item>
+<title>Cuando la IA escribe el código, la arquitectura importa más</title>
+<link>https://rodmjay.com/es/blog/ia-escribe-el-codigo/</link>
+<guid isPermaLink="true">https://rodmjay.com/es/blog/ia-escribe-el-codigo/</guid>
+<pubDate>Sat, 21 Nov 2026 12:00:00 GMT</pubDate>
+<description>La IA abarató escribir código. No abarató decidir qué construir, y por eso la arquitectura importa más ahora, no menos.</description>
+<category>IA</category>
+<category>Arquitectura</category>
+<category>Entrega</category>
+</item>
+<item>
+<title>Estándares que se cumplen</title>
+<link>https://rodmjay.com/es/blog/estandares-que-se-cumplen/</link>
+<guid isPermaLink="true">https://rodmjay.com/es/blog/estandares-que-se-cumplen/</guid>
+<pubDate>Sat, 21 Nov 2026 12:00:00 GMT</pubDate>
+<description>La mayoría de los estándares de ingeniería mueren en una wiki. Los que se quedan son código que la gente quiere usar. Esto fue lo que marcó la diferencia.</description>
+<category>Arquitectura</category>
+<category>Estándares</category>
+<category>Liderazgo</category>
+</item>
+<item>
+<title>Ordenado y constante</title>
+<link>https://rodmjay.com/es/blog/ordenado-y-constante/</link>
+<guid isPermaLink="true">https://rodmjay.com/es/blog/ordenado-y-constante/</guid>
+<pubDate>Sat, 21 Nov 2026 12:00:00 GMT</pubDate>
+<description>Por qué las partes más aburridas de mi semana son la razón de que pase el trabajo interesante, y qué tiene que ver eso con la arquitectura.</description>
+<category>Hábitos</category>
+<category>Arquitectura</category>
+<category>Enfoque</category>
+</item>
 </channel>
 </rss>
