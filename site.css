@@ -3,7 +3,7 @@ body { margin: 0; }
 .skip { position: absolute; left: -9999px; }
 .skip:focus { left: var(--space-4); top: var(--space-4); z-index: 10; }
 .col { max-width: 40rem; margin: 0 auto; padding: 0 var(--gutter); }
-.bar { display: flex; align-items: center; gap: var(--space-6); flex-wrap: wrap; max-width: 40rem; margin: 0 auto; padding: var(--space-4) var(--gutter); }
+.bar { display: flex; align-items: center; gap: var(--space-6); flex-wrap: wrap; max-width: 64rem; margin: 0 auto; padding: var(--space-4) var(--gutter); } /* wider than the 40rem text column, so six links fit on one row (Designer 11/21) */
 .mark { font: 700 1rem/1 var(--md-ref-typeface-brand); letter-spacing: 0.08em; text-transform: uppercase; color: var(--md-sys-color-on-surface); text-decoration: none; }
 .bar nav { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-right: auto; }
 .bar nav a { color: var(--md-sys-color-on-surface-variant); text-decoration: none; font-weight: 500; }
@@ -26,6 +26,8 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .links .ds-btn { gap: var(--space-2); }
 .foot { padding-top: var(--space-16); padding-bottom: var(--space-8); }
 .nf { padding: var(--space-16) var(--gutter); }
+/* Medium screens: name and language on the first row, the links on their own row under them */
+@media (min-width: 600.02px) and (max-width: 54rem) { .bar { row-gap: var(--space-2); } .bar nav { order: 3; flex-basis: 100%; margin-right: 0; } .bar .ds-lang { margin-left: auto; } }
 @media (max-width: 600px) {
   .bar nav { display: none; }
   .bar { justify-content: space-between; }
