@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Rod Johnson · Blog</title>
+<link>https://rodmjay.com/es/blog/</link>
+<description>Notas sobre arquitectura, IA y una vida ordenada</description>
+<language>es-419</language>
+<atom:link href="https://rodmjay.com/es/blog/feed.xml" rel="self" type="application/rss+xml"/>
+</channel>
+</rss>
