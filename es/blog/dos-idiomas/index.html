@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es-419">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cada artículo aquí sale en dos idiomas · Rod Johnson</title>
+<meta name="description" content="Por qué un artículo espera hasta que el español también está escrito, y cómo lo exige una compilación sencilla.">
+<meta name="robots" content="noindex"><!-- sample posts until the real ones ship -->
+<link rel="alternate" hreflang="es-419" href="https://rodmjay.com/es/blog/dos-idiomas/"><link rel="alternate" hreflang="en" href="https://rodmjay.com/blog/two-languages/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2305071a'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='16' font-weight='700' fill='%23ff3d8b' text-anchor='middle'%3ERJ%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/ds/fonts.css">
+<link rel="stylesheet" href="/ds/design-system.css?v=029">
+<link rel="stylesheet" href="/site.css?v=blog1">
+<link rel="stylesheet" href="/blog/blog.css?v=blog1">
+</head>
+<body class="ds">
+<a class="skip" href="#main">Ir al contenido</a>
+<header class="bar">
+  <a class="mark" href="/es/" aria-label="Rod Johnson, inicio">Rod Johnson</a>
+  <nav aria-label="Secciones"><a href="/es/#about">Acerca de</a><a href="/es/#work">Trabajo</a><a href="/es/#building">Proyectos</a><a href="/es/blog/" aria-current="page">Blog</a></nav>
+  <span class="ds-lang"><label><span class="ds-lang-label">Idioma</span><select id="lang" aria-label="Idioma" data-other="/blog/two-languages/"><option value="en" lang="en">English</option><option value="es" lang="es-419" selected>Español</option></select></label></span>
+</header>
+<div class="strip slim" aria-hidden="true"><svg viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><g stroke="var(--grid)" stroke-width="2"><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="-1360" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="-1100" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="-840" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="-580" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="-320" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="-60" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="200" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="460" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="720" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="980" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="1240" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="1500" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="1760" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="2020" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="2280" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="2540" y2="100"/><line vector-effect="non-scaling-stroke" x1="720" y1="45" x2="2800" y2="100"/><line vector-effect="non-scaling-stroke" x1="0" y1="45" x2="1440" y2="45"/><line vector-effect="non-scaling-stroke" x1="0" y1="54" x2="1440" y2="54"/><line vector-effect="non-scaling-stroke" x1="0" y1="68" x2="1440" y2="68"/><line vector-effect="non-scaling-stroke" x1="0" y1="90" x2="1440" y2="90"/></g></svg></div>
+<main id="main" class="col post blog">
+  <article>
+    <header class="ds-post-head">
+      <p class="ds-post-kicker"><span>Arquitectura</span></p>
+      <h1 class="ds-post-title">Cada artículo aquí sale en dos idiomas</h1>
+      <p class="ds-post-dek">Por qué un artículo espera hasta que el español también está escrito, y cómo lo exige una compilación sencilla.</p>
+      <p class="ds-post-meta"><time datetime="2026-11-21">21 de noviembre de 2026</time><span>4 min de lectura</span><a class="ds-post-lang" href="/blog/two-languages/" lang="en">Read in English</a></p>
+    </header>
+    <details class="ds-toc"><summary>En esta página</summary><ol><li><a href="#por-que">Por qué los dos, siempre</a></li><li><a href="#archivo">El archivo</a></li></ol></details>
+    <div class="ds-prose">
+  <p>Este blog es una carpeta de archivos markdown en el mismo repositorio que el resto del sitio. Una compilación pequeña los convierte en páginas y GitHub Pages las publica. Cada artículo tiene una versión en inglés y otra en español, y ninguna se publica sola.</p>
+  <h2 id="por-que"><a class="ds-anchor" href="#por-que" aria-label="Enlace a esta sección">#</a>Por qué los dos, siempre</h2>
+  <p>Muchas de las personas con las que trabajo leen primero en español. Una traducción automática se nota, así que cada versión se escribe a mano, y el sitio nunca muestra un cambio de idioma que lleve a una página que no existe.</p>
+  <ul><li>Cada artículo son dos archivos que comparten un <strong>id</strong>.</li><li>Cualquiera de los dos puede esperar como borrador.</li><li>La compilación se detiene si un artículo publicado no tiene su par.</li></ul>
+  <blockquote><p>Escribirlo dos veces es justamente la idea. La segunda pasada encuentra lo que la primera escondía.</p><cite>Notas del primer artículo</cite></blockquote>
+  <h2 id="archivo"><a class="ds-anchor" href="#archivo" aria-label="Enlace a esta sección">#</a>El archivo</h2>
+  <p>El encabezado trae todo lo que necesita el índice. El <code>id</code> une el archivo en inglés con su par en español.</p>
+  <figure class="ds-codeblock"><figcaption><span>blog/en/two-languages.md</span><button class="ds-codeblock-copy">Copiar</button></figcaption><pre class="shiki css-variables" style="background-color:var(--shiki-background);color:var(--shiki-foreground)" tabindex="0"><code><span class="line"><span style="color:var(--shiki-token-comment)"># blog/en/two-languages.md: the Spanish twin shares its id</span></span>
+<span class="line"><span style="color:var(--shiki-foreground)">---</span></span>
+<span class="line highlighted"><span style="color:var(--shiki-token-keyword)">id</span><span style="color:var(--shiki-token-keyword)">:</span><span style="color:var(--shiki-token-string-expression)"> two-languages</span></span>
+<span class="line"><span style="color:var(--shiki-token-keyword)">title</span><span style="color:var(--shiki-token-keyword)">:</span><span style="color:var(--shiki-token-string-expression)"> Every post here ships in two languages</span></span>
+<span class="line"><span style="color:var(--shiki-token-keyword)">dek</span><span style="color:var(--shiki-token-keyword)">:</span><span style="color:var(--shiki-token-string-expression)"> Why a post waits until the Spanish is written too.</span></span>
+<span class="line"><span style="color:var(--shiki-token-keyword)">date</span><span style="color:var(--shiki-token-keyword)">:</span><span style="color:var(--shiki-foreground)"> 2026-11-21</span></span>
+<span class="line"><span style="color:var(--shiki-token-keyword)">tags</span><span style="color:var(--shiki-token-keyword)">:</span><span style="color:var(--shiki-foreground)"> [</span><span style="color:var(--shiki-token-string)">architecture</span><span style="color:var(--shiki-foreground)">]</span></span>
+<span class="line"><span style="color:var(--shiki-token-keyword)">draft</span><span style="color:var(--shiki-token-keyword)">:</span><span style="color:var(--shiki-token-constant)"> false</span></span>
+<span class="line"><span style="color:var(--shiki-foreground)">---</span></span></code></pre></figure>
+  <p>Publicar son dos comandos:</p>
+  <pre class="shiki css-variables" style="background-color:var(--shiki-background);color:var(--shiki-foreground)" tabindex="0"><code><span class="line"><span style="color:var(--shiki-token-function)">node</span><span style="color:var(--shiki-token-string)"> scripts/build-blog.mjs</span><span style="color:var(--shiki-token-comment)">   # fails if a live post has no twin</span></span>
+<span class="line"><span style="color:var(--shiki-token-function)">git</span><span style="color:var(--shiki-token-string)"> push</span><span style="color:var(--shiki-token-comment)">                         # GitHub Pages publishes it</span></span></code></pre>
+  <figure class="ds-pullquote"><p>Un cambio de idioma nunca debe llevar a una página que no existe.</p></figure>
+  <hr>
+  <p>La próxima vez: cómo el menú de idioma encuentra la otra versión de la página en la que está.</p>
+    </div>
+    <footer class="post-foot"><nav class="ds-pager" aria-label="Posts"><a class="next" href="/es/blog/permisos-estrictos/"><small>Artículo siguiente →</small>Agentes con permisos estrictos</a></nav></footer>
+  </article>
+</main>
+<footer class="foot col"><p class="ds-body-small ds-variant">© 2026 Rod Johnson</p></footer>
+<script src="/ds/prose.global.js?v=029"></script>
+<script src="/blog/blog.js?v=blog1"></script>
+</body>
+</html>
