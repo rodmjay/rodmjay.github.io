@@ -146,5 +146,18 @@
       "Para ver o eliminar lo que tengo sobre usted, escriba a {email}. Le responderé en un plazo de 30 días.",
       "Este sitio no tiene analítica, anuncios ni rastreadores de terceros, así que no responde a las señales Do Not Track; no hay nada que desactivar."
     ]
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Notas sobre arquitectura, IA y una vida ordenada",
+    "tagline": "Notas sobre arquitectura, IA y una vida ordenada",
+    "sample": "Artículos de ejemplo. El blog está en construcción y pronto habrá artículos reales.",
+    "tags": "Etiquetas",
+    "all": "Todos",
+    "pages": "Páginas",
+    "posts": "Artículos",
+    "backToText": "Volver al texto",
+    "feedTitle": "Rod Johnson · Blog",
+    "ogLocale": "es_419"
   }
 }

@@ -1,0 +1,19 @@
+{
+  "name": "rodmjay-site",
+  "private": true,
+  "type": "module",
+  "description": "rodmjay.com: the home page build (scripts/build.mjs) and the markdown blog build (scripts/build-blog.mjs).",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:blog": "node scripts/build-blog.mjs"
+  },
+  "engines": { "node": ">=20" },
+  "devDependencies": {
+    "image-size": "2.0.4",
+    "js-yaml": "5.4.3",
+    "markdown-it": "15.0.3",
+    "markdown-it-container": "4.0.0",
+    "markdown-it-footnote": "4.0.0",
+    "shiki": "4.5.0"
+  }
+}

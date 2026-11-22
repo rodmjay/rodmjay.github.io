@@ -146,5 +146,18 @@
       "To see or delete what I hold about you, email {email}. I'll answer within 30 days.",
       "This site has no analytics, ads or third-party trackers, so it doesn't respond to Do Not Track signals; there's nothing to turn off."
     ]
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Notes on architecture, AI and an orderly life",
+    "tagline": "Notes on architecture, AI and an orderly life",
+    "sample": "Sample posts. The blog is being built, and real posts come soon.",
+    "tags": "Tags",
+    "all": "All",
+    "pages": "Pages",
+    "posts": "Posts",
+    "backToText": "Back to text",
+    "feedTitle": "Rod Johnson · Blog",
+    "ogLocale": "en_US"
   }
 }

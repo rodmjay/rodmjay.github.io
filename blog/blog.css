@@ -19,7 +19,10 @@
 
 .ix { padding-top: var(--space-10); }
 .ix .sample { margin: 0 0 var(--space-8); }
+.filters { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0 0 var(--space-8); padding: 0; list-style: none; }
+.more { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); margin-top: var(--space-8); }
 .post { padding-top: var(--space-10); }
 .post .ds-post-head { margin-bottom: var(--space-10); }
 .post .ds-toc { margin-bottom: var(--space-10); }
-.post-foot { margin-top: var(--space-16); }
+.post-foot { margin-top: var(--space-16); display: grid; gap: var(--space-8); }
+.post-foot .ds-post-tags { margin: 0; }
