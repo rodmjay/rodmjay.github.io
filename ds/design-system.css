@@ -217,6 +217,7 @@
 .ds-btn:is(.outlined, .text):hover { box-shadow: inset 0 0 0 1px var(--md-sys-color-outline); }
 .ds-btn.text:hover { box-shadow: none; }
 .ds-btn.error { background: var(--md-sys-color-error); color: var(--md-sys-color-on-error); }
+.ds-btn.text.error { background: transparent; color: var(--md-sys-color-error); }
 .ds-btn:is(.tonal, .outlined, .text, .elevated, .error):disabled, .ds-btn:is(.tonal, .outlined, .text, .elevated, .error)[aria-disabled="true"] {
   background: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent); color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent); box-shadow: none; pointer-events: none; }
 .ds-btn.text:disabled { background: transparent; }
@@ -655,7 +656,7 @@
 .ds-codeblock pre, .ds-prose > pre { margin: 0; padding: var(--space-4); overflow-x: auto; tab-size: 2; background: var(--shiki-background) !important; color: var(--shiki-foreground) !important;
   font: 400 0.875rem/1.65 var(--md-ref-typeface-mono); font-variant-ligatures: none; }
 .ds-prose > pre { border-radius: var(--md-sys-shape-corner-medium); box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant); }
-.ds-codeblock pre code, .ds-prose > pre code { font: inherit; background: none; padding: 0; }
+.ds-codeblock pre code, .ds-prose > pre code { display: block; min-width: max-content; font: inherit; background: none; padding: 0; }
 .ds-codeblock pre:focus-visible, .ds-prose > pre:focus-visible { outline: 3px solid var(--md-sys-color-secondary); outline-offset: -3px; }
 
 .ds-codeblock .line { display: inline-block; min-width: 100%; }

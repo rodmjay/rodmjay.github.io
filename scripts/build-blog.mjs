@@ -372,7 +372,7 @@ function postPage(p, list) {
   const other = p.lang === "en" ? "es" : "en";
   const twinUrl = p.twin && (p.twin.live || !p.live) && (DRAFTS || p.twin.live) ? p.twin.url : BASE[other];
   const h2s = p.env.headings.filter((h) => h.level === 2);
-  const toc = p.toc === true || h2s.length >= 4
+  const toc = h2s.length >= 4 && p.toc !== false // 4+ h2s only (Designer 11/21); front matter can only turn it off
     ? `<details class="ds-toc"><summary>${esc(t("toc", p.lang))}</summary><ol>${h2s.map((h) => `<li><a href="#${esc(h.id)}">${esc(h.text)}</a></li>`).join("")}</ol></details>` : "";
   const cover = p.cover ? `\n    <figure class="ds-post-cover"><img src="${esc(p.cover)}" alt="${esc(p.coverAlt)}"${imgDims(p.cover)} fetchpriority="high"></figure>` : "";
   const pager = prev || next ? `<nav class="ds-pager" aria-label="${esc(dict[p.lang].blog.posts)}">${prev ? `<a class="prev" href="${prev.url}"><small>← ${esc(t("prev", p.lang))}</small>${esc(prev.title)}</a>` : ""}${next ? `<a class="next" href="${next.url}"><small>${esc(t("next", p.lang))} →</small>${esc(next.title)}</a>` : ""}</nav>` : "";
