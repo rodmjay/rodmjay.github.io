@@ -11,7 +11,7 @@
       "headers": {
         "X-Robots-Tag": "noindex",
         "Cache-Control": "no-cache",
-        "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net/npm/@sveltia/ https://unpkg.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' blob: data: https://*.githubusercontent.com; media-src blob:; frame-src blob:; manifest-src blob:; connect-src 'self' blob: data: https://api.github.com https://www.githubstatus.com https://unpkg.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net/npm/@sveltia/ https://unpkg.com/@sveltia/; style-src 'self' 'unsafe-inline'; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' blob: data: https://*.githubusercontent.com; media-src blob:; frame-src blob:; manifest-src blob:; connect-src 'self' blob: data: https://api.github.com https://www.githubstatus.com https://unpkg.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
       }
     }
   ],
@@ -20,7 +20,8 @@
     "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
-    "Referrer-Policy": "strict-origin-when-cross-origin"
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()"
   },
   "mimeTypes": {
     ".xml": "application/xml",
