@@ -6,7 +6,7 @@
 # main deploys to production (the app's default host, and rodmjay.com once DNS points there); next deploys to the named
 # preview environment "staging". Pull requests into main build and test only (the required `build` check), never deploy.
 # The Should page (/should/) is copied in from rodmjay/should (Product Manager's) after the build, byte-identical, with
-# its own CSP (scripts/should.mjs). Product Manager's pushes reach the site with the daily run or a manual run.
+# its own CSP (scripts/should.mjs), pinned to the commit in the repo variable SHOULD_REF; bumping it publishes it.
 name: Deploy to Azure Static Web Apps
 
 on:
@@ -14,7 +14,7 @@ on:
     branches: [main, next]
   pull_request:
     branches: [main]
-  # Daily, so recipes published in Supabase and Product Manager's pushes to rodmjay/should reach the site. A schedule
+  # Daily, so recipes published in Supabase reach the site (the Should page moves only when SHOULD_REF is bumped). A schedule
   # runs only from the default branch (main), so it refreshes production; use workflow_dispatch on `next` (Actions,
   # "Run workflow") to pick up a change on staging.
   schedule:
@@ -51,12 +51,18 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Build
         run: npm run build
-      # The Should page: rodmjay/should's main, copied to out/should/ after postbuild (its no-inline-code guards are for
-      # the Next output only), with routes and a hash-based CSP written into out/staticwebapp.config.json.
+      # The Should page: rodmjay/should at the reviewed commit in the repo variable SHOULD_REF (Security 11/23: an
+      # unreviewed push there would otherwise become a hashed, same-origin script next to /admin/), copied to out/should/
+      # after postbuild (its no-inline-code guards are for the Next output only), with routes and a hash-based CSP written
+      # into out/staticwebapp.config.json. Bump SHOULD_REF deliberately (Product Manager or Software Architect).
+      - name: Check the pinned Should commit
+        env:
+          SHOULD_REF: ${{ vars.SHOULD_REF }}
+        run: '[[ "$SHOULD_REF" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::repo variable SHOULD_REF must be a full commit sha"; exit 1; }'
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: rodmjay/should
-          ref: main
+          ref: ${{ vars.SHOULD_REF }}
           path: _should
           persist-credentials: false
       - name: Add the Should page
