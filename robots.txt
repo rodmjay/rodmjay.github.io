@@ -1,3 +1,2 @@
 User-agent: *
-Allow: /
-Sitemap: https://rodmjay.com/sitemap.xml
+Disallow: /
