@@ -78,10 +78,13 @@ and `strict-origin-when-cross-origin`. `/admin/` has its own looser CSP (Sveltia
   `<style>`, `on*` handler, `javascript:` URL). Use a class, never `style={…}`, in server-rendered markup. Shiki's
   token colors are classes (`.shk-*` in `blog/blog.css`).
 - `/should/` is Product Manager's Should page (repo rodmjay/should), copied byte-identical by `scripts/should.mjs` after
-  postbuild (CI checks out rodmjay/should's main; locally set `SHOULD_SRC`). It has inline scripts and styles, so it gets
-  its own CSP: `script-src 'self'` plus a sha256 hash of each inline script, computed at build, and htmx's exact unpkg
-  URL (the demo shell loads it); `style-src 'self' 'unsafe-inline'`. A script from any other origin, an `on*` handler
-  or a `javascript:` URL fails the build. `/should/demo/*` paths that aren't real files get the demo's SPA shell.
+  postbuild (CI checks out rodmjay/should's main; locally set `SHOULD_SRC`). It has inline scripts, so it gets its own
+  CSP: `script-src 'self'` plus a sha256 hash of each inline script, computed at build; `style-src 'self'` with
+  `style-src-attr 'none'`. A `<style>` block, a style attribute, an `on*` handler, a `javascript:` URL or a script from
+  another origin fails the build, naming Product Manager (the owner) to fix it in rodmjay/should. Exception: the demo's
+  compiled Svelte bundle still writes style attributes at run time, so `/should/demo/*` keeps `style-src 'self'
+  'unsafe-inline'` until Product Manager rebuilds it (the build log says when it can go). `/should/demo/*`
+  paths that aren't real files get the demo's SPA shell; the Pages-only root `404.html` isn't copied.
   `e2e/should.spec.ts` checks it; postbuild's guards skip `out/should/`.
 - `tests/serve.mjs` sends the same headers, and `e2e/csp.spec.ts` fails on any CSP violation. `BASE_URL=<host> npm run
   test:e2e` runs the whole suite against a deployed site (the one test that would send a real request is skipped).

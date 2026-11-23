@@ -35,9 +35,15 @@ test.describe("the Should page", () => {
       const res = await page.goto(path);
       expect(res!.status()).toBe(200);
       const h = res!.headers(), csp = h["content-security-policy"];
-      expect(csp).toMatch(/script-src 'self'( \S+)* 'sha256-[A-Za-z0-9+/]+=*'/);
+      expect(csp).toMatch(/script-src 'self'( 'sha256-[A-Za-z0-9+/]+=*')+;/); // 'self' plus the build's hashes only
       expect(csp.match(/script-src([^;]*)/)![1]).not.toContain("unsafe-");
-      expect(csp).toContain("style-src 'self' 'unsafe-inline'");
+      if (path.startsWith("/should/demo/")) {
+        // The demo exception (scripts/should.mjs): its compiled bundle still writes style attributes.
+        expect(csp).toContain("style-src 'self' 'unsafe-inline';");
+      } else {
+        expect(csp).not.toContain("unsafe-");
+        expect(csp).toContain("style-src 'self'; style-src-attr 'none';");
+      }
       expect(csp).toContain("object-src 'none'");
       expect(csp).toContain("frame-ancestors 'none'");
       expect(h["strict-transport-security"]).toContain("max-age=");
@@ -51,6 +57,21 @@ test.describe("the Should page", () => {
       expect(seen, seen.join("\n")).toEqual([]);
     });
   }
+
+  test("should: clicking from the demo home into other screens stays inside the CSP", async ({ page }) => {
+    const seen = await watch(page);
+    // Client-side navigation (SvelteKit) from the home screen, so each screen renders under the home page's CSP.
+    for (const [href, heading] of [["/should/demo/org", /org chart/i], ["/should/demo/r/bookkeeper", /\S/],
+      ["/should/demo/projects", /\S/], ["/should/demo/tv", /TV/i]] as const) {
+      await page.goto("/should/demo/");
+      await page.waitForLoadState("networkidle");
+      await page.locator(`a[href="${href}"]:visible`).first().click();
+      await expect(page).toHaveURL(new RegExp(`${href}$`));
+      await page.waitForLoadState("networkidle");
+      await expect(page.locator("h1").first()).toHaveText(heading);
+    }
+    expect(seen, seen.join("\n")).toEqual([]);
+  });
 
   test("should: /should redirects to /should/", async ({ request }) => {
     const res = await request.get("/should", { maxRedirects: 0 });

@@ -1,11 +1,13 @@
 // Adds the Should page at /should/: Product Manager's static site (repo rodmjay/should, the folder product/site in the
-// personal workspace), copied byte-identical, never ported. Runs after postbuild, whose no-inline-code guards cover the
-// Next output only: the Should page has inline <script>s and style attributes, so it gets its own route and CSP.
-// - Copies <src> into out/should/ (everything but dotfiles: .git, .github, .nojekyll, .gitignore; and the gitignored
-//   demo-local/).
-// - Hashes every inline script in out/should/**/*.html (sha256, base64) into the /should/* script-src, so the CSP never
-//   needs 'unsafe-inline' for scripts. Fails on an inline event handler or javascript: URL (no hash can allow those) and
-//   on a script from another origin that isn't in EXTERNAL_SCRIPTS below (Security reviews each addition).
+// personal workspace), copied byte-identical, never ported. Runs after postbuild, whose guards cover the Next output
+// only: the Should page has inline <script>s, so it gets its own route and CSP.
+// - Copies <src> into out/should/ (everything but dotfiles: .git, .github, .nojekyll, .gitignore; the gitignored
+//   demo-local/; and the root 404.html, GitHub Pages' SPA redirect, which this site never serves: its 404 is the site's
+//   own, and /should/demo/* deep links get the demo shell from the routes below).
+// - Hashes every inline script in out/should/**/*.html (sha256, base64) into the /should/* script-src, so the CSP is
+//   'self' plus those hashes, nothing else. style-src is 'self' with style-src-attr 'none' (no inline CSS; dynamic
+//   values go through CSSOM). Fails, naming Product Manager as the owner, on anything that CSP would block: a <style>
+//   block, a style attribute, an inline event handler, a javascript: URL, a script from another origin.
 // - Writes the routes into out/staticwebapp.config.json:
 //     /should/demo/<each real top-level file or folder>   the CSP, served as is (routes stop at the first match)
 //     /should/demo/*                                      anything else is a demo deep link: the SPA shell (404.html)
@@ -19,8 +21,6 @@ import { createHash } from "node:crypto";
 const OUT = "out";
 const DEST = join(OUT, "should");
 const CONFIG = join(OUT, "staticwebapp.config.json");
-// Scripts the page loads from other origins, by exact URL. The demo shell loads htmx (unused by the demo's own code).
-const EXTERNAL_SCRIPTS = ["https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"];
 
 const src = process.argv[2] || process.env.SHOULD_SRC;
 if (!src && !existsSync(join(DEST, "index.html"))) {
@@ -33,7 +33,8 @@ if (src) {
     process.exit(1);
   }
   rmSync(DEST, { recursive: true, force: true });
-  cpSync(src, DEST, { recursive: true, filter: (p) => !basename(p).startsWith(".") && basename(p) !== "demo-local" });
+  cpSync(src, DEST, { recursive: true, filter: (p) =>
+    !basename(p).startsWith(".") && basename(p) !== "demo-local" && p !== join(src, "404.html") });
 }
 
 const bad = [];
@@ -53,14 +54,16 @@ for (const file of htmlFiles) {
   for (const [, attrs, code] of html.matchAll(SCRIPT)) {
     const src = attrs.match(/\ssrc\s*=\s*["']?([^"'\s>]+)/i)?.[1];
     if (src) {
-      if (/^(https?:)?\/\//i.test(src) && !EXTERNAL_SCRIPTS.includes(src)) bad.push(`${rel}: script from another origin, not allowed: ${src}`);
+      if (/^(https?:)?\/\//i.test(src)) bad.push(`${rel}: script from another origin (script-src is 'self'): ${src}`);
       continue;
     }
     if (!isJs(attrs) || !code) continue;
     hashes.add(`'sha256-${createHash("sha256").update(code, "utf8").digest("base64")}'`);
     inline++;
   }
+  if (/<style[\s>]/i.test(html)) bad.push(`${rel}: <style> block (style-src is 'self': move it into a .css file)`);
   for (const tag of html.match(/<[a-zA-Z][^>]*>/g) || []) {
+    if (/\sstyle\s*=/i.test(tag)) bad.push(`${rel}: style attribute (style-src-attr 'none': use a class) in ${tag.slice(0, 80)}`);
     if (/\son[a-z]+\s*=/i.test(tag)) bad.push(`${rel}: inline event handler (no CSP hash allows it) in ${tag.slice(0, 80)}`);
     if (/(href|src|action)\s*=\s*["']?\s*javascript:/i.test(tag)) bad.push(`${rel}: javascript: URL in ${tag.slice(0, 80)}`);
   }
@@ -68,8 +71,9 @@ for (const file of htmlFiles) {
 
 const CSP = [
   "default-src 'self'",
-  `script-src 'self' ${[...EXTERNAL_SCRIPTS, ...[...hashes].sort()].join(" ")}`,
-  "style-src 'self' 'unsafe-inline'",
+  ["script-src 'self'", ...[...hashes].sort()].join(" "),
+  "style-src 'self'",
+  "style-src-attr 'none'",
   "img-src 'self' data:",
   "font-src 'self'",
   "connect-src 'self'",
@@ -79,13 +83,26 @@ const CSP = [
   "frame-ancestors 'none'",
 ].join("; ");
 const headers = { "Content-Security-Policy": CSP };
+// The demo exception (11/23): the demo's compiled Svelte bundle (demo/_app) still writes style attributes at run time
+// (static style="" in component templates, the design system's chart and project markup, SvelteKit's route announcer),
+// which style-src-attr 'none' blocks. Until Product Manager rebuilds it without them, /should/demo/* keeps inline
+// styles; its scripts are as strict as the rest ('self' plus hashes). The build says when the exception can go.
 const DEMO = join(DEST, "demo");
+const demoStyleAttrs = (function count(dir) {
+  let n = 0;
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) n += count(p); else if (name.endsWith(".js")) n += (readFileSync(p, "utf8").match(/\sstyle=\\?["`$]/g) || []).length;
+  }
+  return n;
+})(join(DEMO, "_app"));
+const demoHeaders = { "Content-Security-Policy": CSP.replace("style-src 'self'; style-src-attr 'none'", "style-src 'self' 'unsafe-inline'") };
 const real = readdirSync(DEMO).sort().map((name) =>
-  ({ route: `/should/demo/${name}${statSync(join(DEMO, name)).isDirectory() ? "/*" : ""}`, headers }));
+  ({ route: `/should/demo/${name}${statSync(join(DEMO, name)).isDirectory() ? "/*" : ""}`, headers: demoHeaders }));
 const routes = [
-  { route: "/should/demo/", headers },
+  { route: "/should/demo/", headers: demoHeaders },
   ...real,
-  { route: "/should/demo/*", rewrite: "/should/demo/404.html", headers },
+  { route: "/should/demo/*", rewrite: "/should/demo/404.html", headers: demoHeaders },
   { route: "/should/*", headers },
 ];
 
@@ -96,8 +113,15 @@ swa.mimeTypes = { ...swa.mimeTypes, ".epub": "application/epub+zip", ".bin": "ap
 const json = `${JSON.stringify(swa, null, 2)}\n`;
 // Static Web Apps refuses a configuration file over 20 KB.
 if (Buffer.byteLength(json) > 20_000) bad.push(`staticwebapp.config.json is ${Buffer.byteLength(json)} bytes (limit 20 KB)`);
-if (/unsafe-(inline|eval)/.test(CSP.match(/script-src([^;]*)/)[1])) bad.push("the /should/ CSP allows inline or eval scripts");
+if (/unsafe-/.test(CSP)) bad.push("the /should/ CSP allows inline or eval code");
+if (/unsafe-/.test(demoHeaders["Content-Security-Policy"].match(/script-src([^;]*)/)[1])) bad.push("the /should/demo/ CSP allows inline or eval scripts");
 
-if (bad.length) { console.error(`should:\n${[...new Set(bad)].join("\n")}`); process.exit(1); }
+if (bad.length) {
+  console.error(`should: the Should page (repo rodmjay/should, owner Product Manager) has what its CSP blocks; fix it there:\n${[...new Set(bad)].join("\n")}`);
+  process.exit(1);
+}
 writeFileSync(CONFIG, json);
+console.log(demoStyleAttrs
+  ? `should: the demo's compiled JS still writes ${demoStyleAttrs} style attribute(s) (owner Product Manager), so /should/demo/* keeps style-src 'unsafe-inline'`
+  : "should: the demo's compiled JS writes no style attributes: drop the demo exception in scripts/should.mjs");
 console.log(`should: out/should/ has ${htmlFiles.length} page(s), ${inline} inline script(s) allowed by ${hashes.size} hash(es), ${routes.length} route(s)`);
