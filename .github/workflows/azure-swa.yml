@@ -26,6 +26,10 @@ env:
   RECIPES_LIVE: ${{ vars.RECIPES_LIVE }}
   RECIPES_APPROVED: ${{ vars.RECIPES_APPROVED }}
   NEXT_TELEMETRY_DISABLED: "1"
+  # The privacy page's hosting line (src/lib/site.mjs): "azure" plus the day it changed (YYYY-MM-DD), set in the cutover
+  # merge only after Compliance approves the exact words (docs/adr/0002). Empty = the GitHub line that's live today.
+  PRIVACY_HOSTING: ""
+  PRIVACY_UPDATED: ""
 
 jobs:
   build:

@@ -16,6 +16,12 @@ export const HOME = { en: "/", es: "/es/" };
 // Where privacy requests go (Compliance 11/21: an inbox someone reads).
 export const PRIVACY_EMAIL = process.env.PRIVACY_EMAIL || "admin@squared.pro"; // EA reads it (EA 11/21)
 export const PRIVACY_SUBJECT = "Privacy request – rodmjay.com";
+// The privacy page's hosting line names GitHub until cutover. PRIVACY_HOSTING=azure (with PRIVACY_UPDATED=YYYY-MM-DD)
+// swaps in privacy.azure (Microsoft, Azure Static Web Apps): set both in the workflow only after Compliance approves the
+// exact words (docs/adr/0002, cutover).
+export const PRIVACY_HOSTING = process.env.PRIVACY_HOSTING === "azure" ? "azure" : "github";
+export const PRIVACY_UPDATED = process.env.PRIVACY_UPDATED || "";
+if (PRIVACY_HOSTING === "azure" && !/^\d{4}-\d{2}-\d{2}$/.test(PRIVACY_UPDATED)) throw new Error("PRIVACY_HOSTING=azure needs PRIVACY_UPDATED=YYYY-MM-DD");
 // The Recipes nav item waits for RECIPES_LIVE=1; the sample state (chip, noindex, no sitemap) comes off with RECIPES_APPROVED=1.
 export const RECIPES_LIVE = process.env.RECIPES_LIVE === "1";
 export const RECIPES_APPROVED = process.env.RECIPES_APPROVED === "1";

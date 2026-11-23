@@ -148,7 +148,11 @@
       "Para ver o eliminar lo que tengo sobre usted, escriba a {email}. Le responderé en un plazo de 30 días.",
       "Cookies: ninguna. Si elige un idioma, su navegador recuerda esa elección (un ajuste llamado ds-lang, guardado solo en su dispositivo y que nunca se me envía).",
       "Este sitio no tiene analítica, anuncios ni rastreadores de terceros, así que no responde a las señales Do Not Track; no hay nada que desactivar."
-    ]
+    ],
+    "azure": {
+      "hosting": "Todo se guarda en mi propia base de datos (Supabase). No guardo su dirección IP; solo conservo un hash con sal para limitar el abuso. Mis proveedores de alojamiento (Microsoft, mediante Azure Static Web Apps, y Supabase) pueden registrarla brevemente por seguridad.",
+      "updated": "Última actualización: {date}."
+    }
   },
   "blog": {
     "title": "Blog",

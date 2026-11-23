@@ -148,7 +148,11 @@
       "To see or delete what I hold about you, email {email}. I'll answer within 30 days.",
       "Cookies: none. If you pick a language, your browser remembers that choice (a setting called ds-lang, stored only on your device and never sent to me).",
       "This site has no analytics, ads or third-party trackers, so it doesn't respond to Do Not Track signals; there's nothing to turn off."
-    ]
+    ],
+    "azure": {
+      "hosting": "Everything is stored in my own database (Supabase). I don't keep your IP address; I keep only a salted hash of it to limit abuse. My hosting providers (Microsoft, through Azure Static Web Apps, and Supabase) may log it briefly for security.",
+      "updated": "Last updated {date}."
+    }
   },
   "blog": {
     "title": "Blog",
