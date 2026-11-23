@@ -12,7 +12,7 @@ type Lang = "en" | "es";
 type Post = any;
 
 const Time = ({ p }: { p: Post }) => <time dateTime={p.date}>{postDate(p.date, p.lang)}</time>;
-const Html = ({ html }: { html: string }) => <div style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: html }} />;
+const Html = ({ html }: { html: string }) => <div className="contents" dangerouslySetInnerHTML={{ __html: html }} />;
 
 async function findList(path: string) {
   const b = await loadBlog();

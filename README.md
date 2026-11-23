@@ -66,6 +66,19 @@ npm run test:e2e     # Playwright: axe (WCAG 2.1 AA) at 1280 and 375 in EN and E
 version in `public/ds/VERSION`; the build refuses a copy that isn't the pinned version in `src/lib/ds-version.mjs`.
 A bump is one command: `DS_SRC=<the design system's git URL> scripts/sync-design-system.sh <version>`.
 
+## Security headers
+
+`public/staticwebapp.config.json` sends a strict Content-Security-Policy (`script-src 'self'`, `style-src 'self'`, no
+inline or eval code; `connect-src` only the site and the Supabase functions host for the resume form;
+`frame-ancestors 'none'`), HSTS (`max-age=31536000; includeSubDomains`, no preload), `X-Frame-Options: DENY`, `nosniff`
+and `strict-origin-when-cross-origin`. `/admin/` has its own looser CSP (Sveltia from jsDelivr and unpkg, GitHub's API).
+- Next's static export writes inline `<script>`s; `scripts/postbuild.mjs` moves them into content-addressed files in
+  `/_next/static/inline/` and fails the build on anything the CSP would block (inline script, style attribute or
+  `<style>`, `on*` handler, `javascript:` URL). Use a class, never `style={…}`, in server-rendered markup. Shiki's
+  token colors are classes (`.shk-*` in `blog/blog.css`).
+- `tests/serve.mjs` sends the same headers, and `e2e/csp.spec.ts` fails on any CSP violation. `BASE_URL=<host> npm run
+  test:e2e` runs the whole suite against a deployed site (the one test that would send a real request is skipped).
+
 ## Deploy
 
 `.github/workflows/azure-swa.yml`: on push to `next` it builds, runs the tests, logs in to Azure with OIDC, fetches the

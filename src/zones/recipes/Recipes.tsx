@@ -13,7 +13,7 @@ type Lang = "en" | "es";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Recipe = any;
 
-const Html = ({ html }: { html: string }) => <div style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: html }} />;
+const Html = ({ html }: { html: string }) => <div className="contents" dangerouslySetInnerHTML={{ __html: html }} />;
 const Chip = ({ lang }: { lang: Lang }) => <span className="ds-chip sample-chip">{dict(lang).recipes.sampleChip}</span>;
 
 function facts(r: Recipe) {

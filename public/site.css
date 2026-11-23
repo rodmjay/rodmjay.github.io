@@ -1,5 +1,7 @@
 /* Layout only; colors, type and components come from the design system (rod brand). */
 body { margin: 0; }
+/* A wrapper for build-time HTML that adds no box (was an inline style; the CSP allows no style attributes). */
+.contents { display: contents; }
 .skip { position: absolute; left: -9999px; }
 .skip:focus { left: var(--space-4); top: var(--space-4); z-index: 10; }
 .col { max-width: 40rem; margin: 0 auto; padding: 0 var(--gutter); }

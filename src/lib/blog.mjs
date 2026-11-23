@@ -122,6 +122,27 @@ async function build() {
   };
 
   // Code: ```lang title="file" {3,5-7}. A title or a language gives the labelled block with Copy; `bare` gives a plain one.
+  // The CSP allows no style attributes (public/staticwebapp.config.json), so Shiki's inline token styles become
+  // classes (public/blog/blog.css: .shk-<token>, .shk-i, .shk-b, .shk-u). <pre> loses its style: the design system
+  // already sets its colors. An unknown declaration fails the build rather than render unstyled.
+  const SHK = { "font-style:italic": "shk-i", "font-weight:bold": "shk-b", "text-decoration:underline": "shk-u" };
+  const styleToClass = { root(tree) {
+    const walk = (node) => {
+      const style = node.properties?.style;
+      if (typeof style === "string") {
+        delete node.properties.style;
+        if (node.tagName !== "pre") for (const decl of style.split(";").map((d) => d.replace(/\s+/g, "")).filter(Boolean)) {
+          const tok = decl.match(/^color:var\(--shiki-([\w-]+)\)$/)?.[1];
+          const cls = tok ? `shk-${tok}` : SHK[decl];
+          if (!cls) throw new Error(`blog: Shiki emitted a style the CSP would block: ${decl}`);
+          this.addClassToHast(node, cls);
+        }
+      }
+      for (const c of node.children || []) walk(c);
+    };
+    walk(tree);
+  } };
+
   function fence(content, info, env) {
     const lang = (info.match(/^([\w+#.-]+)/)?.[1] || "").toLowerCase();
     const title = info.match(/title="([^"]*)"/)?.[1];
@@ -132,7 +153,7 @@ async function build() {
     }
     const html = highlighter.codeToHtml(content.replace(/\n$/, ""), {
       lang: loaded.has(lang) ? lang : "text", theme: "css-variables",
-      transformers: [{ line(node, n) { if (marks.has(n)) this.addClassToHast(node, "highlighted"); } }],
+      transformers: [{ line(node, n) { if (marks.has(n)) this.addClassToHast(node, "highlighted"); } }, styleToClass],
     });
     const label = title || (lang && lang !== "text" ? lang : "");
     if (/(^|\s)bare(\s|$)/.test(info) || !label) return `${html}\n`;

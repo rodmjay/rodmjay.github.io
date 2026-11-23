@@ -26,3 +26,19 @@
 .post .ds-toc { margin-bottom: var(--space-10); }
 .post-foot { margin-top: var(--space-16); display: grid; gap: var(--space-8); }
 .post-foot .ds-post-tags { margin: 0; }
+
+/* Shiki token colors as classes (src/lib/blog.mjs styleToClass; the CSP allows no style attributes). */
+.shk-foreground { color: var(--shiki-foreground); }
+.shk-token-keyword { color: var(--shiki-token-keyword); }
+.shk-token-constant { color: var(--shiki-token-constant); }
+.shk-token-function { color: var(--shiki-token-function); }
+.shk-token-string { color: var(--shiki-token-string); }
+.shk-token-string-expression { color: var(--shiki-token-string-expression); }
+.shk-token-comment { color: var(--shiki-token-comment); }
+.shk-token-parameter { color: var(--shiki-token-parameter); }
+.shk-token-punctuation { color: var(--shiki-token-punctuation); }
+.shk-token-link { color: var(--shiki-token-link); }
+.shk-background { background-color: var(--shiki-background); }
+.shk-i { font-style: italic; }
+.shk-b { font-weight: bold; }
+.shk-u { text-decoration: underline; }

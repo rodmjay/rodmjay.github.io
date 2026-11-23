@@ -100,7 +100,8 @@ test("resume form posts what site.js posted, to the same function", async ({ pag
   expect(typeof sent.t).toBe("number");
 });
 
-test("resume form shows the rate limit message", async ({ page }) => {
+test("resume form shows the rate limit message", async ({ page, baseURL }) => {
+  test.skip(!/localhost/.test(baseURL!), "?mock= works only on localhost; elsewhere this would send a real request");
   await page.goto("/?mock=rate#resume");
   await page.fill("#rf-name", "Ana");
   await page.fill("#rf-email", "ana@example.test");

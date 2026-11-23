@@ -8,7 +8,7 @@ const layers = read("src/zones/home/scene-layers.html");
 export function Scene({ name, title }: { name: string; title: string }) {
   return (
     <section className="scene" id="scene" aria-labelledby="hero-name">
-      <div style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: layers }} />
+      <div className="contents" dangerouslySetInnerHTML={{ __html: layers }} />
       <div className="title">
         <h1 id="hero-name">{name}</h1>
         <p>{title}</p>
