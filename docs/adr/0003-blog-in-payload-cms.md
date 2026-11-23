@@ -28,7 +28,7 @@ covers what changes in this repo. Builds on 0001 and 0002.
 
 ## Proof (11/23, local)
 
-The importer (psh `products/rodmjay-cms/web/scripts/import-markdown.ts`) loaded every post, tag and media file into a
+The importer (psh `products/rodmjay-cms/cms/scripts/import-markdown.ts`) loaded every post, tag and media file into a
 local Payload on Docker Postgres; a second run changed nothing. Built from that CMS:
 - `tests/cms-parity.mjs` against the markdown build: every file present on both sides, and all 72 compared files
   identical, feeds and sitemap byte for byte, HTML with script tags removed and head elements sorted (Next orders
