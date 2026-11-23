@@ -87,6 +87,9 @@ jobs:
           app_location: out
           skip_app_build: true
           skip_api_build: true
+          # Only main publishes to production; every other branch goes to the named preview environment "staging"
+          # (Security, psh #70: a deploy that names no environment publishes to production).
+          deployment_environment: ${{ github.ref_name == 'main' && '' || 'staging' }}
       - name: Log out
         if: always()
         run: az logout || true
