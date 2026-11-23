@@ -10,19 +10,22 @@
 //   picker (src/lib/langscript.mjs) there too.
 // - Then fails on anything the CSP would block: an inline script, a style attribute or <style>, an on* handler, a
 //   javascript: URL; and on a CSP that allows inline or eval scripts.
+// All of this covers the Next output only: out/should/ (scripts/should.mjs, after this) is Product Manager's page,
+// copied as is under its own route and CSP, so every step here skips it.
 import { readdirSync, readFileSync, rmSync, existsSync, statSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { createHash } from "node:crypto";
 import { LANG_JS, LANG_SRC } from "../src/lib/langscript.mjs";
 
 const OUT = "out";
+const SHOULD = join(OUT, "should"); // not ours to tidy or check (scripts/should.mjs)
 const PLACEHOLDER = /\/(page\/0|tag\/none|none)$/;
 const bad = [];
 let pruned = 0;
 function walk(dir) {
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
-    if (!statSync(p).isDirectory()) continue;
+    if (!statSync(p).isDirectory() || p === SHOULD) continue;
     const rel = `/${p.slice(OUT.length + 1)}`;
     const html = join(p, "index.html");
     if (existsSync(html) && readFileSync(html, "utf8").includes('id="__next_error__"')) {
@@ -59,6 +62,7 @@ const htmlFiles = [];
 (function list(dir) {
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
+    if (p === SHOULD) continue;
     if (statSync(p).isDirectory()) list(p); else if (name.endsWith(".html")) htmlFiles.push(p);
   }
 })(OUT);

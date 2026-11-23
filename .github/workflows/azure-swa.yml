@@ -5,13 +5,18 @@
 # AZURE_SWA_RESOURCE_GROUP; and the recipe switches RECIPES_LIVE (nav item) and RECIPES_APPROVED (sample state off).
 # Until cutover this deploys `next` to the app's own host (staging); GitHub Pages keeps serving main. At cutover the
 # branch below becomes main (the federated credential for main already exists), and the daily run picks up recipes.
+# The Should page (/should/) is copied in from rodmjay/should (Product Manager's) after the build, byte-identical, with
+# its own CSP (scripts/should.mjs). Product Manager's pushes reach the site with the daily run or a manual run.
 name: Deploy to Azure Static Web Apps
 
 on:
   push:
     branches: [next]
+  # Daily, so recipes published in Supabase and Product Manager's pushes to rodmjay/should reach the site. A schedule
+  # runs only from the default branch (main), so until cutover it doesn't run for `next`: use workflow_dispatch on
+  # `next` (Actions, "Run workflow") to pick up a Should page change on staging.
   schedule:
-    - cron: "17 11 * * *" # daily, so recipes published in Supabase reach the site (runs from the default branch)
+    - cron: "17 11 * * *"
   workflow_dispatch:
 
 permissions:
@@ -44,6 +49,16 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Build
         run: npm run build
+      # The Should page: rodmjay/should's main, copied to out/should/ after postbuild (its no-inline-code guards are for
+      # the Next output only), with routes and a hash-based CSP written into out/staticwebapp.config.json.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: rodmjay/should
+          ref: main
+          path: _should
+          persist-credentials: false
+      - name: Add the Should page
+        run: node scripts/should.mjs _should
       - name: Every old URL still exists
         run: npm run test:urls
       - name: Accessibility and navigation tests

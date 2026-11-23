@@ -29,6 +29,7 @@ is the Next.js source from then on** (the editor's commits included).
 ```sh
 npm ci
 npm run build        # next build, then scripts/postbuild.mjs tidies and checks out/
+SHOULD_SRC=<clone of rodmjay/should> npm run build   # the same, plus the Should page at out/should/
 npm run test:urls    # every URL the Pages site served still exists in out/
 npm run test:e2e     # Playwright: axe (WCAG 2.1 AA) at 1280 and 375 in EN and ES, plus click-through with no reload
 ```
@@ -76,6 +77,12 @@ and `strict-origin-when-cross-origin`. `/admin/` has its own looser CSP (Sveltia
   `/_next/static/inline/` and fails the build on anything the CSP would block (inline script, style attribute or
   `<style>`, `on*` handler, `javascript:` URL). Use a class, never `style={…}`, in server-rendered markup. Shiki's
   token colors are classes (`.shk-*` in `blog/blog.css`).
+- `/should/` is Product Manager's Should page (repo rodmjay/should), copied byte-identical by `scripts/should.mjs` after
+  postbuild (CI checks out rodmjay/should's main; locally set `SHOULD_SRC`). It has inline scripts and styles, so it gets
+  its own CSP: `script-src 'self'` plus a sha256 hash of each inline script, computed at build, and htmx's exact unpkg
+  URL (the demo shell loads it); `style-src 'self' 'unsafe-inline'`. A script from any other origin, an `on*` handler
+  or a `javascript:` URL fails the build. `/should/demo/*` paths that aren't real files get the demo's SPA shell.
+  `e2e/should.spec.ts` checks it; postbuild's guards skip `out/should/`.
 - `tests/serve.mjs` sends the same headers, and `e2e/csp.spec.ts` fails on any CSP violation. `BASE_URL=<host> npm run
   test:e2e` runs the whole suite against a deployed site (the one test that would send a real request is skipped).
 
