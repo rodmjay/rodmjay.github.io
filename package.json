@@ -2,18 +2,32 @@
   "name": "rodmjay-site",
   "private": true,
   "type": "module",
-  "description": "rodmjay.com: the home page build (scripts/build.mjs) and the markdown blog build (scripts/build-blog.mjs).",
+  "description": "rodmjay.com: a Next.js static export (home, blog, recipes, resume form) served by Azure Static Web Apps.",
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "build:blog": "node scripts/build-blog.mjs"
+    "dev": "next dev",
+    "build": "next build && node scripts/postbuild.mjs && node scripts/should.mjs",
+    "test": "node tests/old-urls.mjs && playwright test",
+    "test:urls": "node tests/old-urls.mjs",
+    "test:e2e": "playwright test"
   },
   "engines": { "node": ">=20" },
+  "dependencies": {
+    "next": "15.5.29",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
   "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "22.19.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "image-size": "2.0.4",
     "js-yaml": "5.4.3",
     "markdown-it": "15.0.3",
     "markdown-it-container": "4.0.0",
     "markdown-it-footnote": "4.0.0",
-    "shiki": "4.5.0"
+    "shiki": "4.5.0",
+    "typescript": "5.9.3"
   }
 }

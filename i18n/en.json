@@ -14,7 +14,8 @@
     "contact": "Contact",
     "language": "Language",
     "resume": "Resume",
-    "blog": "Blog"
+    "blog": "Blog",
+    "recipes": "Recipes"
   },
   "hero": {
     "name": "Rod Johnson",
@@ -147,7 +148,11 @@
       "To see or delete what I hold about you, email {email}. I'll answer within 30 days.",
       "Cookies: none. If you pick a language, your browser remembers that choice (a setting called ds-lang, stored only on your device and never sent to me).",
       "This site has no analytics, ads or third-party trackers, so it doesn't respond to Do Not Track signals; there's nothing to turn off."
-    ]
+    ],
+    "azure": {
+      "hosting": "Everything is stored in my own database (Supabase). I don't keep your IP address; I keep only a salted hash of it to limit abuse. My hosting providers (Microsoft, through Azure Static Web Apps, and Supabase) may log it briefly for security.",
+      "updated": "Last updated {date}."
+    }
   },
   "blog": {
     "title": "Blog",
@@ -160,6 +165,32 @@
     "posts": "Posts",
     "backToText": "Back to text",
     "feedTitle": "Rod Johnson · Blog",
+    "ogLocale": "en_US"
+  },
+  "recipes": {
+    "title": "Recipes",
+    "description": "Dishes from my kitchen, mostly Latin and paleo",
+    "tagline": "Dishes from my kitchen",
+    "sample": "Sample recipes. The section is being built, and the real set comes soon.",
+    "sampleChip": "Sample",
+    "tags": "Tags",
+    "all": "All",
+    "pages": "Pages",
+    "tagged": "Recipes tagged {tag}",
+    "empty": "No recipes yet.",
+    "minutes": "{n} min",
+    "servings": "{n} servings",
+    "ingredients": "Ingredients",
+    "steps": "Steps",
+    "print": "Print",
+    "tip": "Good to know",
+    "serveWith": "Serve with",
+    "pairsWith": "Pairs with",
+    "basedOn": "Based on {source}",
+    "otherLang": "Leer en español",
+    "newer": "Newer",
+    "older": "Older",
+    "page": "Page {n} of {total}",
     "ogLocale": "en_US"
   }
 }

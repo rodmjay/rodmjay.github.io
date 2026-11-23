@@ -1,0 +1,137 @@
+# Builds the Next.js site, tests it, and deploys out/ to Azure Static Web Apps (Free), docs/adr/0002.
+# Login is OIDC with a user-assigned identity whose only role is to read the app and list its deployment token, so
+# nothing long-lived is stored in GitHub: the token is fetched at run time, masked, and used once.
+# Repo variables (not secrets): AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID, AZURE_SWA_NAME,
+# AZURE_SWA_RESOURCE_GROUP; and the recipe switches RECIPES_LIVE (nav item) and RECIPES_APPROVED (sample state off).
+# main deploys to production (the app's default host, and rodmjay.com once DNS points there); next deploys to the named
+# preview environment "staging". Pull requests into main build and test only (the required `build` check), never deploy.
+# The Should page (/should/) is copied in from rodmjay/should (Product Manager's) after the build, byte-identical, with
+# its own CSP (scripts/should.mjs), pinned to the commit in the repo variable SHOULD_REF; bumping it publishes it.
+name: Deploy to Azure Static Web Apps
+
+on:
+  push:
+    branches: [main, next]
+  pull_request:
+    branches: [main]
+  # Daily, so recipes published in Supabase reach the site (the Should page moves only when SHOULD_REF is bumped). A schedule
+  # runs only from the default branch (main), so it refreshes production; use workflow_dispatch on `next` (Actions,
+  # "Run workflow") to pick up a change on staging.
+  schedule:
+    - cron: "17 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One queue per branch, so deploys to the same environment never overlap; pull request checks get their own queue, so a
+# push to next can't cancel the PR's required `build` check (a group keeps only one pending run).
+concurrency:
+  group: azure-swa-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || github.ref }}
+  cancel-in-progress: false
+
+env:
+  RECIPES_API: https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/public-recipes
+  RECIPES_LIVE: ${{ vars.RECIPES_LIVE }}
+  RECIPES_APPROVED: ${{ vars.RECIPES_APPROVED }}
+  NEXT_TELEMETRY_DISABLED: "1"
+  # The privacy page's hosting line (src/lib/site.mjs): Microsoft (Azure Static Web Apps), dated the cutover day.
+  # Compliance approved the exact words (EN and ES) 11/23.
+  PRIVACY_HOSTING: azure
+  PRIVACY_UPDATED: "2026-11-24"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Build
+        run: npm run build
+      # The Should page: rodmjay/should at the reviewed commit in the repo variable SHOULD_REF (Security 11/23: an
+      # unreviewed push there would otherwise become a hashed, same-origin script next to /admin/), copied to out/should/
+      # after postbuild (its no-inline-code guards are for the Next output only), with routes and a hash-based CSP written
+      # into out/staticwebapp.config.json. Bump SHOULD_REF deliberately (Product Manager or Software Architect).
+      - name: Check the pinned Should commit
+        env:
+          SHOULD_REF: ${{ vars.SHOULD_REF }}
+        run: '[[ "$SHOULD_REF" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::repo variable SHOULD_REF must be a full commit sha"; exit 1; }'
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: rodmjay/should
+          ref: ${{ vars.SHOULD_REF }}
+          path: _should
+          persist-credentials: false
+      - name: Add the Should page
+        run: node scripts/should.mjs _should
+      - name: Every old URL still exists
+        run: npm run test:urls
+      - name: Accessibility and navigation tests
+        run: |
+          npx playwright install --with-deps chromium
+          CI=1 npm run test:e2e
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: site
+          path: out
+          retention-days: 3
+
+  deploy:
+    needs: build
+    # Pushes, the schedule and manual runs deploy; pull requests only build and test.
+    if: github.event_name != 'pull_request' && vars.AZURE_CLIENT_ID != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write # OIDC to Azure
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: site
+          path: out
+      - uses: azure/login@7184910d9eb2b1c5e48f7073824a90609bb9b6d6 # v2.3.1
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Fetch the deployment token (masked, this run only)
+        env:
+          SWA: ${{ vars.AZURE_SWA_NAME }}
+          RG: ${{ vars.AZURE_SWA_RESOURCE_GROUP }}
+        run: |
+          token="$(az staticwebapp secrets list --name "$SWA" --resource-group "$RG" --query properties.apiKey -o tsv)"
+          test -n "$token" || { echo "no deployment token returned"; exit 1; }
+          echo "::add-mask::$token"
+          echo "SWA_DEPLOY_TOKEN=$token" >> "$GITHUB_ENV"
+      # Only main publishes to production, with no environment named at all; every other branch goes to the named
+      # preview environment "staging" (Security, psh #70: a deploy that names no environment publishes to production).
+      # Pinned to the head of the action's v1 branch (2024-09-11), whose action.yml declares deployment_environment and
+      # skip_api_build; the old `v1` tag (1a947af, 2021) didn't, hence the "Unexpected input" warning.
+      - name: Deploy out/ to production
+        if: github.ref == 'refs/heads/main'
+        uses: Azure/static-web-apps-deploy@4d27395796ac319302594769cfe812bd207490b1 # v1 branch, 2024-09-11
+        with:
+          azure_static_web_apps_api_token: ${{ env.SWA_DEPLOY_TOKEN }}
+          action: upload
+          app_location: out
+          skip_app_build: true
+          skip_api_build: true
+      - name: Deploy out/ to staging
+        if: github.ref != 'refs/heads/main'
+        uses: Azure/static-web-apps-deploy@4d27395796ac319302594769cfe812bd207490b1 # v1 branch, 2024-09-11
+        with:
+          azure_static_web_apps_api_token: ${{ env.SWA_DEPLOY_TOKEN }}
+          action: upload
+          app_location: out
+          skip_app_build: true
+          skip_api_build: true
+          deployment_environment: staging
+      - name: Log out
+        if: always()
+        run: az logout || true
