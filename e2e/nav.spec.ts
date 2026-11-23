@@ -63,6 +63,8 @@ test("the language menu goes to the twin page", async ({ page }) => {
   await page.locator("#lang").selectOption("es");
   await expect(page).toHaveURL(/\/es\/blog\/ia-escribe-el-codigo\/$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "es-419");
+  // Switching language is a full load: let the new page hydrate (its payload is a file since the CSP) before the next pick.
+  await page.waitForLoadState("load");
   await page.locator("#lang").selectOption("en");
   await expect(page).toHaveURL(/\/blog\/ai-writes-the-code\/$/);
   await page.goto("/recipes/guacamole/");
