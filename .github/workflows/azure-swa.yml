@@ -3,18 +3,20 @@
 # nothing long-lived is stored in GitHub: the token is fetched at run time, masked, and used once.
 # Repo variables (not secrets): AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID, AZURE_SWA_NAME,
 # AZURE_SWA_RESOURCE_GROUP; and the recipe switches RECIPES_LIVE (nav item) and RECIPES_APPROVED (sample state off).
-# Until cutover this deploys `next` to the app's own host (staging); GitHub Pages keeps serving main. At cutover the
-# branch below becomes main (the federated credential for main already exists), and the daily run picks up recipes.
+# main deploys to production (the app's default host, and rodmjay.com once DNS points there); next deploys to the named
+# preview environment "staging". Pull requests into main build and test only (the required `build` check), never deploy.
 # The Should page (/should/) is copied in from rodmjay/should (Product Manager's) after the build, byte-identical, with
 # its own CSP (scripts/should.mjs). Product Manager's pushes reach the site with the daily run or a manual run.
 name: Deploy to Azure Static Web Apps
 
 on:
   push:
-    branches: [next]
+    branches: [main, next]
+  pull_request:
+    branches: [main]
   # Daily, so recipes published in Supabase and Product Manager's pushes to rodmjay/should reach the site. A schedule
-  # runs only from the default branch (main), so until cutover it doesn't run for `next`: use workflow_dispatch on
-  # `next` (Actions, "Run workflow") to pick up a Should page change on staging.
+  # runs only from the default branch (main), so it refreshes production; use workflow_dispatch on `next` (Actions,
+  # "Run workflow") to pick up a change on staging.
   schedule:
     - cron: "17 11 * * *"
   workflow_dispatch:
@@ -31,10 +33,10 @@ env:
   RECIPES_LIVE: ${{ vars.RECIPES_LIVE }}
   RECIPES_APPROVED: ${{ vars.RECIPES_APPROVED }}
   NEXT_TELEMETRY_DISABLED: "1"
-  # The privacy page's hosting line (src/lib/site.mjs): "azure" plus the day it changed (YYYY-MM-DD), set in the cutover
-  # merge only after Compliance approves the exact words (docs/adr/0002). Empty = the GitHub line that's live today.
-  PRIVACY_HOSTING: ""
-  PRIVACY_UPDATED: ""
+  # The privacy page's hosting line (src/lib/site.mjs): Microsoft (Azure Static Web Apps), dated the cutover day.
+  # Compliance approved the exact words (EN and ES) 11/23.
+  PRIVACY_HOSTING: azure
+  PRIVACY_UPDATED: "2026-11-24"
 
 jobs:
   build:
@@ -73,7 +75,8 @@ jobs:
 
   deploy:
     needs: build
-    if: vars.AZURE_CLIENT_ID != '' # skipped until IT Guy sets the Azure variables after applying the Terraform
+    # Pushes, the schedule and manual runs deploy; pull requests only build and test.
+    if: github.event_name != 'pull_request' && vars.AZURE_CLIENT_ID != ''
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -98,17 +101,29 @@ jobs:
           test -n "$token" || { echo "no deployment token returned"; exit 1; }
           echo "::add-mask::$token"
           echo "SWA_DEPLOY_TOKEN=$token" >> "$GITHUB_ENV"
-      - name: Deploy out/
-        uses: Azure/static-web-apps-deploy@1a947af9992250f3bc2e68ad0754c0b0c11566c9 # v1
+      # Only main publishes to production, with no environment named at all; every other branch goes to the named
+      # preview environment "staging" (Security, psh #70: a deploy that names no environment publishes to production).
+      # Pinned to the head of the action's v1 branch (2024-09-11), whose action.yml declares deployment_environment and
+      # skip_api_build; the old `v1` tag (1a947af, 2021) didn't, hence the "Unexpected input" warning.
+      - name: Deploy out/ to production
+        if: github.ref == 'refs/heads/main'
+        uses: Azure/static-web-apps-deploy@4d27395796ac319302594769cfe812bd207490b1 # v1 branch, 2024-09-11
         with:
           azure_static_web_apps_api_token: ${{ env.SWA_DEPLOY_TOKEN }}
           action: upload
           app_location: out
           skip_app_build: true
           skip_api_build: true
-          # Only main publishes to production; every other branch goes to the named preview environment "staging"
-          # (Security, psh #70: a deploy that names no environment publishes to production).
-          deployment_environment: ${{ github.ref_name == 'main' && '' || 'staging' }}
+      - name: Deploy out/ to staging
+        if: github.ref != 'refs/heads/main'
+        uses: Azure/static-web-apps-deploy@4d27395796ac319302594769cfe812bd207490b1 # v1 branch, 2024-09-11
+        with:
+          azure_static_web_apps_api_token: ${{ env.SWA_DEPLOY_TOKEN }}
+          action: upload
+          app_location: out
+          skip_app_build: true
+          skip_api_build: true
+          deployment_environment: staging
       - name: Log out
         if: always()
         run: az logout || true

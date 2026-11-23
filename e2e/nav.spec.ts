@@ -67,9 +67,9 @@ test("the language menu goes to the twin page", async ({ page }) => {
   await page.waitForLoadState("load");
   await page.locator("#lang").selectOption("en");
   await expect(page).toHaveURL(/\/blog\/ai-writes-the-code\/$/);
-  await page.goto("/recipes/guacamole/");
+  await page.goto("/recipes/arroz-con-pollo/");
   await page.locator("#lang").selectOption("es");
-  await expect(page).toHaveURL(/\/es\/recipes\/guacamole\/$/);
+  await expect(page).toHaveURL(/\/es\/recipes\/arroz-con-pollo\/$/);
 });
 
 test("home picks the language before paint: ?lang=es goes to /es/", async ({ page }) => {

@@ -3,9 +3,9 @@
 Rod Johnson's personal site: a Next.js 15 static export (`output: 'export'`), served by Azure Static Web Apps (Free).
 Decision and the ordered cutover checklist: [docs/adr/0002-azure-static-web-apps.md](docs/adr/0002-azure-static-web-apps.md).
 
-**Branches until cutover:** this is branch `next`. GitHub Pages keeps serving the old static build from `main`, and the
-workflow deploys `next` to the Static Web App's own host for checks. At cutover `next` merges into `main`, and **main
-is the Next.js source from then on** (the editor's commits included).
+**Branches:** `main` is the Next.js source and deploys to production; `next` deploys to the named preview environment
+"staging". Pull requests into `main` build and test only (the required `build` check). GitHub Pages serves the frozen
+`pages-legacy` branch until DNS moves (docs/adr/0002); the root `CNAME` stays until Pages is retired.
 
 ## Layout
 
@@ -93,5 +93,4 @@ and `strict-origin-when-cross-origin`. `/admin/` has its own looser CSP (Sveltia
 
 `.github/workflows/azure-swa.yml`: on push to `next` it builds, runs the tests, logs in to Azure with OIDC, fetches the
 app's deployment token at run time (masked) and deploys `out/`. Repo variables: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`,
-`AZURE_SUBSCRIPTION_ID`, `AZURE_SWA_NAME`, `AZURE_SWA_RESOURCE_GROUP`. The old `blog.yml` (Pages) is untouched until
-cutover; it must be deleted in the cutover merge, since the script it runs is gone.
+`AZURE_SUBSCRIPTION_ID`, `AZURE_SWA_NAME`, `AZURE_SWA_RESOURCE_GROUP`. The old Pages build (`blog.yml`) is gone.
