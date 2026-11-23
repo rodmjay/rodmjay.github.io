@@ -24,8 +24,10 @@ on:
 permissions:
   contents: read
 
+# One queue per branch, so deploys to the same environment never overlap; pull request checks get their own queue, so a
+# push to next can't cancel the PR's required `build` check (a group keeps only one pending run).
 concurrency:
-  group: azure-swa
+  group: azure-swa-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || github.ref }}
   cancel-in-progress: false
 
 env:
