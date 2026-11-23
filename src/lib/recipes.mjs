@@ -83,6 +83,13 @@ async function build() {
     if (PRIVATE.test(text)) fail(`${where}: a private section or health number (dishes only)`);
     if (rec.lang === "es") checkUsted(text, where, fail);
     if (RECIPES_APPROVED && /\[ES TODO/i.test(text)) fail(`${where}: a Spanish placeholder is still there`);
+    // Spanish quantities are metric first, then US in parentheses: "900 g (2 lb)", "360 ml (1½ tazas)", "200 °C (400 °F)"
+    // (Designer). English stays US. Spoons (cda, cdta) stay as they are. A US-only amount warns now, fails once approved.
+    if (rec.lang === "es") for (const line of [...rec.ingredients, ...rec.steps, rec.tip]) {
+      if (!US_ONLY.test(line.replace(/\([^)]*\)/g, ""))) continue;
+      if (RECIPES_APPROVED) fail(`${where}: "${line}" needs metric first, US in parentheses`);
+      else console.warn(`recipes: ${where}: "${line}" needs metric first, US in parentheses`);
+    }
     rec.url = `${BASE[rec.lang]}${rec.slug}/`;
     rec.photo = photo(rec.slug);
     // The function's image_alt is the title; our own alt text says what's in the dish, so it wins when we have it.
@@ -129,11 +136,14 @@ async function build() {
     usedTags: (lang) => lists.filter((l) => l.lang === lang && l.tag && l.n === 1).map((l) => l.tag) };
 }
 
+// A US unit after a number (outside parentheses) in a Spanish line.
+const US_ONLY = /(\d|[½¼¾⅓⅔⅛])\s*(?:lb|lbs|libras?|oz|onzas?|tazas?|°\s*F|pulg(?:adas?|\.)?|cuartos? de gal[oó]n|galones?)(?![a-záéíóú])/i;
+
 let memo;
 export const loadRecipes = () => (memo ||= build());
 
-// Bold the amount at the start of an ingredient line ("2 lb", "1½ cups", "2 a 3 tazas").
-const AMOUNT = /^((?:\d+|[½¼¾⅓⅔⅛])(?:[\d½¼¾⅓⅔⅛.,/]*)(?:\s*(?:–|-|a|to)\s*(?:\d+|[½¼¾⅓⅔⅛])[\d½¼¾⅓⅔⅛.,/]*)?(?:\s+(?:cups?|tbsp|tsp|lb|lbs|oz|g|kg|ml|l|cans?|cloves?|jars?|tazas?|cdas?|cdtas?|latas?|dientes?|frascos?|lb de))?)(\s|$)/i;
+// Bold the amount at the start of an ingredient line ("2 lb", "1½ cups", "360 ml (1½ tazas)", "480 a 720 ml (2 a 3 tazas)").
+const AMOUNT = /^((?:\d+|[½¼¾⅓⅔⅛])(?:[\d½¼¾⅓⅔⅛.,/]*)(?:\s*(?:–|-|a|to)\s*(?:\d+|[½¼¾⅓⅔⅛])[\d½¼¾⅓⅔⅛.,/]*)?(?:\s+(?:cups?|tbsp|tsp|lb|lbs|oz|g|kg|ml|l|cans?|cloves?|jars?|tazas?|cdas?|cdtas?|latas?|dientes?|frascos?|lb de)(?:\s+\((?:\d|[½¼¾⅓⅔⅛])[^)]*\))?)?)(\s|$)/i;
 export function splitAmount(line) {
   const m = line.match(AMOUNT);
   return m ? { amount: m[1], rest: line.slice(m[1].length) } : { amount: "", rest: line };
