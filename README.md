@@ -1,7 +1,7 @@
 # rodmjay.com
 
 Rod Johnson's personal site: a Next.js 15 static export (`output: 'export'`), served by Azure Static Web Apps (Free).
-Decision and cutover steps: [docs/adr/0002-azure-static-web-apps.md](docs/adr/0002-azure-static-web-apps.md).
+Decision and the ordered cutover checklist: [docs/adr/0002-azure-static-web-apps.md](docs/adr/0002-azure-static-web-apps.md).
 
 **Branches until cutover:** this is branch `next`. GitHub Pages keeps serving the old static build from `main`, and the
 workflow deploys `next` to the Static Web App's own host for checks. At cutover `next` merges into `main`, and **main
