@@ -54,6 +54,7 @@ jobs:
 
   deploy:
     needs: build
+    if: vars.AZURE_CLIENT_ID != '' # skipped until IT Guy sets the Azure variables after applying the Terraform
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
