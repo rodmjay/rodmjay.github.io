@@ -14,7 +14,8 @@
     "contact": "Contact",
     "language": "Language",
     "resume": "Resume",
-    "blog": "Blog"
+    "blog": "Blog",
+    "recipes": "Recipes"
   },
   "hero": {
     "name": "Rod Johnson",
@@ -160,6 +161,32 @@
     "posts": "Posts",
     "backToText": "Back to text",
     "feedTitle": "Rod Johnson · Blog",
+    "ogLocale": "en_US"
+  },
+  "recipes": {
+    "title": "Recipes",
+    "description": "Dishes from my kitchen, mostly Latin and paleo",
+    "tagline": "Dishes from my kitchen",
+    "sample": "Sample recipes. The section is being built, and the real set comes soon.",
+    "sampleChip": "Sample",
+    "tags": "Tags",
+    "all": "All",
+    "pages": "Pages",
+    "tagged": "Recipes tagged {tag}",
+    "empty": "No recipes yet.",
+    "minutes": "{n} min",
+    "servings": "{n} servings",
+    "ingredients": "Ingredients",
+    "steps": "Steps",
+    "print": "Print",
+    "tip": "Good to know",
+    "serveWith": "Serve with",
+    "pairsWith": "Pairs with",
+    "basedOn": "Based on {source}",
+    "otherLang": "Leer en español",
+    "newer": "Newer",
+    "older": "Older",
+    "page": "Page {n} of {total}",
     "ogLocale": "en_US"
   }
 }

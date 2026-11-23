@@ -14,7 +14,8 @@
     "contact": "Contacto",
     "language": "Idioma",
     "resume": "Currículum",
-    "blog": "Blog"
+    "blog": "Blog",
+    "recipes": "Recetas"
   },
   "hero": {
     "name": "Rod Johnson",
@@ -160,6 +161,32 @@
     "posts": "Artículos",
     "backToText": "Volver al texto",
     "feedTitle": "Rod Johnson · Blog",
+    "ogLocale": "es_419"
+  },
+  "recipes": {
+    "title": "Recetas",
+    "description": "Platos de mi cocina, sobre todo latinos y paleo",
+    "tagline": "Platos de mi cocina",
+    "sample": "Recetas de muestra. La sección está en construcción y pronto llegan las recetas reales.",
+    "sampleChip": "Muestra",
+    "tags": "Etiquetas",
+    "all": "Todas",
+    "pages": "Páginas",
+    "tagged": "Recetas con la etiqueta {tag}",
+    "empty": "Aún no hay recetas.",
+    "minutes": "{n} min",
+    "servings": "{n} porciones",
+    "ingredients": "Ingredientes",
+    "steps": "Pasos",
+    "print": "Imprimir",
+    "tip": "Bueno saber",
+    "serveWith": "Sirva con",
+    "pairsWith": "Acompañe con",
+    "basedOn": "Basado en {source}",
+    "otherLang": "Read in English",
+    "newer": "Más recientes",
+    "older": "Anteriores",
+    "page": "Página {n} de {total}",
     "ogLocale": "es_419"
   }
 }

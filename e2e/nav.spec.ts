@@ -1,0 +1,109 @@
+import { expect, test, type Page } from "@playwright/test";
+
+// Moving around the site never reloads the page or re-mounts the header (Rod 11/20, "no jitter"): every in-app link is
+// a Next <Link>. A marker on window and on the header survives each click only if nothing reloaded or re-mounted.
+async function mark(page: Page) {
+  await page.evaluate(() => { (window as any).__stay = 1; document.querySelector("header.bar")!.setAttribute("data-stay", "1"); });
+}
+async function expectStayed(page: Page, url: RegExp) {
+  await expect(page).toHaveURL(url);
+  expect(await page.evaluate(() => (window as any).__stay)).toBe(1);
+  await expect(page.locator("header.bar")).toHaveAttribute("data-stay", "1");
+}
+const box = (page: Page) => page.locator("header.bar .mark").boundingBox();
+
+test.beforeEach(async ({ page }) => { await page.addInitScript(() => { try { localStorage.setItem("ds-lang", "en"); } catch {} }); });
+
+test("blog: index → post → tag → index → home, no reload, header still", async ({ page, isMobile }) => {
+  await page.goto("/blog/");
+  await mark(page);
+  const before = await box(page);
+  await page.locator(".ds-post-list h2 a").first().click();
+  await expectStayed(page, /\/blog\/[a-z-]+\/$/);
+  expect(await box(page)).toEqual(before);
+  await page.locator(".post-foot .ds-chip").first().click();
+  await expectStayed(page, /\/blog\/tag\/[a-z-]+\/$/);
+  await page.locator(".filters .ds-chip").first().click();
+  await expectStayed(page, /\/blog\/$/);
+  await page.locator("header.bar .mark").click();
+  await expectStayed(page, /\/$/);
+  await expect(page.locator("#hero-name")).toBeVisible();
+  expect(await box(page)).toEqual(before);
+  if (!isMobile) {
+    await page.locator("header.bar nav").getByRole("link", { name: "Blog" }).click();
+    await expectStayed(page, /\/blog\/$/);
+    await expect(page.locator("header.bar nav a[aria-current=page]")).toHaveText("Blog");
+  }
+});
+
+test("home: section links and the privacy link stay in the page", async ({ page, isMobile }) => {
+  test.skip(isMobile, "the section links are hidden on phones");
+  await page.goto("/");
+  await mark(page);
+  for (const id of ["about", "work", "resume", "building", "contact"]) {
+    await page.locator(`header.bar nav a[href="/#${id}"]`).click();
+    await expectStayed(page, new RegExp(`/#${id}$`));
+  }
+  await page.locator("#rform").getByRole("link").click();
+  await expectStayed(page, /\/privacy\/$/);
+});
+
+test("recipes: index → recipe → tag, no reload", async ({ page }) => {
+  await page.goto("/es/recipes/");
+  await mark(page);
+  await page.locator(".recipe-card").first().click();
+  await expectStayed(page, /\/es\/recipes\/[a-z-]+\/$/);
+  await expect(page.locator(".recipe-steps ol li").first()).toBeVisible();
+  await page.locator(".ds-post-head a.ds-chip").first().click();
+  await expectStayed(page, /\/es\/recipes\/tag\/[a-z-]+\/$/);
+});
+
+test("the language menu goes to the twin page", async ({ page }) => {
+  await page.goto("/blog/ai-writes-the-code/");
+  await page.locator("#lang").selectOption("es");
+  await expect(page).toHaveURL(/\/es\/blog\/ia-escribe-el-codigo\/$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "es-419");
+  await page.locator("#lang").selectOption("en");
+  await expect(page).toHaveURL(/\/blog\/ai-writes-the-code\/$/);
+  await page.goto("/recipes/guacamole/");
+  await page.locator("#lang").selectOption("es");
+  await expect(page).toHaveURL(/\/es\/recipes\/guacamole\/$/);
+});
+
+test("home picks the language before paint: ?lang=es goes to /es/", async ({ page }) => {
+  await page.goto("/?lang=es");
+  await expect(page).toHaveURL(/\/es\/$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "es-419");
+});
+
+test("resume form posts what site.js posted, to the same function", async ({ page }) => {
+  let sent: any = null;
+  await page.route("https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/resume-request", async (route) => {
+    const req = route.request();
+    expect(req.method()).toBe("POST");
+    expect(req.headers()["content-type"]).toBe("application/json");
+    sent = req.postDataJSON();
+    await route.fulfill({ json: { ok: true, url: "https://example.test/resume.pdf" } });
+  });
+  await page.goto("/es/#resume");
+  await page.locator("#rf-submit").click();
+  await expect(page.locator("#rf-name-err")).toBeVisible();
+  await page.fill("#rf-name", "Ana Prueba");
+  await page.fill("#rf-email", "ana@example.test");
+  await page.fill("#rf-company", "Ejemplo");
+  await page.check("#rf-consent");
+  await page.locator("#rf-submit").click();
+  await expect(page.locator("#rdone")).toBeVisible();
+  await expect(page.locator("#rdone-link")).toHaveAttribute("href", "https://example.test/resume.pdf");
+  expect(Object.keys(sent).sort()).toEqual(["company", "consent", "email", "hp", "lang", "name", "role", "source", "t"]);
+  expect(sent).toMatchObject({ name: "Ana Prueba", email: "ana@example.test", company: "Ejemplo", role: null, source: null, consent: true, hp: "", lang: "es" });
+  expect(typeof sent.t).toBe("number");
+});
+
+test("resume form shows the rate limit message", async ({ page }) => {
+  await page.goto("/?mock=rate#resume");
+  await page.fill("#rf-name", "Ana");
+  await page.fill("#rf-email", "ana@example.test");
+  await page.locator("#rf-submit").click();
+  await expect(page.locator("#rf-banner")).toContainText("12 minutes");
+});

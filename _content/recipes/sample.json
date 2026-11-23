@@ -1,0 +1,200 @@
+[
+  {
+    "slug": "gallo-pinto",
+    "lang": "en",
+    "title": "Gallo Pinto",
+    "dek": "Rice and beans fried together, the breakfast both Costa Rica and Nicaragua claim. The name means \"spotted rooster,\" for the speckled beans in the rice.",
+    "image": "images/gallo-pinto.jpg",
+    "image_alt": "A plate of gallo pinto with two fried eggs and fried sweet plantains, a glass of orange juice beside it",
+    "servings": 4,
+    "minutes": 15,
+    "tags": ["Breakfast", "Rice", "Latin"],
+    "ingredients": [
+      "2–3 cups cooked rice (day-old is best)",
+      "1 can black beans, with a little of their liquid",
+      "½ onion, diced",
+      "½ red pepper, diced",
+      "Cilantro, salt and pepper",
+      "A splash of Salsa Lizano (or Worcestershire)",
+      "Eggs, to serve"
+    ],
+    "steps": [
+      "Soften the onion and pepper in oil, about 4 minutes.",
+      "Add the beans and some of their liquid and simmer 2 minutes.",
+      "Add the rice and fry, stirring, until hot and a little crisp.",
+      "Season and stir in the cilantro.",
+      "Serve with fried or scrambled eggs, and avocado or maduros on the side."
+    ],
+    "updated_at": "2026-11-23T00:00:00Z",
+    "from_credit": "From Rod's kitchen",
+    "tip": "Salsa Lizano, the Costa Rican splash on top, dates to 1920 in Alajuela.",
+    "serve_with": null,
+    "pairs_with": "Fresh orange juice",
+    "sources": []
+  },
+  {
+    "slug": "gallo-pinto",
+    "lang": "es",
+    "title": "Gallo pinto",
+    "dek": "Arroz y frijoles fritos juntos, el desayuno que reclaman Costa Rica y Nicaragua. El nombre significa \"gallo manchado\" por los frijoles moteados en el arroz.",
+    "image": "images/gallo-pinto.jpg",
+    "image_alt": "Un plato de gallo pinto con dos huevos fritos y plátanos maduros fritos, y un vaso de jugo de naranja al lado",
+    "servings": 4,
+    "minutes": 15,
+    "tags": ["Desayuno", "Arroz", "Latino"],
+    "ingredients": [
+      "2 a 3 tazas de arroz cocido (mejor del día anterior)",
+      "1 lata de frijoles negros, con un poco de su líquido",
+      "½ cebolla, picada",
+      "½ pimiento rojo, picado",
+      "Cilantro, sal y pimienta",
+      "Un chorrito de Salsa Lizano (o salsa inglesa)",
+      "Huevos, para servir"
+    ],
+    "steps": [
+      "Sofría la cebolla y el pimiento en aceite unos 4 minutos, hasta que se ablanden.",
+      "Agregue los frijoles con un poco de su líquido y deje hervir a fuego lento 2 minutos.",
+      "Añada el arroz y fría, revolviendo, hasta que esté caliente y un poco dorado.",
+      "Sazone y mezcle el cilantro.",
+      "Sirva con huevos fritos o revueltos, y aguacate o plátanos maduros al lado."
+    ],
+    "updated_at": "2026-11-23T00:00:00Z",
+    "from_credit": "De la cocina de Rod",
+    "tip": "La Salsa Lizano, el toque costarricense de encima, existe desde 1920 en Alajuela.",
+    "serve_with": null,
+    "pairs_with": "Jugo de naranja natural",
+    "sources": []
+  },
+  {
+    "slug": "arroz-con-pollo",
+    "lang": "en",
+    "title": "Arroz con Pollo",
+    "dek": "Chicken and rice in one pot, traditional across Spain and Latin America. In the Dominican Republic it's often called locrio de pollo.",
+    "image": "images/arroz-con-pollo.jpg",
+    "image_alt": "A bowl of orange-tinted rice with browned chicken pieces, roasted red pepper strips, cilantro and lime wedges",
+    "servings": 6,
+    "minutes": 40,
+    "tags": ["Dinner", "Chicken", "Rice", "Latin"],
+    "ingredients": [
+      "2 lb chicken thighs, in chunks",
+      "1 onion, diced",
+      "1 jar roasted red peppers or 1 bell pepper, chopped",
+      "2 cloves garlic and 2 tbsp tomato paste",
+      "1 tsp each cumin, paprika and oregano, 1½ tsp salt",
+      "1½ cups white rice, rinsed",
+      "1¾ cups chicken broth",
+      "Cilantro and lime, to finish"
+    ],
+    "steps": [
+      "On Sauté, brown the chicken in a little oil with the salt and spices, 4–5 minutes.",
+      "Add the onion and pepper for 3 minutes, then the garlic and tomato paste for 1.",
+      "Pour in the broth, scrape the bottom, then stir in the rice and push it under.",
+      "Cook on high pressure 10 minutes, then natural release 10 minutes.",
+      "Fluff and finish with cilantro and lime."
+    ],
+    "updated_at": "2026-11-23T00:00:00Z",
+    "from_credit": "From Rod's kitchen",
+    "tip": "Made in an electric pressure cooker (Instant Pot).",
+    "serve_with": null,
+    "pairs_with": "Agua de jamaica",
+    "sources": []
+  },
+  {
+    "slug": "arroz-con-pollo",
+    "lang": "es",
+    "title": "Arroz con pollo",
+    "dek": "Pollo y arroz en una sola olla, tradicional en España y toda Latinoamérica. En la República Dominicana suele llamarse locrio de pollo.",
+    "image": "images/arroz-con-pollo.jpg",
+    "image_alt": "Un tazón de arroz anaranjado con trozos de pollo dorado, tiras de pimiento rojo asado, cilantro y gajos de limón",
+    "servings": 6,
+    "minutes": 40,
+    "tags": ["Cena", "Pollo", "Arroz", "Latino"],
+    "ingredients": [
+      "2 lb de muslos de pollo, en trozos",
+      "1 cebolla, picada",
+      "1 frasco de pimientos rojos asados o 1 pimiento morrón, picado",
+      "2 dientes de ajo y 2 cdas de pasta de tomate",
+      "1 cdta cada una de comino, pimentón y orégano, y 1½ cdta de sal",
+      "1½ tazas de arroz blanco, enjuagado",
+      "1¾ tazas de caldo de pollo",
+      "Cilantro y limón, para terminar"
+    ],
+    "steps": [
+      "En la función Sauté, dore el pollo con un poco de aceite, la sal y las especias, de 4 a 5 minutos.",
+      "Agregue la cebolla y el pimiento por 3 minutos, y luego el ajo y la pasta de tomate por 1.",
+      "Vierta el caldo, raspe el fondo, y mezcle el arroz y hunda todo en el líquido.",
+      "Cocine a presión alta 10 minutos y deje salir la presión de forma natural otros 10.",
+      "Suelte el arroz con un tenedor y termine con cilantro y limón."
+    ],
+    "updated_at": "2026-11-23T00:00:00Z",
+    "from_credit": "De la cocina de Rod",
+    "tip": "Se prepara en una olla de presión eléctrica (Instant Pot).",
+    "serve_with": null,
+    "pairs_with": "Agua de jamaica",
+    "sources": []
+  },
+  {
+    "slug": "guacamole",
+    "lang": "en",
+    "title": "Guacamole",
+    "dek": "Already part of Aztec cooking when the Spanish arrived; the name comes from the Nahuatl ahuacamolli, \"avocado sauce.\" Onion, cilantro and lime came later.",
+    "image": "images/guacamole.jpg",
+    "image_alt": "A bowl of chunky guacamole dusted with chile powder, with tortilla chips and half a lime beside it",
+    "servings": 4,
+    "minutes": 15,
+    "tags": ["Snack", "Paleo", "Latin"],
+    "ingredients": [
+      "1 small shallot, minced",
+      "Juice of 1 small lime",
+      "½ tsp kosher salt",
+      "3 Hass avocados",
+      "Black pepper",
+      "Chile powder (optional)"
+    ],
+    "steps": [
+      "Mix the shallot, lime juice and salt and let it sit 10 minutes.",
+      "Mash half the avocado with a fork and stir in the shallot mix.",
+      "Cut the rest into ¾-inch cubes and fold them in gently.",
+      "Season with pepper and chile powder to taste.",
+      "Eat right away."
+    ],
+    "updated_at": "2026-11-23T00:00:00Z",
+    "from_credit": "From Rod's kitchen",
+    "tip": null,
+    "serve_with": null,
+    "pairs_with": "Limeade",
+    "sources": ["Nom Nom Paleo"]
+  },
+  {
+    "slug": "guacamole",
+    "lang": "es",
+    "title": "Guacamole",
+    "dek": "Ya era parte de la cocina azteca cuando llegaron los españoles; el nombre viene del náhuatl ahuacamolli, \"salsa de aguacate\". La cebolla, el cilantro y el limón llegaron después.",
+    "image": "images/guacamole.jpg",
+    "image_alt": "Un tazón de guacamole en trozos con chile en polvo, y totopos y medio limón al lado",
+    "servings": 4,
+    "minutes": 15,
+    "tags": ["Botana", "Paleo", "Latino"],
+    "ingredients": [
+      "1 chalote pequeño, picado finito",
+      "El jugo de 1 limón pequeño",
+      "½ cdta de sal kosher",
+      "3 aguacates Hass",
+      "Pimienta negra",
+      "Chile en polvo (opcional)"
+    ],
+    "steps": [
+      "Mezcle el chalote, el jugo de limón y la sal, y déjelo reposar 10 minutos.",
+      "Triture la mitad de los aguacates con un tenedor y mézclelos con el chalote.",
+      "Corte el resto en cubos de 2 cm e incorpórelos con cuidado.",
+      "Sazone con pimienta y chile en polvo al gusto.",
+      "Sirva de inmediato, con totopos."
+    ],
+    "updated_at": "2026-11-23T00:00:00Z",
+    "from_credit": "De la cocina de Rod",
+    "tip": null,
+    "serve_with": null,
+    "pairs_with": "Limonada",
+    "sources": ["Nom Nom Paleo"]
+  }
+]
