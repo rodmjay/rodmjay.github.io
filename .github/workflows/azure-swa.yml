@@ -39,6 +39,11 @@ env:
   # Compliance approved the exact words (EN and ES) 11/23.
   PRIVACY_HOSTING: azure
   PRIVACY_UPDATED: "2026-11-24"
+  # The blog's source (docs/adr/0003, psh ADR 0058): unset, the markdown in _content/; CMS_SOURCE=payload with CMS_API
+  # (https://<cms host>) reads the published posts from the CMS before the build. Repo variables, set at cutover.
+  # Publishing in the CMS starts this workflow on main (workflow_dispatch); the daily schedule catches anything missed.
+  CMS_SOURCE: ${{ vars.CMS_SOURCE }}
+  CMS_API: ${{ vars.CMS_API }}
 
 jobs:
   build:

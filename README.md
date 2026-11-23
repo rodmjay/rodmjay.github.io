@@ -49,6 +49,11 @@ npm run test:e2e     # Playwright: axe (WCAG 2.1 AA) at 1280 and 375 in EN and E
 - Editor: **/admin/** (Sveltia CMS, pinned with SRI, noindex). Sign in with "Sign In Using Access Token": a GitHub
   fine-grained token for this repository only, Contents read and write. It commits markdown to main; after cutover
   main is the Next.js source and the deploy workflow builds it.
+- **Moving to Payload CMS** (docs/adr/0003, psh ADR 0058). With the repo variables `CMS_SOURCE=payload` and
+  `CMS_API=https://<cms host>`, `scripts/cms-snapshot.mjs` fetches the published posts, tags and media before
+  `next build` (into `.cms/snapshot.json` and `public/blog/media/`), and `src/lib/blog-source.mjs` hands them to the
+  same rules and rendering. Unset, the markdown above is the source. Publishing in the CMS runs this workflow on main.
+  `tests/cms-parity.mjs` proves both sources give the same site (see the ADR). Sveltia retires at cutover.
 
 ## Recipes
 

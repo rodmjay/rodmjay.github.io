@@ -5,7 +5,7 @@
   "description": "rodmjay.com: a Next.js static export (home, blog, recipes, resume form) served by Azure Static Web Apps.",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/postbuild.mjs && node scripts/should.mjs",
+    "build": "node scripts/cms-snapshot.mjs && next build && node scripts/postbuild.mjs && node scripts/should.mjs",
     "test": "node tests/old-urls.mjs && playwright test",
     "test:urls": "node tests/old-urls.mjs",
     "test:e2e": "playwright test"
