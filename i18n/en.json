@@ -15,7 +15,8 @@
     "language": "Language",
     "resume": "Resume",
     "blog": "Blog",
-    "recipes": "Recipes"
+    "recipes": "Recipes",
+    "quotes": "Quotes"
   },
   "hero": {
     "name": "Rod Johnson",
@@ -218,5 +219,14 @@
     "note": "This is client work, so I describe my role here and don't show screenshots or code.",
     "resume": "Ask for my resume",
     "back": "Back to rodmjay.com"
+  },
+  "quotes": {
+    "metaTitle": "Quotes",
+    "metaDescription": "Quotes I keep coming back to.",
+    "title": "Quotes",
+    "lede": "Lines I keep coming back to.",
+    "empty": "No quotes here yet.",
+    "unknownSource": "Source unknown",
+    "unknownAuthor": "Unknown"
   }
 }

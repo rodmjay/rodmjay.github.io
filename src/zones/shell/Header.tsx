@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type Nav = Record<"label" | "home" | "about" | "work" | "resume" | "building" | "contact" | "blog" | "recipes" | "language", string>;
+type Nav = Record<"label" | "home" | "about" | "work" | "resume" | "building" | "contact" | "blog" | "recipes" | "quotes" | "language", string>;
 const NAMES = { en: "English", es: "Español" } as const;
 const HTML_LANG = { en: "en", es: "es-419" } as const;
 
@@ -12,16 +12,16 @@ const HTML_LANG = { en: "en", es: "es-419" } as const;
 function otherPath(path: string, lang: "en" | "es", alt: Record<string, string>) {
   if (alt[path]) return alt[path];
   const to = lang === "en" ? "es" : "en";
-  for (const section of ["blog", "recipes"]) {
+  for (const section of ["blog", "recipes", "quotes"]) {
     if (path.startsWith(lang === "en" ? `/${section}/` : `/es/${section}/`)) return to === "es" ? `/es/${section}/` : `/${section}/`;
   }
   return to === "es" ? "/es/" : "/";
 }
 
-export function Header({ lang, nav, showRecipes, alt }: { lang: "en" | "es"; nav: Nav; showRecipes: boolean; alt: Record<string, string> }) {
+export function Header({ lang, nav, showRecipes, showQuotes, alt }: { lang: "en" | "es"; nav: Nav; showRecipes: boolean; showQuotes: boolean; alt: Record<string, string> }) {
   const path = usePathname() || "/";
   const home = lang === "en" ? "/" : "/es/";
-  const blog = `${home}blog/`, recipes = `${home}recipes/`;
+  const blog = `${home}blog/`, recipes = `${home}recipes/`, quotes = `${home}quotes/`;
   const current = (base: string) => (path.startsWith(base) ? "page" : undefined);
   const onLang = (e: React.ChangeEvent<HTMLSelectElement>) => {
     try { localStorage.setItem("ds-lang", e.target.value); } catch {}
@@ -39,6 +39,7 @@ export function Header({ lang, nav, showRecipes, alt }: { lang: "en" | "es"; nav
         <Link href={`${home}#contact`}>{nav.contact}</Link>
         <Link href={blog} aria-current={current(blog)}>{nav.blog}</Link>
         {showRecipes && <Link href={recipes} aria-current={current(recipes)}>{nav.recipes}</Link>}
+        {showQuotes && <Link href={quotes} aria-current={current(quotes)}>{nav.quotes}</Link>}
       </nav>
       <span className="ds-lang">
         <label>
