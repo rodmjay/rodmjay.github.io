@@ -16,7 +16,7 @@ Decision and the ordered cutover checklist: [docs/adr/0002-azure-static-web-apps
 - `src/lib/` runs at build time only: the dictionaries and checks (`site.mjs`), the blog (`blog.mjs`), the recipes
   (`recipes.mjs`), twins for the language menu (`routes.mjs`).
 - `public/` is copied as is: the design system (`ds/`), `site.css`, `blog/blog.css`, `recipes/recipes.css`, blog
-  images (`blog/media/`), recipe photos (`recipes/images/`), `admin/`, `robots.txt`, `staticwebapp.config.json`.
+  images (`blog/media/`), recipe photos (`recipes/images/`), `robots.txt`, `staticwebapp.config.json`.
 - Every in-app link is a Next `<Link>`, and the header lives in the root layout, so moving between pages never
   reloads or jumps. Switching language is a full load (the other root layout), as before.
 
@@ -47,9 +47,7 @@ npm run test:e2e     # Playwright: axe (WCAG 2.1 AA) at 1280 and 375 in EN and E
   dek over 180 characters, or Spanish in the "tú" form (the site uses usted).
 - A post goes live only when both languages say `draft: false`. Drafts build as noindex pages and stay out of the feeds
   and the sitemap; the index lists them as samples only while nothing is live. `BLOG_DRAFTS=0` leaves them out.
-- Editor: **/admin/** (Sveltia CMS, pinned with SRI, noindex). Sign in with "Sign In Using Access Token": a GitHub
-  fine-grained token for this repository only, Contents read and write. It commits markdown to main; after cutover
-  main is the Next.js source and the deploy workflow builds it.
+- Editor: the Payload CMS admin (Software Architect owns it; psh ADR 0058). The blog builds from the CMS (`CMS_SOURCE=payload`, `CMS_API`); unset `CMS_SOURCE` to fall back to the markdown in `_content/`.
 - **Moving to Payload CMS** (docs/adr/0003, psh ADR 0058). With the repo variables `CMS_SOURCE=payload` and
   `CMS_API=https://<cms host>`, `scripts/cms-snapshot.mjs` fetches the published posts, tags and media before
   `next build` (into `.cms/snapshot.json` and `public/blog/media/`), and `src/lib/blog-source.mjs` hands them to the
@@ -78,7 +76,7 @@ A bump is one command: `DS_SRC=<the design system's git URL> scripts/sync-design
 `public/staticwebapp.config.json` sends a strict Content-Security-Policy (`script-src 'self'`, `style-src 'self'`, no
 inline or eval code; `connect-src` only the site and the Supabase functions host for the resume form;
 `frame-ancestors 'none'`), HSTS (`max-age=31536000; includeSubDomains`, no preload), `X-Frame-Options: DENY`, `nosniff`
-and `strict-origin-when-cross-origin`. `/admin/` has its own looser CSP (Sveltia from jsDelivr and unpkg, GitHub's API).
+and `strict-origin-when-cross-origin`.
 - Next's static export writes inline `<script>`s; `scripts/postbuild.mjs` moves them into content-addressed files in
   `/_next/static/inline/` and fails the build on anything the CSP would block (inline script, style attribute or
   `<style>`, `on*` handler, `javascript:` URL). Use a class, never `style={…}`, in server-rendered markup. Shiki's

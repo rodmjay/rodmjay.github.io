@@ -1,6 +1,5 @@
 /
 /404.html
-/admin/
 /blog/
 /blog/ai-writes-the-code/
 /blog/feed.xml
