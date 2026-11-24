@@ -1,6 +1,5 @@
-// The home page: the synthwave hero, then about, work, the resume form, building, how I work and contact.
+// The home page: the synthwave hero, then about, the resume form, building, how I work and contact.
 // Same markup and copy as src/page.html on Pages; the copy is i18n/{en,es}.json.
-import Link from "next/link";
 import { dict, HTML_LANG, SITE } from "@/lib/site.mjs";
 import { meta } from "@/lib/meta";
 import { Scene } from "./Scene";
@@ -30,13 +29,6 @@ export function Home({ lang }: { lang: Lang }) {
           <h2 className="ds-title-large">{d.about.heading}</h2>
           <p className="ds-body-large">{d.about.p1}</p>
           <p className="ds-body-large">{d.about.p2}</p>
-        </section>
-
-        <section id="work">
-          <h2 className="ds-title-large">{d.work.heading}</h2>
-          <ul className="stack">
-            {d.work.items.map((it: Item) => <li key={it.title} className="ds-card outlined"><h3 className="ds-title-medium">{it.url ? <Link href={it.url}>{it.title}</Link> : it.title}</h3><p className="ds-body-medium ds-variant">{it.body}</p></li>)}
-          </ul>
         </section>
 
         <section id="resume">
