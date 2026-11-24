@@ -141,7 +141,7 @@ export async function RecipePage({ lang, slug }: { lang: Lang; slug: string }) {
             </p>
             {x.tags.length > 0 && <div className="ds-post-tags">{x.tags.map((tg: string, i: number) => <Link key={tg} className="ds-chip" href={r.tagUrl(lang, x.tagSlugs[i])}>{tg}</Link>)}</div>}
           </header>
-          {x.photo && <figure className="ds-post-cover recipe-photo"><Photo r={x} sizes="(min-width: 1024px) 60rem, 100vw" eager /></figure>}
+          {x.photo && <figure className="ds-post-cover recipe-photo"><Photo r={x} sizes="(min-width: 1024px) 60rem, 100vw" eager /><figcaption className="recipe-photo-credit">{dict(lang).recipes.photoCredit}</figcaption></figure>}
           <div className="recipe-body">
             <section className="recipe-ingredients" aria-labelledby="ingredients">
               <h2 id="ingredients" className="ds-title-large">{R.ingredients}</h2>

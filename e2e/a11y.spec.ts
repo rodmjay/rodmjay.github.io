@@ -5,8 +5,8 @@ import { expect, test } from "@playwright/test";
 // spec. axe checks what a machine can (contrast, names, roles, landmarks, labels); the rest (screen reader wording,
 // zoom, reduced motion) is Designer's staging check. Add a path here when a new kind of page ships.
 const PAGES = {
-  en: ["/", "/blog/", "/blog/ai-writes-the-code/", "/blog/tag/architecture/", "/privacy/", "/recipes/", "/recipes/gallo-pinto/", "/recipes/tag/rice/", "/404.html"],
-  es: ["/es/", "/es/blog/", "/es/blog/ia-escribe-el-codigo/", "/es/blog/tag/arquitectura/", "/privacy/es/", "/es/recipes/", "/es/recipes/gallo-pinto/", "/es/recipes/tag/arroz/"],
+  en: ["/", "/blog/", "/blog/ai-writes-the-code/", "/blog/tag/architecture/", "/privacy/", "/recipes/", "/recipes/gallo-pinto/", "/recipes/tag/latin-table/", "/404.html"],
+  es: ["/es/", "/es/blog/", "/es/blog/ia-escribe-el-codigo/", "/es/blog/tag/arquitectura/", "/privacy/es/", "/es/recipes/", "/es/recipes/gallo-pinto/", "/es/recipes/tag/mesa-latina/"],
 };
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
 

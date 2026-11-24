@@ -36,6 +36,7 @@ env:
   RECIPES_API: https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/public-recipes
   RECIPES_LIVE: ${{ vars.RECIPES_LIVE }}
   RECIPES_APPROVED: ${{ vars.RECIPES_APPROVED }}
+  RECIPES_TRUST_MINUTES: ${{ vars.RECIPES_TRUST_MINUTES }}
   NEXT_TELEMETRY_DISABLED: "1"
   # The privacy page's hosting line (src/lib/site.mjs): Microsoft (Azure Static Web Apps), dated the cutover day.
   # Compliance approved the exact words (EN and ES) 11/23.
