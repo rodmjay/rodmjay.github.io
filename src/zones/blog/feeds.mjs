@@ -37,7 +37,7 @@ export async function sitemap() {
   const b = await loadBlog();
   const r = await loadRecipes();
   const pair = (en, es, lastmod) => [[en, es], [es, en]].map(([a]) => `<url><loc>${SITE}${a}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}<xhtml:link rel="alternate" hreflang="en" href="${SITE}${en}"/><xhtml:link rel="alternate" hreflang="es-419" href="${SITE}${es}"/></url>`).join("\n");
-  const urls = [pair("/", "/es/"), pair("/privacy/", "/privacy/es/")];
+  const urls = [pair("/", "/es/"), pair("/privacy/", "/privacy/es/"), pair("/work/indiana-cms/", "/es/work/indiana-cms/")];
   if (!b.SAMPLE) {
     urls.push(pair(BASE.en, BASE.es, b.live.en[0]?.date));
     for (const p of b.live.en) urls.push(pair(p.url, p.twin.url, p.date));

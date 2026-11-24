@@ -36,7 +36,8 @@
       },
       {
         "title": "Grants and contracts platform, State of Indiana",
-        "body": "Led it from start to finish."
+        "body": "Led it from start to finish.",
+        "url": "/work/indiana-cms/"
       },
       {
         "title": "Logging library, Microsoft Site Reliability Engineering",
@@ -193,5 +194,37 @@
     "page": "Page {n} of {total}",
     "ogLocale": "en_US",
     "photoCredit": "AI-generated image"
+  },
+  "project": {
+    "metaTitle": "Indiana Department of Education CMS Platform",
+    "metaDescription": "A platform that manages the life of the State of Indiana's educational grants, contracts and MOUs. I led it from start to finish.",
+    "eyebrow": "Selected work",
+    "title": "Indiana Department of Education: CMS Platform",
+    "lede": "A platform for managing the full life of the state's educational grants, contracts and memorandums of understanding (MOUs).",
+    "roleHeading": "My role",
+    "role": "I led the project from start to finish and saw it deployed into the State of Indiana's internal systems.",
+    "waysHeading": "How we worked",
+    "ways": [
+      "We worked in short agile cycles, so we could adjust quickly when the client's needs changed.",
+      "I worked closely with project managers and QA to meet the state's strict quality and security rules."
+    ],
+    "stackHeading": "Stack",
+    "stack": [
+      "C#",
+      ".NET Core",
+      "ASP.NET",
+      "Entity Framework",
+      "Angular",
+      "TypeScript",
+      "SQL Server",
+      "Azure",
+      "Docker",
+      "Playwright",
+      "App Insights",
+      "CI/CD"
+    ],
+    "note": "This is client work, so I describe my role and the results here and don't show screenshots or code.",
+    "resume": "Ask for my resume",
+    "back": "Back to rodmjay.com"
   }
 }
