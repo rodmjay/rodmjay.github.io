@@ -116,4 +116,4 @@ h3 a { color: inherit; text-underline-offset: 3px; }
   .ds .rbox #rf-submit, .ds .rdone .ds-btn { width: 100%; }
 }
 .rbox [hidden] { display: none !important; }
-.ds main h1 { margin: 0 0 var(--space-4); }
+.project-title { margin: 0 0 var(--space-4); }

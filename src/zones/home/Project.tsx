@@ -19,7 +19,7 @@ export function Project({ lang }: { lang: Lang }) {
     <main id="main" className="col">
       <section>
         <p className="ds-label-large ds-variant">{p.eyebrow}</p>
-        <h1 className="ds-headline-medium">{p.title}</h1>
+        <h1 className="ds-headline-medium project-title">{p.title}</h1>
         <p className="ds-body-large">{p.lede}</p>
       </section>
       <section>
