@@ -117,3 +117,9 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 }
 .rbox [hidden] { display: none !important; }
 .project-title { margin: 0 0 var(--space-4); }
+
+/* Quotes (Designer's spec): 32px between quotes with a hairline, none after the last. */
+.quotes { list-style: none; padding: 0; margin: var(--space-6) 0 0; }
+.quotes > li { padding: 0 0 var(--space-8); margin: 0 0 var(--space-8); border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+.quotes > li:last-child { padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
+.quotes figure.quote { margin: 0; }

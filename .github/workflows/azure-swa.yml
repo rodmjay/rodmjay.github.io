@@ -34,6 +34,8 @@ concurrency:
 
 env:
   RECIPES_API: https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/public-recipes
+  # Quotes Rod rated above 2 stars (public-life feed; a disabled feed answers 404 and the section stays hidden).
+  QUOTES_API: https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/public-life?feed=quotes
   RECIPES_LIVE: ${{ vars.RECIPES_LIVE }}
   RECIPES_APPROVED: ${{ vars.RECIPES_APPROVED }}
   RECIPES_TRUST_MINUTES: ${{ vars.RECIPES_TRUST_MINUTES }}

@@ -15,7 +15,8 @@
     "language": "Idioma",
     "resume": "Currículum",
     "blog": "Blog",
-    "recipes": "Recetas"
+    "recipes": "Recetas",
+    "quotes": "Citas"
   },
   "hero": {
     "name": "Rod Johnson",
@@ -218,5 +219,14 @@
     "note": "Es trabajo para un cliente, así que aquí describo mi función y no muestro capturas de pantalla ni código.",
     "resume": "Solicite mi currículum",
     "back": "Volver a rodmjay.com"
+  },
+  "quotes": {
+    "metaTitle": "Citas",
+    "metaDescription": "Citas a las que vuelvo una y otra vez.",
+    "title": "Citas",
+    "lede": "Frases a las que vuelvo una y otra vez.",
+    "empty": "Todavía no hay citas.",
+    "unknownSource": "Fuente desconocida",
+    "unknownAuthor": "Desconocido"
   }
 }

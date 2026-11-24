@@ -3,6 +3,7 @@
 import { SITE, dict, HTML_LANG } from "../../lib/site.mjs";
 import { loadBlog, BASE } from "../../lib/blog.mjs";
 import { loadRecipes } from "../../lib/recipes.mjs";
+import { loadQuotes } from "../../lib/quotes.mjs";
 
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const xml = (s) => esc(s).replace(/'/g, "&apos;");
@@ -36,6 +37,7 @@ ${p.tags.map((k) => `<category>${xml(b.tagInfo(k).name[lang])}</category>`).join
 export async function sitemap() {
   const b = await loadBlog();
   const r = await loadRecipes();
+  const q = await loadQuotes();
   const pair = (en, es, lastmod) => [[en, es], [es, en]].map(([a]) => `<url><loc>${SITE}${a}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}<xhtml:link rel="alternate" hreflang="en" href="${SITE}${en}"/><xhtml:link rel="alternate" hreflang="es-419" href="${SITE}${es}"/></url>`).join("\n");
   const urls = [pair("/", "/es/"), pair("/privacy/", "/privacy/es/"), pair("/work/indiana-cms/", "/es/work/indiana-cms/")];
   if (!b.SAMPLE) {
@@ -47,6 +49,7 @@ export async function sitemap() {
     urls.push(pair("/recipes/", "/es/recipes/", day(r.byLang.en[0].updatedAt)));
     for (const x of r.byLang.en) urls.push(pair(x.url, x.twinUrl, day(x.updatedAt)));
   }
+  if (q.quotes.length) urls.push(pair("/quotes/", "/es/quotes/"));
   const body = `<?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.join("\n")}
