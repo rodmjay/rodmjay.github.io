@@ -16,6 +16,9 @@ import { imgDims } from "./blog.mjs";
 export const PER_PAGE = 12;
 export const BASE = { en: "/recipes/", es: "/es/recipes/" };
 const API = process.env.RECIPES_API || "";
+// public-recipes v1 counts every number in prep and cook ("1 hour at 350°F" reads as 410 min); v2 counts only numbers
+// with a time unit. Until v2 is live, no time is shown rather than a wrong one: set RECIPES_TRUST_MINUTES=1 after.
+const TRUST_MINUTES = process.env.RECIPES_TRUST_MINUTES === "1" || !API;
 
 // Family is LDS: nothing with alcohol, coffee or tea in a recipe or tag (Designer's spec, Rod 11/20).
 const BANNED = new Set(("wine wines beer beers ale lager rum vodka tequila mezcal whiskey whisky bourbon brandy gin liqueur sake " +
@@ -70,7 +73,7 @@ async function build() {
     const where = `recipe ${r?.slug}/${r?.lang}`;
     const rec = {
       slug: str(r.slug), lang: str(r.lang), title: str(r.title), dek: str(r.dek), imageAlt: str(r.image_alt),
-      servings: r.servings == null ? null : str(r.servings), minutes: Number.isFinite(Number(r.minutes)) && r.minutes != null ? Number(r.minutes) : null,
+      servings: r.servings == null ? null : str(r.servings), minutes: TRUST_MINUTES && Number.isFinite(Number(r.minutes)) && r.minutes != null ? Number(r.minutes) : null,
       tags: list(r.tags), ingredients: list(r.ingredients), steps: list(r.steps), updatedAt: str(r.updated_at),
       credit: str(r.from_credit), tip: str(r.tip), serveWith: str(r.serve_with), pairsWith: str(r.pairs_with),
       sources: (Array.isArray(r.sources) ? r.sources : []).map((s) => (typeof s === "string" ? { title: s.trim(), url: "" }
