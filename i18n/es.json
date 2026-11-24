@@ -36,7 +36,8 @@
       },
       {
         "title": "Plataforma de subvenciones y contratos, Estado de Indiana",
-        "body": "La dirigí de principio a fin."
+        "body": "La dirigí de principio a fin.",
+        "url": "/es/work/indiana-cms/"
       },
       {
         "title": "Biblioteca de registros, Ingeniería de Confiabilidad de Sitios de Microsoft",
@@ -193,5 +194,37 @@
     "page": "Página {n} de {total}",
     "ogLocale": "es_419",
     "photoCredit": "Imagen generada con IA"
+  },
+  "project": {
+    "metaTitle": "Plataforma CMS del Departamento de Educación de Indiana",
+    "metaDescription": "Una plataforma para gestionar el ciclo de vida de las subvenciones, los contratos y los memorandos de entendimiento educativos del Estado de Indiana. La dirigí de principio a fin.",
+    "eyebrow": "Trabajo destacado",
+    "title": "Departamento de Educación de Indiana: plataforma CMS",
+    "lede": "Una plataforma para gestionar todo el ciclo de vida de las subvenciones, los contratos y los memorandos de entendimiento (MOU) educativos del estado.",
+    "roleHeading": "Mi función",
+    "role": "Dirigí el proyecto de principio a fin y lo vi desplegado en los sistemas internos del Estado de Indiana.",
+    "waysHeading": "Cómo trabajamos",
+    "ways": [
+      "Trabajamos en ciclos ágiles cortos, para poder ajustarnos con rapidez cuando cambiaban las necesidades del cliente.",
+      "Trabajé de cerca con los gerentes de proyecto y con control de calidad para cumplir las estrictas reglas de calidad y seguridad del estado."
+    ],
+    "stackHeading": "Tecnologías",
+    "stack": [
+      "C#",
+      ".NET Core",
+      "ASP.NET",
+      "Entity Framework",
+      "Angular",
+      "TypeScript",
+      "SQL Server",
+      "Azure",
+      "Docker",
+      "Playwright",
+      "App Insights",
+      "CI/CD"
+    ],
+    "note": "Es trabajo para un cliente, así que aquí describo mi función y los resultados, y no muestro capturas de pantalla ni código.",
+    "resume": "Solicite mi currículum",
+    "back": "Volver a rodmjay.com"
   }
 }
