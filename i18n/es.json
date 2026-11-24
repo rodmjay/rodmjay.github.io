@@ -38,14 +38,6 @@
         "title": "Plataforma de subvenciones y contratos, Estado de Indiana",
         "body": "La dirigí de principio a fin.",
         "url": "/es/work/indiana-cms/"
-      },
-      {
-        "title": "Biblioteca de registros, Ingeniería de Confiabilidad de Sitios de Microsoft",
-        "body": "Se convirtió en el estándar del departamento. Mi microservicio de referencia fue el modelo para los siguientes."
-      },
-      {
-        "title": "Código base compartido de .NET, Solution Stream",
-        "body": "Todos los proyectos partían de él. También diseñé el proceso de entrevistas técnicas."
       }
     ]
   },
@@ -223,7 +215,7 @@
       "App Insights",
       "CI/CD"
     ],
-    "note": "Es trabajo para un cliente, así que aquí describo mi función y los resultados, y no muestro capturas de pantalla ni código.",
+    "note": "Es trabajo para un cliente, así que aquí describo mi función y no muestro capturas de pantalla ni código.",
     "resume": "Solicite mi currículum",
     "back": "Volver a rodmjay.com"
   }

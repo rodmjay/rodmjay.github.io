@@ -38,14 +38,6 @@
         "title": "Grants and contracts platform, State of Indiana",
         "body": "Led it from start to finish.",
         "url": "/work/indiana-cms/"
-      },
-      {
-        "title": "Logging library, Microsoft Site Reliability Engineering",
-        "body": "Became the department's standard. My reference microservice became the model for later services."
-      },
-      {
-        "title": "Shared .NET codebase, Solution Stream",
-        "body": "Every project started from it. I also designed the technical interview process."
       }
     ]
   },
@@ -223,7 +215,7 @@
       "App Insights",
       "CI/CD"
     ],
-    "note": "This is client work, so I describe my role and the results here and don't show screenshots or code.",
+    "note": "This is client work, so I describe my role here and don't show screenshots or code.",
     "resume": "Ask for my resume",
     "back": "Back to rodmjay.com"
   }
