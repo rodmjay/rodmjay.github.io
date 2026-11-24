@@ -62,7 +62,7 @@ jobs:
       - name: Build
         run: npm run build
       # The Should page: rodmjay/should at the reviewed commit in the repo variable SHOULD_REF (Security 11/23: an
-      # unreviewed push there would otherwise become a hashed, same-origin script next to /admin/), copied to out/should/
+      # unreviewed push there would otherwise become a hashed, same-origin script next to the site), copied to out/should/
       # after postbuild (its no-inline-code guards are for the Next output only), with routes and a hash-based CSP written
       # into out/staticwebapp.config.json. Bump SHOULD_REF deliberately (Product Manager or Software Architect).
       - name: Check the pinned Should commit
