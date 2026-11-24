@@ -1,6 +1,6 @@
 // Recipes, read once at build time (never in the browser) from the public-recipes Edge Function (RECIPES_API, GET,
-// ?lang=en|es; Database Administrator 11/23). When it's unset or returns [] (nothing published yet), the build uses the
-// sample set in _content/recipes/sample.json. Designer's spec: ~/dev/personal/design/specs/rodmjay-recipes.md.
+// ?lang=en|es; Database Administrator 11/23). Locally, when it's unset or returns [], the build uses the sample set in
+// _content/recipes/sample.json; in CI an empty answer fails the build (no sample data in production). Designer's spec: ~/dev/personal/design/specs/rodmjay-recipes.md.
 //
 // Row: {slug, lang, title, dek, image, image_alt, servings, minutes|null, tags[], ingredients[], steps[], updated_at,
 //       from_credit, tip, serve_with, pairs_with, sources[]}. Ingredient lines starting "## " are group labels.
@@ -56,6 +56,9 @@ async function build() {
   const errors = [];
   const fail = (m) => errors.push(m);
   let { rows, from } = await fetchRows();
+  // Production never shows sample data (Rod 11/23): a deploy build (CI) that reaches the API and gets nothing fails,
+  // so a broken or empty function can't quietly put the fixture on the live site. Local builds still use the fixture.
+  if (API && rows.length === 0 && process.env.CI) throw new Error(`recipes: ${API} returned no published recipes; refusing to deploy the sample set`);
   const sampleData = rows.length === 0;
   const fixture = JSON.parse(read("_content/recipes/sample.json"));
   if (sampleData) { rows = fixture; from = API ? "fixture (RECIPES_API returned [])" : from; }
