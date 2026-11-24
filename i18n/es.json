@@ -9,13 +9,13 @@
     "home": "Rod Johnson, inicio",
     "label": "Secciones",
     "about": "Sobre mí",
-    "work": "Trabajo",
     "building": "Proyectos",
     "contact": "Contacto",
     "language": "Idioma",
     "resume": "Currículum",
     "blog": "Blog",
-    "recipes": "Recetas"
+    "recipes": "Recetas",
+    "quotes": "Citas"
   },
   "hero": {
     "name": "Rod Johnson",
@@ -26,20 +26,6 @@
     "heading": "Sobre mí",
     "p1": "Soy arquitecto y líder de ingeniería, con 21 años llevando sistemas del primer boceto en la pizarra a producción. Hace poco ayudé a una importante empresa inmobiliaria a replantear cómo trabajan sus desarrolladores, con herramientas de IA como Claude y servidores MCP, DevOps automatizado y revisiones de seguridad más tempranas. Construí las herramientas y capacité a desarrolladores de toda la empresa para usarlas.",
     "p2": "Se me da bien lograr que equipos distintos avancen en la misma dirección, fijar estándares que perduran y definir cómo los equipos contratan y evalúan. He trabajado en banca, bienes raíces, marketing, logística, compras, gobierno, salud y educación en línea. Vivo en Salt Lake City y trabajo en inglés y español."
-  },
-  "work": {
-    "heading": "Trabajo destacado",
-    "items": [
-      {
-        "title": "Arquitectura de IA para toda la empresa, importante empresa inmobiliaria",
-        "body": "Entrega de software asistida por IA con Claude, servidores MCP y DevOps automatizado, con revisiones de seguridad más tempranas."
-      },
-      {
-        "title": "Plataforma de subvenciones y contratos, Estado de Indiana",
-        "body": "La dirigí de principio a fin.",
-        "url": "/es/work/indiana-cms/"
-      }
-    ]
   },
   "building": {
     "heading": "Lo que estoy construyendo",
@@ -218,5 +204,14 @@
     "note": "Es trabajo para un cliente, así que aquí describo mi función y no muestro capturas de pantalla ni código.",
     "resume": "Solicite mi currículum",
     "back": "Volver a rodmjay.com"
+  },
+  "quotes": {
+    "metaTitle": "Citas",
+    "metaDescription": "Citas a las que vuelvo una y otra vez.",
+    "title": "Citas",
+    "lede": "Frases a las que vuelvo una y otra vez.",
+    "empty": "Todavía no hay citas.",
+    "unknownSource": "Fuente desconocida",
+    "unknownAuthor": "Desconocido"
   }
 }

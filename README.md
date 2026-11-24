@@ -52,7 +52,7 @@ npm run test:e2e     # Playwright: axe (WCAG 2.1 AA) at 1280 and 375 in EN and E
   `CMS_API=https://<cms host>`, `scripts/cms-snapshot.mjs` fetches the published posts, tags and media before
   `next build` (into `.cms/snapshot.json` and `public/blog/media/`), and `src/lib/blog-source.mjs` hands them to the
   same rules and rendering. Unset, the markdown above is the source. Publishing in the CMS runs this workflow on main.
-  `tests/cms-parity.mjs` proves both sources give the same site (see the ADR). Sveltia retires at cutover.
+  `tests/cms-parity.mjs` proves both sources give the same site (see the ADR). Sveltia retired 11/24.
 
 ## Recipes
 

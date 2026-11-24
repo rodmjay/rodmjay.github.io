@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { HTML_LANG, RECIPES_LIVE, asset, dict } from "@/lib/site.mjs";
 import { LANG_SRC } from "@/lib/langscript.mjs";
 import { altMap } from "@/lib/routes.mjs";
+import { loadQuotes } from "@/lib/quotes.mjs";
 import { Header } from "./Header";
 
 type Lang = "en" | "es";
@@ -15,9 +16,10 @@ const FONTS = ["/ds/fonts/inter/inter-latin-wght-normal.woff2", "/ds/fonts/space
 export async function RootLayout({ lang, children }: { lang: Lang; children: ReactNode }) {
   const d = dict(lang);
   const alt = await altMap();
+  const hasQuotes = (await loadQuotes()).quotes.length > 0;
   const nav = {
-    label: d.nav.label, home: d.nav.home, about: d.nav.about, work: d.nav.work, resume: d.nav.resume, building: d.nav.building,
-    contact: d.nav.contact, blog: d.nav.blog, recipes: d.nav.recipes, language: d.nav.language,
+    label: d.nav.label, home: d.nav.home, about: d.nav.about, resume: d.nav.resume, building: d.nav.building,
+    contact: d.nav.contact, blog: d.nav.blog, recipes: d.nav.recipes, quotes: d.nav.quotes, language: d.nav.language,
   };
   return (
     <html lang={HTML_LANG[lang]} translate="no" className="notranslate" data-brand="rod">
@@ -35,7 +37,7 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
       </head>
       <body className="ds">
         <a className="skip" href="#main">{d.nav.skip}</a>
-        <Header lang={lang} nav={nav} showRecipes={RECIPES_LIVE} alt={alt} />
+        <Header lang={lang} nav={nav} showRecipes={RECIPES_LIVE} showQuotes={hasQuotes} alt={alt} />
         {children}
         <footer className="foot col"><p className="ds-body-small ds-variant">{d.footer.copy} · {d.footer.cookies}</p></footer>
       </body>

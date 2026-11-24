@@ -9,13 +9,13 @@
     "home": "Rod Johnson, home",
     "label": "Sections",
     "about": "About",
-    "work": "Work",
     "building": "Building",
     "contact": "Contact",
     "language": "Language",
     "resume": "Resume",
     "blog": "Blog",
-    "recipes": "Recipes"
+    "recipes": "Recipes",
+    "quotes": "Quotes"
   },
   "hero": {
     "name": "Rod Johnson",
@@ -26,20 +26,6 @@
     "heading": "About",
     "p1": "I'm an architect and engineering leader with 21 years of taking systems from the first whiteboard sketch to production. Most recently I helped a major real estate company rethink how its developers work, bringing in AI tools like Claude and MCP servers, automated DevOps and earlier security checks. I built the tooling and trained its developers to use it.",
     "p2": "I'm good at getting different teams pulling in the same direction, setting standards that stick, and shaping how teams hire and test. I've worked in banking, real estate, marketing, logistics, procurement, government, healthcare and e-learning. I'm based in Salt Lake City and work in English and Spanish."
-  },
-  "work": {
-    "heading": "Selected work",
-    "items": [
-      {
-        "title": "Company-wide AI architecture, major real estate company",
-        "body": "AI-assisted software delivery built on Claude, MCP servers and automated DevOps, with security checks earlier in the process."
-      },
-      {
-        "title": "Grants and contracts platform, State of Indiana",
-        "body": "Led it from start to finish.",
-        "url": "/work/indiana-cms/"
-      }
-    ]
   },
   "building": {
     "heading": "What I'm building",
@@ -218,5 +204,14 @@
     "note": "This is client work, so I describe my role here and don't show screenshots or code.",
     "resume": "Ask for my resume",
     "back": "Back to rodmjay.com"
+  },
+  "quotes": {
+    "metaTitle": "Quotes",
+    "metaDescription": "Quotes I keep coming back to.",
+    "title": "Quotes",
+    "lede": "Lines I keep coming back to.",
+    "empty": "No quotes here yet.",
+    "unknownSource": "Source unknown",
+    "unknownAuthor": "Unknown"
   }
 }

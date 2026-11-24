@@ -34,6 +34,9 @@ concurrency:
 
 env:
   RECIPES_API: https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/public-recipes
+  # The one public read path for Supabase data (src/lib/feeds.mjs, getFeed(key); personal architecture/decisions/0004).
+  # Public URL, no key: it serves only feeds Security passed and DBA turned on; an off feed answers 404 and hides its section.
+  LIFE_API: https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/public-life
   RECIPES_LIVE: ${{ vars.RECIPES_LIVE }}
   RECIPES_APPROVED: ${{ vars.RECIPES_APPROVED }}
   RECIPES_TRUST_MINUTES: ${{ vars.RECIPES_TRUST_MINUTES }}
