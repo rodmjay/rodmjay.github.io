@@ -6,7 +6,8 @@ import { loadRecipes } from "./recipes.mjs";
 let memo;
 export function altMap() {
   return (memo ||= (async () => {
-    const map = { "/": "/es/", "/es/": "/", "/privacy/": "/privacy/es/", "/privacy/es/": "/privacy/" };
+    const map = { "/": "/es/", "/es/": "/", "/privacy/": "/privacy/es/", "/privacy/es/": "/privacy/",
+      "/work/indiana-cms/": "/es/work/indiana-cms/", "/es/work/indiana-cms/": "/work/indiana-cms/" };
     const blog = await loadBlog();
     for (const l of blog.lists) map[l.path] = l.otherPath;
     for (const p of blog.posts) if (p.url) map[p.url] = p.twinUrl;
