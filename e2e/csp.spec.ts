@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 // Security headers (Security Officer, psh #70): every kind of page gets them, and nothing on the page breaks the
 // Content-Security-Policy. Locally tests/serve.mjs sends the headers from staticwebapp.config.json; with BASE_URL set
-// the same checks run against the Static Web App itself. /admin/ (Sveltia from a CDN) has its own, looser CSP.
+// the same checks run against the Static Web App itself.
 const PAGES = ["/", "/es/", "/blog/", "/blog/ai-writes-the-code/", "/es/blog/tag/arquitectura/", "/privacy/", "/privacy/es/", "/work/indiana-cms/", "/es/work/indiana-cms/",
   "/recipes/", "/es/recipes/gallo-pinto/", "/recipes/tag/latin-table/", "/no-such-page/"];
 
@@ -55,18 +55,5 @@ test("csp: the resume form's request is allowed (answered here, never sent)", as
   await page.locator("#rf-submit").click();
   await expect(page.locator("#rdone")).toBeVisible();
   expect(reached).toBe(true);
-  expect(seen, seen.join("\n")).toEqual([]);
-});
-
-test("csp: /admin/ has its own policy and Sveltia loads under it", async ({ page }) => {
-  const seen = await watch(page);
-  const res = await page.goto("/admin/");
-  const csp = res!.headers()["content-security-policy"];
-  expect(csp).toContain("https://cdn.jsdelivr.net/npm/@sveltia/");
-  expect(csp).not.toContain("unsafe-eval");
-  expect(csp).toContain("frame-ancestors 'none'");
-  expect(res!.headers()["x-robots-tag"]).toBe("noindex");
-  await page.waitForLoadState("networkidle");
-  await expect(page.getByRole("button", { name: /access token/i })).toBeVisible({ timeout: 15_000 });
   expect(seen, seen.join("\n")).toEqual([]);
 });
