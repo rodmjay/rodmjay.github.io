@@ -191,6 +191,7 @@
     "newer": "Newer",
     "older": "Older",
     "page": "Page {n} of {total}",
-    "ogLocale": "en_US"
+    "ogLocale": "en_US",
+    "photoCredit": "AI-generated image"
   }
 }

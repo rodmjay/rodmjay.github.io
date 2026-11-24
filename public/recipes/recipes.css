@@ -55,3 +55,7 @@
   .recipe-body { grid-template-columns: 1fr 2fr; }
   .recipe-ingredients { position: static; }
 }
+
+/* "AI-generated image" under the recipe photo (Compliance 11/23). Same type as the design system's figure captions
+   in .ds-prose (body-small, on-surface-variant); Designer to fold into the system as a plain figure caption. */
+.recipe-photo-credit { margin-top: var(--space-2); font: 400 var(--md-sys-typescale-body-small-size)/1.5 var(--md-ref-typeface-plain); color: var(--md-sys-color-on-surface-variant); }

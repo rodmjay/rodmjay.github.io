@@ -191,6 +191,7 @@
     "newer": "Más recientes",
     "older": "Anteriores",
     "page": "Página {n} de {total}",
-    "ogLocale": "es_419"
+    "ogLocale": "es_419",
+    "photoCredit": "Imagen generada con IA"
   }
 }
