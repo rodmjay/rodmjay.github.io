@@ -6,7 +6,9 @@
 # main deploys to production (the app's default host, and rodmjay.com once DNS points there); next deploys to the named
 # preview environment "staging". Pull requests into main build and test only (the required `build` check), never deploy.
 # The Should page (/should/) is copied in from rodmjay/should (Product Manager's) after the build, byte-identical, with
-# its own CSP (scripts/should.mjs), pinned to the commit in the repo variable SHOULD_REF; bumping it publishes it.
+# its own CSP (scripts/should.mjs), pinned to the commit in the repo variable SHOULD_REF; bumping it publishes it. The
+# project sites (/altura/, /agentic-squared/, /agency-squared/, /moodboard/) come in the same way (scripts/sites.mjs),
+# pinned by the repo variable PROJECT_REFS.
 name: Deploy to Azure Static Web Apps
 
 on:
@@ -74,6 +76,31 @@ jobs:
           persist-credentials: false
       - name: Add the Should page
         run: node scripts/should.mjs _should
+      # The project sites GitHub Pages served under the custom domain (rodmjay.github.io/<name>/ still 301s to
+      # rodmjay.com/<name>/): each repo at the reviewed commit in the repo variable PROJECT_REFS, JSON
+      # {"agency-squared":"<sha>","agentic-squared":"<sha>","altura":"<sha>","moodboard":"<sha>"}, copied byte-identical
+      # by scripts/sites.mjs (agency-squared, a Next.js export, is built from that commit first) with its own path-scoped
+      # CSP and routes; anything that CSP would block fails the build. Bump a sha deliberately, like SHOULD_REF.
+      - name: Check the pinned project commits
+        env:
+          PROJECT_REFS: ${{ vars.PROJECT_REFS }}
+        run: |
+          want="agency-squared agentic-squared altura moodboard"
+          got="$(jq -r 'keys | join(" ")' <<<"$PROJECT_REFS" 2>/dev/null || true)"
+          [[ "$got" == "$want" ]] || { echo "::error::repo variable PROJECT_REFS must be JSON with exactly the keys: $want"; exit 1; }
+          jq -e 'all(.[]; type == "string" and test("^[0-9a-f]{40}$"))' <<<"$PROJECT_REFS" >/dev/null \
+            || { echo "::error::every PROJECT_REFS value must be a full commit sha"; exit 1; }
+      - name: Add the project sites
+        env:
+          PROJECT_REFS: ${{ vars.PROJECT_REFS }}
+        run: |
+          for name in $(jq -r 'keys[]' <<<"$PROJECT_REFS"); do
+            ref="$(jq -r --arg n "$name" '.[$n]' <<<"$PROJECT_REFS")"
+            git init -q "_projects/$name"
+            git -C "_projects/$name" fetch -q --depth 1 "https://github.com/rodmjay/$name.git" "$ref"
+            git -C "_projects/$name" checkout -q FETCH_HEAD
+            node scripts/sites.mjs "$name" "_projects/$name"
+          done
       - name: Every old URL still exists
         run: npm run test:urls
       - name: Accessibility and navigation tests

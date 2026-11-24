@@ -93,7 +93,9 @@ test("csp: the rest of the site keeps its policy", async ({ request }) => {
   const OUT = JSON.parse(readFileSync(existsSync("out/staticwebapp.config.json") ? "out/staticwebapp.config.json" : "public/staticwebapp.config.json", "utf8"));
   expect(OUT.globalHeaders).toEqual(SITE.globalHeaders);
   expect(OUT.responseOverrides).toEqual(SITE.responseOverrides);
-  expect(OUT.routes.filter((r: { route: string }) => !r.route.startsWith("/should"))).toEqual(SITE.routes);
+  // The copied sites' own routes (scripts/sites.mjs) come after the site's.
+  const copied = /^\/(should|altura|agentic-squared|agency-squared|moodboard)(\/|$)/;
+  expect(OUT.routes.filter((r: { route: string }) => !copied.test(r.route))).toEqual(SITE.routes);
   for (const path of ["/", "/blog/", "/recipes/", "/no-such-page/", "/shouldnt/"])
     expect((await request.get(path)).headers()["content-security-policy"], path).toBe(SITE_CSP);
 });
