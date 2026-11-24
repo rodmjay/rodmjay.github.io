@@ -42,7 +42,7 @@ function walk(dir) {
 }
 rmSync(join(OUT, "404"), { recursive: true, force: true });
 walk(OUT);
-for (const f of ["404.html", "index.html", "es/index.html", "blog/feed.xml", "es/blog/feed.xml", "sitemap.xml", "robots.txt", "admin/index.html", "staticwebapp.config.json"])
+for (const f of ["404.html", "index.html", "es/index.html", "blog/feed.xml", "es/blog/feed.xml", "sitemap.xml", "robots.txt", "staticwebapp.config.json"])
   if (!existsSync(join(OUT, f))) bad.push(`out/${f} is missing`);
 
 // ---- Inline scripts → files (CSP) ----
