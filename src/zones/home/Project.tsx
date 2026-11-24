@@ -34,8 +34,8 @@ export function Project({ lang }: { lang: Lang }) {
       </section>
       <section>
         <h2 className="ds-title-large">{p.stackHeading}</h2>
-        <ul className="chips">
-          {p.stack.map((s: string) => <li key={s} className="ds-chip">{s}</li>)}
+        <ul className="chips" role="list">
+          {p.stack.map((s: string) => <li key={s} className="ds-chip status">{s}</li>)}
         </ul>
         <p className="ds-body-small ds-variant">{p.note}</p>
         <p><Link href={`${home}#resume`}>{p.resume}</Link></p>
