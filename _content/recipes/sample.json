@@ -8,7 +8,12 @@
     "image_alt": "A plate of gallo pinto with two fried eggs and fried sweet plantains, a glass of orange juice beside it",
     "servings": 4,
     "minutes": 15,
-    "tags": ["Breakfast", "Rice", "Latin"],
+    "tags": [
+      "Breakfast",
+      "Rice",
+      "Latin",
+      "Latin table"
+    ],
     "ingredients": [
       "2–3 cups cooked rice (day-old is best)",
       "1 can black beans, with a little of their liquid",
@@ -41,7 +46,12 @@
     "image_alt": "Un plato de gallo pinto con dos huevos fritos y plátanos maduros fritos, y un vaso de jugo de naranja al lado",
     "servings": 4,
     "minutes": 15,
-    "tags": ["Desayuno", "Arroz", "Latino"],
+    "tags": [
+      "Desayuno",
+      "Arroz",
+      "Latino",
+      "Mesa latina"
+    ],
     "ingredients": [
       "480 a 720 ml (2 a 3 tazas) de arroz cocido (mejor del día anterior)",
       "1 lata de frijoles negros, con un poco de su líquido",
@@ -74,7 +84,13 @@
     "image_alt": "A bowl of orange-tinted rice with browned chicken pieces, roasted red pepper strips, cilantro and lime wedges",
     "servings": 6,
     "minutes": 40,
-    "tags": ["Dinner", "Chicken", "Rice", "Latin"],
+    "tags": [
+      "Dinner",
+      "Chicken",
+      "Rice",
+      "Latin",
+      "Latin table"
+    ],
     "ingredients": [
       "2 lb chicken thighs, in chunks",
       "1 onion, diced",
@@ -108,7 +124,13 @@
     "image_alt": "Un tazón de arroz anaranjado con trozos de pollo dorado, tiras de pimiento rojo asado, cilantro y gajos de limón",
     "servings": 6,
     "minutes": 40,
-    "tags": ["Cena", "Pollo", "Arroz", "Latino"],
+    "tags": [
+      "Cena",
+      "Pollo",
+      "Arroz",
+      "Latino",
+      "Mesa latina"
+    ],
     "ingredients": [
       "900 g (2 lb) de muslos de pollo, en trozos",
       "1 cebolla, picada",
