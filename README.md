@@ -30,6 +30,7 @@ Decision and the ordered cutover checklist: [docs/adr/0002-azure-static-web-apps
 npm ci
 npm run build        # next build, then scripts/postbuild.mjs tidies and checks out/
 SHOULD_SRC=<clone of rodmjay/should> npm run build   # the same, plus the Should page at out/should/
+node scripts/sites.mjs altura <clone of rodmjay/altura>   # a project site at out/altura/ (same for the others)
 npm run test:urls    # every URL the Pages site served still exists in out/
 npm run test:e2e     # Playwright: axe (WCAG 2.1 AA) at 1280 and 375 in EN and ES, plus click-through with no reload
 ```
@@ -49,6 +50,11 @@ npm run test:e2e     # Playwright: axe (WCAG 2.1 AA) at 1280 and 375 in EN and E
 - Editor: **/admin/** (Sveltia CMS, pinned with SRI, noindex). Sign in with "Sign In Using Access Token": a GitHub
   fine-grained token for this repository only, Contents read and write. It commits markdown to main; after cutover
   main is the Next.js source and the deploy workflow builds it.
+- **Moving to Payload CMS** (docs/adr/0003, psh ADR 0058). With the repo variables `CMS_SOURCE=payload` and
+  `CMS_API=https://<cms host>`, `scripts/cms-snapshot.mjs` fetches the published posts, tags and media before
+  `next build` (into `.cms/snapshot.json` and `public/blog/media/`), and `src/lib/blog-source.mjs` hands them to the
+  same rules and rendering. Unset, the markdown above is the source. Publishing in the CMS runs this workflow on main.
+  `tests/cms-parity.mjs` proves both sources give the same site (see the ADR). Sveltia retires at cutover.
 
 ## Recipes
 
@@ -86,6 +92,15 @@ and `strict-origin-when-cross-origin`. `/admin/` has its own looser CSP (Sveltia
   'unsafe-inline'` until Product Manager rebuilds it (the build log says when it can go). `/should/demo/*`
   paths that aren't real files get the demo's SPA shell; the Pages-only root `404.html` isn't copied.
   `e2e/should.spec.ts` checks it; postbuild's guards skip `out/should/`.
+- The project sites GitHub Pages served under the custom domain (`/altura/`, `/agentic-squared/`, `/agency-squared/`,
+  `/moodboard/`; rodmjay.github.io/<name>/ still 301s here) come in the same way: `scripts/sites.mjs` is the one
+  copier (`scripts/should.mjs` calls it for `/should/`). CI fetches each repo at the sha in the repo variable
+  `PROJECT_REFS` (JSON, one full sha per site), copies it byte-identical (agency-squared, a Next.js export, is built
+  from that commit first) and gives it its own path-scoped CSP: inline scripts by hash, and only the relaxations its
+  `SITES` entry names (Google Fonts for altura and agency-squared, altura's Google Form endpoint, moodboard's `<style>`
+  by hash, style attributes for moodboard and agency-squared). Anything else the CSP would block fails the build,
+  naming the site's owner. `e2e/projects.spec.ts` loads each one and fails on any CSP violation. `/family-trust/` is
+  not served.
 - `tests/serve.mjs` sends the same headers, and `e2e/csp.spec.ts` fails on any CSP violation. `BASE_URL=<host> npm run
   test:e2e` runs the whole suite against a deployed site (the one test that would send a real request is skipped).
 

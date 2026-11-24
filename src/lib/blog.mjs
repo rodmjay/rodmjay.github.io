@@ -6,17 +6,18 @@
 // feeds and the sitemap; while nothing is live, the index lists the drafts as samples (noindex too).
 // The build fails when: a live post lacks its twin, an image or figure has no alt text, a tag isn't in tags.yml,
 // a dek is over 180 characters, or the Spanish isn't "usted". Fixed words come from ds/prose.global.js (STRINGS).
-// BLOG_DRAFTS=0 leaves draft pages out.
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+// BLOG_DRAFTS=0 leaves draft pages out. The posts and tags come from src/lib/blog-source.mjs: the markdown, or with
+// CMS_SOURCE=payload the CMS's published posts (docs/adr/0003); everything below is the same for both.
+import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { createContext, runInContext } from "node:vm";
 import MarkdownIt from "markdown-it";
 import footnote from "markdown-it-footnote";
 import container from "markdown-it-container";
-import { load as yamlLoad } from "js-yaml";
 import { imageSize } from "image-size";
 import { createHighlighter, createCssVariablesTheme, bundledLanguages } from "shiki";
 import { ROOT, LANGS, read, dict } from "./site.mjs";
+import { loadSources, loadTags } from "./blog-source.mjs";
 import { checkUsted, slugify } from "./usted.mjs";
 
 export const PER_PAGE = 10;
@@ -47,7 +48,7 @@ async function build() {
 
   // ---- Tags ----
   const TAGS = new Map();
-  for (const tag of yamlLoad(read("_content/tags.yml")).tags || []) {
+  for (const tag of loadTags()) {
     if (!tag.key || !tag.en || !tag.es) { fail(`_content/tags.yml: every tag needs key, en and es (${JSON.stringify(tag)})`); continue; }
     checkUsted(tag.es, `_content/tags.yml ${tag.key}`, fail);
     TAGS.set(tag.key, { key: tag.key, name: { en: tag.en, es: tag.es }, slug: { en: slugify(tag.en), es: slugify(tag.es) } });
@@ -56,12 +57,8 @@ async function build() {
 
   // ---- Markdown ----
   const theme = createCssVariablesTheme({ name: "css-variables", variablePrefix: "--shiki-", fontStyle: true });
-  const sources = LANGS.flatMap((lang) => {
-    const dir = join(ROOT, "_content/posts", lang);
-    return existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith(".md")).sort().map((f) => ({ lang, file: `_content/posts/${lang}/${f}`, slug: f.slice(0, -3) })) : [];
-  });
-  for (const s of sources) s.raw = read(s.file).replace(/\r\n/g, "\n");
-  const fenceLangs = new Set(sources.flatMap((s) => [...s.raw.matchAll(/^(?:```|~~~)\s*([\w+#.-]+)/gm)].map((m) => m[1].toLowerCase())));
+  const sources = loadSources();
+  const fenceLangs = new Set(sources.flatMap((s) => [...s.body.matchAll(/^(?:```|~~~)\s*([\w+#.-]+)/gm)].map((m) => m[1].toLowerCase())));
   const highlighter = await createHighlighter({ themes: [theme], langs: [...fenceLangs].filter((l) => l in bundledLanguages) });
   const loaded = new Set(highlighter.getLoadedLanguages());
 
@@ -200,17 +197,14 @@ async function build() {
   }
 
   // ---- Read the posts ----
-  const FM = /^---\n([\s\S]*?)\n---\n?/;
   const posts = [];
   for (const s of sources) {
-    const m = s.raw.match(FM);
-    if (!m) { fail(`${s.file}: no front matter`); continue; }
-    let fm;
-    try { fm = yamlLoad(m[1]) || {}; } catch (e) { fail(`${s.file}: ${e.message}`); continue; }
+    if (s.fmError) { fail(`${s.file}: ${s.fmError}`); continue; }
+    const fm = s.fm;
     const date = fm.date instanceof Date ? fm.date.toISOString().slice(0, 10) : String(fm.date ?? "").slice(0, 10);
     const post = { lang: s.lang, file: s.file, slug: s.slug, id: String(fm.id ?? ""), title: String(fm.title ?? ""), dek: String(fm.dek ?? ""), date,
       tags: Array.isArray(fm.tags) ? fm.tags.map(String) : [], cover: fm.cover || "", coverAlt: String(fm.cover_alt ?? ""),
-      draft: fm.draft !== false, toc: fm.toc, body: s.raw.slice(m[0].length) };
+      draft: fm.draft !== false, toc: fm.toc, body: s.body };
     if (!post.id) fail(`${s.file}: needs an id (the same in both languages)`);
     if (!post.title) fail(`${s.file}: needs a title`);
     if (!post.dek) fail(`${s.file}: needs a dek`);
