@@ -18,7 +18,7 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
   const alt = await altMap();
   const hasQuotes = (await loadQuotes()).quotes.length > 0;
   const nav = {
-    label: d.nav.label, home: d.nav.home, about: d.nav.about, work: d.nav.work, resume: d.nav.resume, building: d.nav.building,
+    label: d.nav.label, home: d.nav.home, about: d.nav.about, resume: d.nav.resume, building: d.nav.building,
     contact: d.nav.contact, blog: d.nav.blog, recipes: d.nav.recipes, quotes: d.nav.quotes, language: d.nav.language,
   };
   return (

@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type Nav = Record<"label" | "home" | "about" | "work" | "resume" | "building" | "contact" | "blog" | "recipes" | "quotes" | "language", string>;
+type Nav = Record<"label" | "home" | "about" | "resume" | "building" | "contact" | "blog" | "recipes" | "quotes" | "language", string>;
 const NAMES = { en: "English", es: "Español" } as const;
 const HTML_LANG = { en: "en", es: "es-419" } as const;
 
@@ -33,7 +33,6 @@ export function Header({ lang, nav, showRecipes, showQuotes, alt }: { lang: "en"
       <Link className="mark" href={home} aria-label={nav.home}>Rod Johnson</Link>
       <nav aria-label={nav.label}>
         <Link href={`${home}#about`}>{nav.about}</Link>
-        <Link href={`${home}#work`}>{nav.work}</Link>
         <Link href={`${home}#resume`}>{nav.resume}</Link>
         <Link href={`${home}#building`}>{nav.building}</Link>
         <Link href={`${home}#contact`}>{nav.contact}</Link>
