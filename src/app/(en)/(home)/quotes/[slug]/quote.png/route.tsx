@@ -1,5 +1,5 @@
-// /quotes/<slug>/quote.png: the quote as a 1200×1200 image, one per quote, shared by both languages (src/lib/quote-image.tsx).
-import { loadQuotes, quoteAt } from "@/lib/quotes.mjs";
+// /quotes/<slug>/quote.png: the quote as a 1200×1200 image, one per quote, English text (src/lib/quote-image.tsx).
+import { loadQuotes, quoteAt, quoteText, quoteLabel, quoteAuthor, quoteSource } from "@/lib/quotes.mjs";
 import { quoteImage } from "@/lib/quote-image";
 
 export const dynamic = "force-static";
@@ -11,5 +11,6 @@ export async function generateStaticParams() {
 export async function GET(_req: Request, { params }: { params: Promise<{ slug: string }> }) {
   const at = await quoteAt((await params).slug);
   if (!at) return new Response("not found", { status: 404 });
-  return quoteImage(at.quote);
+  const x = at.quote;
+  return quoteImage({ ...x, text: quoteText(x, "en"), author: quoteAuthor(x, "en"), source: quoteSource(x, "en"), label: quoteLabel(x, "en") }, "en");
 }

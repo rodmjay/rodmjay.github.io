@@ -29,7 +29,11 @@ export function loadQuotes() {
       if (!SLUG.test(slug)) throw new Error(`quotes: bad slug ${JSON.stringify(slug)}`);
       // Non-latin scripts need Designer and Compliance first, and the image fonts carry Latin only (Designer 11/24).
       if (/[^\u0000-\u024F\u1E00-\u1EFF\u2000-\u206F]/.test(text + author)) throw new Error(`quotes: ${slug} has non-latin characters`);
-      quotes.push({ slug, text, author, source: str(r.source), year: str(r.year), lang: str(r.lang), link: safeLink(r.link),
+      // Spanish page, Spanish image (Rod 11/24: "the images need to have spanish translations also"): text_es is Philosopher's es-419 rendering.
+      // A quote with none would put English text on an /es/ page, so the build stops (a Spanish original needs none).
+      const textEs = str(r.text_es);
+      if (!textEs && str(r.lang) !== "es") throw new Error(`quotes: ${slug} has no Spanish text (text_es); the /es/ page and image would show English`);
+      quotes.push({ slug, text, textEs, translationSource: str(r.translation_source), authorEs: str(r.author_es), sourceEs: str(r.source_es), author, source: str(r.source), year: str(r.year), lang: str(r.lang), link: safeLink(r.link),
         about: both(r.about_author), meaning: both(r.meaning), apply: both(r.apply),
         // A translated quote shows its original under the image, labeled (Compliance 11/24).
         original: str(r.original_text) && /^[a-z]{2,3}$/.test(str(r.original_lang)) ? { text: str(r.original_text), lang: str(r.original_lang) } : null,
@@ -48,5 +52,12 @@ export async function quoteAt(slug) {
   const n = quotes.length;
   return { quote: quotes[i], index: i, total: n, prev: quotes[(i - 1 + n) % n], next: quotes[(i + 1) % n] };
 }
+// Author and source in the page's language when the feed has them (author_es, source_es); otherwise as written.
+export const quoteAuthor = (x, lang) => (lang === "es" && x.authorEs ? x.authorEs : x.author);
+export const quoteSource = (x, lang) => (lang === "es" && x.sourceEs ? x.sourceEs : x.source);
 export const quoteUrl = (lang, slug) => `${BASE[lang]}${slug}/`;
-export const quoteImage = (slug) => `/quotes/${slug}/quote.png`;
+export const quoteImage = (slug, lang = "en") => `${lang === "es" ? "/es" : ""}/quotes/${slug}/quote.png`;
+// The quote's words in the page's language: Spanish pages use text_es unless the quote is already Spanish.
+export const quoteText = (x, lang) => (lang === "es" && x.lang !== "es" && x.textEs ? x.textEs : x.text);
+// The label under it: on Spanish pages our own rendering says so ("traducción propia"), as Compliance passed for Flaubert.
+export const quoteLabel = (x, lang) => (lang === "es" && x.lang !== "es" && x.textEs ? (x.translationSource || x.translation.es) : x.translation[lang]);

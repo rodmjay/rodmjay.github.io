@@ -41,6 +41,8 @@ test("quotes: Spanish page has the same quote, Spanish labels", async ({ page })
   await expect(page).toHaveURL(/\/es\/quotes\/[a-z0-9-]+\/$/);
   await expect(page.getByRole("link", { name: "Cita siguiente" })).toBeVisible();
   await expect(page.locator("main")).toContainText("Qué significa");
+  // The image is the Spanish one (Rod 11/24: images need Spanish versions), served under /es/.
+  await expect(page.locator(".quote-figure img")).toHaveAttribute("src", /^\/es\/quotes\/[a-z0-9-]+\/quote\.png$/);
 });
 
 test("quotes: a quote page passes axe (EN and ES)", async ({ page }) => {
