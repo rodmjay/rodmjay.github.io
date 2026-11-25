@@ -39,10 +39,13 @@ export async function QuotePage({ lang, slug }: { lang: Lang; slug: string }) {
           <img src={quoteImage(x.slug)} width={SIZE} height={SIZE} alt={x.text} lang={x.lang || undefined} />
           <figcaption>
             <h1 className="ds-title-large">{x.author || q.unknownAuthor}</h1>
-            {(x.source || x.year || x.original) ? (
+            {(x.source || x.year || x.original || x.translation[lang]) ? (
               <p className="ds-body-medium ds-variant">
                 {(x.source || x.year) ? <cite>{[x.source || q.unknownSource, x.year].filter(Boolean).join(", ")}</cite> : null}
-                {x.original ? <>{(x.source || x.year) ? " · " : ""}{fill(q.translatedFrom, { language: langName(lang, x.original.lang) })}{x.translation[lang] ? ` (${x.translation[lang]})` : ""}</> : null}
+                {(x.original || x.translation[lang]) ? (x.source || x.year ? " · " : "") : null}
+                {x.original
+                  ? <>{fill(q.translatedFrom, { language: langName(lang, x.original.lang) })}{x.translation[lang] ? ` (${x.translation[lang]})` : ""}</>
+                  : x.translation[lang] || null}
               </p>
             ) : null}
           </figcaption>
