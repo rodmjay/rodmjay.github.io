@@ -2,6 +2,8 @@
 // Same markup and copy as src/page.html on Pages; the copy is i18n/{en,es}.json.
 import { dict, HTML_LANG, SITE } from "@/lib/site.mjs";
 import { meta } from "@/lib/meta";
+const RVP_ON = process.env.RVP_ON === "1"; // the test is built only where RVP_ON=1 (production after Rod's yes)
+const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/rvp/" : "/rvp/");
 import { ResumeForm } from "@/zones/resume/ResumeForm";
 
 type Lang = "en" | "es";
@@ -52,6 +54,16 @@ export function Home({ lang }: { lang: Lang }) {
             {d.building.items.map((it: Item) => <li key={it.title}><h3 className="ds-title-medium"><a href={it.url}>{it.title}</a></h3><p className="ds-body-medium ds-variant">{it.body}</p></li>)}
           </ul>
         </section>
+
+        {RVP_ON && (
+          <section className="rvp-home" aria-labelledby="rvp-home-title">
+            <div className="ds-card outlined">
+              <h2 className="ds-title-large" id="rvp-home-title">{dict(lang).rvp.title}</h2>
+              <p className="ds-body-large">{dict(lang).rvp.homeBody}</p>
+              <a className="ds-btn outlined" href={rvpUrl(lang, "")}>{dict(lang).rvp.homeBtn}</a>
+            </div>
+          </section>
+        )}
 
         <section id="how">
           <h2 className="ds-title-large">{d.how.heading}</h2>
