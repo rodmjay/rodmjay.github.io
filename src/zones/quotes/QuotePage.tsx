@@ -32,7 +32,6 @@ export async function QuotePage({ lang, slug }: { lang: Lang; slug: string }) {
     .map(([k, v]) => [q[k], v[lang]] as const).filter(([, t]) => t);
   return (
     <main id="main" className="col quote-page">
-      <p className="quote-link-row"><Link href={BASE[lang]} className="ds-btn text">← {q.all}</Link></p>
       <div className="quote-stage">
         <Link href={prev} rel="prev" className="ds-btn outlined quote-prev"><span aria-hidden="true">←</span> {q.prev}</Link>
         <figure className="quote quote-figure">

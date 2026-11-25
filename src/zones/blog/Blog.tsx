@@ -38,7 +38,7 @@ export async function BlogList({ path }: { path: string }) {
   const pageUrl = (n: number) => (n === 1 ? l.base : `${l.base}page/${n}/`);
   return (
     <>
-      <header className="page-head col"><h1 className="ds-headline-large" id="blog-title">{B.title}</h1><p className="ds-title-medium">{heading}</p></header>
+      <header className="page-head col"><h1 className="ds-headline-large" id="blog-title">{B.title}</h1><p className="ds-body-large">{heading}</p></header>
       <main id="main" className="col ix blog">
         {b.SAMPLE && l.items.length > 0 && <p className="ds-banner sample">{B.sample}</p>}
         {used.length > 0 && (

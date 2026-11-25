@@ -26,25 +26,35 @@ export const archetypeMeta = (lang: Lang, slug: string) => {
     path: rvpUrl(lang, slug), alt: rvpUrl(other(lang), slug), noindex: true, type: "article" });
 };
 
+const RESOURCES = ["Physical", "Intellectual", "Social"];
+const valuesProcess = (lang: Lang, key: string) => key.split("-").slice(1).map((f) => facetName(lang, f)).join(" · ");
+
 export function RvpIndex({ lang }: { lang: Lang }) {
   const s = strings(lang);
   return (
-    <main id="main" className="col rvp-page">
+    <main id="main" className="col rvp-page rvp-index">
       <h1 className="ds-headline-large">{s.title}</h1>
       <p className="ds-body-large">{s.lede}</p>
       <p className="ds-body-medium">{s.privacy}</p>
       <p className="ds-body-medium ds-variant">{s.notClinical}</p>
-      <p><Link href={rvpUrl(lang, "take")} className="ds-btn filled">{s.start}</Link></p>
+      <p><Link href={rvpUrl(lang, "take")} className="ds-btn">{s.start}</Link></p>
       <h2 className="ds-title-large">{s.allTitle}</h2>
-      <p className="ds-body-small ds-variant">{s.dimensions}</p>
-      <ul className="ds-list rvp-list">
-        {ARCHETYPES.map((a) => (
-          <li key={a.slug} className="ds-list-item">
-            <Link href={rvpUrl(lang, a.slug)}>{a.name[lang]}</Link>
-            <span className="ds-body-small ds-variant"> {facets(lang, a.key)}</span>
-          </li>
-        ))}
-      </ul>
+      <p className="ds-body-large ds-variant">{s.dimensions}</p>
+      {RESOURCES.map((r) => (
+        <section key={r} className="rvp-group" aria-labelledby={`rvp-g-${r}`}>
+          <h3 className="ds-title-medium" id={`rvp-g-${r}`}>{facetName(lang, `R.${r}`)}</h3>
+          <ul className="ds-grid rvp-grid" role="list">
+            {ARCHETYPES.filter((a) => a.key.startsWith(`R.${r}-`)).map((a) => (
+              <li key={a.slug}>
+                <Link href={rvpUrl(lang, a.slug)} className="ds-card outlined rvp-link">
+                  <span className="ds-title-small">{a.name[lang]}</span>
+                  <span className="ds-caption">{valuesProcess(lang, a.key)}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
     </main>
   );
 }
