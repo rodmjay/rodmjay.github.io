@@ -208,6 +208,52 @@ Rod chose his personal project over a separate one, after seeing Compliance's re
   - `rvp-auth-admin`: a small separate Edge Function that holds the service-role key and does exactly two things,
     create user and delete user. Only `rvp-account` calls it, with a shared secret.
 - **Probe:** a test that signs in as `rvp_api` and tries to read `public.contacts`, `text_log` and `bills` must fail.
+  Security also checks `has_*_privilege` across every schema: public, ops, auth, storage, vault, net and cron.
+- **A platform fact (Security addendum, 11/25).** Hosted Supabase puts `SUPABASE_SERVICE_ROLE_KEY` and
+  `SUPABASE_DB_URL` into every Edge Function's environment. So "no service key in the visitor path" holds for our code,
+  not for the process: code execution inside `rvp-account` could still read the key. We keep the function on Supabase
+  and add the controls below. Moving it to Azure would add a second platform, cold starts and another pipeline for one
+  function. If Security finds these controls not enough, the move to Azure is the fallback: only the two-action
+  `rvp-auth-admin` would then ever see the key.
+  - **Controls:**
+    - minimal dependencies, pinned and locked;
+    - no `eval` and no dynamic import;
+    - Security reviews every deploy of `rvp-account` and `rvp-auth-admin`, and records its hash in the register.
+  - **JWT checks:** user tokens are checked with `GET /auth/v1/user`, which also honours sign-out and delete, never
+    with the shared HS256 secret.
+  - **The `rvp_api` role:**
+    - NOSUPERUSER and NOBYPASSRLS;
+    - connection limit 5;
+    - statement and idle timeouts;
+    - TLS verify-full;
+    - member of no other role.
+
+    The migration creates it with no password. The password (40+ random characters, SCRAM) is set out of band as a
+    pre-hashed verifier and stored as an Edge secret through the Settings step. It is rotated yearly, on any
+    dependency change and on any incident, and connect errors never print it.
+  - **Definer functions:**
+    - owned by `rvp_owner`, not postgres, without BYPASSRLS;
+    - `search_path = ''`;
+    - no dynamic SQL;
+    - EXECUTE revoked from `PUBLIC` everywhere.
+  - **`rvp-auth-admin`:**
+    - POST only, 1 KB;
+    - a constant-time check of its own secret, separate from the database password;
+    - no other routes, and no keys or user lists in its output;
+    - `auth.users` holds RVP users only.
+  - **`rvp.contact_link`:**
+    - column-level rights, adds tags only;
+    - returns only the id, and never says whether the contact already existed.
+    - Every trigger and sync its insert fires is checked against the tag-skip:
+      - audit_log;
+      - automations;
+      - search_docs;
+      - the Quo, Google and iPhone contact syncs;
+      - new-contact prompts.
+
+    `text_tier = 'never'` stays the hard stop.
+- **"No agent sees an individual archetype" is a policy, not a wall:** postgres and the service role can still join
+  the tables. The consent and privacy text say so plainly.
 - **Contacts:** tagged `source/rodmjay.com` and `source/rvp`, with **no group and no privileges** and
   `text_tier = 'never'` (EA 11/25).
   - Compliance asked for a zero-privilege group to keep these contacts out of texting, Investigator enrichment and
@@ -269,7 +315,8 @@ Rod chose his personal project over a separate one, after seeing Compliance's re
   - **Erasure:** every `rvp_*` row can be deleted only under the erasure reason. A contact the RVP flow created is
     deleted; a pre-existing one is only unlinked.
   - **Backups:** `ops.snapshots` holds counts only.
-- **Security:** NOT YET. The 7 MUSTs are now in this ADR. The next pass is on the staging build.
+- **Security:** NOT YET. The 7 MUSTs and addendum A–H (probes P31–P36) are now in this ADR. The next pass is on the
+  staging build.
 - **Designer:** the spec is `design/specs/rvp-accounts.md` in the personal repo, with:
   - `/rvp/signin/`, and a "Sign in" link in the RVP header and the footer;
   - one-time-code input, resend after 30 seconds;
