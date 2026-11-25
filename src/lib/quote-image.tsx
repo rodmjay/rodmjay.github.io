@@ -57,3 +57,20 @@ export function homeOgImage(name: string, title: string) {
     { width: 1200, height: 630, fonts: loadFonts() },
   );
 }
+
+// A blog post's share card (og:image), one per language (Designer 11/25): the title on the plain card, name and site below.
+export function postOgImage(title: string, name: string) {
+  const size = title.length <= 60 ? 72 : title.length <= 100 ? 60 : 50;
+  return new ImageResponse(
+    (
+      <div style={{ width: 1200, height: 630, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 80, background: C.bg }}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", fontFamily: "Space Grotesk", fontWeight: 500, fontSize: size, lineHeight: 1.15, color: C.text }}>{title}</div>
+          <div style={{ display: "flex", width: 96, height: 4, background: C.accent, marginTop: 40 }} />
+        </div>
+        <div style={{ display: "flex", fontFamily: "Inter", fontSize: 30, color: C.muted }}>{name} · rodmjay.com</div>
+      </div>
+    ),
+    { width: 1200, height: 630, fonts: loadFonts() },
+  );
+}

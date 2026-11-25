@@ -15,6 +15,8 @@ export function meta(m: MetaIn): Metadata {
   const languages: Record<string, string> = { [HTML_LANG[m.lang]]: `${SITE}${m.path}` };
   if (m.alt) languages[HTML_LANG[other]] = `${SITE}${m.alt}`;
   if (m.alt || m.lang === "en") languages["x-default"] = `${SITE}${m.lang === "en" ? m.path : m.alt}`;
+  // Generated share cards carry text, so a Spanish page must use its Spanish card (Rod 11/24: images need Spanish versions).
+  if (m.lang === "es" && m.image && /\.png$/.test(m.image) && !m.image.startsWith("/es/")) throw new Error(`meta: ${m.path} is Spanish but its image ${m.image} is not under /es/`);
   const d = dict(m.lang), o = dict(other);
   return {
     metadataBase: new URL(SITE),

@@ -27,7 +27,8 @@ export async function listMeta(path: string) {
   const heading = l.tagKey ? pt("tagged", l.lang, { tag: b.tagInfo(l.tagKey).name[l.lang] }) : B.tagline;
   const title0 = l.tagKey ? heading : B.title;
   const title = l.n > 1 ? `${title0} · ${pt("page", l.lang, { n: l.n, total: l.total })}` : title0;
-  return meta({ lang: l.lang, title, description: l.tagKey ? heading : B.description, path: l.path, alt: l.otherPath, noindex: b.SAMPLE || !l.items.length, rss: true });
+  return meta({ lang: l.lang, title, description: l.tagKey ? heading : B.description, path: l.path, alt: l.otherPath, noindex: b.SAMPLE || !l.items.length, rss: true,
+    image: l.lang === "es" ? "/es/og.png" : "/og.png", imageAlt: `${dict(l.lang).hero.name}, ${dict(l.lang).hero.title}` });
 }
 
 export async function BlogList({ path }: { path: string }) {
@@ -82,7 +83,7 @@ export async function postMeta(lang: Lang, slug: string) {
   const { p } = await findPost(lang, slug);
   const other: Lang = lang === "en" ? "es" : "en";
   return meta({ lang, title: p.title, description: p.dek, path: p.url, alt: p.twinUrl === BASE[other] ? null : p.twinUrl, noindex: !p.live,
-    type: "article", image: p.cover || undefined, imageAlt: p.coverAlt, published: p.date, rss: true });
+    type: "article", image: p.cover || `${p.url}og.png`, imageAlt: p.cover ? p.coverAlt : p.title, published: p.date, rss: true });
 }
 
 export async function PostPage({ lang, slug }: { lang: Lang; slug: string }) {
