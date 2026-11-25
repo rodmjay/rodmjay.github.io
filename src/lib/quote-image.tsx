@@ -17,7 +17,7 @@ const loadFonts = () => (fonts ||= [
 ]);
 
 export const SIZE = 1200;
-const C = { bg: "#131318", text: "#e4e1e9", muted: "#c6c5d3", accent: "#ff7aae" };
+const C = { bg: "#121415", text: "#e2e2e3", muted: "#c1c7cc", accent: "#a9c8f2" };
 // 64px up to about 140 characters, 52px up to about 280, 44px beyond (never below 40; quotes stay short).
 export const quoteSize = (n: number) => (n <= 140 ? 64 : n <= 280 ? 52 : 44);
 
@@ -41,5 +41,19 @@ export function quoteImage(q: { text: string; author: string; source?: string; y
       </div>
     ),
     { width: SIZE, height: SIZE, fonts: loadFonts() },
+  );
+}
+
+// Home page og:image (Designer 11/25): a plain card with the name and title, no scene.
+export function homeOgImage(name: string, title: string) {
+  return new ImageResponse(
+    (
+      <div style={{ width: 1200, height: 630, display: "flex", flexDirection: "column", justifyContent: "center", padding: 96, background: C.bg }}>
+        <div style={{ display: "flex", fontFamily: "Space Grotesk", fontWeight: 500, fontSize: 88, lineHeight: 1.1, color: C.text }}>{name}</div>
+        <div style={{ display: "flex", width: 96, height: 4, background: C.accent, marginTop: 40, marginBottom: 32 }} />
+        <div style={{ display: "flex", fontFamily: "Inter", fontSize: 40, color: C.muted }}>{title}</div>
+      </div>
+    ),
+    { width: 1200, height: 630, fonts: loadFonts() },
   );
 }

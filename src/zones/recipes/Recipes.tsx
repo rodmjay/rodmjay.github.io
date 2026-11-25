@@ -1,5 +1,5 @@
 // Recipes (Rod 11/23; Designer's spec, design/specs/rodmjay-recipes.md): the index and tag pages as a card grid, and a
-// recipe page with ingredients and steps. It reuses the blog's parts (the horizon strip, chips, the pager). Until Rod
+// recipe page with ingredients and steps. It reuses the blog's parts (chips, the pager). Until Rod
 // approves the set (RECIPES_APPROVED=1) every page shows the Sample chip, is noindex and stays out of the sitemap.
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -58,10 +58,7 @@ export async function RecipeList({ path }: { path: string }) {
   const pageUrl = (n: number) => (n === 1 ? l.base : `${l.base}page/${n}/`);
   return (
     <>
-      <section className="strip wide" aria-labelledby="recipes-title">
-        <Html html={b.strip} />
-        <div className="wide-col"><h1 id="recipes-title">{R.title}</h1><p>{heading}</p>{r.sample && <Chip lang={lang} />}</div>
-      </section>
+      <header className="page-head wide-col"><h1 className="ds-headline-large" id="recipes-title">{R.title}</h1><p className="ds-title-medium">{heading}</p>{r.sample && <Chip lang={lang} />}</header>
       <main id="main" className="wide-col ix recipes">
         {r.sample && l.items.length > 0 && <p className="ds-banner sample">{R.sample}</p>}
         {used.length > 0 && (
@@ -127,7 +124,6 @@ export async function RecipePage({ lang, slug }: { lang: Lang; slug: string }) {
   const [basedPre, basedPost] = R.basedOn.split("{source}");
   return (
     <>
-      <div className="strip slim" aria-hidden="true"><Html html={b.stripSlim} /></div>
       <main id="main" className="col post recipes recipe">
         <article>
           <header className="ds-post-head">

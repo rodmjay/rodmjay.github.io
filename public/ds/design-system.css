@@ -79,39 +79,39 @@
 
 :root,
 [data-brand="rod"] {
-  --md-sys-color-background: light-dark(#fbf8ff, #131318);
-  --md-sys-color-on-background: light-dark(#1b1b21, #e4e1e9);
-  --md-sys-color-surface: light-dark(#fbf8ff, #131318);
-  --md-sys-color-surface-dim: light-dark(#dbd9e0, #131318);
-  --md-sys-color-surface-bright: light-dark(#fbf8ff, #39393f);
-  --md-sys-color-surface-container-lowest: light-dark(#ffffff, #0d0e13);
-  --md-sys-color-surface-container-low: light-dark(#f5f2fa, #1b1b21);
-  --md-sys-color-surface-container: light-dark(#efedf4, #1f1f25);
-  --md-sys-color-surface-container-high: light-dark(#e9e7ef, #29292f);
-  --md-sys-color-surface-container-highest: light-dark(#e4e1e9, #34343a);
-  --md-sys-color-on-surface: light-dark(#1b1b21, #e4e1e9);
-  --md-sys-color-surface-variant: light-dark(#e2e1ef, #454651);
-  --md-sys-color-on-surface-variant: light-dark(#454651, #c6c5d3);
-  --md-sys-color-inverse-surface: light-dark(#303036, #e4e1e9);
-  --md-sys-color-inverse-on-surface: light-dark(#f2eff7, #303036);
-  --md-sys-color-outline: light-dark(#767682, #90909c);
-  --md-sys-color-outline-variant: light-dark(#c6c5d3, #454651);
+  --md-sys-color-background: light-dark(#f9f9fa, #121415);
+  --md-sys-color-on-background: light-dark(#1a1c1d, #e2e2e3);
+  --md-sys-color-surface: light-dark(#f9f9fa, #121415);
+  --md-sys-color-surface-dim: light-dark(#dadadb, #121415);
+  --md-sys-color-surface-bright: light-dark(#f9f9fa, #38393b);
+  --md-sys-color-surface-container-lowest: light-dark(#ffffff, #0d0e10);
+  --md-sys-color-surface-container-low: light-dark(#f4f3f5, #1a1c1d);
+  --md-sys-color-surface-container: light-dark(#eeeeef, #1e2021);
+  --md-sys-color-surface-container-high: light-dark(#e8e8e9, #282a2b);
+  --md-sys-color-surface-container-highest: light-dark(#e2e2e3, #333536);
+  --md-sys-color-on-surface: light-dark(#1a1c1d, #e2e2e3);
+  --md-sys-color-surface-variant: light-dark(#dde3e8, #41484b);
+  --md-sys-color-on-surface-variant: light-dark(#41484b, #c1c7cc);
+  --md-sys-color-inverse-surface: light-dark(#2f3132, #e2e2e3);
+  --md-sys-color-inverse-on-surface: light-dark(#f1f0f2, #2f3132);
+  --md-sys-color-outline: light-dark(#72787c, #8b9296);
+  --md-sys-color-outline-variant: light-dark(#c1c7cc, #41484b);
   --md-sys-color-shadow: light-dark(#000000, #000000);
   --md-sys-color-scrim: light-dark(#000000, #000000);
-  --md-sys-color-surface-tint: light-dark(#b8005c, #ff7aae);
-  --md-sys-color-primary: light-dark(#b8005c, #ff7aae);
-  --md-sys-color-on-primary: light-dark(#ffffff, #65002f);
-  --md-sys-color-primary-container: light-dark(#ffd9e1, #8f0045);
-  --md-sys-color-on-primary-container: light-dark(#8f0045, #ffd9e1);
-  --md-sys-color-inverse-primary: light-dark(#ffb1c5, #ba005d);
-  --md-sys-color-secondary: light-dark(#74565e, #e3bdc5);
-  --md-sys-color-on-secondary: light-dark(#ffffff, #422930);
-  --md-sys-color-secondary-container: light-dark(#ffd9e1, #5b3f46);
-  --md-sys-color-on-secondary-container: light-dark(#5b3f46, #ffd9e1);
-  --md-sys-color-tertiary: light-dark(#00687b, #57d6f5);
-  --md-sys-color-on-tertiary: light-dark(#ffffff, #003641);
-  --md-sys-color-tertiary-container: light-dark(#aeecff, #004e5d);
-  --md-sys-color-on-tertiary-container: light-dark(#004e5d, #aeecff);
+  --md-sys-color-surface-tint: light-dark(#1f4e8c, #a9c8f2);
+  --md-sys-color-primary: light-dark(#1f4e8c, #a9c8f2);
+  --md-sys-color-on-primary: light-dark(#ffffff, #003063);
+  --md-sys-color-primary-container: light-dark(#d6e3ff, #144684);
+  --md-sys-color-on-primary-container: light-dark(#144684, #d6e3ff);
+  --md-sys-color-inverse-primary: light-dark(#a9c7ff, #335f9d);
+  --md-sys-color-secondary: light-dark(#555f71, #bdc7dc);
+  --md-sys-color-on-secondary: light-dark(#ffffff, #273141);
+  --md-sys-color-secondary-container: light-dark(#d9e3f9, #3e4758);
+  --md-sys-color-on-secondary-container: light-dark(#3e4758, #d9e3f9);
+  --md-sys-color-tertiary: light-dark(#0a6a67, #86d4d0);
+  --md-sys-color-on-tertiary: light-dark(#ffffff, #003735);
+  --md-sys-color-tertiary-container: light-dark(#a2f0ec, #00504d);
+  --md-sys-color-on-tertiary-container: light-dark(#00504d, #a2f0ec);
   --md-sys-color-error: light-dark(#ba1a1a, #ffb4ab);
   --md-sys-color-on-error: light-dark(#ffffff, #690005);
   --md-sys-color-error-container: light-dark(#ffdad6, #93000a);
@@ -399,6 +399,32 @@
 .ds-connect-perm li { display: flex; gap: var(--space-2); color: var(--md-sys-color-on-surface); }
 .ds-connect-perm.can li::before { content: "✓"; color: var(--success); font-weight: 700; }
 .ds-connect-perm.cannot li::before { content: "✕"; color: var(--md-sys-color-on-surface-variant); font-weight: 700; }
+
+.ds-choice { position: relative; display: grid; grid-template-columns: 1fr; align-items: start; gap: var(--space-1) var(--space-4); min-height: 4.5rem; padding: var(--space-4) var(--space-5);
+  border-radius: var(--md-sys-shape-corner-medium); background: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface); box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant); cursor: pointer;
+  transition: background-color 100ms linear; }
+.ds-choice > input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: inherit; }
+.ds-choice:has(> .ds-icon, > svg) { grid-template-columns: auto 1fr; }
+.ds-choice > .ds-icon, .ds-choice > svg { grid-row: span 2; width: 1.5rem; height: 1.5rem; color: var(--md-sys-color-primary); }
+.ds-choice-title { font: var(--md-sys-typescale-title-medium-weight) var(--md-sys-typescale-title-medium-size)/var(--md-sys-typescale-title-medium-line-height) var(--md-ref-typeface-plain); padding-inline-end: 1.75rem; }
+.ds-choice:has(> .ds-icon, > svg) :is(.ds-choice-title, .ds-choice-text) { grid-column: 2; }
+.ds-choice-text { font: var(--md-sys-typescale-body-medium-weight) var(--md-sys-typescale-body-medium-size)/var(--md-sys-typescale-body-medium-line-height) var(--md-ref-typeface-plain); color: var(--md-sys-color-on-surface-variant); }
+.ds-choice-mark { position: absolute; top: var(--space-3); inset-inline-end: var(--space-3); width: 1.25rem; height: 1.25rem; border-radius: 50%; box-shadow: inset 0 0 0 2px var(--md-sys-color-outline); display: grid; place-items: center; color: var(--md-sys-color-on-primary); }
+.ds-choice:has(input[type="checkbox"]) .ds-choice-mark { border-radius: 0.3rem; }
+.ds-choice-mark svg { width: 0.875rem; height: 0.875rem; opacity: 0; }
+.ds-choice:has(input:checked) { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); box-shadow: inset 0 0 0 2px var(--md-sys-color-primary); }
+.ds-choice:has(input:checked) .ds-choice-text { color: var(--md-sys-color-on-primary-container); }
+.ds-choice:has(input:checked) .ds-choice-mark { background: var(--md-sys-color-primary); box-shadow: none; }
+.ds-choice:has(input:checked) .ds-choice-mark svg { opacity: 1; }
+.ds-choice:has(input:focus-visible) { outline: 3px solid var(--md-sys-color-primary); outline-offset: 2px; }
+.ds-choice:has(input:disabled, input[aria-disabled="true"]) { cursor: not-allowed; opacity: 0.38; }
+@media (prefers-reduced-motion: reduce) { .ds-choice { transition: none; } }
+
+.ds-caption { margin-top: var(--space-2); font: 400 var(--md-sys-typescale-body-small-size)/1.5 var(--md-ref-typeface-plain); color: var(--md-sys-color-on-surface-variant); }
+
+.ds-feed { display: grid; gap: var(--space-4); }
+.ds-feed + .ds-feed { margin-top: var(--space-10, 3rem); }
+.ds-feed-title { margin: 0; font: 500 var(--md-sys-typescale-title-large-size)/1.3 var(--md-ref-typeface-brand, var(--md-ref-typeface-plain)); color: var(--md-sys-color-on-surface); }
 
 .ds-dialog {
   width: min(28rem, calc(100vw - 2rem)); max-height: calc(100dvh - 3rem); padding: 0; border: none;

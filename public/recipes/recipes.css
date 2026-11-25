@@ -1,8 +1,7 @@
 /* Recipes: the card grid and the recipe page (Designer spec, design/specs/rodmjay-recipes.md). Layout only; colors,
-   type and components come from the design system (rod brand); the strip and scene colors come from site.css and blog.css. */
+   type and components come from the design system (rod brand). */
 .wide-col { max-width: 72rem; margin: 0 auto; padding: 0 var(--gutter); }
-.strip .sample-chip { margin-top: var(--space-3); width: fit-content; }
-.strip.wide .wide-col { position: relative; height: 100%; display: grid; align-content: start; padding-top: clamp(1.25rem, 3vw, 2.5rem); box-sizing: border-box; }
+.page-head .sample-chip { margin-top: var(--space-3); width: fit-content; }
 .sample-chip { pointer-events: none; }
 
 /* Index: 3 columns at 1280, 2 at 768, 1 on phones. The whole card is one link; focus is the system ring. */
@@ -49,7 +48,7 @@
 
 /* Print: plain black on white, no scene, no header or nav. */
 @media print {
-  .bar, .skip, .strip, .foot, .recipe-print, .ds-post-lang, .ds-post-tags, .sample-chip, .recipe-photo { display: none !important; }
+  .bar, .skip, .page-head, .foot, .recipe-print, .ds-post-lang, .ds-post-tags, .sample-chip, .recipe-photo { display: none !important; }
   body, .ds { background: #fff !important; color: #000 !important; }
   .recipe * { color: #000 !important; }
   .recipe-body { grid-template-columns: 1fr 2fr; }

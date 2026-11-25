@@ -21,7 +21,9 @@
   "hero": {
     "name": "Rod Johnson",
     "title": "Director of Architecture",
-    "lede": "I design how software gets built: the architecture, the standards and now the AI tools behind it."
+    "lede": "I design how software gets built: the architecture, the standards and now the AI tools behind it.",
+    "ctaResume": "Get my resume",
+    "ctaContact": "Contact"
   },
   "about": {
     "heading": "About",
