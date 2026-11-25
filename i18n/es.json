@@ -307,6 +307,7 @@
     "privacyBody": "Puede pedirme que borre de forma permanente lo que tengo bajo su correo electrónico.",
     "privacyBtn": "Quitar mi información",
     "footerLink": "Quitar mi información",
-    "keepRecord": "Solo conservo un registro de que se hizo: un hash unidireccional con clave de su correo, la fecha y los tipos de datos borrados. No incluye su nombre, lo conservo 24 meses, y solo demuestra que el borrado ocurrió y me permite reconocer una solicitud repetida. Puedo conservar lo que la ley me obligue a conservar."
+    "keepRecord": "Solo conservo un registro de que se hizo: un hash unidireccional con clave de su correo, la fecha y los tipos de datos borrados. No incluye su nombre, lo conservo 24 meses, y solo demuestra que el borrado ocurrió y me permite reconocer una solicitud repetida. Puedo conservar lo que la ley me obligue a conservar.",
+    "backups": "Las copias en mis respaldos nocturnos de la base de datos desaparecen en un plazo de 30 días. Las copias en respaldos antiguos del repositorio pueden durar más, y las borro a mano."
   }
 }
