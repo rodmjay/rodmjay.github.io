@@ -23,6 +23,16 @@ export function Home({ lang }: { lang: Lang }) {
   const r = d.resume;
   return (
     <>
+      {/* A profile-header cover (Designer, rodmjay-professional.md 11/25, Rod: same as his LinkedIn banner): decorative, no text over it. */}
+      <div className="cover">
+        <picture>
+          <source media="(max-width: 599px)" type="image/avif" srcSet="/img/cover-m-750.avif 750w, /img/cover-m-1125.avif 1125w" sizes="100vw" />
+          <source media="(max-width: 599px)" type="image/webp" srcSet="/img/cover-m-750.webp 750w, /img/cover-m-1125.webp 1125w" sizes="100vw" />
+          <source type="image/avif" srcSet="/img/cover-1280.avif 1280w, /img/cover-1920.avif 1920w, /img/cover-2560.avif 2560w" sizes="100vw" />
+          <img src="/img/cover-1920.webp" srcSet="/img/cover-1280.webp 1280w, /img/cover-1920.webp 1920w, /img/cover-2560.webp 2560w" sizes="100vw"
+            width={3168} height={1344} alt="" fetchPriority="high" loading="eager" decoding="async" />
+        </picture>
+      </div>
       <main id="main" className="col">
         <section className="hero" aria-labelledby="hero-name">
           <div className="hero-top">
