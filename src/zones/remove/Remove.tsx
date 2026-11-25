@@ -26,12 +26,13 @@ function withMail(text: string) {
 export function Remove({ lang }: { lang: Lang }) {
   const r = dict(lang).remove;
   return (
-    <main id="main" className="col quotes-page">
+    <main id="main" className="col quotes-page remove-page">
       <h1 className="ds-headline-medium project-title">{r.title}</h1>
       <p className="ds-body-large">{r.lede}</p>
       <RemoveForm lang={lang} t={r} />
-      <p className="ds-body-medium">{withMail(r.scope)}</p>
-      <h2 className="ds-title-large">{r.coveredHeading}</h2>
+      <noscript><p className="ds-body-large">{r.nojs}</p></noscript>
+      <p className="ds-body-medium remove-scope">{withMail(r.scope)}</p>
+      <h2 className="ds-title-large remove-h2">{r.coveredHeading}</h2>
       <p className="ds-body-large">{r.covered}</p>
       <p className="ds-body-large">{r.backups}</p>
       <p className="ds-body-large">{r.keepRecord}</p>
@@ -43,7 +44,7 @@ export function Remove({ lang }: { lang: Lang }) {
 export function RemoveConfirm({ lang }: { lang: Lang }) {
   const r = dict(lang).remove;
   return (
-    <main id="main" className="col quotes-page">
+    <main id="main" className="col quotes-page remove-page">
       <ConfirmRemoval lang={lang} t={r} requestHref={PATH[lang]} homeHref={lang === "en" ? "/" : "/es/"} />
       <noscript><p className="ds-body-large">{r.nojs}</p></noscript>
     </main>

@@ -281,11 +281,11 @@
     "coveredHeading": "Qué cubre",
     "covered": "Sus solicitudes de currículum, descargas, resultados de consultas, registro de contacto, etiquetas y menciones que pueda encontrar en mi base de datos. Los correos y mensajes de texto entre nosotros los borro a petición, en un plazo de 30 días.",
     "privacy": "Privacidad",
-    "confirmTitle": "Confirme el borrado",
+    "confirmTitle": "Confirmar el borrado",
     "confirmAsk": "¿Borrar todo lo que pueda encontrar de {email}? Es permanente.",
     "confirmBtn": "Sí, bórrelo",
     "confirming": "Borrando…",
-    "received": "Gracias, recibí su confirmación. Terminaré en un plazo de 30 días y le escribiré.",
+    "received": "Su solicitud está confirmada. Borraré lo que tengo bajo este correo y le escribiré cuando termine, en un plazo de 30 días.",
     "expired": "Este enlace venció. Pida uno nuevo.",
     "used": "Este enlace ya se usó.",
     "invalid": "Este enlace no es válido. Pida uno nuevo.",
@@ -308,6 +308,6 @@
     "privacyBtn": "Quitar mi información",
     "footerLink": "Quitar mi información",
     "keepRecord": "Solo conservo un registro de que se hizo: un hash unidireccional con clave de su correo, la fecha y los tipos de datos borrados. No incluye su nombre, lo conservo 24 meses, y solo demuestra que el borrado ocurrió y me permite reconocer una solicitud repetida. Puedo conservar lo que la ley me obligue a conservar.",
-    "backups": "Las copias en mis respaldos nocturnos de la base de datos desaparecen en un plazo de 30 días. Las copias en respaldos antiguos del repositorio pueden durar más, y las borro a mano."
+    "backups": "Las copias en mis respaldos nocturnos de la base de datos desaparecen en un plazo de 30 días. Las copias de respaldo privadas más antiguas aún pueden contenerlo."
   }
 }
