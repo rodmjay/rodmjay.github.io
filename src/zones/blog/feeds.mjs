@@ -51,6 +51,7 @@ export async function sitemap() {
     for (const x of r.byLang.en) urls.push(pair(x.url, x.twinUrl, day(x.updatedAt)));
   }
   if (REMOVE_LIVE) urls.push(pair("/remove/", "/es/remove/"));
+  if (process.env.RVP_ON === "1") urls.push(pair("/rvp/", "/es/rvp/")); // the test's start page; take, result and archetype pages are noindex
   for (const x of q.quotes) urls.push(pair(`/quotes/${x.slug}/`, `/es/quotes/${x.slug}/`));
   const body = `<?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
