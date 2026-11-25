@@ -10,7 +10,7 @@ import { join, extname, normalize } from "node:path";
 
 const ROOT = join(process.cwd(), "out");
 const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".json": "application/json", ".pdf": "application/pdf", ".xml": "application/xml",
-  ".txt": "text/plain; charset=utf-8", ".woff2": "font/woff2", ".webp": "image/webp", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".yml": "text/yaml" };
+  ".txt": "text/plain; charset=utf-8", ".woff2": "font/woff2", ".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".yml": "text/yaml" };
 const port = Number(process.argv[2] || 4321);
 const CONFIG = JSON.parse(await readFile(join(ROOT, "staticwebapp.config.json"), "utf8"));
 const routeMatch = (route, path) => (route.endsWith("/*") ? path.startsWith(route.slice(0, -1)) || path === route.slice(0, -2) : path === route);

@@ -1,8 +1,12 @@
-// The Quotes page (Designer's spec design/specs/rodmjay-quotes.md): one column, a list of figures, the quote in its own
-// language, labels in the page's. With no quotes it keeps the h1 and one line, is noindex, and the nav link hides.
+// The Quotes index (Designer's spec design/specs/rodmjay-quotes.md, update 11/24): a grid of each quote's image, linking
+// to its own page. With no quotes it keeps the h1 and one line, is noindex, and the nav link hides.
+import Link from "next/link";
 import { dict } from "@/lib/site.mjs";
 import { meta } from "@/lib/meta";
-import { loadQuotes, BASE } from "@/lib/quotes.mjs";
+import { loadQuotes, BASE, quoteUrl, quoteImage } from "@/lib/quotes.mjs";
+import { SIZE } from "@/lib/quote-image";
+
+const short = (s: string, n: number) => (s.length > n ? `${s.slice(0, n - 1).trimEnd()}…` : s);
 
 type Lang = "en" | "es";
 
@@ -21,16 +25,12 @@ export async function Quotes({ lang }: { lang: Lang }) {
       {quotes.length ? (
         <>
           <p className="ds-body-large">{q.lede}</p>
-          <ul className="quotes ds-prose" role="list">
+          <ul className="ds-grid quote-grid" role="list">
             {quotes.map((x: any) => (
-              <li key={x.slug || x.text}>
-                <figure className="quote">
-                  <blockquote lang={x.lang || undefined}><p className="ds-body-large">{x.text}</p></blockquote>
-                  <figcaption>
-                    {x.author || q.unknownAuthor}
-                    {(x.source || x.year) ? <>, <cite>{[x.source || q.unknownSource, x.year].filter(Boolean).join(", ")}</cite></> : null}
-                  </figcaption>
-                </figure>
+              <li key={x.slug}>
+                <Link href={quoteUrl(lang, x.slug)} className="quote-thumb">
+                  <img src={quoteImage(x.slug)} width={SIZE} height={SIZE} loading="lazy" alt={short(x.text, 120)} lang={x.lang || undefined} />
+                </Link>
               </li>
             ))}
           </ul>

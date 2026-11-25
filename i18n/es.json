@@ -212,6 +212,18 @@
     "lede": "Frases a las que vuelvo una y otra vez.",
     "empty": "Todavía no hay citas.",
     "unknownSource": "Fuente desconocida",
-    "unknownAuthor": "Desconocido"
+    "unknownAuthor": "Desconocido",
+    "all": "Todas las citas",
+    "prev": "Cita anterior",
+    "next": "Cita siguiente",
+    "position": "{i} de {n}",
+    "aboutAuthor": "Sobre el autor",
+    "meaning": "Qué significa",
+    "apply": "Cómo ponerla en práctica",
+    "source": "Fuente",
+    "download": "Descargar imagen",
+    "pageTitle": "Cita de {author}",
+    "translatedFrom": "traducida del {language}",
+    "original": "Original ({language})"
   }
 }
