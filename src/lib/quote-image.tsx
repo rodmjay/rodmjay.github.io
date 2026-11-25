@@ -23,9 +23,9 @@ export const quoteSize = (n: number) => (n <= 140 ? 64 : n <= 280 ? 52 : 44);
 
 // One image serves both languages, so its words are English; a translated quote says so (Compliance 11/24).
 const english = (code: string) => { try { return new Intl.DisplayNames(["en"], { type: "language" }).of(code) || code; } catch { return code; } };
-export function quoteImage(q: { text: string; author: string; source?: string; year?: string; original?: { lang: string } | null }) {
+export function quoteImage(q: { text: string; author: string; source?: string; year?: string; original?: { lang: string } | null; translation?: { en: string } }) {
   const by = [q.author || "Unknown", [q.source, q.year].filter(Boolean).join(", ")].filter(Boolean).join(", ")
-    + (q.original ? ` · translated from ${english(q.original.lang)}` : "");
+    + (q.original ? ` · translated from ${english(q.original.lang)}${q.translation?.en ? ` (${q.translation.en})` : ""}` : "");
   return new ImageResponse(
     (
       <div style={{ width: SIZE, height: SIZE, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 96, background: C.bg }}>

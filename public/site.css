@@ -31,9 +31,19 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .nf { padding: var(--space-16) var(--gutter); }
 /* Medium screens: name and language on the first row, the links on their own row under them */
 @media (min-width: 600.02px) and (max-width: 54rem) { .bar { row-gap: var(--space-2); } .bar nav { order: 3; flex-basis: 100%; margin-right: 0; } .bar .ds-lang { margin-left: auto; } }
+/* Phones: a Menu button instead of the links; its panel sits over the content right under the header (Designer 11/24). */
+.bar-menu, .phone-nav { display: none; }
 @media (max-width: 600px) {
-  .bar nav { display: none; }
-  .bar { justify-content: space-between; }
+  .bar nav.bar-links { display: none; }
+  .bar { justify-content: space-between; gap: var(--space-3); }
+  .bar .mark { margin-right: auto; }
+  .bar-menu { display: inline-flex; min-height: 48px; }
+  .phone-nav { display: flex; flex-direction: column; position: absolute; left: 0; right: 0; z-index: 20; padding: var(--space-2) 0;
+    background: var(--md-sys-color-surface-container); box-shadow: var(--md-sys-elevation-level2); }
+  .phone-nav.static { position: static; box-shadow: none; }
+  .phone-nav a { display: flex; align-items: center; min-height: 48px; padding: 0 var(--gutter); border-left: 3px solid transparent;
+    color: var(--md-sys-color-on-surface); text-decoration: none; font-weight: 500; }
+  .phone-nav a[aria-current] { border-left-color: var(--md-sys-color-primary); color: var(--md-sys-color-primary); }
 }
 
 /* Work items outlined in cyan (Designer 11/21). */
@@ -128,15 +138,31 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .quote-thumb { display: block; border-radius: var(--md-sys-shape-corner-medium, 12px); }
 .quote-thumb img, .quote-figure img { display: block; width: 100%; height: auto; border-radius: var(--md-sys-shape-corner-medium, 12px); }
 .quote-thumb:focus-visible { outline: 3px solid var(--md-sys-color-primary); outline-offset: 3px; }
-.quote-stage { display: grid; grid-template-columns: 1fr auto 1fr; grid-template-areas: "fig fig fig" "prev pos next"; gap: var(--space-4); align-items: center; margin: var(--space-4) 0; }
+.quote-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "fig fig" "pos pos" "prev next"; gap: var(--space-4); align-items: center; margin: var(--space-4) 0; }
 .quote-figure { grid-area: fig; margin: 0; }
-.quote-figure figcaption { margin-top: var(--space-3); }
-.quote-prev { grid-area: prev; justify-self: start; min-height: 48px; }
-.quote-next { grid-area: next; justify-self: end; min-height: 48px; }
-.quote-pos { grid-area: pos; margin: 0; text-align: center; }
+.quote-figure figcaption { margin-top: var(--space-4); }
+.quote-figure figcaption h1 { margin: 0; }
+.quote-figure figcaption p { margin: var(--space-1) 0 0; }
+/* Text links line up with the body text (the .links row does the same). */
+.quote-link-row > .ds-btn.text { margin-inline-start: calc(-1 * var(--space-3)); }
+.quote-stage > * { min-width: 0; }
+.quote-prev { grid-area: prev; justify-self: stretch; justify-content: center; min-height: 48px; }
+.quote-next { grid-area: next; justify-self: stretch; justify-content: center; min-height: 48px; }
+.quote-pos { grid-area: pos; margin: 0; text-align: center; white-space: nowrap; }
 @media (min-width: 840px) {
   .quote-page.col { max-width: none; }
-  .quote-stage { grid-template-columns: 1fr minmax(0, 40rem) 1fr; grid-template-areas: "prev fig next" ". pos ."; }
+  .quote-stage { grid-template-columns: minmax(0, 1fr) minmax(0, 40rem) minmax(0, 1fr); grid-template-areas: "prev fig next" ". pos ."; }
+  .quote-prev, .quote-next { justify-self: center; }
 }
 .quote-more section { margin-top: var(--space-6); }
 .quotes-page { padding-top: var(--space-8); }
+
+/* Lookup consent (Designer's spec design/specs/rodmjay-resume-consent.md) */
+.ds .rbox .consent .ds-check { min-height: 3rem; }
+.ds .rbox .consent .ds-check input[type="checkbox"] { flex: none; }
+.ds .rbox #rf-lookup-help, .ds .rbox .lookup-err { margin: 0 0 var(--space-2); padding-left: calc(1.125rem + var(--space-3)); }
+.ds .rbox .lookup-err { display: flex; align-items: center; gap: var(--space-2); color: var(--md-sys-color-error); margin: 0 0 var(--space-2); }
+.ds .rbox .lookup-err[hidden] { display: none; }
+#rf-lookup[aria-invalid="true"] { outline: 2px solid var(--md-sys-color-error); outline-offset: 2px; }
+.lookups-h { scroll-margin-top: 5rem; margin-top: var(--space-8); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

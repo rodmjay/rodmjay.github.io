@@ -2,7 +2,7 @@
 // Administrator 11/24). The feed already holds only quotes Rod rated above 2 stars, and only slug, text, author,
 // source and year (Designer's spec: design/specs/rodmjay-quotes.md). A feed that's off and an unset
 // LIFE_API both give none: "no quotes yet", and the section stays hidden. Any other failure fails the build.
-// Row: {slug, text, author, source?, year?, lang?, link?, about_author?, meaning?, apply?, original_text?, original_lang?}. The last three are {en, es}
+// Row: {slug, text, author, source?, year?, lang?, link?, about_author?, meaning?, apply?, original_text?, original_lang?, translation_label?}. The last three are {en, es}
 // (Philosopher writes them, Rod 11/24 "add more value"); each shows only when written. The feed's order is kept (newest
 // rated first, then author). Each quote has its own page, /quotes/<slug>/, and a 1200×1200 image, /quotes/<slug>/quote.png
 // (src/lib/quote-image.tsx), sized to post as is on Instagram, Facebook or X (Rod 11/24).
@@ -32,7 +32,9 @@ export function loadQuotes() {
       quotes.push({ slug, text, author, source: str(r.source), year: str(r.year), lang: str(r.lang), link: safeLink(r.link),
         about: both(r.about_author), meaning: both(r.meaning), apply: both(r.apply),
         // A translated quote shows its original under the image, labeled (Compliance 11/24).
-        original: str(r.original_text) && /^[a-z]{2,3}$/.test(str(r.original_lang)) ? { text: str(r.original_text), lang: str(r.original_lang) } : null });
+        original: str(r.original_text) && /^[a-z]{2,3}$/.test(str(r.original_lang)) ? { text: str(r.original_text), lang: str(r.original_lang) } : null,
+        // "our translation" when the English is ours, not a published translator's (Compliance 11/24).
+        translation: both(r.translation_label) });
     }
     return { quotes, from: "public-life quotes" };
   })());

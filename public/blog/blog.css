@@ -1,7 +1,6 @@
 /* Blog: the horizon strip, the index and the post page (Designer spec, design/specs/rodmjay-blog.md).
    Type, code, quotes and lists come from .ds-prose (design system v0.29.0); scene colors come from site.css. */
 .bar nav a[aria-current] { color: var(--md-sys-color-on-surface); box-shadow: inset 0 -2px 0 var(--md-sys-color-primary); }
-@media (max-width: 600px) { .bar nav { display: flex; margin-right: auto; } .bar nav a:not([aria-current]) { display: none; } }
 
 /* Horizon strip: the hero's horizon cut down to a band. Static: reading pages don't move. */
 .strip { position: relative; height: clamp(10rem, 20vw, 15rem); overflow: hidden;

@@ -16,6 +16,8 @@ test("quotes: index → quote → keys and links → wrap", async ({ page }) => 
   const first = page.url();
   await page.evaluate(() => { (window as any).__stay = 1; });
   await expect(page.locator(".quote-pos")).toHaveText(`1 of ${n}`);
+  await expect(page.locator("h1")).toHaveCount(1);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => window.innerWidth));
   const img = page.locator(".quote-figure img");
   await expect(img).toHaveAttribute("alt", /\S/);
   expect(await img.evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth)).toBe(1200);

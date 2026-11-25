@@ -44,7 +44,7 @@ test("home: section links and the privacy link stay in the page", async ({ page,
     await page.locator(`header.bar nav a[href="/#${id}"]`).click();
     await expectStayed(page, new RegExp(`/#${id}$`));
   }
-  await page.locator("#rform").getByRole("link").click();
+  await page.locator("#rform").getByRole("link", { name: "Privacy", exact: true }).click();
   await expectStayed(page, /\/privacy\/$/);
 });
 
@@ -95,10 +95,15 @@ test("resume form posts what site.js posted, to the same function", async ({ pag
   await page.fill("#rf-company", "Ejemplo");
   await page.check("#rf-consent");
   await page.locator("#rf-submit").click();
+  await expect(page.locator("#rf-lookup-err")).toBeVisible();
+  expect(sent).toBeNull();
+  await page.check("#rf-lookup");
+  await expect(page.locator("#rf-lookup-err")).toBeHidden();
+  await page.locator("#rf-submit").click();
   await expect(page.locator("#rdone")).toBeVisible();
   await expect(page.locator("#rdone-link")).toHaveAttribute("href", "https://example.test/resume.pdf");
-  expect(Object.keys(sent).sort()).toEqual(["company", "consent", "email", "hp", "lang", "name", "role", "source", "t"]);
-  expect(sent).toMatchObject({ name: "Ana Prueba", email: "ana@example.test", company: "Ejemplo", role: null, source: null, consent: true, hp: "", lang: "es" });
+  expect(Object.keys(sent).sort()).toEqual(["company", "consent", "email", "hp", "lang", "lookup_consent", "lookup_consent_version", "name", "role", "source", "t"]);
+  expect(sent).toMatchObject({ name: "Ana Prueba", email: "ana@example.test", company: "Ejemplo", role: null, source: null, consent: true, lookup_consent: true, lookup_consent_version: "lookup-2026-11-24", hp: "", lang: "es" });
   expect(typeof sent.t).toBe("number");
 });
 
@@ -107,6 +112,29 @@ test("resume form shows the rate limit message", async ({ page, baseURL }) => {
   await page.goto("/?mock=rate#resume");
   await page.fill("#rf-name", "Ana");
   await page.fill("#rf-email", "ana@example.test");
+  await page.check("#rf-lookup");
   await page.locator("#rf-submit").click();
   await expect(page.locator("#rf-banner")).toContainText("12 minutes");
+});
+
+// Phones get a Menu button (Designer 11/24): it opens the same links over the content without moving the header;
+// Esc closes it and returns focus; following a link closes it.
+test("phone menu: open, Esc, follow a link", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "phones only");
+  await page.goto("/blog/");
+  const header = await page.locator("header.bar").boundingBox();
+  const menu = page.getByRole("button", { name: "Menu" });
+  await expect(menu).toHaveAttribute("aria-expanded", "false");
+  await menu.click();
+  await expect(menu).toHaveAttribute("aria-expanded", "true");
+  const panel = page.locator("#phone-nav");
+  await expect(panel.getByRole("link", { name: "Blog" })).toHaveAttribute("aria-current", "page");
+  expect(await page.locator("header.bar").boundingBox()).toEqual(header);
+  await page.keyboard.press("Escape");
+  await expect(panel).toHaveCount(0);
+  await expect(menu).toBeFocused();
+  await menu.click();
+  await panel.getByRole("link", { name: "Blog" }).click();
+  await expect(panel).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => window.innerWidth));
 });

@@ -52,6 +52,7 @@ test("csp: the resume form's request is allowed (answered here, never sent)", as
   await page.goto("/#resume");
   await page.fill("#rf-name", "CSP Check");
   await page.fill("#rf-email", "csp@example.test");
+  await page.check("#rf-lookup");
   await page.locator("#rf-submit").click();
   await expect(page.locator("#rdone")).toBeVisible();
   expect(reached).toBe(true);
