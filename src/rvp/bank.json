@@ -24,19 +24,23 @@
       "number": 1,
       "dimension": "R",
       "prompt": "You have a free Saturday with nothing planned. What do you reach for first?",
+      "prompt_es": "Tiene un sábado libre, sin nada planeado. ¿Qué elige primero?",
       "options": [
         {
           "text": "A project with my hands: fixing, building, cooking, training",
+          "text_es": "Un proyecto con mis manos: arreglar, construir, cocinar, entrenar",
           "facet": "R.Physical",
           "weight": 2
         },
         {
           "text": "A book, a problem or an idea I want to understand",
+          "text_es": "Un libro, un problema o una idea que quiero entender",
           "facet": "R.Intellectual",
           "weight": 2
         },
         {
           "text": "A call or a get-together with people I care about",
+          "text_es": "Una llamada o una reunión con personas que me importan",
           "facet": "R.Social",
           "weight": 2
         }
@@ -46,19 +50,23 @@
       "number": 2,
       "dimension": "R",
       "prompt": "A friend says, \"Can you help me with something big?\" What do you usually offer?",
+      "prompt_es": "Un amigo o una amiga le dice: “¿Me puede ayudar con algo grande?”. ¿Qué suele ofrecer?",
       "options": [
         {
           "text": "My time and effort on the ground",
+          "text_es": "Mi tiempo y mi esfuerzo en el terreno",
           "facet": "R.Physical",
           "weight": 2
         },
         {
           "text": "My thinking: a plan, an explanation, a second opinion",
+          "text_es": "Mi manera de pensar: un plan, una explicación, una segunda opinión",
           "facet": "R.Intellectual",
           "weight": 2
         },
         {
           "text": "An introduction, my network or just being there with them",
+          "text_es": "Presentarle a alguien, mi red de contactos o simplemente estar ahí",
           "facet": "R.Social",
           "weight": 2
         }
@@ -68,19 +76,23 @@
       "number": 3,
       "dimension": "R",
       "prompt": "When you picture your best asset, you think of:",
+      "prompt_es": "Cuando piensa en su mayor recurso, piensa en:",
       "options": [
         {
           "text": "My health, my tools, my home, my money in hand",
+          "text_es": "Mi salud, mis herramientas, mi casa, el dinero que tengo a mano",
           "facet": "R.Physical",
           "weight": 2
         },
         {
           "text": "What I know and how I think",
+          "text_es": "Lo que sé y cómo pienso",
           "facet": "R.Intellectual",
           "weight": 2
         },
         {
           "text": "The people who would show up for me",
+          "text_es": "Las personas que estarían ahí para mí",
           "facet": "R.Social",
           "weight": 2
         }
@@ -90,19 +102,23 @@
       "number": 4,
       "dimension": "R",
       "prompt": "You are new in a town. Your first move is to:",
+      "prompt_es": "Acaba de llegar a vivir a una ciudad nueva. Lo primero que hace es:",
       "options": [
         {
           "text": "Learn the place by walking it and setting up my space",
+          "text_es": "Conocer el lugar caminándolo y acomodar mi espacio",
           "facet": "R.Physical",
           "weight": 2
         },
         {
           "text": "Read about it and learn how it works",
+          "text_es": "Leer sobre ella y aprender cómo funciona",
           "facet": "R.Intellectual",
           "weight": 2
         },
         {
           "text": "Find the people: neighbors, groups, a first friend",
+          "text_es": "Buscar a la gente: el vecindario, grupos, una primera amistad",
           "facet": "R.Social",
           "weight": 2
         }
@@ -112,19 +128,23 @@
       "number": 5,
       "dimension": "R",
       "prompt": "What do you tend to be praised for?",
+      "prompt_es": "¿Por qué suelen elogiarle?",
       "options": [
         {
           "text": "Getting real things done",
+          "text_es": "Por sacar adelante cosas concretas",
           "facet": "R.Physical",
           "weight": 2
         },
         {
           "text": "Seeing what others miss",
+          "text_es": "Por ver lo que nadie más ve",
           "facet": "R.Intellectual",
           "weight": 2
         },
         {
           "text": "Making people feel welcome and trusted",
+          "text_es": "Por hacer que la gente se sienta bienvenida y en confianza",
           "facet": "R.Social",
           "weight": 2
         }
@@ -134,19 +154,23 @@
       "number": 6,
       "dimension": "R",
       "prompt": "If you lost your job tomorrow, what would carry you through?",
+      "prompt_es": "Si perdiera su trabajo mañana, ¿qué le ayudaría a salir adelante?",
       "options": [
         {
           "text": "My savings, my skills with tools, my physical stamina",
+          "text_es": "Mis ahorros, mi habilidad con las herramientas, mi resistencia física",
           "facet": "R.Physical",
           "weight": 2
         },
         {
           "text": "My expertise and my ability to learn fast",
+          "text_es": "Mis conocimientos y mi capacidad de aprender rápido",
           "facet": "R.Intellectual",
           "weight": 2
         },
         {
           "text": "My contacts and my reputation",
+          "text_es": "Mis contactos y mi reputación",
           "facet": "R.Social",
           "weight": 2
         }
@@ -156,19 +180,23 @@
       "number": 7,
       "dimension": "R",
       "prompt": "Which kind of tiredness feels best?",
+      "prompt_es": "¿Qué tipo de cansancio se siente mejor?",
       "options": [
         {
           "text": "After a hard physical day",
+          "text_es": "Después de un día físico intenso",
           "facet": "R.Physical",
           "weight": 2
         },
         {
           "text": "After a long stretch of deep thinking",
+          "text_es": "Después de un largo rato de pensar a fondo",
           "facet": "R.Intellectual",
           "weight": 2
         },
         {
           "text": "After a day full of good conversation",
+          "text_es": "Después de un día lleno de buenas conversaciones",
           "facet": "R.Social",
           "weight": 2
         }
@@ -178,19 +206,23 @@
       "number": 8,
       "dimension": "R",
       "prompt": "You are given a budget to invest in yourself. You choose:",
+      "prompt_es": "Le dan un presupuesto para invertir en su persona. Elige:",
       "options": [
         {
           "text": "Equipment, a gym, a better workspace",
+          "text_es": "Equipo, un gimnasio, un mejor espacio de trabajo",
           "facet": "R.Physical",
           "weight": 2
         },
         {
           "text": "A course, books, time to study",
+          "text_es": "Un curso, libros, tiempo para estudiar",
           "facet": "R.Intellectual",
           "weight": 2
         },
         {
           "text": "A community, a mentor, an event where I belong",
+          "text_es": "Una comunidad, una mentoría, un evento donde siento que pertenezco",
           "facet": "R.Social",
           "weight": 2
         }
@@ -200,19 +232,23 @@
       "number": 9,
       "dimension": "R",
       "prompt": "Others come to you when they need:",
+      "prompt_es": "La gente acude a usted cuando necesita:",
       "options": [
         {
           "text": "Something fixed, built or carried",
+          "text_es": "Arreglar, construir o cargar algo",
           "facet": "R.Physical",
           "weight": 2
         },
         {
           "text": "An answer or an explanation",
+          "text_es": "Una respuesta o una explicación",
           "facet": "R.Intellectual",
           "weight": 2
         },
         {
           "text": "Someone to listen, connect or vouch",
+          "text_es": "Alguien que escuche, que conecte o que responda por ella",
           "facet": "R.Social",
           "weight": 2
         }
@@ -222,19 +258,23 @@
       "number": 10,
       "dimension": "V",
       "prompt": "A decision has to be made and you cannot have everything. What decides it?",
+      "prompt_es": "Hay que tomar una decisión y no se puede tener todo. ¿Qué la define?",
       "options": [
         {
           "text": "What is right, even if it costs me",
+          "text_es": "Lo correcto, aunque me cueste",
           "facet": "V.Moral",
           "weight": 2
         },
         {
           "text": "What is beautiful, fitting, true to its form",
+          "text_es": "Lo bello, lo apropiado, lo que es fiel a su forma",
           "facet": "V.Aesthetic",
           "weight": 2
         },
         {
           "text": "What works best for the result",
+          "text_es": "Lo que mejor funcione para el resultado",
           "facet": "V.Pragmatic",
           "weight": 2
         }
@@ -244,19 +284,23 @@
       "number": 11,
       "dimension": "V",
       "prompt": "What bothers you most to see?",
+      "prompt_es": "¿Qué es lo que más le molesta ver?",
       "options": [
         {
           "text": "Someone treated unfairly",
+          "text_es": "Que traten injustamente a alguien",
           "facet": "V.Moral",
           "weight": 2
         },
         {
           "text": "Something ugly or careless where care was possible",
+          "text_es": "Algo feo o descuidado donde se podía haber puesto cuidado",
           "facet": "V.Aesthetic",
           "weight": 2
         },
         {
           "text": "Time and effort wasted for nothing",
+          "text_es": "Tiempo y esfuerzo desperdiciados para nada",
           "facet": "V.Pragmatic",
           "weight": 2
         }
@@ -266,19 +310,23 @@
       "number": 12,
       "dimension": "V",
       "prompt": "You are choosing a home. What matters most?",
+      "prompt_es": "Está eligiendo un hogar. ¿Qué es lo que más importa?",
       "options": [
         {
           "text": "That it is a good place to raise good people",
+          "text_es": "Que sea un buen lugar para criar a buenas personas",
           "facet": "V.Moral",
           "weight": 2
         },
         {
           "text": "That it feels peaceful and looks right",
+          "text_es": "Que transmita paz y se vea bien",
           "facet": "V.Aesthetic",
           "weight": 2
         },
         {
           "text": "That it is practical, affordable and well located",
+          "text_es": "Que sea práctico, asequible y bien ubicado",
           "facet": "V.Pragmatic",
           "weight": 2
         }
@@ -288,19 +336,23 @@
       "number": 13,
       "dimension": "V",
       "prompt": "A colleague takes a shortcut that works but bends a rule. You think:",
+      "prompt_es": "Alguien de su equipo toma un atajo que funciona, pero no respeta del todo una regla. Usted piensa:",
       "options": [
         {
           "text": "It is wrong; the rule is there for a reason",
+          "text_es": "Está mal; la regla existe por algo",
           "facet": "V.Moral",
           "weight": 2
         },
         {
           "text": "The work is a bit sloppy; it should be done well",
+          "text_es": "El trabajo queda un poco descuidado; debería hacerse bien",
           "facet": "V.Aesthetic",
           "weight": 2
         },
         {
           "text": "If it works and nobody is hurt, fine, but note the risk",
+          "text_es": "Si funciona y no daña a nadie, está bien, pero conviene anotar el riesgo",
           "facet": "V.Pragmatic",
           "weight": 2
         }
@@ -310,19 +362,23 @@
       "number": 14,
       "dimension": "V",
       "prompt": "What would you want to be remembered for?",
+      "prompt_es": "¿Por qué le gustaría que le recordaran?",
       "options": [
         {
           "text": "Doing right by others",
+          "text_es": "Por obrar bien con los demás",
           "facet": "V.Moral",
           "weight": 2
         },
         {
           "text": "Making something beautiful or meaningful",
+          "text_es": "Por crear algo bello o con sentido",
           "facet": "V.Aesthetic",
           "weight": 2
         },
         {
           "text": "Getting important things done",
+          "text_es": "Por lograr cosas importantes",
           "facet": "V.Pragmatic",
           "weight": 2
         }
@@ -332,19 +388,23 @@
       "number": 15,
       "dimension": "V",
       "prompt": "A story moves you most when it is about:",
+      "prompt_es": "Una historia le conmueve más cuando trata de:",
       "options": [
         {
           "text": "Sacrifice and doing what is right",
+          "text_es": "El sacrificio y hacer lo correcto",
           "facet": "V.Moral",
           "weight": 2
         },
         {
           "text": "Beauty, love, or something that has been lost",
+          "text_es": "La belleza, el amor o algo que se ha perdido",
           "facet": "V.Aesthetic",
           "weight": 2
         },
         {
           "text": "Someone who overcomes a hard problem",
+          "text_es": "Alguien que supera un problema difícil",
           "facet": "V.Pragmatic",
           "weight": 2
         }
@@ -354,19 +414,23 @@
       "number": 16,
       "dimension": "V",
       "prompt": "When you give advice, you usually lead with:",
+      "prompt_es": "Cuando da un consejo, suele empezar por:",
       "options": [
         {
           "text": "What the right thing to do is",
+          "text_es": "Qué es lo correcto",
           "facet": "V.Moral",
           "weight": 2
         },
         {
           "text": "What feels true and fits who they are",
+          "text_es": "Qué se siente verdadero y encaja con quién es esa persona",
           "facet": "V.Aesthetic",
           "weight": 2
         },
         {
           "text": "What will actually work",
+          "text_es": "Qué va a funcionar de verdad",
           "facet": "V.Pragmatic",
           "weight": 2
         }
@@ -376,19 +440,23 @@
       "number": 17,
       "dimension": "V",
       "prompt": "You have one hour to improve a shared space. You:",
+      "prompt_es": "Tiene una hora para mejorar un espacio compartido. ¿Qué hace?",
       "options": [
         {
           "text": "Fix what is unfair or unsafe for someone",
+          "text_es": "Arreglo lo que resulta injusto o inseguro para alguien",
           "facet": "V.Moral",
           "weight": 2
         },
         {
           "text": "Make it feel better: light, order, a nicer look",
+          "text_es": "Hago que se sienta mejor: luz, orden, un aspecto más agradable",
           "facet": "V.Aesthetic",
           "weight": 2
         },
         {
           "text": "Remove what slows people down",
+          "text_es": "Quito lo que frena a la gente",
           "facet": "V.Pragmatic",
           "weight": 2
         }
@@ -398,19 +466,23 @@
       "number": 18,
       "dimension": "V",
       "prompt": "Your own best days feel:",
+      "prompt_es": "Sus mejores días se sienten:",
       "options": [
         {
           "text": "Like I stood for something",
+          "text_es": "Como si hubiera defendido algo",
           "facet": "V.Moral",
           "weight": 2
         },
         {
           "text": "Like I created or noticed something lovely",
+          "text_es": "Como si hubiera creado o notado algo hermoso",
           "facet": "V.Aesthetic",
           "weight": 2
         },
         {
           "text": "Like I got a lot of useful things done",
+          "text_es": "Como si hubiera hecho muchas cosas útiles",
           "facet": "V.Pragmatic",
           "weight": 2
         }
@@ -420,19 +492,23 @@
       "number": 19,
       "dimension": "P",
       "prompt": "A plan falls apart halfway. Your first instinct is to:",
+      "prompt_es": "Un plan se viene abajo a mitad de camino. Su primer instinto es:",
       "options": [
         {
           "text": "Invent a new approach",
+          "text_es": "Inventar un enfoque nuevo",
           "facet": "P.Creative",
           "weight": 2
         },
         {
           "text": "Adjust quickly to what is in front of me",
+          "text_es": "Ajustarme rápido a lo que tengo enfrente",
           "facet": "P.Adaptive",
           "weight": 2
         },
         {
           "text": "Go back to what is proven and steady it",
+          "text_es": "Volver a lo ya probado y darle estabilidad",
           "facet": "P.Sustaining",
           "weight": 2
         }
@@ -442,19 +518,23 @@
       "number": 20,
       "dimension": "P",
       "prompt": "You are happiest when:",
+      "prompt_es": "Se siente más feliz cuando:",
       "options": [
         {
           "text": "Starting something new",
+          "text_es": "Empiezo algo nuevo",
           "facet": "P.Creative",
           "weight": 2
         },
         {
           "text": "Things are changing and I can respond",
+          "text_es": "Las cosas cambian y puedo responder",
           "facet": "P.Adaptive",
           "weight": 2
         },
         {
           "text": "Everything runs the way it should",
+          "text_es": "Todo funciona como debe",
           "facet": "P.Sustaining",
           "weight": 2
         }
@@ -464,19 +544,23 @@
       "number": 21,
       "dimension": "P",
       "prompt": "In a group project you naturally:",
+      "prompt_es": "En un proyecto de grupo, lo natural para usted es:",
       "options": [
         {
           "text": "Propose the idea and start",
+          "text_es": "Proponer la idea y empezar",
           "facet": "P.Creative",
           "weight": 2
         },
         {
           "text": "Fill whatever gap appears",
+          "text_es": "Cubrir cualquier hueco que aparezca",
           "facet": "P.Adaptive",
           "weight": 2
         },
         {
           "text": "Keep it organized and on track",
+          "text_es": "Mantenerlo organizado y en curso",
           "facet": "P.Sustaining",
           "weight": 2
         }
@@ -486,19 +570,23 @@
       "number": 22,
       "dimension": "P",
       "prompt": "Routine feels:",
+      "prompt_es": "La rutina le parece:",
       "options": [
         {
           "text": "Like a cage unless I get to change it",
+          "text_es": "Una jaula, a menos que pueda cambiarla",
           "facet": "P.Creative",
           "weight": 2
         },
         {
           "text": "Fine, as long as I can flex",
+          "text_es": "Bien, siempre que pueda flexibilizarla",
           "facet": "P.Adaptive",
           "weight": 2
         },
         {
           "text": "Like solid ground",
+          "text_es": "Terreno firme",
           "facet": "P.Sustaining",
           "weight": 2
         }
@@ -508,19 +596,23 @@
       "number": 23,
       "dimension": "P",
       "prompt": "When something works well, you:",
+      "prompt_es": "Cuando algo funciona bien:",
       "options": [
         {
           "text": "Wonder how to make it different or bigger",
+          "text_es": "Me pregunto cómo hacerlo distinto o más grande",
           "facet": "P.Creative",
           "weight": 2
         },
         {
           "text": "Keep it, but adapt it to the next situation",
+          "text_es": "Lo mantengo, pero lo adapto a la siguiente situación",
           "facet": "P.Adaptive",
           "weight": 2
         },
         {
           "text": "Protect it and keep it going",
+          "text_es": "Lo protejo y lo mantengo en marcha",
           "facet": "P.Sustaining",
           "weight": 2
         }
@@ -530,19 +622,23 @@
       "number": 24,
       "dimension": "P",
       "prompt": "A friend asks how you handle surprises:",
+      "prompt_es": "Un amigo o una amiga le pregunta cómo maneja las sorpresas:",
       "options": [
         {
           "text": "I turn them into new possibilities",
+          "text_es": "Las convierto en nuevas posibilidades",
           "facet": "P.Creative",
           "weight": 2
         },
         {
           "text": "I read the room and adjust",
+          "text_es": "Leo el ambiente y me ajusto",
           "facet": "P.Adaptive",
           "weight": 2
         },
         {
           "text": "I would rather prevent them with a good system",
+          "text_es": "Prefiero evitarlas con un buen sistema",
           "facet": "P.Sustaining",
           "weight": 2
         }
@@ -552,19 +648,23 @@
       "number": 25,
       "dimension": "P",
       "prompt": "You are most likely to say:",
+      "prompt_es": "Lo más probable es que diga:",
       "options": [
         {
           "text": "\"What if we tried something else?\"",
+          "text_es": "“¿Y si probamos otra cosa?”",
           "facet": "P.Creative",
           "weight": 2
         },
         {
           "text": "\"Let's see what happens and adjust.\"",
+          "text_es": "“Veamos qué pasa y ajustamos.”",
           "facet": "P.Adaptive",
           "weight": 2
         },
         {
           "text": "\"Let's not break what works.\"",
+          "text_es": "“No rompamos lo que funciona.”",
           "facet": "P.Sustaining",
           "weight": 2
         }
@@ -574,19 +674,23 @@
       "number": 26,
       "dimension": "P",
       "prompt": "When you set a goal, you tend to:",
+      "prompt_es": "Cuando se pone una meta, suele:",
       "options": [
         {
           "text": "Reimagine it often as you learn",
+          "text_es": "Replantearla a menudo conforme aprende",
           "facet": "P.Creative",
           "weight": 2
         },
         {
           "text": "Keep it loose and respond to events",
+          "text_es": "Mantenerla flexible y responder a lo que pase",
           "facet": "P.Adaptive",
           "weight": 2
         },
         {
           "text": "Break it into steady steps and keep going",
+          "text_es": "Dividirla en pasos constantes y seguir adelante",
           "facet": "P.Sustaining",
           "weight": 2
         }
@@ -596,19 +700,23 @@
       "number": 27,
       "dimension": "P",
       "prompt": "Your weak spot is more likely to be:",
+      "prompt_es": "Es más probable que su punto débil sea:",
       "options": [
         {
           "text": "Starting more than I finish",
+          "text_es": "Empezar más de lo que termino",
           "facet": "P.Creative",
           "weight": 2
         },
         {
           "text": "Not committing to a direction",
+          "text_es": "No comprometerme con una dirección",
           "facet": "P.Adaptive",
           "weight": 2
         },
         {
           "text": "Resisting change when I should change",
+          "text_es": "Resistirme al cambio cuando debería cambiar",
           "facet": "P.Sustaining",
           "weight": 2
         }

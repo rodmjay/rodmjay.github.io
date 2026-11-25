@@ -4,91 +4,91 @@
     "R.Physical": {
       "edge": {
         "en": "Your body, tools and surroundings may get less of your care than your head or your people do. A neglected body or workspace quietly lowers everything else.",
-        "es": ""
+        "es": "Su cuerpo, sus herramientas y su entorno quizá reciban menos cuidado que su mente o su gente. Un cuerpo o un espacio de trabajo descuidado rebaja todo lo demás sin hacer ruido."
       },
       "practice": {
         "en": "Spend ten minutes on one physical thing you have been putting off: a stretch, a repair, a clear desk, a meal made from scratch.",
-        "es": ""
+        "es": "Dedique diez minutos a algo físico que ha ido posponiendo: un estiramiento, una reparación, despejar el escritorio, una comida hecha desde cero."
       }
     },
     "R.Intellectual": {
       "edge": {
         "en": "Learning and reflection may be crowded out by doing and relating. Without it, you can run on old ideas.",
-        "es": ""
+        "es": "Aprender y reflexionar puede quedar desplazado por el hacer y el relacionarse. Sin eso, puede terminar funcionando con ideas viejas."
       },
       "practice": {
         "en": "Read or study something new for fifteen minutes, then write one sentence about what changed in your thinking.",
-        "es": ""
+        "es": "Lea o estudie algo nuevo durante quince minutos y luego escriba una oración sobre lo que cambió en su manera de pensar."
       }
     },
     "R.Social": {
       "edge": {
         "en": "Trust and relationships may get less of your time than your projects and ideas. Support you do not build now is support you will not have later.",
-        "es": ""
+        "es": "La confianza y las relaciones quizá reciban menos de su tiempo que sus proyectos e ideas. El apoyo que no construye ahora es apoyo que no tendrá después."
       },
       "practice": {
         "en": "Reach out to one person you value with a real question or a thank-you. Keep it short and honest.",
-        "es": ""
+        "es": "Comuníquese con una persona que valora, con una pregunta real o un agradecimiento. Que sea breve y honesto."
       }
     },
     "V.Moral": {
       "edge": {
         "en": "What is right may not be the question you ask first. Without it, results and beauty can drift from what you would stand behind.",
-        "es": ""
+        "es": "Lo correcto quizá no sea lo primero que se pregunta. Sin eso, los resultados y la belleza pueden alejarse de aquello que usted respaldaría."
       },
       "practice": {
         "en": "Before a decision this week, ask: would I be comfortable if everyone affected saw why I chose it? Write the answer.",
-        "es": ""
+        "es": "Antes de una decisión esta semana, pregúntese: ¿me sentiría a gusto si todas las personas afectadas vieran por qué la tomé? Escriba la respuesta."
       }
     },
     "V.Aesthetic": {
       "edge": {
         "en": "Beauty, fit and feeling may feel like extras. Without them, work can be useful and still leave you or others flat.",
-        "es": ""
+        "es": "La belleza, la armonía y la emoción pueden parecer algo extra. Sin ellas, el trabajo puede ser útil y aun así resultar plano para usted o para otras personas."
       },
       "practice": {
         "en": "Make one thing in your day a little more beautiful or well made: a message, a room, a plate of food. Notice what it does.",
-        "es": ""
+        "es": "Haga que una cosa de su día sea un poco más bella o esté mejor hecha: un mensaje, una habitación, un plato de comida. Observe qué efecto tiene."
       }
     },
     "V.Pragmatic": {
       "edge": {
         "en": "What works may get less weight than what is right or lovely. Without it, good intentions can stall.",
-        "es": ""
+        "es": "Lo que funciona quizá pese menos que lo correcto o lo bello. Sin eso, las buenas intenciones pueden estancarse."
       },
       "practice": {
         "en": "Pick one ideal and ask what the smallest working version of it is. Do that version this week.",
-        "es": ""
+        "es": "Elija un ideal y pregúntese cuál sería su versión más pequeña que funcione. Haga esa versión esta semana."
       }
     },
     "P.Creative": {
       "edge": {
         "en": "Starting something new may be harder than keeping or adjusting what exists. Without it, you can get stuck in what is proven.",
-        "es": ""
+        "es": "Empezar algo nuevo puede costarle más que mantener o ajustar lo que ya existe. Sin eso, puede no salir nunca de lo ya probado."
       },
       "practice": {
         "en": "Spend fifteen minutes on a rough, imperfect first draft of something new. Do not edit it.",
-        "es": ""
+        "es": "Dedique quince minutos a un primer borrador, tosco e imperfecto, de algo nuevo. No lo corrija."
       }
     },
     "P.Adaptive": {
       "edge": {
         "en": "Reading a situation and adjusting may not be your first move. Without it, plans meet reality hard.",
-        "es": ""
+        "es": "Leer una situación y ajustarse quizá no sea lo primero que hace. Sin eso, los planes chocan de frente con la realidad."
       },
       "practice": {
         "en": "Once this week, change your plan in the middle of doing it because of what you saw. Note what you learned.",
-        "es": ""
+        "es": "Una vez esta semana, cambie su plan a mitad de camino por algo que vio. Anote lo que aprendió."
       }
     },
     "P.Sustaining": {
       "edge": {
         "en": "Keeping and finishing may be harder than starting or adapting. Without it, good beginnings do not last.",
-        "es": ""
+        "es": "Mantener y terminar puede costarle más que empezar o adaptarse. Sin eso, los buenos comienzos no duran."
       },
       "practice": {
         "en": "Choose one thing you started and finish or schedule its next three steps. Put the dates where you will see them.",
-        "es": ""
+        "es": "Elija algo que empezó y termínelo, o programe sus próximos tres pasos. Ponga las fechas donde las vaya a ver."
       }
     }
   },
@@ -96,179 +96,1832 @@
     "R.Physical|R.Intellectual": {
       "wrong": {
         "en": "The hands-on person hears \"let us think about it\" as stalling; the thinker hears \"just do it\" as careless.",
-        "es": ""
+        "es": "Quien trabaja con las manos oye “pensémoslo” como una forma de dar largas; quien piensa oye “manos a la obra” como falta de cuidado."
       },
       "say": {
         "en": "Let me do a small trial now, and then we can look at what it taught us.",
-        "es": ""
+        "es": "Voy a hacer una pequeña prueba ahora, y luego vemos qué nos enseñó."
       }
     },
     "R.Physical|R.Social": {
       "wrong": {
         "en": "The person who works with things can seem cold to the one who works with people; the people person can seem to waste time talking.",
-        "es": ""
+        "es": "Quien trabaja con cosas puede parecerle distante a quien trabaja con personas; quien trabaja con personas puede dar la impresión de perder el tiempo conversando."
       },
       "say": {
         "en": "Can we spend five minutes on how we both want this to go, then I will get on with the work?",
-        "es": ""
+        "es": "¿Podemos tomar cinco minutos para hablar de cómo queremos que salga esto, y después me pongo a trabajar?"
       }
     },
     "R.Intellectual|R.Social": {
       "wrong": {
         "en": "The thinker may seem distant or too analytical to the relational person; the relational person may seem to skip the reasons.",
-        "es": ""
+        "es": "A quien se centra en las personas, quien piensa puede parecerle distante o que lo analiza todo en exceso; a quien piensa, quien se centra en las personas puede parecerle que se salta las razones."
       },
       "say": {
         "en": "I would like to understand your reasoning, and I also want to be sure you feel heard.",
-        "es": ""
+        "es": "Me gustaría entender su razonamiento, y también quiero asegurarme de que sienta que le escucho."
       }
     },
     "V.Moral|V.Aesthetic": {
       "wrong": {
         "en": "The person guided by what is right may see polish as vanity; the person guided by beauty may see moral argument as heavy.",
-        "es": ""
+        "es": "Quien se guía por lo correcto puede ver el buen acabado como vanidad; quien se guía por la belleza puede sentir pesado el argumento moral."
       },
       "say": {
         "en": "I care about getting this right, and I also want it to be something we are proud of.",
-        "es": ""
+        "es": "Me importa hacerlo bien, y también quiero que sea algo que nos enorgullezca."
       }
     },
     "V.Moral|V.Pragmatic": {
       "wrong": {
         "en": "The principled person may feel the practical one cuts corners; the practical one may feel the principled one will not move.",
-        "es": ""
+        "es": "Quien se guía por principios puede sentir que la persona práctica toma atajos; la persona práctica puede sentir que quien se guía por principios no cede."
       },
       "say": {
         "en": "Tell me which part is non-negotiable for you, and I will work around the rest.",
-        "es": ""
+        "es": "Dígame qué parte es innegociable para usted, y yo me acomodo con el resto."
       }
     },
     "V.Aesthetic|V.Pragmatic": {
       "wrong": {
         "en": "The person who cares about beauty may see usefulness as ugly; the practical one may see taste as a delay.",
-        "es": ""
+        "es": "Quien valora la belleza puede ver la utilidad como algo feo; la persona práctica puede ver el buen gusto como una demora."
       },
       "say": {
         "en": "What is the simplest version that still feels right to you?",
-        "es": ""
+        "es": "¿Cuál es la versión más simple que todavía le parezca bien?"
       }
     },
     "P.Creative|P.Adaptive": {
       "wrong": {
         "en": "The one who starts new things may feel the adaptable one never commits; the adaptable one may feel the creator ignores what is happening.",
-        "es": ""
+        "es": "Quien inicia cosas nuevas puede sentir que quien se adapta nunca se compromete; quien se adapta puede sentir que quien crea ignora lo que está pasando."
       },
       "say": {
         "en": "Can we pick a direction for now and agree when we will check whether it still fits?",
-        "es": ""
+        "es": "¿Podemos elegir una dirección por ahora y acordar cuándo revisaremos si todavía encaja?"
       }
     },
     "P.Creative|P.Sustaining": {
       "wrong": {
         "en": "The creator may see the keeper as resistant; the keeper may see the creator as reckless.",
-        "es": ""
+        "es": "Quien crea puede sentir que quien mantiene se resiste; quien mantiene puede ver a quien crea como imprudente."
       },
       "say": {
         "en": "What is the one thing here you most want to protect? I will build around it.",
-        "es": ""
+        "es": "¿Qué es lo que más quiere proteger aquí? Construiré alrededor de eso."
       }
     },
     "P.Adaptive|P.Sustaining": {
       "wrong": {
         "en": "The adaptable one may see the keeper as rigid; the keeper may see the adaptable one as unreliable.",
-        "es": ""
+        "es": "Quien se adapta puede ver a quien mantiene como inflexible; quien mantiene puede ver a quien se adapta como poco confiable."
       },
       "say": {
         "en": "Which parts can flex, and which must stay put? Let us write both down.",
-        "es": ""
+        "es": "¿Qué partes pueden flexibilizarse y cuáles deben quedarse como están? Anotemos las dos cosas."
       }
     }
   },
   "archetypes": {
+    "administrator-of-people": {
+      "slug": "administrator-of-people",
+      "leanOn": [
+        {
+          "en": "Set up one clear structure this week so people know who does what and when, then ask if it works.",
+          "es": "Establezca esta semana una estructura clara para que la gente sepa quién hace qué y cuándo; luego pregunte si funciona."
+        },
+        {
+          "en": "Make sure one person gets recognition or support they have been missing.",
+          "es": "Asegúrese de que una persona reciba el reconocimiento o el apoyo que le ha faltado."
+        },
+        {
+          "en": "Write down one agreement that has only been verbal.",
+          "es": "Ponga por escrito un acuerdo que hasta ahora solo ha sido verbal."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are protecting the process instead of the people it serves, or others have stopped bringing you new ideas.",
+          "es": "Protege el proceso en lugar de a las personas a las que sirve, o los demás dejaron de traerle ideas nuevas."
+        },
+        "counter": {
+          "en": "Ask someone what they would change about how things run, and try one of their suggestions.",
+          "es": "Pregúntele a alguien qué cambiaría de cómo funcionan las cosas, y pruebe una de sus sugerencias."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that organizes people over time: management, operations, community leadership, education administration",
+            "es": "Trabajo que organiza personas a lo largo del tiempo: dirección, operaciones, liderazgo comunitario, administración educativa"
+          },
+          {
+            "en": "Teams with clear roles and long-term commitment",
+            "es": "Equipos con roles claros y compromiso a largo plazo"
+          },
+          {
+            "en": "Places that value fairness and follow-through",
+            "es": "Lugares que valoran la equidad y cumplir lo prometido"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Constant reorganization",
+            "es": "Reorganización constante"
+          },
+          {
+            "en": "Cultures that mistake chaos for creativity",
+            "es": "Culturas que confunden el caos con la creatividad"
+          },
+          {
+            "en": "Roles with responsibility and no authority",
+            "es": "Roles con responsabilidad y sin autoridad"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "List the people who depend on the structure you run.",
+          "es": "Haga una lista de las personas que dependen de la estructura que usted dirige."
+        },
+        {
+          "en": "Ask one how it works for them.",
+          "es": "Pregúntele a una de ellas cómo le funciona."
+        },
+        {
+          "en": "Fix one small thing that was making their work harder.",
+          "es": "Corrija algo pequeño que le estaba haciendo más difícil el trabajo."
+        },
+        {
+          "en": "Try one idea that is not yours and see what happens.",
+          "es": "Pruebe una idea que no sea suya y vea qué pasa."
+        },
+        {
+          "en": "Say one thing you appreciate about someone's work, specifically.",
+          "es": "Dígale a alguien, de forma concreta, una cosa que valora de su trabajo."
+        },
+        {
+          "en": "Leave the structure alone for an evening.",
+          "es": "Deje la estructura en paz por una noche."
+        },
+        {
+          "en": "Review: where does order help people, and where is it only order?",
+          "es": "Repaso: ¿dónde ayuda el orden a las personas y dónde es solo orden?"
+        }
+      ]
+    },
     "administrator": {
       "slug": "administrator",
       "leanOn": [
         {
           "en": "Pick one process that is messy and give it a clear owner, a written step list and a check date.",
-          "es": ""
+          "es": "Elija un proceso desordenado y dele un responsable claro, una lista escrita de pasos y una fecha de revisión."
         },
         {
           "en": "Offer a colleague a template or a checklist for something they keep redoing.",
-          "es": ""
+          "es": "Ofrézcale a alguien de su equipo una plantilla o una lista de verificación para algo que rehace una y otra vez."
         },
         {
           "en": "Hold one routine review this week and close two items that have stayed open.",
-          "es": ""
+          "es": "Haga una revisión de rutina esta semana y cierre dos pendientes que siguen abiertos."
         }
       ],
       "watchFor": {
         "sign": {
           "en": "You are defending the way it has always been done, or a new idea feels like an interruption before you have looked at it.",
-          "es": ""
+          "es": "Defiende la forma en que siempre se ha hecho, o una idea nueva le parece una interrupción antes de haberla examinado."
         },
         "counter": {
           "en": "When an idea shows up, write it down and give it one honest question: \"What would make this better?\" before you decide.",
-          "es": ""
+          "es": "Cuando aparezca una idea, anótela y hágale una pregunta honesta: “¿Qué haría que esto fuera mejor?”, antes de decidir."
         }
       },
       "fit": {
         "thrives": [
           {
             "en": "Settings with real complexity to keep in order: operations, finance, compliance, program management",
-            "es": ""
+            "es": "Entornos con complejidad real que mantener en orden: operaciones, finanzas, cumplimiento normativo, gestión de programas"
           },
           {
             "en": "Teams that count on someone dependable",
-            "es": ""
+            "es": "Equipos que cuentan con alguien confiable"
           },
           {
             "en": "Roles with clear ownership and a rhythm of review",
-            "es": ""
+            "es": "Roles con responsabilidades claras y un ritmo de revisión"
           }
         ],
         "strains": [
           {
             "en": "Constant reinvention with no time to settle",
-            "es": ""
+            "es": "Reinvención constante sin tiempo para asentarse"
           },
           {
             "en": "Cultures that reward heroics over steady work",
-            "es": ""
+            "es": "Culturas que premian los actos heroicos por encima del trabajo constante"
           },
           {
             "en": "Environments where the rules change daily",
-            "es": ""
+            "es": "Entornos donde las reglas cambian a diario"
           }
         ]
       },
       "practice": [
         {
           "en": "Name the one system you keep running. Write what it needs to keep running well.",
-          "es": ""
+          "es": "Nombre el sistema que usted mantiene funcionando. Escriba lo que necesita para seguir funcionando bien."
         },
         {
           "en": "Find one rule or step that no longer serves anyone. Note it.",
-          "es": ""
+          "es": "Encuentre una regla o un paso que ya no le sirve a nadie. Anótelo."
         },
         {
           "en": "Fix or drop that one step today.",
-          "es": ""
+          "es": "Corrija o elimine ese paso hoy."
         },
         {
           "en": "Ask someone who uses the system what slows them down.",
-          "es": ""
+          "es": "Pregúntele a alguien que usa el sistema qué le frena."
         },
         {
           "en": "Try one small change on purpose, even if the old way works.",
-          "es": ""
+          "es": "Pruebe un pequeño cambio a propósito, aunque la forma de siempre funcione."
         },
         {
           "en": "Let one thing stay unfinished and see that nothing falls apart.",
-          "es": ""
+          "es": "Deje una cosa sin terminar y compruebe que nada se viene abajo."
         },
         {
           "en": "Review: what is steadier, what is stiffer, and what will you loosen next week?",
-          "es": ""
+          "es": "Repaso: ¿qué está más estable, qué está más rígido y qué va a aflojar la próxima semana?"
+        }
+      ]
+    },
+    "analyst": {
+      "slug": "analyst",
+      "leanOn": [
+        {
+          "en": "Take one decision you face this week and lay out the facts, what is known, unknown, and assumed.",
+          "es": "Tome una decisión que enfrenta esta semana y ordene los hechos: lo que se sabe, lo que no se sabe y lo que se supone."
+        },
+        {
+          "en": "Check one belief against data, and change your mind if the data says so.",
+          "es": "Contraste una creencia con los datos, y cambie de opinión si los datos lo indican."
+        },
+        {
+          "en": "Explain your finding to someone in two sentences.",
+          "es": "Explíquele su hallazgo a alguien en dos oraciones."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are waiting for more data when you already have enough, or you are leaving out how people feel.",
+          "es": "Espera más datos cuando ya tiene suficientes, o está dejando fuera cómo se sienten las personas."
+        },
+        "counter": {
+          "en": "Name how sure you need to be to act, and what the cost is of waiting. Decide by that line.",
+          "es": "Defina qué tanta certeza necesita para actuar y cuánto cuesta esperar. Decida según esa línea."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that rewards clear thinking under change: analysis, research, finance, operations, diagnosis",
+            "es": "Trabajo que premia pensar con claridad en medio del cambio: análisis, investigación, finanzas, operaciones, diagnóstico"
+          },
+          {
+            "en": "Teams that welcome questions and evidence",
+            "es": "Equipos que reciben bien las preguntas y la evidencia"
+          },
+          {
+            "en": "Places where being right matters more than being liked",
+            "es": "Lugares donde tener la razón importa más que caer bien"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Cultures that decide by rank or mood",
+            "es": "Culturas que deciden por jerarquía o por estado de ánimo"
+          },
+          {
+            "en": "Roles with no access to the facts",
+            "es": "Roles sin acceso a los hechos"
+          },
+          {
+            "en": "Settings that want certainty on demand",
+            "es": "Entornos que exigen certeza al instante"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Write one decision you face and what you know about it.",
+          "es": "Escriba una decisión que enfrenta y lo que sabe sobre ella."
+        },
+        {
+          "en": "List what you assume, and mark which assumptions you can test.",
+          "es": "Haga una lista de lo que supone y marque qué supuestos puede poner a prueba."
+        },
+        {
+          "en": "Test one assumption.",
+          "es": "Ponga a prueba un supuesto."
+        },
+        {
+          "en": "Decide, even with some doubt, and write the reason.",
+          "es": "Decida, aunque tenga alguna duda, y escriba la razón."
+        },
+        {
+          "en": "Ask someone how the decision feels to them.",
+          "es": "Pregúntele a alguien cómo se siente con esa decisión."
+        },
+        {
+          "en": "Do one thing by instinct, with no analysis.",
+          "es": "Haga una cosa por instinto, sin análisis."
+        },
+        {
+          "en": "Review: what did the data change, and what did it miss?",
+          "es": "Repaso: ¿qué cambiaron los datos y qué se les escapó?"
+        }
+      ]
+    },
+    "artisan": {
+      "slug": "artisan",
+      "leanOn": [
+        {
+          "en": "Make one thing this week with your hands and give it the care it deserves, then show it to someone.",
+          "es": "Haga una cosa con sus manos esta semana, con el cuidado que merece, y luego muéstresela a alguien."
+        },
+        {
+          "en": "Pay attention to the form of something you use every day, and fix one detail that bothers you.",
+          "es": "Preste atención a la forma de algo que usa todos los días, y corrija un detalle que le moleste."
+        },
+        {
+          "en": "Teach a small skill of your craft to one person.",
+          "es": "Enséñele a una persona una pequeña destreza de su oficio."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You keep reworking a piece no one will notice, or you cannot say what the work is for.",
+          "es": "Sigue retocando una pieza en la que nadie se va a fijar, o no puede decir para qué es el trabajo."
+        },
+        "counter": {
+          "en": "Decide in advance what 'done' means, then set a timer and stop when it goes off.",
+          "es": "Decida de antemano qué significa “terminado”; luego ponga un temporizador y deténgase cuando suene."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work where the quality of the thing is the point: craft, design, making, restoration",
+            "es": "Trabajo donde la calidad de la obra es lo esencial: artesanía, diseño, fabricación, restauración"
+          },
+          {
+            "en": "Teams that respect time spent on getting it right",
+            "es": "Equipos que respetan el tiempo dedicado a hacerlo bien"
+          },
+          {
+            "en": "Places with good tools and good materials",
+            "es": "Lugares con buenas herramientas y buenos materiales"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Rush jobs with no room for quality",
+            "es": "Trabajos con prisa, sin espacio para la calidad"
+          },
+          {
+            "en": "Cultures that measure only speed or volume",
+            "es": "Culturas que solo miden la velocidad o el volumen"
+          },
+          {
+            "en": "Roles where nothing you make is ever seen",
+            "es": "Roles donde nada de lo que hace llega a verse"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Choose one thing to make or improve this week. Write what it is for in one line.",
+          "es": "Elija algo para hacer o mejorar esta semana. Escriba en una línea para qué es."
+        },
+        {
+          "en": "Work on it for thirty minutes with full attention.",
+          "es": "Trabaje en ello treinta minutos con toda su atención."
+        },
+        {
+          "en": "Show an unfinished version to someone and ask what they notice.",
+          "es": "Muéstrele a alguien una versión sin terminar y pregúntele qué nota."
+        },
+        {
+          "en": "Define 'done' for it in writing, then keep to it.",
+          "es": "Defina por escrito qué es “terminado” para eso, y respételo."
+        },
+        {
+          "en": "Make something quick and imperfect on purpose.",
+          "es": "Haga algo rápido e imperfecto a propósito."
+        },
+        {
+          "en": "Look at one finished thing you admire. Write why it works.",
+          "es": "Mire algo terminado que admire. Escriba por qué funciona."
+        },
+        {
+          "en": "Review: what are you proud of, and what is it for? Pick the next piece.",
+          "es": "Repaso: ¿qué le enorgullece y para qué es? Elija la siguiente pieza."
+        }
+      ]
+    },
+    "builder-of-good": {
+      "slug": "builder-of-good",
+      "leanOn": [
+        {
+          "en": "Pick one value you hold and build one thing this week that shows it: a repair, a meal, a tool, a place made safer.",
+          "es": "Elija un valor que tenga y construya esta semana algo que lo muestre: una reparación, una comida, una herramienta, un lugar más seguro."
+        },
+        {
+          "en": "Offer a hands-on hand to someone who is stuck, instead of advice.",
+          "es": "Ofrezca ayuda práctica, con sus propias manos, a alguien que no logra avanzar, en lugar de un consejo."
+        },
+        {
+          "en": "Finish one small piece of practical good before you start the next.",
+          "es": "Termine un pequeño bien práctico antes de empezar el siguiente."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are holding someone to a standard they never agreed to, or you stop listening when an idea is abstract.",
+          "es": "Le exige a alguien un estándar que nunca aceptó, o deja de escuchar cuando una idea es abstracta."
+        },
+        "counter": {
+          "en": "Ask the person what they think good looks like here, and write down one way it differs from yours.",
+          "es": "Pregúntele a la persona qué es lo bueno aquí según ella, y anote una manera en que eso difiere de lo que usted piensa."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work where values show up as something you can see and touch: building, repair, community projects, care",
+            "es": "Trabajo donde los valores se convierten en algo que se puede ver y tocar: construcción, reparación, proyectos comunitarios, cuidado"
+          },
+          {
+            "en": "Teams with a clear purpose and real results",
+            "es": "Equipos con un propósito claro y resultados reales"
+          },
+          {
+            "en": "Places that let you do the work, not only plan it",
+            "es": "Lugares que le dejan hacer el trabajo, no solo planearlo"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Work that is all theory or talk",
+            "es": "Trabajo que es solo teoría o palabras"
+          },
+          {
+            "en": "Cultures where the right thing loses to the fast thing",
+            "es": "Culturas donde lo correcto pierde frente a lo rápido"
+          },
+          {
+            "en": "Settings where nothing you make is ever finished or used",
+            "es": "Entornos donde nada de lo que hace se termina ni se usa nunca"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Name one thing you believe is right and one thing you could build or fix to show it.",
+          "es": "Nombre algo que cree que es correcto y algo que podría construir o arreglar para mostrarlo."
+        },
+        {
+          "en": "Do the first hour of that work. Stop when the hour ends.",
+          "es": "Dedique la primera hora a ese trabajo. Deténgase cuando termine la hora."
+        },
+        {
+          "en": "Ask one person what the work should do for them. Write what they say.",
+          "es": "Pregúntele a una persona qué debería hacer ese trabajo por ella. Escriba lo que diga."
+        },
+        {
+          "en": "Make a change based on what they said, even a small one.",
+          "es": "Haga un cambio a partir de lo que dijo, aunque sea pequeño."
+        },
+        {
+          "en": "Notice one place you judged someone. Write the other side of it in two lines.",
+          "es": "Fíjese en un momento en que juzgó a alguien. Escriba el otro lado en dos líneas."
+        },
+        {
+          "en": "Rest your hands. Spend twenty minutes on an idea with no use.",
+          "es": "Deles descanso a sus manos. Dedique veinte minutos a una idea sin ninguna utilidad."
+        },
+        {
+          "en": "Review: what did you build, and who is it good for? Pick the next small piece.",
+          "es": "Repaso: ¿qué construyó y para quién es bueno? Elija la siguiente pieza pequeña."
+        }
+      ]
+    },
+    "caretaker": {
+      "slug": "caretaker",
+      "leanOn": [
+        {
+          "en": "Do one thing this week that quietly makes your community stronger: a meal, a visit, a favor.",
+          "es": "Haga una cosa esta semana que, sin hacer ruido, fortalezca a su comunidad: una comida, una visita, un favor."
+        },
+        {
+          "en": "Be the person others can count on in one specific way, and say what it is.",
+          "es": "Sea la persona con la que los demás pueden contar de una forma concreta, y diga cuál es."
+        },
+        {
+          "en": "Check in on someone no one else is thinking about.",
+          "es": "Pregunte cómo está alguien en quien nadie más está pensando."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are tired and resentful, but still saying yes, or you cannot say what you need.",
+          "es": "Siente cansancio y resentimiento, pero sigue diciendo que sí, o no logra decir lo que necesita."
+        },
+        "counter": {
+          "en": "Say what you need out loud to one person, in a single sentence, without apologizing.",
+          "es": "Dígale en voz alta a una persona lo que necesita, en una sola oración, sin disculparse."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that depends on trust and presence: care, teaching, community, family-centered work",
+            "es": "Trabajo que depende de la confianza y la presencia: cuidado, enseñanza, comunidad, trabajo centrado en la familia"
+          },
+          {
+            "en": "Teams that notice and thank effort",
+            "es": "Equipos que notan y agradecen el esfuerzo"
+          },
+          {
+            "en": "Places where people look out for each other",
+            "es": "Lugares donde las personas se cuidan entre sí"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Cultures that take effort for granted",
+            "es": "Culturas que dan el esfuerzo por sentado"
+          },
+          {
+            "en": "Roles with endless duties and no support",
+            "es": "Roles con deberes sin fin y sin apoyo"
+          },
+          {
+            "en": "Settings where asking for help is seen as weakness",
+            "es": "Entornos donde pedir ayuda se ve como debilidad"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Write who depends on you and how.",
+          "es": "Escriba quién depende de usted y de qué manera."
+        },
+        {
+          "en": "Do one kind thing for one of them.",
+          "es": "Haga algo amable por una de esas personas."
+        },
+        {
+          "en": "Ask for help with something small and let someone give it.",
+          "es": "Pida ayuda con algo pequeño y deje que alguien se la dé."
+        },
+        {
+          "en": "Say no to one request.",
+          "es": "Diga que no a una petición."
+        },
+        {
+          "en": "Write down one thing you need and have not asked for.",
+          "es": "Anote una cosa que necesita y que no ha pedido."
+        },
+        {
+          "en": "Do one thing today only for you.",
+          "es": "Haga hoy una cosa solo para usted."
+        },
+        {
+          "en": "Review: where did you give from fullness, and where from empty?",
+          "es": "Repaso: ¿dónde dio desde la plenitud y dónde desde el vacío?"
+        }
+      ]
+    },
+    "connector": {
+      "slug": "connector",
+      "leanOn": [
+        {
+          "en": "Introduce two people this week who should know each other, with one reason why.",
+          "es": "Presente esta semana a dos personas que deberían conocerse, con una razón."
+        },
+        {
+          "en": "Reach out to one person you have lost touch with.",
+          "es": "Comuníquese con una persona con la que perdió el contacto."
+        },
+        {
+          "en": "Bring a group into the same room, physical or not, with a simple reason.",
+          "es": "Reúna a un grupo en el mismo espacio, físico o no, con una razón sencilla."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are busy with everyone and have lost track of your own work, or being alone feels uncomfortable.",
+          "es": "Su tiempo se va en todo el mundo y perdió de vista su propio trabajo, o estar a solas le resulta incómodo."
+        },
+        "counter": {
+          "en": "Block an hour alone this week with a single task. Finish it before checking in with anyone.",
+          "es": "Reserve esta semana una hora a solas con una sola tarea. Termínela antes de comunicarse con nadie."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work built on relationships: community, sales, events, partnerships, hospitality",
+            "es": "Trabajo basado en las relaciones: comunidad, ventas, eventos, alianzas, hospitalidad"
+          },
+          {
+            "en": "Teams with open communication and a lot of movement",
+            "es": "Equipos con comunicación abierta y mucho movimiento"
+          },
+          {
+            "en": "Places that reward knowing the right person",
+            "es": "Lugares que premian conocer a la persona indicada"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Isolated roles with few people",
+            "es": "Roles aislados, con poca gente"
+          },
+          {
+            "en": "Cultures that are cold or closed",
+            "es": "Culturas frías o cerradas"
+          },
+          {
+            "en": "Settings that want deep focus all day",
+            "es": "Entornos que exigen concentración profunda todo el día"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Write the names of five people you want to stay close to.",
+          "es": "Escriba los nombres de cinco personas que quiere seguir teniendo cerca."
+        },
+        {
+          "en": "Reach out to one of them today.",
+          "es": "Comuníquese hoy con una de ellas."
+        },
+        {
+          "en": "Introduce two people you know to each other.",
+          "es": "Presente entre sí a dos personas que conoce."
+        },
+        {
+          "en": "Spend an hour alone on one task.",
+          "es": "Pase una hora a solas con una sola tarea."
+        },
+        {
+          "en": "Ask someone a real question and wait for the whole answer.",
+          "es": "Hágale a alguien una pregunta real y espere la respuesta completa."
+        },
+        {
+          "en": "Do nothing social for an evening.",
+          "es": "Pase una noche sin actividad social."
+        },
+        {
+          "en": "Review: which connections are alive, and which did you only keep busy?",
+          "es": "Repaso: ¿qué conexiones están vivas y cuáles solo le sirvieron para llenar el tiempo?"
+        }
+      ]
+    },
+    "conservator": {
+      "slug": "conservator",
+      "leanOn": [
+        {
+          "en": "Preserve one thing this week that would be lost: a story, a recipe, a photo, a skill, a place.",
+          "es": "Preserve esta semana algo que se perdería: una historia, una receta, una foto, una destreza, un lugar."
+        },
+        {
+          "en": "Tell the story behind something to someone younger.",
+          "es": "Cuéntele a alguien más joven la historia detrás de algo."
+        },
+        {
+          "en": "Choose what is worth keeping and write why.",
+          "es": "Elija qué vale la pena conservar y escriba por qué."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are defending the old way only because it is old, or you are not curious about what is new.",
+          "es": "Defiende la forma antigua solo porque es antigua, o no siente curiosidad por lo nuevo."
+        },
+        "counter": {
+          "en": "Ask what the original purpose was, then ask whether something new serves it better.",
+          "es": "Pregúntese cuál era el propósito original, y luego si algo nuevo lo cumple mejor."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that guards what matters: archives, museums, heritage, teaching, family and community history",
+            "es": "Trabajo que resguarda lo que importa: archivos, museos, patrimonio, enseñanza, historia familiar y comunitaria"
+          },
+          {
+            "en": "Teams with a long view and respect for craft",
+            "es": "Equipos con visión de largo plazo y respeto por el oficio"
+          },
+          {
+            "en": "Places that value memory and continuity",
+            "es": "Lugares que valoran la memoria y la continuidad"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Cultures that throw out everything old",
+            "es": "Culturas que tiran todo lo antiguo"
+          },
+          {
+            "en": "Roles with no time to do things carefully",
+            "es": "Roles sin tiempo para hacer las cosas con cuidado"
+          },
+          {
+            "en": "Settings where the past is treated as baggage",
+            "es": "Entornos donde el pasado se ve como un lastre"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Choose one thing from your past or your family worth keeping.",
+          "es": "Elija una cosa de su pasado o de su familia que valga la pena conservar."
+        },
+        {
+          "en": "Record it: write it down, photograph it, or ask someone to tell it.",
+          "es": "Regístrela: escríbala, fotografíela o pídale a alguien que la cuente."
+        },
+        {
+          "en": "Share it with someone who would not otherwise know it.",
+          "es": "Compártala con alguien que de otro modo no la conocería."
+        },
+        {
+          "en": "Ask what the original purpose was, and whether it still holds.",
+          "es": "Pregúntese cuál era el propósito original y si todavía se sostiene."
+        },
+        {
+          "en": "Try one new way of doing something old.",
+          "es": "Pruebe una forma nueva de hacer algo antiguo."
+        },
+        {
+          "en": "Spend an hour with something new and unfamiliar.",
+          "es": "Pase una hora con algo nuevo y desconocido."
+        },
+        {
+          "en": "Review: what deserves keeping, and what are you holding only from habit?",
+          "es": "Repaso: ¿qué merece conservarse y qué está guardando solo por costumbre?"
+        }
+      ]
+    },
+    "counselor": {
+      "slug": "counselor",
+      "leanOn": [
+        {
+          "en": "Give one person your full attention for twenty minutes this week and ask one good question.",
+          "es": "Dele a una persona toda su atención durante veinte minutos esta semana y hágale una buena pregunta."
+        },
+        {
+          "en": "Help someone name what they feel, then let them decide what to do.",
+          "es": "Ayude a alguien a nombrar lo que siente, y luego deje que decida qué hacer."
+        },
+        {
+          "en": "Hold steady with someone in a hard moment without fixing it.",
+          "es": "Acompañe con firmeza a alguien en un momento difícil, sin intentar resolverlo."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are taking on someone's feelings as your own, or you hold back something true to keep the peace.",
+          "es": "Está asumiendo los sentimientos de alguien como propios, o se calla algo verdadero para mantener la paz."
+        },
+        "counter": {
+          "en": "Say one honest thing kindly this week, and notice that the relationship survives it.",
+          "es": "Diga una cosa honesta con amabilidad esta semana, y note que la relación lo resiste."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that centers on listening: counseling, coaching, teaching, care, human resources",
+            "es": "Trabajo centrado en escuchar: consejería, coaching, enseñanza, cuidado, recursos humanos"
+          },
+          {
+            "en": "Teams with trust and room for real talk",
+            "es": "Equipos con confianza y espacio para conversaciones de verdad"
+          },
+          {
+            "en": "Places that value emotional insight",
+            "es": "Lugares que valoran la comprensión emocional"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Settings with conflict and no way to talk it through",
+            "es": "Entornos con conflicto y sin manera de hablarlo"
+          },
+          {
+            "en": "Roles that demand quick solutions",
+            "es": "Roles que exigen soluciones rápidas"
+          },
+          {
+            "en": "Cultures that avoid feelings",
+            "es": "Culturas que evitan los sentimientos"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Think of who needs you to listen this week.",
+          "es": "Piense en quién necesita que usted le escuche esta semana."
+        },
+        {
+          "en": "Listen to them for twenty minutes. Ask only questions.",
+          "es": "Escuche a esa persona durante veinte minutos. Haga solo preguntas."
+        },
+        {
+          "en": "Notice one feeling in you that was theirs. Name it.",
+          "es": "Fíjese en un sentimiento suyo que en realidad era de esa persona. Nómbrelo."
+        },
+        {
+          "en": "Say one honest, caring thing you have been holding back.",
+          "es": "Diga una cosa honesta y afectuosa que se ha estado guardando."
+        },
+        {
+          "en": "Ask someone else to listen to you.",
+          "es": "Pídale a otra persona que le escuche a usted."
+        },
+        {
+          "en": "Spend an hour alone doing something you enjoy.",
+          "es": "Pase una hora a solas haciendo algo que disfrute."
+        },
+        {
+          "en": "Review: where did you help, and where did you carry too much?",
+          "es": "Repaso: ¿dónde ayudó y dónde cargó demasiado?"
+        }
+      ]
+    },
+    "cultural-guardian": {
+      "slug": "cultural-guardian",
+      "leanOn": [
+        {
+          "en": "Keep or teach one ritual this week: a meal, a song, a story, a day, and explain why it matters.",
+          "es": "Mantenga o enseñe un ritual esta semana: una comida, una canción, una historia, un día, y explique por qué importa."
+        },
+        {
+          "en": "Welcome one newcomer into something you care for.",
+          "es": "Dele la bienvenida a alguien que recién llega a algo que usted cuida."
+        },
+        {
+          "en": "Write down what makes your group's way of doing things its own.",
+          "es": "Escriba qué hace que la manera de hacer las cosas de su grupo sea propia."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are treating a different way of doing things as a threat, or you only talk to people who share your customs.",
+          "es": "Trata una forma distinta de hacer las cosas como una amenaza, o solo habla con personas que comparten sus costumbres."
+        },
+        "counter": {
+          "en": "Ask someone from a different background what they notice, and write one thing worth keeping from it.",
+          "es": "Pregúntele a alguien de otro origen qué nota, y escriba una cosa de eso que valga la pena conservar."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that keeps shared life going: cultural institutions, faith and community groups, education, family traditions",
+            "es": "Trabajo que mantiene viva la vida en común: instituciones culturales, grupos de fe y comunitarios, educación, tradiciones familiares"
+          },
+          {
+            "en": "Teams with shared customs and long relationships",
+            "es": "Equipos con costumbres compartidas y relaciones largas"
+          },
+          {
+            "en": "Places that value belonging",
+            "es": "Lugares que valoran la pertenencia"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Cultures that dismiss tradition",
+            "es": "Culturas que desprecian la tradición"
+          },
+          {
+            "en": "Settings that change everything at once",
+            "es": "Entornos que cambian todo de una vez"
+          },
+          {
+            "en": "Roles with no community around them",
+            "es": "Roles sin una comunidad alrededor"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Name one custom or ritual you want to keep alive.",
+          "es": "Nombre una costumbre o un ritual que quiere mantener vivo."
+        },
+        {
+          "en": "Do it or teach it today, with the reason.",
+          "es": "Practíquelo o enséñelo hoy, con su razón."
+        },
+        {
+          "en": "Invite someone new to take part.",
+          "es": "Invite a participar a alguien que nunca lo ha hecho."
+        },
+        {
+          "en": "Ask someone from outside your circle what stands out to them.",
+          "es": "Pregúntele a alguien de fuera de su círculo qué le llama la atención."
+        },
+        {
+          "en": "Try one custom that is not your own.",
+          "es": "Pruebe una costumbre que no sea la suya."
+        },
+        {
+          "en": "Rest from duties and traditions for an evening.",
+          "es": "Descanse de deberes y tradiciones por una noche."
+        },
+        {
+          "en": "Review: what do you keep because it matters, and what because it is familiar?",
+          "es": "Repaso: ¿qué conserva porque importa y qué porque le resulta familiar?"
+        }
+      ]
+    },
+    "curator-of-comfort": {
+      "slug": "curator-of-comfort",
+      "leanOn": [
+        {
+          "en": "Set up one space or routine this week so it is calm, in order, and easy for others to enjoy.",
+          "es": "Organice un espacio o una rutina esta semana para que tenga calma y orden, y otras personas lo disfruten con facilidad."
+        },
+        {
+          "en": "Choose what to keep and what to let go, in one drawer, one calendar, or one room.",
+          "es": "Elija qué conservar y qué soltar, en un cajón, un calendario o una habitación."
+        },
+        {
+          "en": "Host or host-in-spirit: make one person feel taken care of with a small touch.",
+          "es": "Reciba a alguien, o tenga el gesto de quien recibe: con un pequeño detalle, haga que una persona se sienta bien atendida."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are avoiding a change that needs to happen because it would disturb how things are.",
+          "es": "Está evitando un cambio necesario porque alteraría cómo están las cosas."
+        },
+        "counter": {
+          "en": "Name what the disruption would cost and what it would gain. If the gain is larger, pick the smallest first step.",
+          "es": "Nombre lo que costaría esa alteración y lo que aportaría. Si lo que aporta es mayor, elija el primer paso más pequeño."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work where atmosphere and care for others matter: hospitality, design, home, wellness",
+            "es": "Trabajo donde importan el ambiente y el cuidado de los demás: hospitalidad, diseño, hogar, bienestar"
+          },
+          {
+            "en": "Teams with a calm pace and clear standards",
+            "es": "Equipos con un ritmo tranquilo y estándares claros"
+          },
+          {
+            "en": "Places that value harmony and take care of the details",
+            "es": "Lugares que valoran la armonía y cuidan los detalles"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Constant crisis and noise",
+            "es": "Crisis y ruido constantes"
+          },
+          {
+            "en": "Cultures that treat comfort as indulgence",
+            "es": "Culturas que ven la comodidad como un capricho"
+          },
+          {
+            "en": "Roles with no say over how the place feels",
+            "es": "Roles sin voz sobre cómo se siente el lugar"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Pick one space or routine that matters to you. Write what makes it good.",
+          "es": "Elija un espacio o una rutina que le importe. Escriba qué lo hace bueno."
+        },
+        {
+          "en": "Improve one small thing about it today.",
+          "es": "Mejore hoy un detalle pequeño de ese espacio o rutina."
+        },
+        {
+          "en": "Ask someone who shares it what would make it better.",
+          "es": "Pregúntele a alguien que lo comparte qué lo mejoraría."
+        },
+        {
+          "en": "Let go of one thing that no longer fits.",
+          "es": "Suelte una cosa que ya no encaja."
+        },
+        {
+          "en": "Try one new thing, a different route, meal, or arrangement.",
+          "es": "Pruebe algo nuevo: otra ruta, otra comida u otra forma de acomodar las cosas."
+        },
+        {
+          "en": "Rest in the space you made. Do nothing in it for twenty minutes.",
+          "es": "Descanse en el espacio que creó. No haga nada ahí durante veinte minutos."
+        },
+        {
+          "en": "Review: what is working, and what is quietly stuck? Pick one change.",
+          "es": "Repaso: ¿qué funciona y qué está estancado sin que se note? Elija un cambio."
+        }
+      ]
+    },
+    "entrepreneur": {
+      "slug": "entrepreneur",
+      "leanOn": [
+        {
+          "en": "Take one idea this week to three real people who might want it, and listen for what they would pay or do.",
+          "es": "Lleve una idea esta semana a tres personas reales que podrían quererla, y escuche qué pagarían o qué harían."
+        },
+        {
+          "en": "Make one introduction that gives someone else an opening.",
+          "es": "Presente a dos personas de forma que alguien más reciba una oportunidad."
+        },
+        {
+          "en": "Put one small thing into the world, with a date.",
+          "es": "Lance al mundo una cosa pequeña, con fecha."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are moving fast and leaving people behind, or you have said yes to something you would not defend.",
+          "es": "Avanza rápido y deja a la gente atrás, o le dijo que sí a algo que no defendería."
+        },
+        "counter": {
+          "en": "Before the next deal or launch, ask who is affected and what you owe them. Write it down.",
+          "es": "Antes del próximo trato o lanzamiento, pregúntese a quién afecta y qué les debe. Anótelo."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work where you build and mobilize: new ventures, sales, partnerships, product",
+            "es": "Trabajo donde usted construye y moviliza: nuevos emprendimientos, ventas, alianzas, producto"
+          },
+          {
+            "en": "Teams that move quickly and share the credit",
+            "es": "Equipos que se mueven rápido y comparten el mérito"
+          },
+          {
+            "en": "Places with room to try and fail in the open",
+            "es": "Lugares con espacio para intentar y fallar a la vista de todos"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Heavy approval chains",
+            "es": "Cadenas de aprobación pesadas"
+          },
+          {
+            "en": "Cultures that punish risk",
+            "es": "Culturas que castigan el riesgo"
+          },
+          {
+            "en": "Roles with no connection to customers or people",
+            "es": "Roles sin conexión con clientes ni con personas"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Write the idea you most want to build, in two lines.",
+          "es": "Escriba en dos líneas la idea que más quiere construir."
+        },
+        {
+          "en": "Tell three people about it. Write what they ask.",
+          "es": "Cuénteselo a tres personas. Escriba lo que le preguntan."
+        },
+        {
+          "en": "Make one small thing for a real person, for free or cheap.",
+          "es": "Haga una cosa pequeña para una persona real, gratis o barata."
+        },
+        {
+          "en": "Ask who would be affected, including people who are not in the room.",
+          "es": "Pregúntese a quién afectaría, incluidas las personas que no están presentes."
+        },
+        {
+          "en": "Do one thing slower and more carefully than you normally would.",
+          "es": "Haga una cosa más despacio y con más cuidado de lo normal."
+        },
+        {
+          "en": "Take an evening off from building.",
+          "es": "Tómese una noche libre de construir."
+        },
+        {
+          "en": "Review: what moved, who helped, and what do you owe them?",
+          "es": "Repaso: ¿qué avanzó, quién ayudó y qué les debe?"
+        }
+      ]
+    },
+    "healer": {
+      "slug": "healer",
+      "leanOn": [
+        {
+          "en": "Be the steady person in one hard conversation this week, and listen before you offer anything.",
+          "es": "Sea la persona que da estabilidad en una conversación difícil esta semana, y escuche antes de ofrecer cualquier cosa."
+        },
+        {
+          "en": "Use your read on a room to name what is going unsaid, gently, in one sentence.",
+          "es": "Use su lectura del ambiente para nombrar, con suavidad y en una sola oración, lo que no se está diciendo."
+        },
+        {
+          "en": "Help one person take their next small step, then let them take it.",
+          "es": "Ayude a una persona a dar su siguiente paso pequeño, y luego deje que lo dé por sí misma."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are tired after helping, you cannot tell your feelings from theirs, or you say yes when you mean no.",
+          "es": "Termina sin energía después de ayudar, no logra distinguir sus sentimientos de los de la otra persona, o dice que sí cuando quiere decir que no."
+        },
+        "counter": {
+          "en": "Before you take on someone's problem, name one thing that is theirs to carry and one thing that is yours.",
+          "es": "Antes de hacerse cargo del problema de alguien, nombre algo que le toca cargar a esa persona y algo que le toca a usted."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work close to people in need: care, teaching, counseling, community and crisis support",
+            "es": "Trabajo cerca de personas que necesitan apoyo: cuidado, enseñanza, consejería, apoyo comunitario y en crisis"
+          },
+          {
+            "en": "Teams that share the weight and allow rest",
+            "es": "Equipos que reparten el peso y permiten descansar"
+          },
+          {
+            "en": "Places where responding well matters more than following a script",
+            "es": "Lugares donde responder bien importa más que seguir un guion"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Roles with endless need and no limits or breaks",
+            "es": "Roles con necesidades sin fin, sin límites ni pausas"
+          },
+          {
+            "en": "Cultures that treat feeling as weakness",
+            "es": "Culturas que tratan las emociones como debilidad"
+          },
+          {
+            "en": "Settings where you are alone with other people's pain",
+            "es": "Entornos donde se queda a solas con el dolor ajeno"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Write down who you helped lately and how you felt afterward.",
+          "es": "Anote a quién ayudó últimamente y cómo se sintió después."
+        },
+        {
+          "en": "Do one kind act that costs you nothing to give up.",
+          "es": "Haga un acto amable que no le cueste nada dar."
+        },
+        {
+          "en": "Say no to one request, kindly and without a long reason.",
+          "es": "Diga que no a una petición, con amabilidad y sin dar largas explicaciones."
+        },
+        {
+          "en": "Name a feeling you had today that was yours, not someone else's.",
+          "es": "Nombre un sentimiento que tuvo hoy y que era suyo, no de otra persona."
+        },
+        {
+          "en": "Ask someone to help you with something small.",
+          "es": "Pídale a alguien que le ayude con algo pequeño."
+        },
+        {
+          "en": "Do one thing today only for your own body: sleep, food, a walk.",
+          "es": "Haga hoy una cosa solo para su propio cuerpo: dormir, comer, caminar."
+        },
+        {
+          "en": "Review: where were your limits clear, and where did they blur? Pick one to hold next week.",
+          "es": "Repaso: ¿dónde fueron claros sus límites y dónde se desdibujaron? Elija uno para sostener la próxima semana."
+        }
+      ]
+    },
+    "inventor": {
+      "slug": "inventor",
+      "leanOn": [
+        {
+          "en": "Pick one irritation you run into, and build a rough fix this week, even if it is ugly.",
+          "es": "Elija una molestia con la que se topa y construya esta semana una solución rudimentaria, aunque sea fea."
+        },
+        {
+          "en": "Take apart something that works to see why, then write down one thing you learned.",
+          "es": "Desarme algo que funciona para ver por qué, y luego anote una cosa que aprendió."
+        },
+        {
+          "en": "Show a prototype to one person before it is ready.",
+          "es": "Muéstrele un prototipo a una persona antes de que esté listo."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are building something because you can, with no one who wants it, or you skip over who it might hurt.",
+          "es": "Construye algo porque puede, sin que nadie lo quiera, o pasa por alto a quién podría hacerle daño."
+        },
+        "counter": {
+          "en": "Ask one person who would use it what problem they would solve with it, and change the design if the answer surprises you.",
+          "es": "Pregúntele a una persona que lo usaría qué problema resolvería con eso, y cambie el diseño si la respuesta le sorprende."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that ships useful things: engineering, product, repair, small business, workshops",
+            "es": "Trabajo que entrega cosas útiles: ingeniería, producto, reparación, pequeños negocios, talleres"
+          },
+          {
+            "en": "Teams that try things and keep what works",
+            "es": "Equipos que prueban cosas y se quedan con lo que funciona"
+          },
+          {
+            "en": "Places with tools, materials and room to experiment",
+            "es": "Lugares con herramientas, materiales y espacio para experimentar"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Long planning with no building",
+            "es": "Mucha planificación sin construir nada"
+          },
+          {
+            "en": "Cultures that punish early failure",
+            "es": "Culturas que castigan los primeros fracasos"
+          },
+          {
+            "en": "Roles where you only follow a spec",
+            "es": "Roles donde solo sigue una especificación"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "List three annoyances you could fix with something you can build.",
+          "es": "Anote tres molestias que podría resolver con algo que usted puede construir."
+        },
+        {
+          "en": "Pick one. Build the roughest version in an hour.",
+          "es": "Elija una. Construya la versión más rudimentaria en una hora."
+        },
+        {
+          "en": "Test it on a real problem and write what failed.",
+          "es": "Pruébela con un problema real y escriba qué falló."
+        },
+        {
+          "en": "Show it to someone who would use it. Ask what is missing.",
+          "es": "Muéstresela a alguien que la usaría. Pregunte qué falta."
+        },
+        {
+          "en": "Ask who might be hurt or left out by it. Write one change.",
+          "es": "Pregúntese a quién podría dañar o dejar fuera. Escriba un cambio."
+        },
+        {
+          "en": "Spend an hour on something you do not need to fix.",
+          "es": "Dedique una hora a algo que no necesita arreglar."
+        },
+        {
+          "en": "Review: what works, what is for show, what is worth another week?",
+          "es": "Repaso: ¿qué funciona, qué es solo apariencia y qué merece otra semana?"
+        }
+      ]
+    },
+    "mediator": {
+      "slug": "mediator",
+      "leanOn": [
+        {
+          "en": "Sit between two sides this week and say each position back until both feel heard, then name what they share.",
+          "es": "Póngase entre dos partes esta semana y repita cada postura hasta que ambas se sientan escuchadas; luego nombre lo que tienen en común."
+        },
+        {
+          "en": "Write a fair summary of a disagreement you are part of, in plain words.",
+          "es": "Escriba en palabras sencillas un resumen justo de un desacuerdo del que usted forma parte."
+        },
+        {
+          "en": "Help one person find the question under their question.",
+          "es": "Ayude a una persona a encontrar la pregunta que hay debajo de su pregunta."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are softening your view until it says nothing, or you put off a call because someone will be upset.",
+          "es": "Suaviza su opinión hasta que ya no dice nada, o pospone una decisión porque alguien se va a molestar."
+        },
+        "counter": {
+          "en": "Write your own position in one sentence before you start balancing, and say it out loud to one person.",
+          "es": "Escriba su propia postura en una oración antes de empezar a equilibrar, y dígasela en voz alta a una persona."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that weighs competing claims: mediation, policy, ethics, editing, advising",
+            "es": "Trabajo que sopesa posturas en competencia: mediación, políticas públicas, ética, edición, asesoría"
+          },
+          {
+            "en": "Teams that want fair process and honest talk",
+            "es": "Equipos que quieren un proceso justo y conversaciones honestas"
+          },
+          {
+            "en": "Places where listening comes before deciding",
+            "es": "Lugares donde escuchar va antes que decidir"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Cultures that demand a side right away",
+            "es": "Culturas que exigen tomar partido de inmediato"
+          },
+          {
+            "en": "Settings where only the loudest voice wins",
+            "es": "Entornos donde solo gana la voz más fuerte"
+          },
+          {
+            "en": "Roles with no room to think before answering",
+            "es": "Roles sin espacio para pensar antes de responder"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Write a disagreement you know about, with each side stated fairly.",
+          "es": "Escriba un desacuerdo que conozca, con cada lado expresado de forma justa."
+        },
+        {
+          "en": "Say your own view in one sentence, without 'but' or 'on the other hand'.",
+          "es": "Diga su propia opinión en una oración, sin “pero” ni “por otro lado”."
+        },
+        {
+          "en": "Tell one person what you think and why, even if they might not like it.",
+          "es": "Dígale a una persona lo que piensa y por qué, aunque quizá no le guste."
+        },
+        {
+          "en": "Ask someone to disagree with you, and stay with it for five minutes.",
+          "es": "Pídale a alguien que le lleve la contraria, y sostenga esa conversación durante cinco minutos."
+        },
+        {
+          "en": "Notice one thing you avoided saying. Say it kindly.",
+          "es": "Fíjese en algo que evitó decir. Dígalo con amabilidad."
+        },
+        {
+          "en": "Take a walk. Decide one thing without weighing it.",
+          "es": "Salga a caminar. Decida una cosa sin sopesarla."
+        },
+        {
+          "en": "Review: where did balance help, and where did it hide your view?",
+          "es": "Repaso: ¿dónde ayudó el equilibrio y dónde escondió su opinión?"
+        }
+      ]
+    },
+    "negotiator": {
+      "slug": "negotiator",
+      "leanOn": [
+        {
+          "en": "Help two sides this week find a deal both can live with, by asking what each one needs most.",
+          "es": "Ayude esta semana a dos partes a encontrar un acuerdo con el que ambas puedan vivir, preguntando qué necesita más cada una."
+        },
+        {
+          "en": "Find one concession that costs you little and means a lot to someone.",
+          "es": "Encuentre una concesión que le cueste poco y signifique mucho para alguien."
+        },
+        {
+          "en": "Write down the terms of an informal agreement so both sides remember them the same way.",
+          "es": "Anote los términos de un acuerdo informal para que ambas partes los recuerden igual."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You keep giving ground to end the tension, or you are called indecisive and cannot say why.",
+          "es": "Sigue cediendo terreno para terminar con la tensión, o le dicen que le cuesta decidirse y no sabe explicar por qué."
+        },
+        "counter": {
+          "en": "Name the one outcome you will not trade away before you start, and hold it.",
+          "es": "Antes de empezar, nombre el resultado que no va a negociar, y sosténgalo."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that settles things between people: deals, partnerships, labor, mediation, procurement",
+            "es": "Trabajo que resuelve asuntos entre personas: acuerdos comerciales, alianzas, relaciones laborales, mediación, compras"
+          },
+          {
+            "en": "Teams that value a fair outcome",
+            "es": "Equipos que valoran un resultado justo"
+          },
+          {
+            "en": "Places where relationships last past one deal",
+            "es": "Lugares donde las relaciones duran más allá de un trato"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Winner-take-all cultures",
+            "es": "Culturas donde quien gana se lo lleva todo"
+          },
+          {
+            "en": "Roles with no room to find middle ground",
+            "es": "Roles sin espacio para encontrar un punto medio"
+          },
+          {
+            "en": "Settings that want a quick yes or no",
+            "es": "Entornos que quieren un sí o un no rápido"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Write a situation where two sides disagree and what each needs most.",
+          "es": "Escriba una situación en la que dos partes no están de acuerdo y lo que cada una necesita más."
+        },
+        {
+          "en": "Find a trade both could accept.",
+          "es": "Encuentre un intercambio que ambas podrían aceptar."
+        },
+        {
+          "en": "Name what you will not give up. Write it down.",
+          "es": "Nombre lo que no va a ceder. Escríbalo."
+        },
+        {
+          "en": "Hold it in one real conversation.",
+          "es": "Sosténgalo en una conversación real."
+        },
+        {
+          "en": "Say 'no' kindly to one thing you usually accept.",
+          "es": "Diga “no” con amabilidad a algo que normalmente acepta."
+        },
+        {
+          "en": "Take an evening away from every negotiation.",
+          "es": "Tómese una noche lejos de toda negociación."
+        },
+        {
+          "en": "Review: where did compromise help, and where did it cost you?",
+          "es": "Repaso: ¿dónde ayudó ceder y dónde le costó?"
+        }
+      ]
+    },
+    "operator": {
+      "slug": "operator",
+      "leanOn": [
+        {
+          "en": "Walk through one system you keep running and fix one weak point before it fails.",
+          "es": "Recorra un sistema que usted mantiene funcionando y corrija un punto débil antes de que falle."
+        },
+        {
+          "en": "Write down one procedure that lives only in your head.",
+          "es": "Anote un procedimiento que solo existe en su cabeza."
+        },
+        {
+          "en": "Check in on someone who depends on the system, not just the system.",
+          "es": "Pregunte cómo está alguien que depende del sistema, no solo cómo está el sistema."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are running on routine with no energy left, or you resist a change only because it is new.",
+          "es": "Sigue la rutina sin que le quede energía, o se resiste a un cambio solo porque es nuevo."
+        },
+        "counter": {
+          "en": "Schedule a real break this week, then ask what would make the system easier to run, not just safer.",
+          "es": "Programe un descanso de verdad esta semana; luego pregúntese qué haría que el sistema fuera más fácil de operar, no solo más seguro."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work where reliability matters: operations, logistics, facilities, safety, infrastructure",
+            "es": "Trabajo donde importa la confiabilidad: operaciones, logística, instalaciones, seguridad, infraestructura"
+          },
+          {
+            "en": "Teams with clear procedures and clear owners",
+            "es": "Equipos con procedimientos claros y responsables claros"
+          },
+          {
+            "en": "Places that respect those who keep things running",
+            "es": "Lugares que respetan a quienes mantienen las cosas funcionando"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Constant change with no time to settle",
+            "es": "Cambio constante sin tiempo para asentarse"
+          },
+          {
+            "en": "Cultures that only notice you when something breaks",
+            "es": "Culturas que solo le notan cuando algo se rompe"
+          },
+          {
+            "en": "Roles with all responsibility and no authority",
+            "es": "Roles con toda la responsabilidad y ninguna autoridad"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "List what you keep running. Mark what would break first if you were away.",
+          "es": "Haga una lista de lo que usted mantiene funcionando. Marque qué se rompería primero si no estuviera."
+        },
+        {
+          "en": "Fix one weak point today.",
+          "es": "Corrija hoy un punto débil."
+        },
+        {
+          "en": "Write down one procedure that exists only in your head.",
+          "es": "Anote un procedimiento que solo existe en su cabeza."
+        },
+        {
+          "en": "Ask someone who relies on you what they would change.",
+          "es": "Pregúntele a alguien que cuenta con usted qué cambiaría."
+        },
+        {
+          "en": "Try one small change to your routine and see what happens.",
+          "es": "Pruebe un pequeño cambio en su rutina y vea qué pasa."
+        },
+        {
+          "en": "Take a real break. Do not check anything.",
+          "es": "Tómese un descanso de verdad. No revise nada."
+        },
+        {
+          "en": "Review: what is solid, what is fragile, what is tiring? Pick one to improve.",
+          "es": "Repaso: ¿qué es sólido, qué es frágil y qué le cansa? Elija uno para mejorar."
+        }
+      ]
+    },
+    "organizer": {
+      "slug": "organizer",
+      "leanOn": [
+        {
+          "en": "Gather a few people around one cause or problem this week and give each a clear way to help.",
+          "es": "Reúna a unas cuantas personas alrededor de una causa o un problema esta semana y dele a cada una una forma clara de ayudar."
+        },
+        {
+          "en": "Write down what you stand for in one paragraph, then say it out loud once.",
+          "es": "Escriba en un párrafo lo que usted defiende, y luego dígalo en voz alta una vez."
+        },
+        {
+          "en": "Turn one complaint into a small group action.",
+          "es": "Convierta una queja en una pequeña acción de grupo."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are sure you are right and have stopped asking what others need, or people are doing things only because you asked.",
+          "es": "Tiene la certeza de tener la razón y dejó de preguntar qué necesitan los demás, o la gente hace las cosas solo porque usted se lo pidió."
+        },
+        "counter": {
+          "en": "Ask the group what they want to change about the plan, and adopt one suggestion.",
+          "es": "Pregúntele al grupo qué quiere cambiar del plan, y adopte una sugerencia."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that rallies people: community organizing, nonprofits, campaigns, teaching, leadership",
+            "es": "Trabajo que moviliza a la gente: organización comunitaria, organizaciones sin fines de lucro, campañas, enseñanza, liderazgo"
+          },
+          {
+            "en": "Teams with a shared purpose",
+            "es": "Equipos con un propósito compartido"
+          },
+          {
+            "en": "Places that treat conscience and action as one",
+            "es": "Lugares que tratan la conciencia y la acción como una sola cosa"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Cultures where no one cares about the cause",
+            "es": "Culturas donde a nadie le importa la causa"
+          },
+          {
+            "en": "Roles with no chance to bring people together",
+            "es": "Roles sin oportunidad de reunir a la gente"
+          },
+          {
+            "en": "Settings that reward staying quiet",
+            "es": "Entornos que premian quedarse en silencio"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Name one cause or problem you care about, in a sentence.",
+          "es": "Nombre en una oración una causa o un problema que le importe."
+        },
+        {
+          "en": "Write who else cares about it, and one way each could help.",
+          "es": "Escriba a quién más le importa y una forma en que cada quien podría ayudar."
+        },
+        {
+          "en": "Ask one person to join, with a specific small ask.",
+          "es": "Invite a una persona a sumarse, con un pedido pequeño y concreto."
+        },
+        {
+          "en": "Listen to someone who sees it differently, without arguing.",
+          "es": "Escuche a alguien que lo ve de otra manera, sin discutir."
+        },
+        {
+          "en": "Change one part of the plan because of what you heard.",
+          "es": "Cambie una parte del plan por lo que escuchó."
+        },
+        {
+          "en": "Rest from the cause for an evening.",
+          "es": "Descanse de la causa por una noche."
+        },
+        {
+          "en": "Review: who joined, who held back, and why?",
+          "es": "Repaso: ¿quién se sumó, quién se contuvo y por qué?"
+        }
+      ]
+    },
+    "performer-artist": {
+      "slug": "performer-artist",
+      "leanOn": [
+        {
+          "en": "Create one shared experience this week: a song, a gathering, a story, a game, and let people join in.",
+          "es": "Cree una experiencia compartida esta semana: una canción, una reunión, una historia, un juego, y deje que la gente participe."
+        },
+        {
+          "en": "Tell one story that makes a small group feel the same thing at the same time.",
+          "es": "Cuente una historia que haga que un grupo pequeño sienta lo mismo al mismo tiempo."
+        },
+        {
+          "en": "Invite someone who rarely joins to take part.",
+          "es": "Invite a participar a alguien que casi nunca se suma."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are chasing the reaction more than the work, or you feel empty when the room goes quiet.",
+          "es": "Persigue la reacción más que la obra, o siente un vacío cuando el lugar se queda en silencio."
+        },
+        "counter": {
+          "en": "After you perform or share, write what you meant to give, not how it was received.",
+          "es": "Después de actuar o compartir algo, escriba lo que quería dar, no cómo lo recibieron."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that brings people together: performance, events, teaching, media, community arts",
+            "es": "Trabajo que reúne a la gente: artes escénicas, eventos, enseñanza, medios, arte comunitario"
+          },
+          {
+            "en": "Teams that value expression and show up for each other",
+            "es": "Equipos que valoran la expresión y se apoyan entre sí"
+          },
+          {
+            "en": "Places with an audience and room to play",
+            "es": "Lugares con público y espacio para jugar"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Isolated roles with no audience",
+            "es": "Roles aislados, sin público"
+          },
+          {
+            "en": "Cultures that discourage emotion or play",
+            "es": "Culturas que desalientan la emoción o el juego"
+          },
+          {
+            "en": "Settings where only metrics count",
+            "es": "Entornos donde solo cuentan las métricas"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Write what you most want people to feel when they are with you.",
+          "es": "Escriba lo que más quiere que la gente sienta cuando está con usted."
+        },
+        {
+          "en": "Create one small thing today to share.",
+          "es": "Cree hoy algo pequeño para compartir."
+        },
+        {
+          "en": "Share it with a few people and notice how you feel before you hear anything.",
+          "es": "Compártalo con unas cuantas personas y fíjese en cómo se siente antes de escuchar cualquier comentario."
+        },
+        {
+          "en": "Make something that is for no one.",
+          "es": "Haga algo que no sea para nadie."
+        },
+        {
+          "en": "Invite one person to join you in making something.",
+          "es": "Invite a una persona a crear algo con usted."
+        },
+        {
+          "en": "Be quiet and unseen for an evening.",
+          "es": "Pase una noche en silencio y sin que nadie le vea."
+        },
+        {
+          "en": "Review: what did you give, and what did you need back?",
+          "es": "Repaso: ¿qué dio y qué necesitaba recibir a cambio?"
+        }
+      ]
+    },
+    "performer": {
+      "slug": "performer",
+      "leanOn": [
+        {
+          "en": "Take one live moment this week, a talk, a game, a class, a performance, and put your whole body into it.",
+          "es": "Tome un momento en vivo esta semana, una charla, un partido, una clase, una presentación, y ponga todo su cuerpo en él."
+        },
+        {
+          "en": "Read what the people around you are feeling and adjust, then tell one of them what you noticed.",
+          "es": "Lea lo que sienten las personas a su alrededor y ajústese; luego dígale a una de ellas lo que notó."
+        },
+        {
+          "en": "Teach someone through doing, not explaining.",
+          "es": "Enséñele a alguien haciendo, no explicando."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You go flat when no one is watching, or you change who you are to fit each room.",
+          "es": "Se apaga cuando nadie le mira, o cambia quién es para encajar en cada lugar."
+        },
+        "counter": {
+          "en": "Do one thing today that nobody will see, and finish it anyway.",
+          "es": "Haga hoy algo que nadie va a ver, y termínelo de todos modos."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work with live feedback: performance, teaching, sport, coaching, hospitality",
+            "es": "Trabajo con respuesta en vivo: artes escénicas, enseñanza, deporte, coaching, hospitalidad"
+          },
+          {
+            "en": "Teams that are expressive and quick to respond",
+            "es": "Equipos expresivos y rápidos para responder"
+          },
+          {
+            "en": "Places where movement and presence are valued",
+            "es": "Lugares donde se valoran el movimiento y la presencia"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Isolated desk work with no feedback",
+            "es": "Trabajo de escritorio aislado, sin retroalimentación"
+          },
+          {
+            "en": "Cultures where expression is held back",
+            "es": "Culturas donde se reprime la expresión"
+          },
+          {
+            "en": "Roles where you wait for approval before moving",
+            "es": "Roles donde tiene que esperar aprobación antes de moverse"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Write what you do best when you are fully present.",
+          "es": "Escriba lo que hace mejor cuando está plenamente presente."
+        },
+        {
+          "en": "Do that thing today, once, with full effort.",
+          "es": "Hágalo hoy, una vez, con todo su esfuerzo."
+        },
+        {
+          "en": "Ask someone honest how you come across, and listen without defending.",
+          "es": "Pregúntele a una persona honesta qué impresión da usted, y escuche sin defenderse."
+        },
+        {
+          "en": "Do something for yourself that no one will ever see.",
+          "es": "Haga algo para usted que nadie verá jamás."
+        },
+        {
+          "en": "Watch someone good at something unlike yours. Note one thing you could borrow.",
+          "es": "Observe a alguien con talento para algo distinto de lo suyo. Anote una cosa que podría tomar prestada."
+        },
+        {
+          "en": "Spend an hour doing nothing for an audience.",
+          "es": "Pase una hora sin hacer nada para un público."
+        },
+        {
+          "en": "Review: when did you feel most yourself? Do more of it next week.",
+          "es": "Repaso: ¿en qué momento sintió que era plenamente usted? Haga más de eso la próxima semana."
         }
       ]
     },
@@ -277,85 +1930,346 @@
       "leanOn": [
         {
           "en": "Choose one belief you act on and write the reason in two plain sentences, then test it against a real case this week.",
-          "es": ""
+          "es": "Elija una creencia según la cual actúa y escriba la razón en dos oraciones sencillas; luego póngala a prueba con un caso real esta semana."
         },
         {
           "en": "Explain a hard idea to someone who has never studied it, until they can say it back.",
-          "es": ""
+          "es": "Explíquele una idea difícil a alguien que nunca la ha estudiado, hasta que esa persona pueda explicársela de vuelta."
         },
         {
           "en": "Put one of your ideals into one small, visible action.",
-          "es": ""
+          "es": "Lleve uno de sus ideales a una acción pequeña y visible."
         }
       ],
       "watchFor": {
         "sign": {
           "en": "You are thinking about what ought to be while something right in front of you needs a decision.",
-          "es": ""
+          "es": "Está pensando en lo que debería ser mientras algo que tiene justo enfrente necesita una decisión."
         },
         "counter": {
           "en": "Set a deadline for the question. When it passes, take the best available step and write down what you would revisit.",
-          "es": ""
+          "es": "Póngale una fecha límite a la pregunta. Cuando llegue, dé el mejor paso disponible y anote lo que volvería a revisar."
         }
       },
       "fit": {
         "thrives": [
           {
             "en": "Work that shapes principles, design of a system or a body of ideas: ethics, theory, writing, teaching",
-            "es": ""
+            "es": "Trabajo que da forma a principios, al diseño de un sistema o a un conjunto de ideas: ética, teoría, escritura, enseñanza"
           },
           {
             "en": "Teams that welcome questions and long-range thinking",
-            "es": ""
+            "es": "Equipos que reciben bien las preguntas y el pensamiento a largo plazo"
           },
           {
             "en": "Roles with time for reflection and someone who turns ideas into action",
-            "es": ""
+            "es": "Roles con tiempo para reflexionar y alguien que convierta las ideas en acción"
           }
         ],
         "strains": [
           {
             "en": "Settings that want fast answers with no reasons",
-            "es": ""
+            "es": "Entornos que quieren respuestas rápidas sin razones"
           },
           {
             "en": "Rigid hierarchies where ideas are not heard",
-            "es": ""
+            "es": "Jerarquías rígidas donde no se escuchan las ideas"
           },
           {
             "en": "Constant interruption with no quiet",
-            "es": ""
+            "es": "Interrupciones constantes, sin un momento de silencio"
           }
         ]
       },
       "practice": [
         {
           "en": "Write the question you most want to answer this month, in one sentence.",
-          "es": ""
+          "es": "Escriba en una oración la pregunta que más quiere responder este mes."
         },
         {
           "en": "Write what you already believe about it, and why, in five lines.",
-          "es": ""
+          "es": "Escriba en cinco líneas lo que ya cree sobre ella, y por qué."
         },
         {
           "en": "Find one real case where that belief is hard to hold. Write what it costs you.",
-          "es": ""
+          "es": "Encuentre un caso real en el que esa creencia sea difícil de sostener. Escriba lo que le cuesta."
         },
         {
           "en": "Do one small thing today that matches an ideal you hold.",
-          "es": ""
+          "es": "Haga hoy algo pequeño que vaya de acuerdo con un ideal suyo."
         },
         {
           "en": "Talk it over with someone who disagrees. Ask what they see that you do not.",
-          "es": ""
+          "es": "Converse sobre el tema con alguien que no esté de acuerdo. Pregúntele qué ve que usted no ve."
         },
         {
           "en": "Take a walk with no problem to solve.",
-          "es": ""
+          "es": "Salga a caminar sin ningún problema que resolver."
         },
         {
           "en": "Review: what changed in your view? What is the next small action?",
-          "es": ""
+          "es": "Repaso: ¿qué cambió en su manera de verlo? ¿Cuál es la siguiente acción pequeña?"
+        }
+      ]
+    },
+    "poet-architect": {
+      "slug": "poet-architect",
+      "leanOn": [
+        {
+          "en": "Design one thing this week where the idea and the form fit together: a page, a plan, a room, a talk.",
+          "es": "Diseñe una cosa esta semana en la que la idea y la forma encajen: una página, un plan, una habitación, una charla."
+        },
+        {
+          "en": "Say a complex thing simply and elegantly, and test whether it lands.",
+          "es": "Diga algo complejo de forma simple y elegante, y compruebe si llega."
+        },
+        {
+          "en": "Take one beautiful idea and sketch the first practical step.",
+          "es": "Tome una idea hermosa y esboce el primer paso práctico."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are polishing an idea that has never met a real person, or you wait for the perfect form before starting.",
+          "es": "Está puliendo una idea que nunca se ha encontrado con una persona real, o espera la forma perfecta antes de empezar."
+        },
+        "counter": {
+          "en": "Show a rough version to someone this week and ask what is unclear or missing.",
+          "es": "Muéstrele una versión preliminar a alguien esta semana y pregúntele qué no está claro o qué falta."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work where thought and beauty meet: architecture, writing, design, teaching, curation",
+            "es": "Trabajo donde se encuentran el pensamiento y la belleza: arquitectura, escritura, diseño, enseñanza, curaduría"
+          },
+          {
+            "en": "Teams that value both clarity and craft",
+            "es": "Equipos que valoran tanto la claridad como el oficio"
+          },
+          {
+            "en": "Places that allow time for the idea to take shape",
+            "es": "Lugares que dan tiempo para que la idea tome forma"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Cultures that want output now with no care for form",
+            "es": "Culturas que quieren resultados ya, sin cuidado por la forma"
+          },
+          {
+            "en": "Roles of pure upkeep",
+            "es": "Roles de puro mantenimiento"
+          },
+          {
+            "en": "Settings where beauty is treated as waste",
+            "es": "Entornos donde la belleza se ve como un desperdicio"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Write the idea you most want to make real, in two lines.",
+          "es": "Escriba en dos líneas la idea que más quiere hacer realidad."
+        },
+        {
+          "en": "Sketch it rough, without caring how it looks.",
+          "es": "Haga un boceto rápido, sin importar cómo se vea."
+        },
+        {
+          "en": "Show the sketch to someone and write what they ask.",
+          "es": "Muéstrele el boceto a alguien y escriba lo que le pregunta."
+        },
+        {
+          "en": "Make it simpler: remove one thing.",
+          "es": "Hágalo más simple: quite una cosa."
+        },
+        {
+          "en": "Do one practical step toward making it exist.",
+          "es": "Dé un paso práctico para que exista."
+        },
+        {
+          "en": "Spend an hour looking at something beautiful, with no goal.",
+          "es": "Pase una hora mirando algo hermoso, sin ningún objetivo."
+        },
+        {
+          "en": "Review: what is beautiful and true here, and what is still only a picture?",
+          "es": "Repaso: ¿qué es hermoso y verdadero aquí, y qué sigue siendo solo una imagen?"
+        }
+      ]
+    },
+    "scholar": {
+      "slug": "scholar",
+      "leanOn": [
+        {
+          "en": "Choose one idea or text that matters to you and spend focused time with it, then write what you now understand.",
+          "es": "Elija una idea o un texto que le importe y dedíquele tiempo con atención; luego escriba lo que ahora entiende."
+        },
+        {
+          "en": "Explain what you know to one person who needs it.",
+          "es": "Explíquele lo que sabe a una persona que lo necesite."
+        },
+        {
+          "en": "Connect something old to something happening now, in one page.",
+          "es": "Conecte algo antiguo con algo que está pasando ahora, en una página."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You keep collecting and reading, and nothing is being written, taught, or used.",
+          "es": "Sigue reuniendo y leyendo, y nada se escribe, se enseña ni se usa."
+        },
+        "counter": {
+          "en": "Set a date to share what you know, to a person or a page, and treat it as finished enough to give.",
+          "es": "Fije una fecha para compartir lo que sabe, con una persona o en una página, y considérelo lo bastante terminado como para darlo."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work built on depth: research, teaching, libraries, archives, law, long-form writing",
+            "es": "Trabajo basado en la profundidad: investigación, enseñanza, bibliotecas, archivos, derecho, escritura extensa"
+          },
+          {
+            "en": "Teams that value accuracy and memory",
+            "es": "Equipos que valoran la precisión y la memoria"
+          },
+          {
+            "en": "Places with quiet and good sources",
+            "es": "Lugares con silencio y buenas fuentes"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Fast-moving settings that discard the past",
+            "es": "Entornos acelerados que desechan el pasado"
+          },
+          {
+            "en": "Cultures that reward opinion over evidence",
+            "es": "Culturas que premian la opinión por encima de la evidencia"
+          },
+          {
+            "en": "Roles that never let you finish a thought",
+            "es": "Roles que nunca le dejan terminar una idea"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Name the subject you most want to understand better.",
+          "es": "Nombre el tema que más quiere entender mejor."
+        },
+        {
+          "en": "Read or study for thirty minutes with no phone.",
+          "es": "Lea o estudie treinta minutos sin el teléfono."
+        },
+        {
+          "en": "Write what you learned in your own words, in half a page.",
+          "es": "Escriba lo que aprendió con sus propias palabras, en media página."
+        },
+        {
+          "en": "Explain it aloud to someone who is not an expert.",
+          "es": "Explíqueselo en voz alta a una persona que no domine el tema."
+        },
+        {
+          "en": "Ask what would change your mind about it.",
+          "es": "Pregúntese qué le haría cambiar de opinión al respecto."
+        },
+        {
+          "en": "Do one practical thing unrelated to books.",
+          "es": "Haga una cosa práctica que no tenga que ver con libros."
+        },
+        {
+          "en": "Review: what did you add, and who can use it? Share it.",
+          "es": "Repaso: ¿qué aportó y quién puede usarlo? Compártalo."
+        }
+      ]
+    },
+    "steward": {
+      "slug": "steward",
+      "leanOn": [
+        {
+          "en": "Pick one thing you are responsible for and write down what 'looked after' means for it, then check it.",
+          "es": "Elija algo que esté a su cargo, escriba qué significa para eso estar “bien cuidado” y luego revíselo."
+        },
+        {
+          "en": "Be the person who shows up on time and does what you said, and let one person see that you did.",
+          "es": "Sea la persona que llega a tiempo y hace lo que dijo, y deje que alguien vea que lo hizo."
+        },
+        {
+          "en": "Teach one routine that works to someone newer, with the reason behind it.",
+          "es": "Enséñele una rutina que funciona a alguien que acaba de llegar, junto con la razón que hay detrás."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are defending a rule no one can explain, or you feel uneasy only because something is different.",
+          "es": "Defiende una regla que nadie sabe explicar, o siente inquietud solo porque algo es diferente."
+        },
+        "counter": {
+          "en": "Ask what the rule is protecting. If you cannot say, try changing it once on a small scale.",
+          "es": "Pregúntese qué protege la regla. Si no puede decirlo, pruebe cambiarla una vez, a pequeña escala."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work built on trust and duty: care of people, property, or standards over the long term",
+            "es": "Trabajo basado en la confianza y el deber: cuidar personas, bienes o estándares a largo plazo"
+          },
+          {
+            "en": "Teams with clear roles and a steady pace",
+            "es": "Equipos con roles claros y un ritmo constante"
+          },
+          {
+            "en": "Places that value reliability and keep their promises",
+            "es": "Lugares que valoran la confiabilidad y cumplen sus promesas"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Constant reorganizing with no reason given",
+            "es": "Reorganizaciones constantes sin ninguna explicación"
+          },
+          {
+            "en": "Cultures that reward flash over follow-through",
+            "es": "Culturas que premian lo vistoso por encima de cumplir hasta el final"
+          },
+          {
+            "en": "Roles with no clear owner for anything",
+            "es": "Roles donde nada tiene un responsable claro"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "List what you are responsible for this week. Circle the one that matters most.",
+          "es": "Haga una lista de lo que está a su cargo esta semana. Encierre en un círculo lo que más importa."
+        },
+        {
+          "en": "Do that one thing fully today, to your own standard.",
+          "es": "Haga hoy esa cosa por completo, según su propio estándar."
+        },
+        {
+          "en": "Ask someone you look after what they need that you are not providing.",
+          "es": "Pregúntele a alguien que está a su cuidado qué necesita que usted no le está dando."
+        },
+        {
+          "en": "Change one small habit or routine and see what happens.",
+          "es": "Cambie un hábito o una rutina pequeña y vea qué pasa."
+        },
+        {
+          "en": "Write down one rule you follow and the reason behind it.",
+          "es": "Anote una regla que sigue y la razón que hay detrás."
+        },
+        {
+          "en": "Do nothing useful for one hour.",
+          "es": "No haga nada útil durante una hora."
+        },
+        {
+          "en": "Review: what held steady, and what needed to change? Pick one of each.",
+          "es": "Repaso: ¿qué se mantuvo firme y qué necesitaba cambiar? Elija una cosa de cada lado."
         }
       ]
     },
@@ -364,85 +2278,259 @@
       "leanOn": [
         {
           "en": "Pick one problem this week and draw the whole system around it: who is involved, what moves what, where the leverage is.",
-          "es": ""
+          "es": "Elija un problema esta semana y dibuje todo el sistema a su alrededor: quién participa, qué mueve qué, dónde está la palanca."
         },
         {
           "en": "Turn one vague goal into a plan with three steps and a date, then hand one step to someone else.",
-          "es": ""
+          "es": "Convierta una meta vaga en un plan con tres pasos y una fecha; luego encárguele un paso a otra persona."
         },
         {
           "en": "Say your reasoning out loud to one person before you act, so the plan gets tested early.",
-          "es": ""
+          "es": "Explique su razonamiento en voz alta a una persona antes de actuar, para que el plan se ponga a prueba desde temprano."
         }
       ],
       "watchFor": {
         "sign": {
           "en": "You catch yourself managing people as pieces in the plan, or realize you have not asked how someone feels about it in days.",
-          "es": ""
+          "es": "Se sorprende tratando a las personas como piezas del plan, o se da cuenta de que lleva días sin preguntarle a alguien cómo se siente al respecto."
         },
         "counter": {
           "en": "Before the next decision, ask one person who is affected: \"What would make this hard for you?\" and write the answer into the plan.",
-          "es": ""
+          "es": "Antes de la próxima decisión, pregúntele a una persona afectada: “¿Qué haría que esto fuera difícil para usted?”, y escriba la respuesta en el plan."
         }
       },
       "fit": {
         "thrives": [
           {
             "en": "Settings where you design the approach: strategy, product, systems and early-stage ventures",
-            "es": ""
+            "es": "Entornos donde usted diseña el enfoque: estrategia, producto, sistemas y emprendimientos en etapa temprana"
           },
           {
             "en": "Teams that value clear thinking and honest trade-offs",
-            "es": ""
+            "es": "Equipos que valoran pensar con claridad y hablar con honestidad de lo que se gana y lo que se pierde"
           },
           {
             "en": "Roles with room to test ideas against real results",
-            "es": ""
+            "es": "Roles con espacio para poner a prueba las ideas frente a resultados reales"
           }
         ],
         "strains": [
           {
             "en": "Work that is all upkeep and no design",
-            "es": ""
+            "es": "Trabajo que es todo mantenimiento y nada de diseño"
           },
           {
             "en": "Cultures that reward loyalty to the old plan over better evidence",
-            "es": ""
+            "es": "Culturas que premian la lealtad al plan de siempre más que una mejor evidencia"
           },
           {
             "en": "Environments where feelings are treated as noise",
-            "es": ""
+            "es": "Entornos donde los sentimientos se tratan como ruido"
           }
         ]
       },
       "practice": [
         {
           "en": "Write down the one outcome you are steering toward right now, in one sentence.",
-          "es": ""
+          "es": "Escriba en una oración el resultado hacia el que se dirige ahora mismo."
         },
         {
           "en": "Map the people and pieces involved in it. Mark the one lever that matters most.",
-          "es": ""
+          "es": "Haga un mapa de las personas y las piezas involucradas. Marque la palanca que más importa."
         },
         {
           "en": "Do the smallest step on that lever today. Note what happened.",
-          "es": ""
+          "es": "Dé hoy el paso más pequeño sobre esa palanca. Anote qué pasó."
         },
         {
           "en": "Ask one person how the plan looks from where they stand. Listen without defending it.",
-          "es": ""
+          "es": "Pregúntele a una persona cómo se ve el plan desde su lugar. Escuche sin defenderlo."
         },
         {
           "en": "Notice one moment today when you treated a person as a means. What would treating them as an end look like?",
-          "es": ""
+          "es": "Fíjese en un momento de hoy en que trató a una persona como un medio. ¿Cómo sería tratarla como un fin?"
         },
         {
           "en": "Rest from planning for an hour. Do something with your hands or in the open air.",
-          "es": ""
+          "es": "Descanse de planear durante una hora. Haga algo con las manos o al aire libre."
         },
         {
           "en": "Review the week: what worked, what to drop, and what you will tell someone you trust about it.",
-          "es": ""
+          "es": "Repase la semana: qué funcionó, qué dejar y qué le contará al respecto a alguien de confianza."
+        }
+      ]
+    },
+    "technician": {
+      "slug": "technician",
+      "leanOn": [
+        {
+          "en": "Take on one hard fault this week and write down the steps you used, so someone else could follow them.",
+          "es": "Enfrente una falla difícil esta semana y anote los pasos que siguió, para que otra persona pueda repetirlos."
+        },
+        {
+          "en": "Teach one technique to someone and watch them try it.",
+          "es": "Enséñele una técnica a alguien y observe cómo la intenta."
+        },
+        {
+          "en": "Improve one tool or process by a small, measurable amount.",
+          "es": "Mejore una herramienta o un proceso en una medida pequeña y que se pueda medir."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are fixing the symptom again and again, or you have stopped asking what the person needs.",
+          "es": "Arregla el síntoma una y otra vez, o dejó de preguntar qué necesita la persona."
+        },
+        "counter": {
+          "en": "Before you fix, ask the person what they were trying to do. Fix that, not just the fault.",
+          "es": "Antes de arreglar, pregúntele a la persona qué estaba intentando hacer. Resuelva eso, no solo la falla."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work with real systems and tools: repair, IT, trades, clinical, lab and field work",
+            "es": "Trabajo con sistemas y herramientas reales: reparación, TI, oficios técnicos, trabajo clínico, de laboratorio y de campo"
+          },
+          {
+            "en": "Teams that value skill and clean handoffs",
+            "es": "Equipos que valoran la destreza y las entregas ordenadas entre personas"
+          },
+          {
+            "en": "Places where a job done right is noticed",
+            "es": "Lugares donde se nota un trabajo bien hecho"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Vague goals with no way to tell if it worked",
+            "es": "Metas vagas sin forma de saber si funcionó"
+          },
+          {
+            "en": "Cultures that skip training and safety",
+            "es": "Culturas que se saltan la capacitación y la seguridad"
+          },
+          {
+            "en": "Roles with no chance to practice and improve",
+            "es": "Roles sin oportunidad de practicar y mejorar"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Write the three skills you rely on most.",
+          "es": "Escriba las tres destrezas en las que más se apoya."
+        },
+        {
+          "en": "Pick one and practice it deliberately for twenty minutes.",
+          "es": "Elija una y practíquela a conciencia durante veinte minutos."
+        },
+        {
+          "en": "Write your method for a hard task in steps.",
+          "es": "Escriba en pasos su método para una tarea difícil."
+        },
+        {
+          "en": "Teach it to someone, then ask where it was unclear.",
+          "es": "Enséñeselo a alguien y luego pregúntele dónde no quedó claro."
+        },
+        {
+          "en": "Ask one person what they were really trying to do before things broke.",
+          "es": "Pregúntele a una persona qué intentaba hacer realmente antes de que algo se descompusiera."
+        },
+        {
+          "en": "Do something with no right answer: draw, cook without a recipe, wander.",
+          "es": "Haga algo sin una respuesta correcta: dibuje, cocine sin receta, camine sin rumbo."
+        },
+        {
+          "en": "Review: where did your skill help someone? Where did you miss them?",
+          "es": "Repaso: ¿dónde le sirvió su destreza a alguien? ¿Dónde dejó de ver a la persona?"
+        }
+      ]
+    },
+    "translator": {
+      "slug": "translator",
+      "leanOn": [
+        {
+          "en": "Be the bridge between two groups this week: take what one says and put it in words the other understands.",
+          "es": "Sea el puente entre dos grupos esta semana: tome lo que dice uno y póngalo en palabras que el otro entienda."
+        },
+        {
+          "en": "Learn one new word, phrase, or concept from another culture or field and use it.",
+          "es": "Aprenda una palabra, una frase o un concepto nuevo de otra cultura u otro campo, y úselo."
+        },
+        {
+          "en": "Rewrite one hard message so its meaning survives.",
+          "es": "Reescriba un mensaje difícil para que su sentido se mantenga."
+        }
+      ],
+      "watchFor": {
+        "sign": {
+          "en": "You are agreeing with whoever you spoke to last, or you cannot say what you yourself think.",
+          "es": "Le da la razón a la última persona con la que habló, o no puede decir qué piensa usted."
+        },
+        "counter": {
+          "en": "Write down your own view on the matter before the next meeting, and share one sentence of it.",
+          "es": "Escriba su propia opinión sobre el tema antes de la próxima reunión, y comparta una oración de ella."
+        }
+      },
+      "fit": {
+        "thrives": [
+          {
+            "en": "Work that crosses boundaries: languages, cultures, fields, international or community work",
+            "es": "Trabajo que cruza fronteras: idiomas, culturas, disciplinas, trabajo internacional o comunitario"
+          },
+          {
+            "en": "Teams with different backgrounds that need a connector",
+            "es": "Equipos de orígenes distintos que necesitan a alguien que conecte"
+          },
+          {
+            "en": "Places that value clear expression and curiosity",
+            "es": "Lugares que valoran la expresión clara y la curiosidad"
+          }
+        ],
+        "strains": [
+          {
+            "en": "Closed groups that distrust outsiders",
+            "es": "Grupos cerrados que desconfían de quien viene de fuera"
+          },
+          {
+            "en": "Cultures that expect one voice and one view",
+            "es": "Culturas que esperan una sola voz y una sola opinión"
+          },
+          {
+            "en": "Roles with no room for your own opinions",
+            "es": "Roles sin espacio para sus propias opiniones"
+          }
+        ]
+      },
+      "practice": [
+        {
+          "en": "Name two groups or ideas you move between easily.",
+          "es": "Nombre dos grupos o ideas entre los que se mueve con facilidad."
+        },
+        {
+          "en": "Take one message and restate it for someone from the other side.",
+          "es": "Tome un mensaje y reformúlelo para alguien del otro lado."
+        },
+        {
+          "en": "Learn one new term from a world not yours.",
+          "es": "Aprenda un término nuevo de un mundo que no es el suyo."
+        },
+        {
+          "en": "Write your own view on one issue, with no one else's in it.",
+          "es": "Escriba su propia opinión sobre un tema, sin la de nadie más."
+        },
+        {
+          "en": "Say it to someone, even if it is unpopular.",
+          "es": "Dígasela a alguien, aunque no sea popular."
+        },
+        {
+          "en": "Spend an hour alone with your own thoughts.",
+          "es": "Pase una hora a solas con sus propios pensamientos."
+        },
+        {
+          "en": "Review: where did you bridge well, and where did you disappear?",
+          "es": "Repaso: ¿dónde tendió bien el puente y dónde desapareció?"
         }
       ]
     }

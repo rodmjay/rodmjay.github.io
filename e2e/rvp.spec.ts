@@ -59,12 +59,12 @@ test("rvp: a refresh keeps the answers so far; Start over clears them", async ({
 
 test("rvp: index, an archetype page and Spanish", async ({ page }) => {
   await built(page, "/rvp/");
-  await expect(page.locator(".rvp-list li")).toHaveCount(27);
+  await expect(page.locator(".rvp-grid li")).toHaveCount(27);
   await page.getByRole("link", { name: "The Strategist" }).click();
   await expect(page).toHaveURL(/\/rvp\/strategist\/$/);
   await expect(page.locator("h1")).toHaveText("The Strategist");
   await page.goto("/es/rvp/strategist/");
-  await expect(page.locator("h1")).toHaveText("El Estratega");
+  await expect(page.locator("h1")).toHaveText("Estratega");
   await expect(page.locator("html")).toHaveAttribute("lang", /^es/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => window.innerWidth));
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
@@ -106,8 +106,16 @@ test("rvp: a full result is useful: pattern, lean on, watch for, growth edge, fi
 
 test("rvp: Spanish result shows English where the Spanish isn't written yet, marked lang=en", async ({ page }) => {
   await built(page, `/es/rvp/result/#${strategist}`);
-  await expect(page.locator(".rvp-card h2")).toHaveText("El Estratega");
+  await expect(page.locator(".rvp-card h2")).toHaveText("Estratega");
   await expect(page.getByRole("heading", { name: "Apóyese en esto" })).toBeVisible();
   const en = page.locator('.rvp-section [lang="en"]');
   if (await en.count()) await expect(en.first()).toBeVisible();
+});
+
+test("rvp: the Spanish test asks its questions in Spanish", async ({ page }) => {
+  await built(page, "/es/rvp/take/");
+  await expect(page.locator(".ds-qa-count")).toHaveText("Pregunta 1 de 27");
+  await expect(page.locator(".rvp-qa legend")).toHaveText(bank.questions[0].prompt_es);
+  await expect(page.locator(".rvp-qa")).not.toHaveAttribute("lang", "en");
+  await expect(page.getByText("Por ahora las preguntas están en inglés.")).toHaveCount(0);
 });

@@ -21,7 +21,9 @@
   "hero": {
     "name": "Rod Johnson",
     "title": "Director de Arquitectura",
-    "lede": "Diseño cómo se construye el software: la arquitectura, los estándares y ahora las herramientas de IA detrás."
+    "lede": "Diseño cómo se construye el software: la arquitectura, los estándares y ahora las herramientas de IA detrás.",
+    "ctaResume": "Pedir mi currículum",
+    "ctaContact": "Contacto"
   },
   "about": {
     "heading": "Sobre mí",
@@ -311,7 +313,7 @@
     "privacyBtn": "Quitar mi información",
     "footerLink": "Quitar mi información",
     "keepRecord": "Solo conservo un registro de que se hizo: un hash unidireccional con clave de su correo, la fecha y los tipos de datos borrados. No incluye su nombre, lo conservo 24 meses, y solo demuestra que el borrado ocurrió y me permite reconocer una solicitud repetida. Puedo conservar lo que la ley me obligue a conservar.",
-    "backups": "Las copias en mis respaldos nocturnos de la base de datos desaparecen en un plazo de 30 días. Respaldos privados más antiguos, incluido un archivo privado de contactos en un repositorio privado, pueden seguir conteniendo su nombre y correo. No los uso, y si alguna vez restauro uno, vuelvo a borrar su entrada."
+    "backups": "Las entradas en mis respaldos nocturnos de la base de datos desaparecen en un plazo de 30 días. Respaldos privados más antiguos, incluido un archivo privado de contactos en un repositorio privado, pueden seguir conteniendo su nombre y correo. No los uso, y si alguna vez restauro uno, vuelvo a borrar su entrada."
   },
   "rvp": {
     "metaTitle": "Test de arquetipos RVP",

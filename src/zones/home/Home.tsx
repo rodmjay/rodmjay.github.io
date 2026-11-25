@@ -1,8 +1,7 @@
-// The home page: the synthwave hero, then about, the resume form, building, how I work and contact.
+// The home page: a calm hero (Designer, rodmjay-professional.md), then about, the resume form, building, how I work and contact.
 // Same markup and copy as src/page.html on Pages; the copy is i18n/{en,es}.json.
 import { dict, HTML_LANG, SITE } from "@/lib/site.mjs";
 import { meta } from "@/lib/meta";
-import { Scene } from "./Scene";
 import { ResumeForm } from "@/zones/resume/ResumeForm";
 
 type Lang = "en" | "es";
@@ -11,6 +10,7 @@ type Item = { title: string; body: string; url?: string };
 export function homeMeta(lang: Lang) {
   const d = dict(lang);
   const m = meta({ lang, title: d.meta.title, absoluteTitle: true, description: d.meta.description, path: lang === "en" ? "/" : "/es/",
+    image: lang === "en" ? "/og.png" : "/es/og.png", imageAlt: `${d.hero.name}, ${d.hero.title}`,
     alt: lang === "en" ? "/es/" : "/", type: "profile", ogLocale: d.meta.ogLocale });
   m.alternates!.canonical = lang === "en" ? `${SITE}/` : `${SITE}/es/`;
   return m;
@@ -21,9 +21,16 @@ export function Home({ lang }: { lang: Lang }) {
   const r = d.resume;
   return (
     <>
-      <Scene name={d.hero.name} title={d.hero.title} />
       <main id="main" className="col">
-        <p className="ds-body-large lede">{d.hero.lede}</p>
+        <section className="hero" aria-labelledby="hero-name">
+          <h1 className="ds-headline-large" id="hero-name">{d.hero.name}</h1>
+          <p className="ds-title-large hero-title">{d.hero.title}</p>
+          <p className="ds-body-large hero-lede">{d.hero.lede}</p>
+          <div className="hero-actions">
+            <a className="ds-btn" href="#resume">{d.hero.ctaResume}</a>
+            <a className="ds-btn outlined" href="#contact">{d.hero.ctaContact}</a>
+          </div>
+        </section>
 
         <section id="about">
           <h2 className="ds-title-large">{d.about.heading}</h2>

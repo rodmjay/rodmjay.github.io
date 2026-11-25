@@ -21,7 +21,9 @@
   "hero": {
     "name": "Rod Johnson",
     "title": "Director of Architecture",
-    "lede": "I design how software gets built: the architecture, the standards and now the AI tools behind it."
+    "lede": "I design how software gets built: the architecture, the standards and now the AI tools behind it.",
+    "ctaResume": "Get my resume",
+    "ctaContact": "Contact"
   },
   "about": {
     "heading": "About",
@@ -311,7 +313,7 @@
     "privacyBtn": "Remove my information",
     "footerLink": "Remove my information",
     "keepRecord": "I keep only a record that this was done: a one-way keyed hash of your email, the date and the kinds of data removed. It holds no name, I keep it for 24 months, and it only shows the deletion happened and lets me recognize a repeat request. I may keep what the law requires me to keep.",
-    "backups": "Copies in my nightly database copies are gone within 30 days. Older private backups, including a private contact-list file in a private repository, may still contain your name and email. I don't use them, and if I ever restore one, I delete your entry again."
+    "backups": "Entries in my nightly database backups are gone within 30 days. Older private backups, including a private contact-list file in a private repository, may still contain your name and email. I don't use them, and if I ever restore one, I delete your entry again."
   },
   "rvp": {
     "metaTitle": "RVP archetype test",
