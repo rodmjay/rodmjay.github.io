@@ -21,12 +21,14 @@ const C = { bg: "#131318", text: "#e4e1e9", muted: "#c6c5d3", accent: "#ff7aae" 
 // 64px up to about 140 characters, 52px up to about 280, 44px beyond (never below 40; quotes stay short).
 export const quoteSize = (n: number) => (n <= 140 ? 64 : n <= 280 ? 52 : 44);
 
-// One image serves both languages, so its words are English; a translated quote says so (Compliance 11/24).
-const english = (code: string) => { try { return new Intl.DisplayNames(["en"], { type: "language" }).of(code) || code; } catch { return code; } };
-export function quoteImage(q: { text: string; author: string; source?: string; year?: string; original?: { lang: string } | null; translation?: { en: string } }) {
-  const by = [q.author || "Unknown", [q.source, q.year].filter(Boolean).join(", ")].filter(Boolean).join(", ")
-    + (q.original ? ` · translated from ${english(q.original.lang)}${q.translation?.en ? ` (${q.translation.en})` : ""}`
-      : q.translation?.en ? ` · ${q.translation.en}` : "");
+// One image per language: the Spanish page gets the Spanish text and Spanish labels (Rod 11/24). Our own rendering says so.
+const langName = (lang: "en" | "es", code: string) => { try { return new Intl.DisplayNames([lang === "es" ? "es-419" : "en"], { type: "language" }).of(code) || code; } catch { return code; } };
+export function quoteImage(q: { text: string; author: string; source?: string; year?: string; original?: { lang: string } | null; label?: string }, lang: "en" | "es" = "en") {
+  const unknown = lang === "es" ? "Desconocido" : "Unknown";
+  const from = lang === "es" ? "traducido del" : "translated from";
+  const by = [q.author || unknown, [q.source, q.year].filter(Boolean).join(", ")].filter(Boolean).join(", ")
+    + (q.original ? ` · ${from} ${langName(lang, q.original.lang)}${q.label ? ` (${q.label})` : ""}`
+      : q.label ? ` · ${q.label}` : "");
   return new ImageResponse(
     (
       <div style={{ width: SIZE, height: SIZE, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 96, background: C.bg }}>

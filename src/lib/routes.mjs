@@ -8,6 +8,7 @@ let memo;
 export function altMap() {
   return (memo ||= (async () => {
     const map = { "/": "/es/", "/es/": "/", "/privacy/": "/privacy/es/", "/privacy/es/": "/privacy/",
+      "/remove/": "/es/remove/", "/es/remove/": "/remove/", "/remove/confirm/": "/es/remove/confirm/", "/es/remove/confirm/": "/remove/confirm/",
       "/quotes/": "/es/quotes/", "/es/quotes/": "/quotes/", };
     const blog = await loadBlog();
     for (const l of blog.lists) map[l.path] = l.otherPath;

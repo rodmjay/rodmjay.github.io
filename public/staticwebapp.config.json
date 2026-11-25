@@ -5,7 +5,24 @@
       "rewrite": "/404.html"
     }
   },
-  "routes": [],
+  "routes": [
+    {
+      "route": "/remove/confirm/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    },
+    {
+      "route": "/es/remove/confirm/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    }
+  ],
   "globalHeaders": {
     "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
     "Strict-Transport-Security": "max-age=31536000; includeSubDomains",

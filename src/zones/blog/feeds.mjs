@@ -3,6 +3,7 @@
 import { SITE, dict, HTML_LANG } from "../../lib/site.mjs";
 import { loadBlog, BASE } from "../../lib/blog.mjs";
 import { loadRecipes } from "../../lib/recipes.mjs";
+import { REMOVE_LIVE } from "../../lib/site.mjs";
 import { loadQuotes } from "../../lib/quotes.mjs";
 
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -49,6 +50,7 @@ export async function sitemap() {
     urls.push(pair("/recipes/", "/es/recipes/", day(r.byLang.en[0].updatedAt)));
     for (const x of r.byLang.en) urls.push(pair(x.url, x.twinUrl, day(x.updatedAt)));
   }
+  if (REMOVE_LIVE) urls.push(pair("/remove/", "/es/remove/"));
   if (q.quotes.length) urls.push(pair("/quotes/", "/es/quotes/"));
   for (const x of q.quotes) urls.push(pair(`/quotes/${x.slug}/`, `/es/quotes/${x.slug}/`));
   const body = `<?xml version="1.0" encoding="utf-8"?>
