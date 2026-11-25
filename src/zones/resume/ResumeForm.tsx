@@ -9,7 +9,7 @@ import { REMOVE_LIVE } from "@/lib/public";
 const LOOKUP_VERSION = "lookup-2026-11-24";
 const RESUME_API = "https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/resume-request";
 type T = Record<string, string>;
-type Reply = { ok?: boolean; url?: string; error?: string; retry_minutes?: number };
+type Reply = { ok?: boolean; pending?: boolean; url?: string; error?: string; retry_minutes?: number };
 const FIELDS = [
   { name: "name", type: "text", auto: "name", required: true },
   { name: "email", type: "email", auto: "email", required: true },
@@ -26,12 +26,14 @@ export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref
   const box = useRef<HTMLDivElement>(null);
   const btn = useRef<HTMLButtonElement>(null);
   const doneTitle = useRef<HTMLHeadingElement>(null);
+  const pendTitle = useRef<HTMLHeadingElement>(null);
   const [tried, setTried] = useState(false);
   const [lookupErr, setLookupErr] = useState(false);
   const [errs, setErrs] = useState<Partial<Record<Field, string>>>({});
   const [sending, setSending] = useState<number | null>(null);
   const [banner, setBanner] = useState("");
   const [done, setDone] = useState<{ url: string; minHeight: number } | null>(null);
+  const [pending, setPending] = useState(false);
   const label: Record<Field, string> = { name: t.name, email: t.email, company: t.company, role: t.role, source: t.source };
 
   const value = (n: string) => ((form.current?.elements.namedItem(n) as HTMLInputElement | null)?.value ?? "");
@@ -40,7 +42,7 @@ export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref
 
   function reply(): Promise<Reply> {
     const mock = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && new URLSearchParams(location.search).get("mock");
-    if (mock) return new Promise((r) => setTimeout(() => r(mock === "ok" ? { ok: true, url: "#mock-download" } : mock === "rate" ? { ok: false, error: "rate_limited", retry_minutes: 12 } : { ok: false, error: "server" }), 600));
+    if (mock) return new Promise((r) => setTimeout(() => r(mock === "pending" ? { ok: true, pending: true } : mock === "ok" ? { ok: true, url: "#mock-download" } : mock === "rate" ? { ok: false, error: "rate_limited", retry_minutes: 12 } : { ok: false, error: "server" }), 600));
     const f = form.current!;
     return fetch(RESUME_API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
       name: value("name").trim(), email: value("email").trim(), company: value("company").trim() || null, role: value("role").trim() || null,
@@ -63,6 +65,12 @@ export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref
     if (!lookup.checked) { lookup.focus(); return; }
     setSending(btn.current?.offsetWidth ?? null);
     reply().then((res) => {
+      if (res && res.ok && res.pending && !res.url) {
+        // Rod reviews each request (11/24): nothing to download now; the link comes by email if he approves.
+        setPending(true);
+        requestAnimationFrame(() => pendTitle.current?.focus());
+        return;
+      }
       if (res && res.ok && res.url) {
         setDone({ url: res.url, minHeight: box.current?.offsetHeight ?? 0 });
         requestAnimationFrame(() => doneTitle.current?.focus());
@@ -77,7 +85,7 @@ export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref
 
   return (
     <div className="rbox" id="rbox" ref={box} style={done ? { minHeight: done.minHeight } : undefined}>
-      <form id="rform" ref={form} noValidate onSubmit={onSubmit} hidden={!!done}>
+      <form id="rform" ref={form} noValidate onSubmit={onSubmit} hidden={!!done || pending}>
         <div className="rgrid">
           {FIELDS.map((f) => {
             const id = `rf-${f.name}`, err = errs[f.name as Field];
@@ -108,6 +116,11 @@ export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref
         </button>
         <p className="ds-supporting">{t.note} <Link href={privacyHref}>{t.privacyLink}</Link>{REMOVE_LIVE && <> · <Link href={removeHref}>{t.removeLink}</Link></>}</p>
       </form>
+      <div className="rdone" id="rdone-pending" role="status" hidden={!pending}>
+        <svg className="rcheck" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" /><path d="M10 16.5l4 4 8-9" /></svg>
+        <h3 className="ds-title-medium" id="rdone-pending-title" tabIndex={-1} ref={pendTitle}>{t.pendingTitle}</h3>
+        <p className="ds-body-medium ds-variant">{t.pendingBody}</p>
+      </div>
       <div className="rdone" id="rdone" role="status" hidden={!done}>
         <svg className="rcheck" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" /><path d="M10 16.5l4 4 8-9" /></svg>
         <h3 className="ds-title-medium" id="rdone-title" tabIndex={-1} ref={doneTitle}>{t.doneTitle}</h3>

@@ -148,3 +148,16 @@ test("phone menu: without script the button is hidden and the links are listed",
   await expect(page.locator("nav.phone-nav.static").getByRole("link", { name: "Blog" })).toBeVisible();
   await ctx.close();
 });
+
+test("resume form: a pending answer says Rod reviews each request and shows no download", async ({ page }) => {
+  await page.route("https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/resume-request", (route) => route.fulfill({ json: { ok: true, pending: true } }));
+  await page.goto("/#resume");
+  await page.fill("#rf-name", "Ana Prueba");
+  await page.fill("#rf-email", "ana@example.test");
+  await page.check("#rf-lookup");
+  await page.locator("#rf-submit").click();
+  await expect(page.locator("#rdone-pending")).toBeVisible();
+  await expect(page.locator("#rdone-pending")).toContainText("I review each request");
+  await expect(page.locator("#rdone")).toBeHidden();
+  await expect(page.locator("#rdone-link")).toBeHidden();
+});
