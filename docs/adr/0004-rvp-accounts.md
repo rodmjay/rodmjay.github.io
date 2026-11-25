@@ -213,8 +213,8 @@ Rod chose his personal project over a separate one, after seeing Compliance's re
   `SUPABASE_DB_URL` into every Edge Function's environment. So "no service key in the visitor path" holds for our code,
   not for the process: code execution inside `rvp-account` could still read the key. We keep the function on Supabase
   and add the controls below. Moving it to Azure would add a second platform, cold starts and another pipeline for one
-  function. If Security finds these controls not enough, the move to Azure is the fallback: only the two-action
-  `rvp-auth-admin` would then ever see the key.
+  function. Rod accepted this risk on 11/25 ("nobody will get the key", DECISIONS): no move to Azure, and every
+  control below stays.
   - **Controls:**
     - minimal dependencies, pinned and locked;
     - no `eval` and no dynamic import;
