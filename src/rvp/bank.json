@@ -50,7 +50,7 @@
       "number": 2,
       "dimension": "R",
       "prompt": "A friend says, \"Can you help me with something big?\" What do you usually offer?",
-      "prompt_es": "Una amistad le dice: “¿Me puede ayudar con algo grande?”. ¿Qué suele ofrecer?",
+      "prompt_es": "Un amigo o una amiga le dice: “¿Me puede ayudar con algo grande?”. ¿Qué suele ofrecer?",
       "options": [
         {
           "text": "My time and effort on the ground",
@@ -622,7 +622,7 @@
       "number": 24,
       "dimension": "P",
       "prompt": "A friend asks how you handle surprises:",
-      "prompt_es": "Una amistad le pregunta cómo maneja las sorpresas:",
+      "prompt_es": "Un amigo o una amiga le pregunta cómo maneja las sorpresas:",
       "options": [
         {
           "text": "I turn them into new possibilities",
