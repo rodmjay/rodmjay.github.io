@@ -57,7 +57,7 @@ export function RemoveForm({ lang, t }: { lang: string; t: T }) {
               <input className="ds-input" id="rm-name" name="name" type="text" autoComplete="name" />
             </div>
           </div>
-          <div className="hp" aria-hidden="true"><label htmlFor="rm-website">Leave this empty</label><input id="rm-website" name="website" type="text" tabIndex={-1} autoComplete="off" /></div>
+          <div className="hp" aria-hidden="true"><label htmlFor="rm-website">{t.honeypot}</label><input id="rm-website" name="website" type="text" tabIndex={-1} autoComplete="off" /></div>
           <div className="ds-banner error" role="alert" hidden={!banner}><p>{banner}</p></div>
           <button className="ds-btn" type="submit" aria-busy={busy || undefined}>{busy ? t.sending : t.submit}</button>
         </form>

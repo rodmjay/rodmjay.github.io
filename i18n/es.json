@@ -125,7 +125,7 @@
     "recsSr": "(se abre en una pestaña nueva)",
     "removeLink": "Quitar mi información",
     "pendingTitle": "Solicitud recibida",
-    "pendingBody": "Reviso cada solicitud. Si la apruebo, le enviaré un enlace a la dirección que indicó. El enlace funciona durante 24 horas, para hasta 5 descargas. Solo recibirá noticias mías si la apruebo."
+    "pendingBody": "Reviso cada solicitud. Si la apruebo, le enviaré un enlace a la dirección que indicó, válido por 24 horas y hasta 5 descargas. Solo recibirá noticias mías si la apruebo."
   },
   "privacy": {
     "title": "Privacidad",
@@ -302,6 +302,7 @@
     "doneTitle": "Listo",
     "badLink": "Este enlace venció o ya se usó.",
     "getLink": "Pedir un enlace nuevo",
+    "honeypot": "Deje esto vacío",
     "rateBanner": "Demasiadas solicitudes. Vuelva a intentarlo más tarde.",
     "confirmCovers": "Borraré sus solicitudes de currículum, descargas, resultados de consultas, registro de contacto, etiquetas y menciones que pueda encontrar. Solo conservo un registro de que se hizo (vea más abajo).",
     "back": "Volver a rodmjay.com",
@@ -310,7 +311,7 @@
     "privacyBtn": "Quitar mi información",
     "footerLink": "Quitar mi información",
     "keepRecord": "Solo conservo un registro de que se hizo: un hash unidireccional con clave de su correo, la fecha y los tipos de datos borrados. No incluye su nombre, lo conservo 24 meses, y solo demuestra que el borrado ocurrió y me permite reconocer una solicitud repetida. Puedo conservar lo que la ley me obligue a conservar.",
-    "backups": "Las copias en mis respaldos nocturnos de la base de datos desaparecen en un plazo de 30 días. Las copias de respaldo privadas más antiguas aún pueden contenerlo."
+    "backups": "Las copias en mis respaldos nocturnos de la base de datos desaparecen en un plazo de 30 días. Respaldos privados más antiguos, incluido un archivo privado de contactos en un repositorio privado, pueden seguir conteniendo su nombre y correo. No los uso, y si alguna vez restauro uno, vuelvo a borrar su entrada."
   },
   "rvp": {
     "metaTitle": "Test de arquetipos RVP",
