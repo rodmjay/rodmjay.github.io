@@ -1,4 +1,4 @@
-// The home page: a calm hero (Designer, rodmjay-professional.md), then about, the resume form, building, how I work and contact.
+// The home page: a calm hero (Designer, rodmjay-professional.md), then about, the resume form, projects, how I work and contact.
 // Same markup and copy as src/page.html on Pages; the copy is i18n/{en,es}.json.
 import { dict, HTML_LANG, SITE } from "@/lib/site.mjs";
 import { meta } from "@/lib/meta";
@@ -47,7 +47,8 @@ export function Home({ lang }: { lang: Lang }) {
           <ResumeForm lang={HTML_LANG[lang]} privacyHref={lang === "en" ? "/privacy/" : "/privacy/es/"} t={r} />
         </section>
 
-        <section id="building">
+        <section id="projects">
+          <span id="building" aria-hidden="true" /> {/* the old anchor, so existing #building links still land here */}
           <h2 className="ds-title-large">{d.building.heading}</h2>
           <p className="ds-body-large">{d.building.lede}</p>
           <ul className="plain">
