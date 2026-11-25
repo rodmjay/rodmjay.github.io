@@ -130,7 +130,7 @@
       "When you ask for my resume on this site, I keep what you type: your name, email, company, role and, if you add it, how you found me. I also keep whether you checked “Rod may contact me”, and when.",
       "I use it to give you the resume link and to check who is asking (see Lookups below). If you checked the box, I may also reach out to you about it. I don't use it for anything else, and it's never sold.",
       "Everything is stored in my own database (Supabase). I don't keep your IP address; I keep only a salted hash of it to limit abuse. My hosting providers (GitHub and Supabase) may log it briefly for security.",
-      "If you checked the box, I keep your details for 12 months. If you didn't, I keep them for 90 days. Blocked or automated requests are kept for 90 days.",
+      "I keep your request for 12 months if you checked “Rod may contact me”, and for 90 days if you didn't. Blocked or automated requests are kept for 90 days. If you checked the box, your name, email, company and role are also kept in my contacts so I can reach out. They stay there until you ask me to delete them (email {email}; I'll do it within 30 days).",
       "To see or delete what I hold about you, email {email}. I'll answer within 30 days.",
       "Cookies: none. If you pick a language, your browser remembers that choice (a setting called ds-lang, stored only on your device and never sent to me).",
       "This site has no analytics, ads or third-party trackers, so it doesn't respond to Do Not Track signals; there's nothing to turn off."
