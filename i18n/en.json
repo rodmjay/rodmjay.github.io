@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Rod Johnson · Director of Architecture",
+    "title": "Rod Johnson · Enterprise Application Architect",
     "description": "Rod Johnson designs how software gets built: the architecture, the standards and the AI tools behind it. 21 years from the first whiteboard sketch to production.",
     "ogLocale": "en_US"
   },
@@ -20,8 +20,9 @@
   },
   "hero": {
     "name": "Rod Johnson",
-    "title": "Director of Architecture",
+    "title": "Enterprise Application Architect",
     "lede": "I design how software gets built: the architecture, the standards and now the AI tools behind it.",
+    "aiLine": "The cover and the portrait are AI-generated.",
     "photoAlt": "AI-generated portrait based on a photo of Rod Johnson",
     "ctaResume": "Get my resume",
     "ctaContact": "Contact"

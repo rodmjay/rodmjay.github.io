@@ -23,6 +23,16 @@ export function Home({ lang }: { lang: Lang }) {
   const r = d.resume;
   return (
     <>
+      {/* A profile-header cover (Designer, rodmjay-professional.md 11/25, Rod: same as his LinkedIn banner): decorative, no text over it. */}
+      <div className="cover">
+        <picture>
+          <source media="(max-width: 599px)" type="image/avif" srcSet="/img/cover-m-750.avif 750w, /img/cover-m-1125.avif 1125w" sizes="100vw" />
+          <source media="(max-width: 599px)" type="image/webp" srcSet="/img/cover-m-750.webp 750w, /img/cover-m-1125.webp 1125w" sizes="100vw" />
+          <source type="image/avif" srcSet="/img/cover-1280.avif 1280w, /img/cover-1920.avif 1920w, /img/cover-2560.avif 2560w" sizes="100vw" />
+          <img src="/img/cover-1920.webp" srcSet="/img/cover-1280.webp 1280w, /img/cover-1920.webp 1920w, /img/cover-2560.webp 2560w" sizes="100vw"
+            width={3168} height={1344} alt="" fetchPriority="high" loading="eager" decoding="async" />
+        </picture>
+      </div>
       <main id="main" className="col">
         <section className="hero" aria-labelledby="hero-name">
           <div className="hero-top">
@@ -90,6 +100,7 @@ export function Home({ lang }: { lang: Lang }) {
             <a className="ds-btn text" href="https://github.com/rodmjay" rel="me"><svg className="ds-icon sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" /></svg>{d.contact.github}</a>
           </div>
         </section>
+        <p className="ds-body-small ds-variant home-ai">{d.hero.aiLine}</p>
       </main>
     </>
   );

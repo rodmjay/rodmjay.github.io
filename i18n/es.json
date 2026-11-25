@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Rod Johnson · Director de Arquitectura",
+    "title": "Rod Johnson · Arquitecto de aplicaciones empresariales",
     "description": "Rod Johnson diseña cómo se construye el software: la arquitectura, los estándares y las herramientas de IA detrás. 21 años llevando sistemas del primer boceto en la pizarra a producción.",
     "ogLocale": "es_419"
   },
@@ -20,8 +20,9 @@
   },
   "hero": {
     "name": "Rod Johnson",
-    "title": "Director de Arquitectura",
+    "title": "Arquitecto de aplicaciones empresariales",
     "lede": "Diseño cómo se construye el software: la arquitectura, los estándares y ahora las herramientas de IA detrás.",
+    "aiLine": "La portada y el retrato fueron generados con IA.",
     "photoAlt": "Retrato generado con IA a partir de una foto de Rod Johnson",
     "ctaResume": "Pedir mi currículum",
     "ctaContact": "Contacto"

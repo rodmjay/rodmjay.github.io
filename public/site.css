@@ -49,15 +49,18 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 /* Work items: outlined cards from the design system, no extra chrome (Designer 11/25, rodmjay-professional.md). */
 
 /* Home hero: name, title, one sentence, two buttons, one hairline. Nothing moves. */
-.hero { padding: var(--space-12) 0 var(--space-8); border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+.hero { padding: 0 0 var(--space-8); border-bottom: 1px solid var(--md-sys-color-outline-variant); }
 .hero h1 { margin: 0; }
-/* Profile photo (Designer 11/25): a circle with a hairline ring, left of the name on desktop, above it on phones. No shadow, no glow. */
+/* Cover (Designer 11/25): full-bleed, decorative, no text, no overlay; aspect ratio per width so nothing shifts. */
+.cover { background-color: #162a4a; overflow: hidden; aspect-ratio: 3 / 2; }
+.cover img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 64% 30%; }
+@media (min-width: 600px) { .cover { aspect-ratio: 12 / 5; } .cover img { object-position: 60% 30%; } }
+@media (min-width: 840px) { .cover { aspect-ratio: 16 / 5; max-height: 460px; } .cover img { object-position: 50% 23%; } }
+/* Avatar overlaps the cover's bottom edge by half, left aligned with the text column; a surface-colored ring plus the hairline outline. */
 .hero .hero-top { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
-.hero .hero-photo { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; display: block; flex: none; box-shadow: 0 0 0 1px var(--md-sys-color-outline-variant); }
-@media (min-width: 840px) {
-  .hero .hero-top { flex-direction: row; align-items: flex-start; gap: var(--space-6); }
-  .hero .hero-photo { width: 128px; height: 128px; }
-}
+.hero .hero-photo { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; display: block; flex: none; margin-top: -48px; position: relative;
+  box-shadow: 0 0 0 4px var(--md-sys-color-surface), 0 0 0 5px var(--md-sys-color-outline-variant); }
+@media (min-width: 840px) { .hero .hero-photo { width: 128px; height: 128px; margin-top: -64px; } }
 .hero .hero-title { margin: var(--space-2) 0 0; color: var(--md-sys-color-on-surface-variant); }
 .hero .hero-lede { margin: var(--space-4) 0 0; max-width: 40rem; }
 .hero .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
@@ -196,3 +199,5 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .rvp-home h2 { margin: 0; }
 .rvp-home p { margin: 0; }
 .rvp-home .ds-btn { justify-self: start; min-height: 48px; }
+
+.home-ai { margin: var(--space-12) 0 0; }
