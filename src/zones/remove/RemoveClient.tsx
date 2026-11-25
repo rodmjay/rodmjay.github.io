@@ -15,7 +15,7 @@ const Icon = ({ d }: { d: string }) => <svg viewBox="0 0 24 24" aria-hidden="tru
 const CHECK = "M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z";
 const ALERT = "M12 2 1 21h22zm1 15h-2v-2h2zm0-4h-2v-4h2z";
 
-export function RemoveForm({ t }: { lang: string; t: T }) {
+export function RemoveForm({ lang, t }: { lang: string; t: T }) {
   const started = useRef(Date.now());
   const form = useRef<HTMLFormElement>(null);
   const sentBox = useRef<HTMLDivElement>(null);
@@ -34,7 +34,7 @@ export function RemoveForm({ t }: { lang: string; t: T }) {
     setErr("");
     setBusy(true);
     const run = mock() ? new Promise<{ ok?: boolean; rate?: boolean }>((r) => setTimeout(() => r({ ok: mock() !== "err", rate: mock() === "rate" }), 400))
-      : post({ email, name: val("name").trim() || null, hp: val("website"), t: started.current }).then(async (r) => ({ ...(await r.json()), rate: r.status === 429 }));
+      : post({ email, name: val("name").trim() || null, hp: val("website"), t: started.current, lang: lang === "es" ? "es" : "en" }).then(async (r) => ({ ...(await r.json()), rate: r.status === 429 }));
     run.then((res) => {
       if (res && res.rate) { setBanner(t.rateBanner); return; }
       if (res && res.ok) { setSent(true); requestAnimationFrame(() => sentBox.current?.focus()); return; }
@@ -45,7 +45,7 @@ export function RemoveForm({ t }: { lang: string; t: T }) {
   return (
     <div className="rbox">
       {!sent ? (
-        <form ref={form} noValidate onSubmit={onSubmit} className="ds-card outlined">
+        <form ref={form} noValidate onSubmit={onSubmit}>
           <div className="rgrid">
             <div className="ds-field">
               <label htmlFor="rm-email">{t.email}</label>
@@ -75,7 +75,7 @@ export function RemoveForm({ t }: { lang: string; t: T }) {
 
 type View = "reading" | "valid" | "bad" | "received" | "error" | "rate";
 
-export function ConfirmRemoval({ t, requestHref, homeHref }: { lang: string; t: T; requestHref: string; homeHref: string }) {
+export function ConfirmRemoval({ lang, t, requestHref, homeHref }: { lang: string; t: T; requestHref: string; homeHref: string }) {
   const [view, setView] = useState<View>("reading");
   const [email, setEmail] = useState("");
   const [busy, setBusy] = useState(false);
@@ -89,8 +89,8 @@ export function ConfirmRemoval({ t, requestHref, homeHref }: { lang: string; t: 
     const m = mock();
     if (m) { setEmail("ana@example.test"); setView(m === "ok" || m === "valid" ? "valid" : (m as View)); return; }
     if (!token.current) { setView("bad"); return; }
-    post({ action: "peek", token: token.current }).then((r) => r.json()).then((res) => {
-      if (res.state === "valid") { setEmail(String(res.email || "")); setView("valid"); } else setView("bad");
+    post({ action: "peek", token: token.current }).then(async (r) => ({ ...(await r.json()), http: r.status })).then((res) => {
+      if (res.state === "valid") { setEmail(String(res.email || "")); setView("valid"); } else setView(res.state === "rate_limited" || res.http === 429 ? "rate" : "bad");
     }).catch(() => setView("error"));
   }, []);
   useEffect(() => { if (view !== "reading") head.current?.focus(); }, [view]);
@@ -98,23 +98,21 @@ export function ConfirmRemoval({ t, requestHref, homeHref }: { lang: string; t: 
   function confirm() {
     if (busy) return;
     setBusy(true);
-    const run = mock() ? new Promise<{ state: string }>((r) => setTimeout(() => r({ state: "done" }), 400))
-      : post({ action: "confirm", token: token.current }).then((r) => r.json());
+    const run = mock() ? new Promise<{ state: string }>((r) => setTimeout(() => r({ state: "confirmed" }), 400))
+      : post({ action: "confirm", token: token.current, lang: lang === "es" ? "es" : "en" }).then((r) => r.json());
     // "done" is shown to everyone as the neutral "received" text: the full Done wording goes only in the email, after the erasure ran (Legal 11/24).
-    run.then((res) => setView(res.state === "done" ? "received" : res.state === "rate_limited" ? "rate" : "bad"))
+    run.then((res) => setView(res.state === "confirmed" || res.state === "done" ? "received" : res.state === "rate_limited" ? "rate" : "bad"))
       .catch(() => setView("error")).then(() => setBusy(false));
   }
 
-  const title = view === "valid" ? t.confirmAsk.replace("{email}", "\u0000") : view === "received" ? t.doneTitle : view === "bad" ? t.badLink : view === "rate" ? t.rateBanner : view === "error" ? t.errorTitle : t.reading;
-  const [pre, post_] = title.split("\u0000");
   return (
-    <div className="rbox">
-      <h1 className="ds-headline-medium project-title" tabIndex={-1} ref={head}>
-        {view === "valid" ? <>{pre}<strong>{email}</strong>{post_}</> : title}
-      </h1>
+    <>
+      <h1 className="ds-headline-medium project-title" tabIndex={-1} ref={head}>{t.confirmTitle}</h1>
+      <div className="rbox">
       <div role={view === "error" ? "alert" : "status"} aria-live="polite">
         {view === "valid" && (
           <>
+            <p className="ds-body-large">{t.confirmAsk.split("{email}")[0]}<strong>{email}</strong>{t.confirmAsk.split("{email}")[1]}</p>
             <p className="ds-body-large">{t.confirmCovers}</p>
             <div className="confirm-actions">
               <Link className="ds-btn outlined" href={homeHref}>{t.keepBtn}</Link>
@@ -141,6 +139,7 @@ export function ConfirmRemoval({ t, requestHref, homeHref }: { lang: string; t: 
           </>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -173,3 +173,12 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 @media (max-width: 30rem) { .confirm-actions { flex-direction: column; } .confirm-actions > * { width: 100%; text-align: center; } }
 .ds-banner svg { vertical-align: -4px; margin-right: var(--space-2); }
 .rbox > .ds-card.outlined { padding: var(--space-6); }
+
+/* Remove page fixes (Designer 11/24): one card, spacing between blocks, banner rows, tap target */
+.remove-page > * + * { margin-top: var(--space-6); }
+.remove-page > .remove-h2 { margin-top: var(--space-8); }
+.remove-page .rbox { margin-top: var(--space-6); }
+.ds-banner:has(> svg) { display: flex; align-items: flex-start; gap: var(--space-3); width: 100%; }
+.ds-banner:has(> svg) > svg { flex: none; margin: 2px 0 0; }
+.ds-banner:has(> svg) > p { margin: 0; flex: 1; min-width: 0; }
+.ds-supporting a[target="_blank"] { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 2.75rem; }

@@ -281,11 +281,11 @@
     "coveredHeading": "What this covers",
     "covered": "Your resume requests, downloads, lookup results, contact record, tags and mentions that I can find in my database. Emails and texts between us, I delete on request within 30 days.",
     "privacy": "Privacy",
-    "confirmTitle": "Confirm the removal",
+    "confirmTitle": "Confirm deletion",
     "confirmAsk": "Delete everything I can find for {email}? This is permanent.",
     "confirmBtn": "Yes, delete it",
     "confirming": "Deleting…",
-    "received": "Thanks, I've received your confirmation. I'll finish within 30 days and email you.",
+    "received": "Your request is confirmed. I'll delete what I hold under this email and email you when it's done, within 30 days.",
     "expired": "This link has expired. Ask for a new one.",
     "used": "This link was already used.",
     "invalid": "This link isn't valid. Ask for a new one.",
@@ -308,6 +308,6 @@
     "privacyBtn": "Remove my information",
     "footerLink": "Remove my information",
     "keepRecord": "I keep only a record that this was done: a one-way keyed hash of your email, the date and the kinds of data removed. It holds no name, I keep it for 24 months, and it only shows the deletion happened and lets me recognize a repeat request. I may keep what the law requires me to keep.",
-    "backups": "Copies in my nightly database copies are gone within 30 days. Copies in older repository backups may last longer, and I remove them by hand."
+    "backups": "Copies in my nightly database copies are gone within 30 days. Older private backup copies may still contain it."
   }
 }

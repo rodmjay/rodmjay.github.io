@@ -15,21 +15,21 @@ test("remove: the form posts email and shows one neutral answer", async ({ page 
   await page.getByRole("button", { name: "Send the confirmation link" }).click();
   await expect(page.getByText("If I hold anything for that address")).toBeVisible();
   expect(sent).toMatchObject({ email: "ana@example.test", hp: "" });
-  expect(Object.keys(sent).sort()).toEqual(["email", "hp", "name", "t"]);
+  expect(Object.keys(sent).sort()).toEqual(["email", "hp", "lang", "name", "t"]);
 });
 
 test("remove: the confirm page peeks, then deletes only on the button", async ({ page }) => {
   const calls: any[] = [];
   await page.route(API, async (route) => {
     const b = route.request().postDataJSON(); calls.push(b);
-    await route.fulfill({ json: b.action === "peek" ? { state: "valid", email: "ana@example.test" } : { state: "done" } });
+    await route.fulfill({ json: b.action === "peek" ? { state: "valid", email: "ana@example.test" } : { state: "confirmed" } });
   });
   await page.goto("/es/remove/confirm/#tok123");
   await expect(page.getByRole("button", { name: "Sí, bórrelo" })).toBeVisible();
-  expect(calls.map((c) => c.action)).toEqual(["peek"]);
+  expect(calls.map((c) => c.action)).toEqual(["peek"]); // opening the link (or a scanner's GET) deletes nothing
   expect(page.url()).not.toContain("tok123");
   await page.getByRole("button", { name: "Sí, bórrelo" }).click();
-  await expect(page.getByText("Gracias, recibí su confirmación")).toBeVisible();
+  await expect(page.getByText("Su solicitud está confirmada")).toBeVisible();
   expect(calls.map((c) => c.action)).toEqual(["peek", "confirm"]);
   expect(calls[1].token).toBe("tok123");
 });
