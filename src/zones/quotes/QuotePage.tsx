@@ -37,7 +37,8 @@ export async function QuotePage({ lang, slug }: { lang: Lang; slug: string }) {
         <figure className="quote quote-figure">
           <img src={quoteImage(x.slug, lang)} width={SIZE} height={SIZE} alt={quoteText(x, lang)} lang={lang === "es" && x.lang !== "es" ? "es-419" : x.lang || undefined} />
           <figcaption>
-            <h1 className="ds-title-large">{quoteAuthor(x, lang) || q.unknownAuthor}</h1>
+            <h1 className="ds-title-large">{short(quoteText(x, lang), 120)}</h1>
+            <p className="ds-title-medium quote-author">{quoteAuthor(x, lang) || q.unknownAuthor}</p>
             {(x.source || x.year || x.original || quoteLabel(x, lang)) ? (
               <p className="ds-body-medium ds-variant">
                 {(x.source || x.year) ? <cite>{[quoteSource(x, lang) || q.unknownSource, x.year].filter(Boolean).join(", ")}</cite> : null}
@@ -47,12 +48,12 @@ export async function QuotePage({ lang, slug }: { lang: Lang; slug: string }) {
                   : quoteLabel(x, lang) || null}
               </p>
             ) : null}
+            <p className="quote-dl"><a href={quoteImage(x.slug, lang)} download={`${x.slug}.png`}>{q.download}</a></p>
           </figcaption>
         </figure>
         <Link href={next} rel="next" className="ds-btn outlined quote-next">{q.next} <span aria-hidden="true">→</span></Link>
         <p className="quote-pos ds-label-large ds-variant">{fill(q.position, { i: at.index + 1, n: at.total })}</p>
       </div>
-      <p className="quote-link-row"><a href={quoteImage(x.slug, lang)} download={`${x.slug}.png`} className="ds-btn text">{q.download}</a></p>
       {blocks.length || x.link || x.original ? (
         <div className="ds-prose quote-more">
           {x.original ? (
