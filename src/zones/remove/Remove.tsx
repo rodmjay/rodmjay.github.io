@@ -33,6 +33,7 @@ export function Remove({ lang }: { lang: Lang }) {
       <p className="ds-body-medium">{withMail(r.scope)}</p>
       <h2 className="ds-title-large">{r.coveredHeading}</h2>
       <p className="ds-body-large">{r.covered}</p>
+      <p className="ds-body-large">{r.backups}</p>
       <p className="ds-body-large">{r.keepRecord}</p>
       <p><Link href={PRIVACY[lang]}>{r.privacy}</Link></p>
     </main>
