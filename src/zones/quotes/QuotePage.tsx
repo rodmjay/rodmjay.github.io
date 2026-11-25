@@ -32,21 +32,25 @@ export async function QuotePage({ lang, slug }: { lang: Lang; slug: string }) {
     .map(([k, v]) => [q[k], v[lang]] as const).filter(([, t]) => t);
   return (
     <main id="main" className="col quote-page">
-      <p><Link href={BASE[lang]} className="ds-btn text">← {q.all}</Link></p>
+      <p className="quote-link-row"><Link href={BASE[lang]} className="ds-btn text">← {q.all}</Link></p>
       <div className="quote-stage">
         <Link href={prev} rel="prev" className="ds-btn outlined quote-prev"><span aria-hidden="true">←</span> {q.prev}</Link>
         <figure className="quote quote-figure">
           <img src={quoteImage(x.slug)} width={SIZE} height={SIZE} alt={x.text} lang={x.lang || undefined} />
           <figcaption>
-            {x.author || q.unknownAuthor}
-            {(x.source || x.year) ? <>, <cite>{[x.source || q.unknownSource, x.year].filter(Boolean).join(", ")}</cite></> : null}
-            {x.original ? <> · {fill(q.translatedFrom, { language: langName(lang, x.original.lang) })}{x.translation[lang] ? ` (${x.translation[lang]})` : ""}</> : null}
+            <h1 className="ds-title-large">{x.author || q.unknownAuthor}</h1>
+            {(x.source || x.year || x.original) ? (
+              <p className="ds-body-medium ds-variant">
+                {(x.source || x.year) ? <cite>{[x.source || q.unknownSource, x.year].filter(Boolean).join(", ")}</cite> : null}
+                {x.original ? <>{(x.source || x.year) ? " · " : ""}{fill(q.translatedFrom, { language: langName(lang, x.original.lang) })}{x.translation[lang] ? ` (${x.translation[lang]})` : ""}</> : null}
+              </p>
+            ) : null}
           </figcaption>
         </figure>
         <Link href={next} rel="next" className="ds-btn outlined quote-next">{q.next} <span aria-hidden="true">→</span></Link>
         <p className="quote-pos ds-label-large ds-variant">{fill(q.position, { i: at.index + 1, n: at.total })}</p>
       </div>
-      <p><a href={quoteImage(x.slug)} download={`${x.slug}.png`} className="ds-btn text">{q.download}</a></p>
+      <p className="quote-link-row"><a href={quoteImage(x.slug)} download={`${x.slug}.png`} className="ds-btn text">{q.download}</a></p>
       {blocks.length || x.link || x.original ? (
         <div className="ds-prose quote-more">
           {x.original ? (

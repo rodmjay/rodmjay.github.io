@@ -128,15 +128,21 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .quote-thumb { display: block; border-radius: var(--md-sys-shape-corner-medium, 12px); }
 .quote-thumb img, .quote-figure img { display: block; width: 100%; height: auto; border-radius: var(--md-sys-shape-corner-medium, 12px); }
 .quote-thumb:focus-visible { outline: 3px solid var(--md-sys-color-primary); outline-offset: 3px; }
-.quote-stage { display: grid; grid-template-columns: 1fr 1fr; grid-template-areas: "fig fig" "pos pos" "prev next"; gap: var(--space-4); align-items: center; margin: var(--space-4) 0; }
+.quote-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "fig fig" "pos pos" "prev next"; gap: var(--space-4); align-items: center; margin: var(--space-4) 0; }
 .quote-figure { grid-area: fig; margin: 0; }
-.quote-figure figcaption { margin-top: var(--space-3); }
-.quote-prev { grid-area: prev; justify-self: start; min-height: 48px; }
-.quote-next { grid-area: next; justify-self: end; min-height: 48px; }
+.quote-figure figcaption { margin-top: var(--space-4); }
+.quote-figure figcaption h1 { margin: 0; }
+.quote-figure figcaption p { margin: var(--space-1) 0 0; }
+/* Text links line up with the body text (the .links row does the same). */
+.quote-link-row > .ds-btn.text { margin-inline-start: calc(-1 * var(--space-3)); }
+.quote-stage > * { min-width: 0; }
+.quote-prev { grid-area: prev; justify-self: stretch; justify-content: center; min-height: 48px; }
+.quote-next { grid-area: next; justify-self: stretch; justify-content: center; min-height: 48px; }
 .quote-pos { grid-area: pos; margin: 0; text-align: center; white-space: nowrap; }
 @media (min-width: 840px) {
   .quote-page.col { max-width: none; }
-  .quote-stage { grid-template-columns: 1fr minmax(0, 40rem) 1fr; grid-template-areas: "prev fig next" ". pos ."; }
+  .quote-stage { grid-template-columns: minmax(0, 1fr) minmax(0, 40rem) minmax(0, 1fr); grid-template-areas: "prev fig next" ". pos ."; }
+  .quote-prev, .quote-next { justify-self: center; }
 }
 .quote-more section { margin-top: var(--space-6); }
 .quotes-page { padding-top: var(--space-8); }
