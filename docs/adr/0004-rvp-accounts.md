@@ -237,6 +237,45 @@ Rod chose his personal project over a separate one, after seeing Compliance's re
   - Then 1.0 is frozen, and the 0.1-draft rows are purged.
   - A retake under a different bank says "different questions then."
 
+### Review outcomes so far (11/25)
+
+- **Compliance:** a design-stage PASS at 0d52b01, with these conditions. Compliance re-checks the privacy PR and
+  again before go-live.
+  - **Consent wording.** One required box for the account plus the contact, with the 18+ line and a privacy link. It
+    starts unticked, and the stored version is a hash of the exact text. It names email and first name only.
+    - EN: "I'm 18 or older. Save my result to an account on rodmjay.com. Rod Johnson will keep my email and first
+      name in his own contacts. He won't sell them, text me or add me to a mailing list. I can download or delete
+      everything at any time."
+    - Choice (d) is separate and covers the results.
+    - Spanish: Compliance's es-419 text, adjusted the same way.
+  - **Retention.**
+    - The account lasts until 24 months after the last sign-in, with one service-only reminder first.
+    - `ip_hash` is purged after 30 days.
+  - **The tag-skip is enforced fail-closed in code:** `send_compliance.py`, Investigator and the gift routine skip a
+    contact only when it has `source/rvp` **and** no group.
+    - Only contacts the RVP flow creates get the tag and `text_tier = 'never'`.
+    - An existing contact's tier and group are never changed. A test proves a friend who takes the test keeps both.
+  - **Aggregates hide any count under 5.**
+  - **The privacy page covers** what is kept, why, where (US), providers (including the AI tools Rod uses), who sees
+    it, sign-in, retention, rights, the erasure proof, age and the transfer.
+  - **Linked pre-existing contacts:** the page says Rod's separate records go through the manual route within 30 days.
+  - **Breach notification** becomes a step in the breach plan.
+- **Database Administrator** (shape agreed):
+  - **A setting, `rvp_accounts_on` = off|staging|on**, default off. In staging, no contact is created, rows are marked
+    `is_test`, and a test-row purge runs before launch.
+  - **Answers are stored as `smallint[27]`** (option indexes), so they never look like a card number. The digit
+    string is rebuilt for export.
+  - **The 24-month retention reads `auth.users.last_sign_in_at`.**
+  - **Erasure:** every `rvp_*` row can be deleted only under the erasure reason. A contact the RVP flow created is
+    deleted; a pre-existing one is only unlinked.
+  - **Backups:** `ops.snapshots` holds counts only.
+- **Security:** NOT YET. The 7 MUSTs are now in this ADR. The next pass is on the staging build.
+- **Designer:** the spec is `design/specs/rvp-accounts.md` in the personal repo, with:
+  - `/rvp/signin/`, and a "Sign in" link in the RVP header and the footer;
+  - one-time-code input, resend after 30 seconds;
+  - no disabled buttons.
+- **Philosopher:** fits with conditions. Who sees a result (above) and bank 1.0 first.
+
 ### Not in v1
 
 - Payments and plans. "SaaS" here means accounts, not billing. If a paid tier ever comes, it uses the @psh/kit billing
