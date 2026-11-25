@@ -158,11 +158,11 @@
         },
         {
           "lead": "Cuánto tiempo se guarda.",
-          "text": "Registro solo un veredicto (real, poco claro o no encontrado) y enlaces a las fuentes públicas. Lo borro 12 meses después de su solicitud, o 3 meses después si la consulta no encuentra nada o la solicitud era spam."
+          "text": "Registro solo un veredicto (real, poco claro o no encontrado) y enlaces a las fuentes públicas. Lo borro 12 meses después de su solicitud, o 3 meses después si la consulta no encuentra nada o la solicitud era spam. Este veredicto se guarda más tiempo que los demás datos que escribió, que se borran según el plazo indicado arriba."
         },
         {
           "lead": "Con quién se comparte.",
-          "text": "Nunca se vende y no se comparte con nadie más, salvo con los servicios que lo almacenan y procesan por mí (como Supabase), o cuando la ley lo exija."
+          "text": "Nunca se vende y no se comparte con nadie más, salvo con los servicios que lo almacenan y procesan por mí (como Supabase y el servicio de IA que uso), o cuando la ley lo exija."
         }
       ],
       "rights": "Para ver, corregir o borrar una consulta, o para oponerse a ella, escriba a {email}. Si está en la UE o el Reino Unido, tiene derecho a oponerse a esta consulta. Si prefiere no aceptar, no podrá obtener el currículum con este formulario; escríbame y hablamos directamente."

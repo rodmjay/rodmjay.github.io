@@ -158,11 +158,11 @@
         },
         {
           "lead": "How long I keep it.",
-          "text": "I record only a verdict (real, unclear or not found) and links to the public sources. I delete it 12 months after your request, or after 3 months if the check finds nothing or the request was spam."
+          "text": "I record only a verdict (real, unclear or not found) and links to the public sources. I delete it 12 months after your request, or after 3 months if the check finds nothing or the request was spam. This verdict is kept longer than the other details you typed, which are deleted on the schedule above."
         },
         {
           "lead": "Who sees it.",
-          "text": "Never sold, and not shared with anyone else, except the services that store and process it for me (such as Supabase), or when the law requires it."
+          "text": "Never sold, and not shared with anyone else, except the services that store and process it for me (such as Supabase and the AI service I use), or when the law requires it."
         }
       ],
       "rights": "To see, correct or delete a lookup, or to object to it, email {email}. If you're in the EU or UK, you have the right to object to this lookup. If you'd rather not agree, you can't get the resume through this form, so email me and we can talk directly."
