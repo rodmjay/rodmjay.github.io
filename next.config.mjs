@@ -12,4 +12,7 @@ export default {
   // SITE_BUILD_ID pins Next's build id (it's random otherwise), so two builds of the same content are byte-identical:
   // tests/cms-parity.mjs builds from the markdown and from the CMS and compares every file (docs/adr/0003).
   generateBuildId: async () => process.env.SITE_BUILD_ID || null,
+  // The RVP test's routes are named page.rvp.tsx: they exist only where RVP_ON=1 (staging and checks; production after
+  // Rod's yes, DECISIONS 11/25). Off, Next never compiles them, so no page and no chunk with its questions ships.
+  pageExtensions: [...(process.env.RVP_ON === "1" ? ["rvp.tsx"] : []), "tsx", "ts", "jsx", "js"],
 };

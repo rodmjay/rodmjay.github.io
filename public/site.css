@@ -119,6 +119,7 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .ds .rdone h3, .ds .rdone p { margin: 0; }
 .ds .rdone .ds-btn { margin-top: var(--space-3); }
 .rdone h3:focus { outline: none; }
+#rdone-pending { text-align: left; justify-items: start; }
 .rcheck { width: 32px; height: 32px; fill: none; stroke: var(--md-sys-color-tertiary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 @media (max-width: 599.98px) {
   .rbox { padding: var(--space-4); }
@@ -176,9 +177,35 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 
 /* Remove page fixes (Designer 11/24): one card, spacing between blocks, banner rows, tap target */
 .remove-page > * + * { margin-top: var(--space-6); }
-.remove-page > .remove-h2 { margin-top: var(--space-8); }
+.ds .remove-page > .remove-h2, .remove-page > .remove-h2 { margin-top: var(--space-8); }
 .remove-page .rbox { margin-top: var(--space-6); }
 .ds-banner:has(> svg) { display: flex; align-items: flex-start; gap: var(--space-3); width: 100%; }
 .ds-banner:has(> svg) > svg { flex: none; margin: 2px 0 0; }
 .ds-banner:has(> svg) > p { margin: 0; flex: 1; min-width: 0; }
-.ds-supporting a[target="_blank"] { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 2.75rem; }
+.ds-supporting a[target="_blank"] { font-size: 0.875rem; display: inline-flex; align-items: center; gap: var(--space-1); min-height: 2.75rem; }
+
+/* The RVP archetype test (src/rvp). The stage keeps its height while the browser-only parts load (no jitter). */
+.rvp-page { display: grid; gap: var(--space-4); }
+.rvp-stage { display: grid; gap: var(--space-4); min-height: 24rem; align-content: start; }
+.rvp-qa { max-width: 40rem; }
+.rvp-skeleton { height: 18rem; border-radius: var(--md-sys-shape-corner-medium); }
+.rvp-progress { width: 100%; height: 0.25rem; accent-color: var(--md-sys-color-primary); }
+.rvp-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.rvp-restart { margin-left: auto; }
+.rvp-card { max-width: 40rem; }
+.rvp-facts { display: grid; gap: var(--space-1) 0; margin: 0; }
+.rvp-facts dd { margin: 0 0 var(--space-3); }
+.rvp-pattern { margin: 0; padding-left: var(--space-5); }
+.rvp-list .ds-list-item { display: block; }
+.rvp-section { display: grid; gap: var(--space-2); }
+.rvp-bullets { margin: 0; padding-left: var(--space-5); display: grid; gap: var(--space-1); }
+.rvp-days { margin: 0; padding-left: 0; list-style: none; display: grid; gap: var(--space-2); }
+.rvp-two { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
+.rvp-details { border-top: 1px solid var(--md-sys-color-outline-variant); padding: var(--space-2) 0; }
+.rvp-details summary { cursor: pointer; }
+.rvp-print { display: none; }
+@media print {
+  body * { visibility: hidden; }
+  .rvp-print, .rvp-print * { visibility: visible; }
+  .rvp-print { display: block; position: absolute; inset: 0; padding: 2rem; }
+}

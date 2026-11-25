@@ -1,0 +1,618 @@
+{
+  "version": "0.1-draft",
+  "status": "draft for Rod to edit",
+  "note": "One question probes one dimension. Options map in facet order; display order is randomized per respondent.",
+  "dimensions": {
+    "R": [
+      "Physical",
+      "Intellectual",
+      "Social"
+    ],
+    "V": [
+      "Moral",
+      "Aesthetic",
+      "Pragmatic"
+    ],
+    "P": [
+      "Creative",
+      "Adaptive",
+      "Sustaining"
+    ]
+  },
+  "questions": [
+    {
+      "number": 1,
+      "dimension": "R",
+      "prompt": "You have a free Saturday with nothing planned. What do you reach for first?",
+      "options": [
+        {
+          "text": "A project with my hands: fixing, building, cooking, training",
+          "facet": "R.Physical",
+          "weight": 2
+        },
+        {
+          "text": "A book, a problem or an idea I want to understand",
+          "facet": "R.Intellectual",
+          "weight": 2
+        },
+        {
+          "text": "A call or a get-together with people I care about",
+          "facet": "R.Social",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "dimension": "R",
+      "prompt": "A friend says, \"Can you help me with something big?\" What do you usually offer?",
+      "options": [
+        {
+          "text": "My time and effort on the ground",
+          "facet": "R.Physical",
+          "weight": 2
+        },
+        {
+          "text": "My thinking: a plan, an explanation, a second opinion",
+          "facet": "R.Intellectual",
+          "weight": 2
+        },
+        {
+          "text": "An introduction, my network or just being there with them",
+          "facet": "R.Social",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "dimension": "R",
+      "prompt": "When you picture your best asset, you think of:",
+      "options": [
+        {
+          "text": "My health, my tools, my home, my money in hand",
+          "facet": "R.Physical",
+          "weight": 2
+        },
+        {
+          "text": "What I know and how I think",
+          "facet": "R.Intellectual",
+          "weight": 2
+        },
+        {
+          "text": "The people who would show up for me",
+          "facet": "R.Social",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "dimension": "R",
+      "prompt": "You are new in a town. Your first move is to:",
+      "options": [
+        {
+          "text": "Learn the place by walking it and setting up my space",
+          "facet": "R.Physical",
+          "weight": 2
+        },
+        {
+          "text": "Read about it and learn how it works",
+          "facet": "R.Intellectual",
+          "weight": 2
+        },
+        {
+          "text": "Find the people: neighbors, groups, a first friend",
+          "facet": "R.Social",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "dimension": "R",
+      "prompt": "What do you tend to be praised for?",
+      "options": [
+        {
+          "text": "Getting real things done",
+          "facet": "R.Physical",
+          "weight": 2
+        },
+        {
+          "text": "Seeing what others miss",
+          "facet": "R.Intellectual",
+          "weight": 2
+        },
+        {
+          "text": "Making people feel welcome and trusted",
+          "facet": "R.Social",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "dimension": "R",
+      "prompt": "If you lost your job tomorrow, what would carry you through?",
+      "options": [
+        {
+          "text": "My savings, my skills with tools, my physical stamina",
+          "facet": "R.Physical",
+          "weight": 2
+        },
+        {
+          "text": "My expertise and my ability to learn fast",
+          "facet": "R.Intellectual",
+          "weight": 2
+        },
+        {
+          "text": "My contacts and my reputation",
+          "facet": "R.Social",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "dimension": "R",
+      "prompt": "Which kind of tiredness feels best?",
+      "options": [
+        {
+          "text": "After a hard physical day",
+          "facet": "R.Physical",
+          "weight": 2
+        },
+        {
+          "text": "After a long stretch of deep thinking",
+          "facet": "R.Intellectual",
+          "weight": 2
+        },
+        {
+          "text": "After a day full of good conversation",
+          "facet": "R.Social",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "dimension": "R",
+      "prompt": "You are given a budget to invest in yourself. You choose:",
+      "options": [
+        {
+          "text": "Equipment, a gym, a better workspace",
+          "facet": "R.Physical",
+          "weight": 2
+        },
+        {
+          "text": "A course, books, time to study",
+          "facet": "R.Intellectual",
+          "weight": 2
+        },
+        {
+          "text": "A community, a mentor, an event where I belong",
+          "facet": "R.Social",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "dimension": "R",
+      "prompt": "Others come to you when they need:",
+      "options": [
+        {
+          "text": "Something fixed, built or carried",
+          "facet": "R.Physical",
+          "weight": 2
+        },
+        {
+          "text": "An answer or an explanation",
+          "facet": "R.Intellectual",
+          "weight": 2
+        },
+        {
+          "text": "Someone to listen, connect or vouch",
+          "facet": "R.Social",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "dimension": "V",
+      "prompt": "A decision has to be made and you cannot have everything. What decides it?",
+      "options": [
+        {
+          "text": "What is right, even if it costs me",
+          "facet": "V.Moral",
+          "weight": 2
+        },
+        {
+          "text": "What is beautiful, fitting, true to its form",
+          "facet": "V.Aesthetic",
+          "weight": 2
+        },
+        {
+          "text": "What works best for the result",
+          "facet": "V.Pragmatic",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "dimension": "V",
+      "prompt": "What bothers you most to see?",
+      "options": [
+        {
+          "text": "Someone treated unfairly",
+          "facet": "V.Moral",
+          "weight": 2
+        },
+        {
+          "text": "Something ugly or careless where care was possible",
+          "facet": "V.Aesthetic",
+          "weight": 2
+        },
+        {
+          "text": "Time and effort wasted for nothing",
+          "facet": "V.Pragmatic",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "dimension": "V",
+      "prompt": "You are choosing a home. What matters most?",
+      "options": [
+        {
+          "text": "That it is a good place to raise good people",
+          "facet": "V.Moral",
+          "weight": 2
+        },
+        {
+          "text": "That it feels peaceful and looks right",
+          "facet": "V.Aesthetic",
+          "weight": 2
+        },
+        {
+          "text": "That it is practical, affordable and well located",
+          "facet": "V.Pragmatic",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "dimension": "V",
+      "prompt": "A colleague takes a shortcut that works but bends a rule. You think:",
+      "options": [
+        {
+          "text": "It is wrong; the rule is there for a reason",
+          "facet": "V.Moral",
+          "weight": 2
+        },
+        {
+          "text": "The work is a bit sloppy; it should be done well",
+          "facet": "V.Aesthetic",
+          "weight": 2
+        },
+        {
+          "text": "If it works and nobody is hurt, fine, but note the risk",
+          "facet": "V.Pragmatic",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "dimension": "V",
+      "prompt": "What would you want to be remembered for?",
+      "options": [
+        {
+          "text": "Doing right by others",
+          "facet": "V.Moral",
+          "weight": 2
+        },
+        {
+          "text": "Making something beautiful or meaningful",
+          "facet": "V.Aesthetic",
+          "weight": 2
+        },
+        {
+          "text": "Getting important things done",
+          "facet": "V.Pragmatic",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "dimension": "V",
+      "prompt": "A story moves you most when it is about:",
+      "options": [
+        {
+          "text": "Sacrifice and doing what is right",
+          "facet": "V.Moral",
+          "weight": 2
+        },
+        {
+          "text": "Beauty, love, or something that has been lost",
+          "facet": "V.Aesthetic",
+          "weight": 2
+        },
+        {
+          "text": "Someone who overcomes a hard problem",
+          "facet": "V.Pragmatic",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "dimension": "V",
+      "prompt": "When you give advice, you usually lead with:",
+      "options": [
+        {
+          "text": "What the right thing to do is",
+          "facet": "V.Moral",
+          "weight": 2
+        },
+        {
+          "text": "What feels true and fits who they are",
+          "facet": "V.Aesthetic",
+          "weight": 2
+        },
+        {
+          "text": "What will actually work",
+          "facet": "V.Pragmatic",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "dimension": "V",
+      "prompt": "You have one hour to improve a shared space. You:",
+      "options": [
+        {
+          "text": "Fix what is unfair or unsafe for someone",
+          "facet": "V.Moral",
+          "weight": 2
+        },
+        {
+          "text": "Make it feel better: light, order, a nicer look",
+          "facet": "V.Aesthetic",
+          "weight": 2
+        },
+        {
+          "text": "Remove what slows people down",
+          "facet": "V.Pragmatic",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "dimension": "V",
+      "prompt": "Your own best days feel:",
+      "options": [
+        {
+          "text": "Like I stood for something",
+          "facet": "V.Moral",
+          "weight": 2
+        },
+        {
+          "text": "Like I created or noticed something lovely",
+          "facet": "V.Aesthetic",
+          "weight": 2
+        },
+        {
+          "text": "Like I got a lot of useful things done",
+          "facet": "V.Pragmatic",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "dimension": "P",
+      "prompt": "A plan falls apart halfway. Your first instinct is to:",
+      "options": [
+        {
+          "text": "Invent a new approach",
+          "facet": "P.Creative",
+          "weight": 2
+        },
+        {
+          "text": "Adjust quickly to what is in front of me",
+          "facet": "P.Adaptive",
+          "weight": 2
+        },
+        {
+          "text": "Go back to what is proven and steady it",
+          "facet": "P.Sustaining",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "dimension": "P",
+      "prompt": "You are happiest when:",
+      "options": [
+        {
+          "text": "Starting something new",
+          "facet": "P.Creative",
+          "weight": 2
+        },
+        {
+          "text": "Things are changing and I can respond",
+          "facet": "P.Adaptive",
+          "weight": 2
+        },
+        {
+          "text": "Everything runs the way it should",
+          "facet": "P.Sustaining",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "dimension": "P",
+      "prompt": "In a group project you naturally:",
+      "options": [
+        {
+          "text": "Propose the idea and start",
+          "facet": "P.Creative",
+          "weight": 2
+        },
+        {
+          "text": "Fill whatever gap appears",
+          "facet": "P.Adaptive",
+          "weight": 2
+        },
+        {
+          "text": "Keep it organized and on track",
+          "facet": "P.Sustaining",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "dimension": "P",
+      "prompt": "Routine feels:",
+      "options": [
+        {
+          "text": "Like a cage unless I get to change it",
+          "facet": "P.Creative",
+          "weight": 2
+        },
+        {
+          "text": "Fine, as long as I can flex",
+          "facet": "P.Adaptive",
+          "weight": 2
+        },
+        {
+          "text": "Like solid ground",
+          "facet": "P.Sustaining",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "dimension": "P",
+      "prompt": "When something works well, you:",
+      "options": [
+        {
+          "text": "Wonder how to make it different or bigger",
+          "facet": "P.Creative",
+          "weight": 2
+        },
+        {
+          "text": "Keep it, but adapt it to the next situation",
+          "facet": "P.Adaptive",
+          "weight": 2
+        },
+        {
+          "text": "Protect it and keep it going",
+          "facet": "P.Sustaining",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "dimension": "P",
+      "prompt": "A friend asks how you handle surprises:",
+      "options": [
+        {
+          "text": "I turn them into new possibilities",
+          "facet": "P.Creative",
+          "weight": 2
+        },
+        {
+          "text": "I read the room and adjust",
+          "facet": "P.Adaptive",
+          "weight": 2
+        },
+        {
+          "text": "I would rather prevent them with a good system",
+          "facet": "P.Sustaining",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "dimension": "P",
+      "prompt": "You are most likely to say:",
+      "options": [
+        {
+          "text": "\"What if we tried something else?\"",
+          "facet": "P.Creative",
+          "weight": 2
+        },
+        {
+          "text": "\"Let's see what happens and adjust.\"",
+          "facet": "P.Adaptive",
+          "weight": 2
+        },
+        {
+          "text": "\"Let's not break what works.\"",
+          "facet": "P.Sustaining",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "dimension": "P",
+      "prompt": "When you set a goal, you tend to:",
+      "options": [
+        {
+          "text": "Reimagine it often as you learn",
+          "facet": "P.Creative",
+          "weight": 2
+        },
+        {
+          "text": "Keep it loose and respond to events",
+          "facet": "P.Adaptive",
+          "weight": 2
+        },
+        {
+          "text": "Break it into steady steps and keep going",
+          "facet": "P.Sustaining",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "dimension": "P",
+      "prompt": "Your weak spot is more likely to be:",
+      "options": [
+        {
+          "text": "Starting more than I finish",
+          "facet": "P.Creative",
+          "weight": 2
+        },
+        {
+          "text": "Not committing to a direction",
+          "facet": "P.Adaptive",
+          "weight": 2
+        },
+        {
+          "text": "Resisting change when I should change",
+          "facet": "P.Sustaining",
+          "weight": 2
+        }
+      ]
+    }
+  ]
+}
