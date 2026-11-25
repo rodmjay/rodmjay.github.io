@@ -1,3 +1,5 @@
+// UNPUBLISHED 11/24 (Rod removed Selected work; EA): no route points here now. To republish, add app/(en)/(home)/work/indiana-cms/page.tsx
+// and the es twin calling projectMeta/Project, the twin in src/lib/routes.mjs, the sitemap pair in feeds.mjs and the e2e paths.
 // A describe-only project page (Legal Advisor's conditions, 11/23): role, stack and outcomes in general terms, exactly
 // what the resume says. No screenshots, code, client logo, state data or repo link; never the employer's name.
 import Link from "next/link";
