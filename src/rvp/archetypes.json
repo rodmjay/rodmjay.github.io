@@ -65,7 +65,7 @@
    "key": "R.Physical-V.Moral-P.Creative",
    "name": {
     "en": "The Builder of Good",
-    "es": "El Constructor del Bien"
+    "es": "Artífice del Bien"
    },
    "role": {
     "en": "Crafts tangible acts of virtue.",
@@ -90,7 +90,7 @@
    "key": "R.Physical-V.Moral-P.Adaptive",
    "name": {
     "en": "The Healer",
-    "es": "El Sanador"
+    "es": "Sanador"
    },
    "role": {
     "en": "Responds to pain with compassion.",
@@ -115,7 +115,7 @@
    "key": "R.Physical-V.Moral-P.Sustaining",
    "name": {
     "en": "The Steward",
-    "es": "El Custodio"
+    "es": "Custodio"
    },
    "role": {
     "en": "Preserves wellbeing and order.",
@@ -140,7 +140,7 @@
    "key": "R.Physical-V.Aesthetic-P.Creative",
    "name": {
     "en": "The Artisan",
-    "es": "El Artesano"
+    "es": "Artesano"
    },
    "role": {
     "en": "Creates beauty through form.",
@@ -165,7 +165,7 @@
    "key": "R.Physical-V.Aesthetic-P.Adaptive",
    "name": {
     "en": "The Performer",
-    "es": "El Intérprete"
+    "es": "Intérprete"
    },
    "role": {
     "en": "Embodies art and movement.",
@@ -190,7 +190,7 @@
    "key": "R.Physical-V.Aesthetic-P.Sustaining",
    "name": {
     "en": "The Curator of Comfort",
-    "es": "El Curador del Confort"
+    "es": "Curador del Confort"
    },
    "role": {
     "en": "Maintains elegance and balance.",
@@ -215,7 +215,7 @@
    "key": "R.Physical-V.Pragmatic-P.Creative",
    "name": {
     "en": "The Inventor",
-    "es": "El Inventor"
+    "es": "Inventor"
    },
    "role": {
     "en": "Transforms raw matter into useful innovation.",
@@ -240,7 +240,7 @@
    "key": "R.Physical-V.Pragmatic-P.Adaptive",
    "name": {
     "en": "The Technician",
-    "es": "El Técnico"
+    "es": "Técnico"
    },
    "role": {
     "en": "Hands-on troubleshooter.",
@@ -265,7 +265,7 @@
    "key": "R.Physical-V.Pragmatic-P.Sustaining",
    "name": {
     "en": "The Operator",
-    "es": "El Operador"
+    "es": "Operador"
    },
    "role": {
     "en": "Ensures reliability of systems.",
@@ -290,7 +290,7 @@
    "key": "R.Intellectual-V.Moral-P.Creative",
    "name": {
     "en": "The Philosopher",
-    "es": "El Filósofo"
+    "es": "Filósofo"
    },
    "role": {
     "en": "Designs ethical systems and visionary ideals.",
@@ -315,7 +315,7 @@
    "key": "R.Intellectual-V.Moral-P.Adaptive",
    "name": {
     "en": "The Mediator",
-    "es": "El Mediador"
+    "es": "Mediador"
    },
    "role": {
     "en": "Balances competing truths.",
@@ -340,7 +340,7 @@
    "key": "R.Intellectual-V.Moral-P.Sustaining",
    "name": {
     "en": "The Scholar",
-    "es": "El Erudito"
+    "es": "Erudito"
    },
    "role": {
     "en": "Keeps moral and intellectual traditions alive.",
@@ -365,7 +365,7 @@
    "key": "R.Intellectual-V.Aesthetic-P.Creative",
    "name": {
     "en": "The Poet-Architect",
-    "es": "El Poeta-Arquitecto"
+    "es": "Poeta-Arquitecto"
    },
    "role": {
     "en": "Creates beauty of thought and design.",
@@ -390,7 +390,7 @@
    "key": "R.Intellectual-V.Aesthetic-P.Adaptive",
    "name": {
     "en": "The Translator",
-    "es": "El Traductor"
+    "es": "Traductor"
    },
    "role": {
     "en": "Bridges ideas and cultures.",
@@ -415,7 +415,7 @@
    "key": "R.Intellectual-V.Aesthetic-P.Sustaining",
    "name": {
     "en": "The Conservator",
-    "es": "El Conservador"
+    "es": "Conservador"
    },
    "role": {
     "en": "Protects legacy and heritage.",
@@ -440,7 +440,7 @@
    "key": "R.Intellectual-V.Pragmatic-P.Creative",
    "name": {
     "en": "The Strategist",
-    "es": "El Estratega"
+    "es": "Estratega"
    },
    "role": {
     "en": "Designs smart systems for progress.",
@@ -465,7 +465,7 @@
    "key": "R.Intellectual-V.Pragmatic-P.Adaptive",
    "name": {
     "en": "The Analyst",
-    "es": "El Analista"
+    "es": "Analista"
    },
    "role": {
     "en": "Applies logic to changing realities.",
@@ -490,7 +490,7 @@
    "key": "R.Intellectual-V.Pragmatic-P.Sustaining",
    "name": {
     "en": "The Administrator",
-    "es": "El Administrador"
+    "es": "Administrador"
    },
    "role": {
     "en": "Maintains order in complex systems.",
@@ -515,7 +515,7 @@
    "key": "R.Social-V.Moral-P.Creative",
    "name": {
     "en": "The Organizer",
-    "es": "El Organizador"
+    "es": "Organizador"
    },
    "role": {
     "en": "Mobilizes people around conscience.",
@@ -540,7 +540,7 @@
    "key": "R.Social-V.Moral-P.Adaptive",
    "name": {
     "en": "The Counselor",
-    "es": "El Consejero"
+    "es": "Consejero"
    },
    "role": {
     "en": "Listens and guides with empathy.",
@@ -565,7 +565,7 @@
    "key": "R.Social-V.Moral-P.Sustaining",
    "name": {
     "en": "The Caretaker",
-    "es": "El Cuidador"
+    "es": "Cuidador"
    },
    "role": {
     "en": "Protects community trust.",
@@ -590,7 +590,7 @@
    "key": "R.Social-V.Aesthetic-P.Creative",
    "name": {
     "en": "The Performer-Artist",
-    "es": "El Artista Escénico"
+    "es": "Artista de Escena"
    },
    "role": {
     "en": "Creates connection through shared experience.",
@@ -615,7 +615,7 @@
    "key": "R.Social-V.Aesthetic-P.Adaptive",
    "name": {
     "en": "The Connector",
-    "es": "El Conector"
+    "es": "Enlace"
    },
    "role": {
     "en": "Brings harmony to groups.",
@@ -640,7 +640,7 @@
    "key": "R.Social-V.Aesthetic-P.Sustaining",
    "name": {
     "en": "The Cultural Guardian",
-    "es": "El Guardián Cultural"
+    "es": "Guardián Cultural"
    },
    "role": {
     "en": "Preserves rituals, symbols, and beauty.",
@@ -665,7 +665,7 @@
    "key": "R.Social-V.Pragmatic-P.Creative",
    "name": {
     "en": "The Entrepreneur",
-    "es": "El Emprendedor"
+    "es": "Emprendedor"
    },
    "role": {
     "en": "Builds networks that deliver innovation.",
@@ -690,7 +690,7 @@
    "key": "R.Social-V.Pragmatic-P.Adaptive",
    "name": {
     "en": "The Negotiator",
-    "es": "El Negociador"
+    "es": "Negociador"
    },
    "role": {
     "en": "Finds efficient compromise.",
@@ -715,7 +715,7 @@
    "key": "R.Social-V.Pragmatic-P.Sustaining",
    "name": {
     "en": "The Administrator of People",
-    "es": "El Administrador de Personas"
+    "es": "Administrador de Personas"
    },
    "role": {
     "en": "Manages stable structures of cooperation.",
