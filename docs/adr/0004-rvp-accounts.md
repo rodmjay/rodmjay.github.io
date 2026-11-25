@@ -252,6 +252,29 @@ Rod chose his personal project over a separate one, after seeing Compliance's re
       - new-contact prompts.
 
     `text_tier = 'never'` stays the hard stop.
+- **Secrets, stored securely (Rod 11/25: "store it securely").**
+  - **Where they live:** the service key, the `rvp_api` password and the `rvp-auth-admin` shared secret live only in
+    Supabase's managed Edge Function secrets.
+  - **Where they never appear:** the repo, client code, the static build, logs, error output, audit_log, statement
+    logs, GitHub variables or secrets, or chat.
+  - **Who uses what:** the visitor function `rvp-account` connects as `rvp_api` and never reads
+    `SUPABASE_SERVICE_ROLE_KEY`. A lint check in CI fails the build if its source names that variable. Only
+    `rvp-auth-admin` uses the service key.
+  - **Rotation:**
+    1. Generate a new password, 40+ random characters.
+    2. Set it on `rvp_api` as a pre-hashed SCRAM verifier, so the clear text never reaches the database logs.
+    3. Update the Edge secret through the Settings step.
+    4. Redeploy and run the sign-in smoke test.
+    5. Confirm the old password fails.
+    6. Log the date in the register.
+
+    The shared secret rotates the same way. Rotation happens yearly, on any dependency change and on any suspected
+    leak.
+  - **Leak check:** Security's staging probe greps for each secret's shape in all of these:
+    - the built site, and the function responses and errors;
+    - the function logs and Postgres logs;
+    - audit_log and pg_stat_statements;
+    - the GitHub repo and Actions logs.
 - **"No agent sees an individual archetype" is a policy, not a wall:** postgres and the service role can still join
   the tables. The consent and privacy text say so plainly.
 - **Contacts:** tagged `source/rodmjay.com` and `source/rvp`, with **no group and no privileges** and
