@@ -41,6 +41,9 @@ export function RvpResult({ lang, s }: { lang: Lang; s: S }) {
     return () => window.removeEventListener("hashchange", read);
   }, []);
 
+  // Arriving here from the last question: focus the page heading, not the body (Designer 11/25).
+  useEffect(() => { if (state) (document.querySelector("main h1") as HTMLElement | null)?.focus(); }, [state === undefined || state === null ? 0 : 1]);
+
   if (state === undefined) return <div className="rvp-stage" aria-busy="true"><div className="ds-skeleton rvp-skeleton" /></div>;
   if (state === null) {
     return (
@@ -100,6 +103,13 @@ export function RvpResult({ lang, s }: { lang: Lang; s: S }) {
         <p className="ds-card-actions"><Link href={rvpUrl(lang, main.slug)} className="ds-btn text">{fill(s.moreAbout, { name: main.name[lang] })}</Link></p>
       </article>
 
+      <div className="rvp-actions">
+        <button type="button" className="ds-btn" onClick={save}>{s.downloadCard}</button>
+        <button type="button" className="ds-btn outlined" onClick={copy}>{s.copyLink}</button>
+        <button type="button" className="ds-btn text" onClick={() => window.print()}>{s.printCard}</button>
+      </div>
+      <p className="ds-body-small ds-variant" aria-live="polite">{note}</p>
+
       <section className="rvp-section">
         <h2 className="ds-title-large">{s.patternTitle}</h2>
         <ul className="rvp-bullets">{result.dims.map((d) => <li key={d.dim} className="ds-body-medium">{patternLine(lang, s, d)}</li>)}</ul>
@@ -110,13 +120,7 @@ export function RvpResult({ lang, s }: { lang: Lang; s: S }) {
       <ArchetypeDetails lang={lang} s={s} a={main} you afterWatch={growth} afterFit={unlike} />
 
       <p className="ds-body-medium">{s.mapNotPrison} {s.notClinical}</p>
-      <div className="rvp-actions">
-        <button type="button" className="ds-btn filled" onClick={save}>{s.downloadCard}</button>
-        <button type="button" className="ds-btn outlined" onClick={() => window.print()}>{s.printCard}</button>
-        <button type="button" className="ds-btn text" onClick={copy}>{s.copyLink}</button>
-        <Link href={rvpUrl(lang, "take")} className="ds-btn text">{s.retake}</Link>
-      </div>
-      <p className="ds-body-small ds-variant" aria-live="polite">{note}</p>
+      <p><Link href={rvpUrl(lang, "take")} className="ds-btn text">{s.retake}</Link></p>
 
       {/* Printing shows only this card (site.css @media print). */}
       <section className="rvp-print" aria-hidden="true">

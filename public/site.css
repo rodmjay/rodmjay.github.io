@@ -177,3 +177,15 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .quote-figure figcaption h1.ds-title-large { font-size: var(--md-sys-typescale-title-large-size); font-weight: 600; }
 .quote-figure .quote-author { margin: var(--space-2) 0 0; }
 .quote-figure .quote-dl { margin: var(--space-3) 0 0; }
+
+/* RVP (Designer 11/25): tight name-to-role gap on the result card, error line under the question, home card. */
+.rvp-card h2 { margin: 0 0 var(--space-2); }
+.rvp-card p { margin: 0 0 var(--space-2); }
+.rvp-need { display: flex; align-items: center; gap: var(--space-2); margin: var(--space-2) 0 0; }
+.rvp-qa fieldset:focus { outline: none; }
+.rvp-qa fieldset:focus-visible { outline: 2px solid var(--md-sys-color-primary); outline-offset: 4px; }
+.rvp-home { margin-top: var(--space-12); }
+.rvp-home .ds-card { display: grid; gap: var(--space-3); padding: var(--space-6); }
+.rvp-home h2 { margin: 0; }
+.rvp-home p { margin: 0; }
+.rvp-home .ds-btn { justify-self: start; min-height: 48px; }
