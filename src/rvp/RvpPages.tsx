@@ -8,6 +8,7 @@ import { meta } from "@/lib/meta";
 import { ARCHETYPES, archetypeBySlug, facetName, rvpUrl, type Lang } from "./data";
 import { RvpTake } from "./RvpTake";
 import { RvpResult } from "./RvpResult";
+import { ArchetypeDetails } from "./Details";
 
 const other = (lang: Lang): Lang => (lang === "en" ? "es" : "en");
 const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
@@ -80,12 +81,9 @@ export function RvpArchetypePage({ lang, slug }: { lang: Lang; slug: string }) {
       <p className="ds-overline">{facets(lang, a.key)}</p>
       <h1 className="ds-headline-large">{a.name[lang]}</h1>
       <p className="ds-body-large">{a.role[lang]}</p>
-      <dl className="rvp-facts">
-        <dt className="ds-title-small">{s.strengths}</dt><dd>{a.strengths[lang]}</dd>
-        <dt className="ds-title-small">{s.shadow}</dt><dd>{a.shadow[lang]}</dd>
-        <dt className="ds-title-small">{s.examples}</dt><dd>{a.examples[lang]}</dd>
-      </dl>
-      <p className="ds-body-medium ds-variant">{s.mapNotPrison}</p>
+      <p className="ds-body-medium ds-variant">{a.examples[lang]}</p>
+      <ArchetypeDetails lang={lang} s={s} a={a} you={false} />
+      <p className="ds-body-medium ds-variant">{s.mapNotPrison} {s.notClinical}</p>
       <p><Link href={rvpUrl(lang, "take")} className="ds-btn filled">{s.takeIt}</Link></p>
     </main>
   );

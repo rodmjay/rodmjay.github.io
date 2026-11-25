@@ -144,3 +144,36 @@ test("random answers spread across all 27 archetypes with no facet favored (100,
     assert.ok(share > 0.31 && share < 0.36, `${d}.${f}: ${share}`);
   }
 });
+
+// Philosopher's "make it useful" content (src/rvp/content.json, synced from the vault by scripts/rvp-sync.mjs).
+import { validateContent, missingSpanish, differenceFor, type Content } from "../src/rvp/content.ts";
+const extra: Content = JSON.parse(readFileSync(new URL("../src/rvp/content.json", import.meta.url), "utf8"));
+const FACETS = DIMENSIONS.flatMap((d) => bank.dimensions[d].map((f) => `${d}.${f}`));
+const SLUGS = content.archetypes.map((a: any) => a.slug);
+
+test("the content file is valid: 9 growth edges, 9 difference notes, every archetype file well formed", () => {
+  assert.deepEqual(validateContent(extra, FACETS, SLUGS), []);
+  assert.ok(Object.keys(extra.archetypes).length >= 1);
+  for (const d of DIMENSIONS) {
+    const fs = bank.dimensions[d].map((f) => `${d}.${f}`);
+    for (const a of fs) for (const b of fs) if (a !== b) assert.ok(differenceFor(extra, a, b), `${a} vs ${b}`);
+  }
+});
+
+test("a malformed content file is refused, with the reason", () => {
+  const bad: Content = JSON.parse(JSON.stringify(extra));
+  const first = Object.keys(bad.archetypes)[0];
+  bad.archetypes[first].practice = bad.archetypes[first].practice.slice(0, 6);
+  bad.archetypes[first].leanOn = [];
+  delete bad.facets["V.Moral"];
+  (bad.archetypes as any)["no-such"] = { ...bad.archetypes[first], slug: "no-such" };
+  const why = validateContent(bad, FACETS, SLUGS);
+  for (const m of ["practice: exactly 7", "leanOn", "facets.V.Moral", "unknown slug"]) assert.ok(why.some((w) => w.includes(m)), m);
+});
+
+test("missing Spanish is listed, path by path (going live needs none)", () => {
+  const miss = missingSpanish(extra);
+  assert.ok(Array.isArray(miss));
+  const done: Content = JSON.parse(JSON.stringify(extra).replace(/"es":""/g, '"es":"x"'));
+  assert.deepEqual(missingSpanish(done), []);
+});
