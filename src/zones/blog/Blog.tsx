@@ -38,10 +38,7 @@ export async function BlogList({ path }: { path: string }) {
   const pageUrl = (n: number) => (n === 1 ? l.base : `${l.base}page/${n}/`);
   return (
     <>
-      <section className="strip" aria-labelledby="blog-title">
-        <Html html={b.strip} />
-        <div className="col"><h1 id="blog-title">{B.title}</h1><p>{heading}</p></div>
-      </section>
+      <header className="page-head col"><h1 className="ds-headline-large" id="blog-title">{B.title}</h1><p className="ds-title-medium">{heading}</p></header>
       <main id="main" className="col ix blog">
         {b.SAMPLE && l.items.length > 0 && <p className="ds-banner sample">{B.sample}</p>}
         {used.length > 0 && (
@@ -95,7 +92,6 @@ export async function PostPage({ lang, slug }: { lang: Lang; slug: string }) {
   const toc = h2s.length >= 4 && p.toc !== false; // 4+ h2s only (Designer 11/21); front matter can only turn it off
   return (
     <>
-      <div className="strip slim" aria-hidden="true"><Html html={b.stripSlim} /></div>
       <main id="main" className="col post blog">
         <article>
           <header className="ds-post-head">

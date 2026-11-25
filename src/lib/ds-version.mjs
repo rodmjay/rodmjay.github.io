@@ -1,1 +1,1 @@
-export const DS_VERSION = "0.39.0";
+export const DS_VERSION = "0.42.0";

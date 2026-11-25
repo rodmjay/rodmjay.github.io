@@ -6,14 +6,14 @@ body { margin: 0; }
 .skip:focus { left: var(--space-4); top: var(--space-4); z-index: 10; }
 .col { max-width: 40rem; margin: 0 auto; padding: 0 var(--gutter); }
 .bar { display: flex; align-items: center; gap: var(--space-6); flex-wrap: wrap; max-width: 64rem; margin: 0 auto; padding: var(--space-4) var(--gutter); } /* wider than the 40rem text column, so six links fit on one row (Designer 11/21) */
-.mark { font: 700 1rem/1 var(--md-ref-typeface-brand); letter-spacing: 0.08em; text-transform: uppercase; color: var(--md-sys-color-on-surface); text-decoration: none; }
+.mark { font: 700 1rem/1 var(--md-ref-typeface-brand); color: var(--md-sys-color-on-surface); text-decoration: none; }
 .bar nav { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-right: auto; }
 .bar nav a { color: var(--md-sys-color-on-surface-variant); text-decoration: none; font-weight: 500; }
-main a { color: var(--md-sys-color-tertiary); }
-a:hover, .bar nav a:hover, main a:hover { color: var(--md-sys-color-primary); text-decoration-color: var(--md-sys-color-primary); }
-main section { padding: var(--space-16) 0 0; }
-.ds main:not(.blog) h2 { margin: 0 0 var(--space-4); font: 700 1.25rem/1.3 var(--md-ref-typeface-brand); letter-spacing: 0.14em; text-transform: uppercase; }
-.ds main:not(.blog) h2::after { content: ""; display: block; width: 2.5rem; height: 2px; margin-top: var(--space-2); background: var(--md-sys-color-primary); }
+main a { color: var(--md-sys-color-primary); }
+.bar nav a:hover { color: var(--md-sys-color-on-surface); }
+main a { text-underline-offset: 3px; }
+main section { padding: var(--space-12) 0 0; }
+.ds main:not(.blog) h2 { margin: 0 0 var(--space-4); font: 600 1.5rem/1.3 var(--md-ref-typeface-brand); }
 .ds main > .lede { margin: var(--space-16) 0 0; }
 .ds main section > p { margin: 0 0 var(--space-4); }
 .ds main section > ul + p { margin-top: var(--space-6); }
@@ -46,67 +46,23 @@ h3 a { color: inherit; text-underline-offset: 3px; }
   .phone-nav a[aria-current] { border-left-color: var(--md-sys-color-primary); color: var(--md-sys-color-primary); }
 }
 
-/* Work items outlined in cyan (Designer 11/21). */
-.ds .stack .ds-card { box-shadow: inset 0 0 0 1px var(--md-sys-color-tertiary); border-color: transparent; }
+/* Work items: outlined cards from the design system, no extra chrome (Designer 11/25, rodmjay-professional.md). */
 
-/* ---- Synthwave hero, from Designer's prototype (design/specs/rodmjay-synthwave/hero.html) ---- */
-/* ---- Scene colors: night (dark) and dawn (light). Art only; UI colors come from the rod brand tokens. ---- */
-:root {
-  --sky-top: #fff1e4; --sky-low: #f7d2ec; --horizon: #f0a8d6;
-  --sun-1: #ffd23f; --sun-2: #ff8a3d; --sun-3: #ff3d8b;
-  --far: #dcaee6; --far-rim: #00a9c7; --near: #e27aa3; --near-rim: #b8005c;
-  --floor: #fff3f7; --grid: #1d3a5f; --star: transparent;
-  --chrome-hi: #1d3a5f; --chrome-mid: #2f6aa8; --chrome-lo: #b8005c; --chrome-floor: #ff3d8b;
-  --tag: #00687b;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --sky-top: #05071a; --sky-low: #1b0f45; --horizon: #5b1a72;
-    --far: #2a1458; --far-rim: #19e3ff; --near: #0a0e2c; --near-rim: #ff3d8b;
-    --floor: #0b0720; --grid: #ff3d8b; --star: #cfe9ff;
-    --chrome-hi: #f2fbff; --chrome-mid: #8fd8ff; --chrome-lo: #ff7aae; --chrome-floor: #ffd23f;
-    --tag: #57d6f5;
-  }
-}
-:root[data-theme="dark"] {
-  --sky-top: #05071a; --sky-low: #1b0f45; --horizon: #5b1a72;
-  --far: #2a1458; --far-rim: #19e3ff; --near: #0a0e2c; --near-rim: #ff3d8b;
-  --floor: #0b0720; --grid: #ff3d8b; --star: #cfe9ff;
-  --chrome-hi: #f2fbff; --chrome-mid: #8fd8ff; --chrome-lo: #ff7aae; --chrome-floor: #ffd23f;
-  --tag: #57d6f5;
-}
+/* Home hero: name, title, one sentence, two buttons, one hairline. Nothing moves. */
+.hero { padding: var(--space-12) 0 var(--space-8); border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+.hero h1 { margin: 0; }
+.hero .hero-title { margin: var(--space-2) 0 0; color: var(--md-sys-color-on-surface-variant); }
+.hero .hero-lede { margin: var(--space-4) 0 0; max-width: 40rem; }
+.hero .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+.hero .hero-actions .ds-btn { min-height: 48px; }
 
-/* ---- The hero scene: five layers, each moved by --p (0 at the top, 1 when the hero has scrolled away) ---- */
-.scene { position: relative; height: max(min(100svh, 56rem), calc(35.4vw + 16rem)); min-height: 34rem; /* tall enough that the art is never cropped above the sun, so the name stays in the sky */ overflow: hidden; --p: 0; --amp: 1;
-  background: linear-gradient(var(--sky-top), var(--sky-low) 62%, var(--horizon) 70%, var(--floor) 70.1%); }
-.layer { position: absolute; inset: 0; will-change: transform; }
-.layer svg { position: absolute; left: 50%; bottom: 0; width: max(100%, 90rem); height: 100%; transform: translateX(-50%); }
-.l-stars { transform: translate3d(0, calc(var(--p) * var(--amp) * 40px), 0); }
-.l-sun   { transform: translate3d(0, calc(var(--p) * var(--amp) * 220px), 0); }   /* sinks fastest: the sun sets as you scroll */
-.l-far   { transform: translate3d(0, calc(var(--p) * var(--amp) * 120px), 0); }
-.l-near  { transform: translate3d(0, calc(var(--p) * var(--amp) * 60px), 0); }
-.l-grid  { transform: translate3d(0, 0, 0); }
-.l-grid .rows { transform: translate3d(0, calc(var(--p) * var(--amp) * 90px), 0); }
+/* Plain page heads for the blog and recipes (replaces the horizon strip). */
+.page-head { padding: var(--space-12) 0 0; }
+.page-head h1 { margin: 0; }
+.page-head p { margin: var(--space-2) 0 0; color: var(--md-sys-color-on-surface-variant); }
 
-.title { position: absolute; inset: 0; display: grid; align-content: start; justify-items: center; text-align: center;
-  padding: clamp(2rem, 7svh, 7rem) var(--space-4) 0; transform: translate3d(0, calc(var(--p) * var(--amp) * -60px), 0);
-  opacity: calc(1 - var(--p) * 1.4); }
-.title h1 { margin: 0; font: 700 clamp(2.5rem, min(9vw, 12svh), 6.5rem)/0.95 var(--md-ref-typeface-brand); letter-spacing: -0.02em; text-transform: uppercase;
-  /* chrome: a hard horizon line across the letters, no glow */
-  background: linear-gradient(var(--chrome-hi) 0%, var(--chrome-mid) 52%, var(--chrome-lo) 52.5%, var(--chrome-floor) 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent; }
-.title p { margin: var(--space-4) 0 0; font: 700 clamp(0.875rem, 2.4vw, 1.125rem)/1.4 var(--md-ref-typeface-brand); letter-spacing: 0.3em;
-  text-transform: uppercase; color: var(--tag); }
-
-@media (max-width: 599.98px) { .scene { --amp: 0.5; height: min(72svh, 36rem); min-height: 28rem; } .layer svg { width: 100%; } .l-stars { display: none; } }
-@media (prefers-reduced-motion: reduce) { .layer, .title, .l-grid .rows { transform: none !important; } .title { opacity: 1; } }
-
-
-/* The sky runs up behind the header, full width (Designer 11/21). */
-.bar { background: var(--sky-top); box-shadow: 0 0 0 100vmax var(--sky-top); clip-path: inset(0 -100vmax); }
-
-/* Resume request form (Designer 11/21): calm box, cyan outline, one filled button. */
-.rbox { padding: var(--space-6); border-radius: var(--md-sys-shape-corner-medium); box-shadow: inset 0 0 0 1px var(--md-sys-color-tertiary); margin-top: var(--space-6); }
+/* Resume request form: calm outlined box, one filled button. */
+.rbox { padding: var(--space-6); border-radius: var(--md-sys-shape-corner-medium); border: 1px solid var(--md-sys-color-outline-variant); margin-top: var(--space-6); }
 .rgrid { display: grid; gap: var(--space-4); grid-template-columns: 1fr 1fr; }
 .rgrid .full { grid-column: 1 / -1; }
 .ds .rbox .ds-supporting { margin: 0; }

@@ -279,9 +279,7 @@ async function build() {
   }
 
   const tagInfo = (key) => { const t = TAGS.get(key); return { key, name: t.name, slug: t.slug }; };
-  const strip = read("src/zones/blog/strip.svg").trimEnd();
-  const stripSlim = read("src/zones/blog/strip-slim.svg").trim();
-  return { posts, live, drafts, listed, built, SAMPLE, lists, tagUrl, tagInfo, usedTags, strip, stripSlim };
+  return { posts, live, drafts, listed, built, SAMPLE, lists, tagUrl, tagInfo, usedTags };
 }
 
 let memo;

@@ -21,7 +21,9 @@
   "hero": {
     "name": "Rod Johnson",
     "title": "Director de Arquitectura",
-    "lede": "Diseño cómo se construye el software: la arquitectura, los estándares y ahora las herramientas de IA detrás."
+    "lede": "Diseño cómo se construye el software: la arquitectura, los estándares y ahora las herramientas de IA detrás.",
+    "ctaResume": "Pedir mi currículum",
+    "ctaContact": "Contacto"
   },
   "about": {
     "heading": "Sobre mí",
