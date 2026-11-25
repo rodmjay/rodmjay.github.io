@@ -59,7 +59,7 @@ test("rvp: a refresh keeps the answers so far; Start over clears them", async ({
 
 test("rvp: index, an archetype page and Spanish", async ({ page }) => {
   await built(page, "/rvp/");
-  await expect(page.locator(".rvp-list li")).toHaveCount(27);
+  await expect(page.locator(".rvp-grid li")).toHaveCount(27);
   await page.getByRole("link", { name: "The Strategist" }).click();
   await expect(page).toHaveURL(/\/rvp\/strategist\/$/);
   await expect(page.locator("h1")).toHaveText("The Strategist");

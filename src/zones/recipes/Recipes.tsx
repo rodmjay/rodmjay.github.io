@@ -58,7 +58,7 @@ export async function RecipeList({ path }: { path: string }) {
   const pageUrl = (n: number) => (n === 1 ? l.base : `${l.base}page/${n}/`);
   return (
     <>
-      <header className="page-head wide-col"><h1 className="ds-headline-large" id="recipes-title">{R.title}</h1><p className="ds-title-medium">{heading}</p>{r.sample && <Chip lang={lang} />}</header>
+      <header className="page-head wide-col"><h1 className="ds-headline-large" id="recipes-title">{R.title}</h1><p className="ds-body-large">{heading}</p>{r.sample && <Chip lang={lang} />}</header>
       <main id="main" className="wide-col ix recipes">
         {r.sample && l.items.length > 0 && <p className="ds-banner sample">{R.sample}</p>}
         {used.length > 0 && (

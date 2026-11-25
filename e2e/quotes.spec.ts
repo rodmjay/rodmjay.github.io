@@ -8,12 +8,14 @@ test.beforeEach(async ({ page }) => { await page.addInitScript(() => { try { loc
 
 test("quotes: index → quote → keys and links → wrap", async ({ page }) => {
   await page.goto("/quotes/");
-  const thumbs = page.locator(".quote-grid a.quote-thumb");
-  const n = await thumbs.count();
-  test.skip(n === 0, "quotes feed is off");
-  await thumbs.first().click();
-  await expect(page).toHaveURL(/\/quotes\/[a-z0-9-]+\/$/);
-  const first = page.url();
+  const pos = page.locator(".quote-pos");
+  test.skip((await pos.count()) === 0, "quotes feed is off");
+  const n = Number(((await pos.textContent()) || "").split(" of ")[1]);
+  // /quotes/ opens straight into the first quote; its canonical is that quote's own URL.
+  const canon = await page.locator('link[rel="canonical"]').getAttribute("href");
+  expect(canon).toMatch(/\/quotes\/[a-z0-9-]+\/$/);
+  const first = new URL(canon as string).pathname;
+  await page.goto(first);
   await page.evaluate(() => { (window as any).__stay = 1; });
   await expect(page.locator(".quote-pos")).toHaveText(`1 of ${n}`);
   await expect(page.locator("h1")).toHaveCount(1);
@@ -24,21 +26,18 @@ test("quotes: index → quote → keys and links → wrap", async ({ page }) => 
   await page.keyboard.press("ArrowRight");
   await expect(page.locator(".quote-pos")).toHaveText(`2 of ${n}`);
   await page.keyboard.press("ArrowLeft");
-  await expect(page).toHaveURL(first);
+  await expect(page).toHaveURL(new RegExp(first));
   await page.getByRole("link", { name: "Previous quote" }).click();
   await expect(page.locator(".quote-pos")).toHaveText(`${n} of ${n}`);
   await page.getByRole("link", { name: "Next quote" }).click();
-  await expect(page).toHaveURL(first);
+  await expect(page).toHaveURL(new RegExp(first));
   expect(await page.evaluate(() => (window as any).__stay)).toBe(1);
   await expect(page.locator("body")).not.toContainText("null");
 });
 
 test("quotes: Spanish page has the same quote, Spanish labels", async ({ page }) => {
   await page.goto("/es/quotes/");
-  const thumbs = page.locator(".quote-grid a.quote-thumb");
-  test.skip((await thumbs.count()) === 0, "quotes feed is off");
-  await thumbs.first().click();
-  await expect(page).toHaveURL(/\/es\/quotes\/[a-z0-9-]+\/$/);
+  test.skip((await page.locator(".quote-pos").count()) === 0, "quotes feed is off");
   await expect(page.getByRole("link", { name: "Cita siguiente" })).toBeVisible();
   await expect(page.locator("main")).toContainText("Qué significa");
   // The image is the Spanish one (Rod 11/24: images need Spanish versions), served under /es/.
@@ -48,9 +47,7 @@ test("quotes: Spanish page has the same quote, Spanish labels", async ({ page })
 test("quotes: a quote page passes axe (EN and ES)", async ({ page }) => {
   for (const base of ["/quotes/", "/es/quotes/"]) {
     await page.goto(base);
-    const thumb = page.locator(".quote-grid a.quote-thumb").first();
-    test.skip((await thumb.count()) === 0, "quotes feed is off");
-    await page.goto(await thumb.getAttribute("href") as string);
+    test.skip((await page.locator(".quote-pos").count()) === 0, "quotes feed is off");
     await page.waitForLoadState("networkidle");
     const { violations } = await new AxeBuilder({ page: page as never }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
     expect(violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);

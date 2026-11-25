@@ -59,7 +59,7 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 /* Plain page heads for the blog and recipes (replaces the horizon strip). */
 .page-head { padding: var(--space-12) 0 0; }
 .page-head h1 { margin: 0; }
-.page-head p { margin: var(--space-2) 0 0; color: var(--md-sys-color-on-surface-variant); }
+.page-head p { margin: var(--space-2) 0 0; color: var(--md-sys-color-on-surface-variant); font-weight: 400; }
 
 /* Resume request form: calm outlined box, one filled button. */
 .rbox { padding: var(--space-6); border-radius: var(--md-sys-shape-corner-medium); border: 1px solid var(--md-sys-color-outline-variant); margin-top: var(--space-6); }
@@ -152,7 +152,13 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .rvp-facts { display: grid; gap: var(--space-1) 0; margin: 0; }
 .rvp-facts dd { margin: 0 0 var(--space-3); }
 .rvp-pattern { margin: 0; padding-left: var(--space-5); }
-.rvp-list .ds-list-item { display: block; }
+.rvp-page { padding-top: var(--space-12); }
+.rvp-group { display: grid; gap: var(--space-3); }
+.rvp-group h3 { margin: var(--space-4) 0 0; }
+.rvp-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); grid-template-columns: 1fr; }
+@media (min-width: 640px) { .rvp-grid { grid-template-columns: repeat(3, 1fr); } }
+.rvp-link { display: grid; gap: var(--space-1); min-height: 48px; padding: var(--space-3) var(--space-4); text-decoration: none; color: var(--md-sys-color-on-surface); }
+.rvp-link .ds-caption { margin: 0; color: var(--md-sys-color-on-surface-variant); }
 .rvp-section { display: grid; gap: var(--space-2); }
 .rvp-bullets { margin: 0; padding-left: var(--space-5); display: grid; gap: var(--space-1); }
 .rvp-days { margin: 0; padding-left: 0; list-style: none; display: grid; gap: var(--space-2); }
