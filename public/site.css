@@ -57,7 +57,7 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .hero .hero-actions .ds-btn { min-height: 48px; }
 
 /* Plain page heads for the blog and recipes (replaces the horizon strip). */
-.page-head { padding: var(--space-12) 0 0; }
+.page-head { padding-top: var(--space-12); }
 .page-head h1 { margin: 0; }
 .page-head p { margin: var(--space-2) 0 0; color: var(--md-sys-color-on-surface-variant); font-weight: 400; }
 
@@ -171,3 +171,9 @@ h3 a { color: inherit; text-underline-offset: 3px; }
   .rvp-print, .rvp-print * { visibility: visible; }
   .rvp-print { display: block; position: absolute; inset: 0; padding: 2rem; }
 }
+
+/* Quote page: the dark image gets a hairline so it reads as an image; the author is the caption's first line (Designer 11/25). */
+.quote-figure img { border: 1px solid var(--md-sys-color-outline-variant); box-sizing: border-box; }
+.quote-figure figcaption h1.ds-title-large { font-size: var(--md-sys-typescale-title-large-size); font-weight: 600; }
+.quote-figure .quote-author { margin: var(--space-2) 0 0; }
+.quote-figure .quote-dl { margin: var(--space-3) 0 0; }
