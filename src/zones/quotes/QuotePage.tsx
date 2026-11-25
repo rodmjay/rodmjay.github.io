@@ -40,7 +40,7 @@ export async function QuotePage({ lang, slug }: { lang: Lang; slug: string }) {
           <figcaption>
             {x.author || q.unknownAuthor}
             {(x.source || x.year) ? <>, <cite>{[x.source || q.unknownSource, x.year].filter(Boolean).join(", ")}</cite></> : null}
-            {x.original ? <> · {fill(q.translatedFrom, { language: langName(lang, x.original.lang) })}</> : null}
+            {x.original ? <> · {fill(q.translatedFrom, { language: langName(lang, x.original.lang) })}{x.translation[lang] ? ` (${x.translation[lang]})` : ""}</> : null}
           </figcaption>
         </figure>
         <Link href={next} rel="next" className="ds-btn outlined quote-next">{q.next} <span aria-hidden="true">→</span></Link>
