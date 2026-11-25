@@ -2,6 +2,7 @@
 // other language's section index (the menu does that on its own).
 import { loadBlog } from "./blog.mjs";
 import { loadRecipes } from "./recipes.mjs";
+import { loadQuotes, quoteUrl } from "./quotes.mjs";
 
 let memo;
 export function altMap() {
@@ -15,6 +16,7 @@ export function altMap() {
     const recipes = await loadRecipes();
     for (const l of recipes.lists) map[l.path] = l.otherPath;
     for (const r of recipes.recipes) map[r.url] = r.twinUrl;
+    for (const q of (await loadQuotes()).quotes) { map[quoteUrl("en", q.slug)] = quoteUrl("es", q.slug); map[quoteUrl("es", q.slug)] = quoteUrl("en", q.slug); }
     return map;
   })());
 }
