@@ -76,7 +76,7 @@ export function RvpResultPage({ lang }: { lang: Lang }) {
   return (
     <main id="main" className="col rvp-page">
       <p className="quote-link-row"><Link href={rvpUrl(lang, "")} className="ds-btn text">← {s.metaTitle}</Link></p>
-      <h1 className="ds-headline-small">{s.resultTitle}</h1>
+      <h1 className="ds-headline-small" tabIndex={-1}>{s.resultTitle}</h1>
       <RvpResult lang={lang} s={s} />
     </main>
   );

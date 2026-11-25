@@ -27,6 +27,8 @@ export function RvpTake({ lang, s }: { lang: Lang; s: S }) {
   const [answers, setAnswers] = useState<Answers>({});
   const shuffles = useRef<Record<number, number[]>>({});
   const legend = useRef<HTMLLegendElement>(null);
+  const fieldset = useRef<HTMLFieldSetElement>(null);
+  const [need, setNeed] = useState(false);
 
   useEffect(() => {
     try {
@@ -47,11 +49,11 @@ export function RvpTake({ lang, s }: { lang: Lang; s: S }) {
   const chosen = answers[n];
   const last = i === order.length - 1;
 
-  const move = (to: number) => { setI(to); requestAnimationFrame(() => legend.current?.focus()); };
-  const pick = (k: number) => { const a = { ...answers, [n]: k }; setAnswers(a); save(a); };
+  const move = (to: number) => { setNeed(false); setI(to); requestAnimationFrame(() => legend.current?.focus()); };
+  const pick = (k: number) => { setNeed(false); const a = { ...answers, [n]: k }; setAnswers(a); save(a); };
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (chosen === undefined) return;
+    if (chosen === undefined) { setNeed(true); requestAnimationFrame(() => fieldset.current?.focus()); return; }
     if (!last) return move(i + 1);
     const frag = encode(BANK, answers);
     try { sessionStorage.removeItem(KEY); } catch { /* fine */ }
@@ -66,7 +68,7 @@ export function RvpTake({ lang, s }: { lang: Lang; s: S }) {
         <form className="ds-qa rvp-qa" onSubmit={submit} lang={lang === "es" && !spanish ? "en" : undefined}>
           <p className="ds-qa-count" aria-live="polite">{fill(s.question, { i: i + 1, n: order.length })}</p>
           <progress className="rvp-progress" max={order.length} value={i} aria-hidden="true" />
-          <fieldset key={n}>
+          <fieldset key={n} ref={fieldset} tabIndex={-1} aria-describedby={need ? "rvp-need" : undefined}>
             <legend ref={legend} tabIndex={-1}>{spanish ? q.prompt_es : q.prompt}</legend>
             {shown.map((k) => (
               <label key={k} className="ds-qa-choice">
@@ -75,9 +77,10 @@ export function RvpTake({ lang, s }: { lang: Lang; s: S }) {
               </label>
             ))}
           </fieldset>
+          {need ? <p className="ds-supporting error rvp-need" id="rvp-need" role="alert"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 2 1 21h22zm1 15h-2v-2h2zm0-4h-2v-4h2z" /></svg> {s.needAnswer}</p> : null}
           <div className="rvp-actions">
             {i > 0 ? <button type="button" className="ds-btn text" onClick={() => move(i - 1)}>{s.back}</button> : null}
-            <button type="submit" className="ds-btn filled" disabled={chosen === undefined}>{last ? s.finish : s.next}</button>
+            <button type="submit" className="ds-btn">{last ? s.finish : s.next}</button>
             {Object.keys(answers).length ? <button type="button" className="ds-btn text rvp-restart" onClick={restart}>{s.startOver}</button> : null}
           </div>
         </form>
