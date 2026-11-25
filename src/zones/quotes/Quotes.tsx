@@ -20,7 +20,7 @@ export async function Quotes({ lang }: { lang: Lang }) {
   const q = dict(lang).quotes;
   const { quotes } = await loadQuotes();
   return (
-    <main id="main" className="col">
+    <main id="main" className="col quotes-page">
       <h1 className="ds-headline-medium project-title">{q.title}</h1>
       {quotes.length ? (
         <>
