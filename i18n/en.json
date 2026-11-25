@@ -212,6 +212,18 @@
     "lede": "Lines I keep coming back to.",
     "empty": "No quotes here yet.",
     "unknownSource": "Source unknown",
-    "unknownAuthor": "Unknown"
+    "unknownAuthor": "Unknown",
+    "all": "All quotes",
+    "prev": "Previous quote",
+    "next": "Next quote",
+    "position": "{i} of {n}",
+    "aboutAuthor": "About the author",
+    "meaning": "What it means",
+    "apply": "Put it to work",
+    "source": "Source",
+    "download": "Download image",
+    "pageTitle": "Quote by {author}",
+    "translatedFrom": "translated from {language}",
+    "original": "Original ({language})"
   }
 }

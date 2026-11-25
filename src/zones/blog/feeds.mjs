@@ -39,7 +39,7 @@ export async function sitemap() {
   const r = await loadRecipes();
   const q = await loadQuotes();
   const pair = (en, es, lastmod) => [[en, es], [es, en]].map(([a]) => `<url><loc>${SITE}${a}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}<xhtml:link rel="alternate" hreflang="en" href="${SITE}${en}"/><xhtml:link rel="alternate" hreflang="es-419" href="${SITE}${es}"/></url>`).join("\n");
-  const urls = [pair("/", "/es/"), pair("/privacy/", "/privacy/es/"), pair("/work/indiana-cms/", "/es/work/indiana-cms/")];
+  const urls = [pair("/", "/es/"), pair("/privacy/", "/privacy/es/")];
   if (!b.SAMPLE) {
     urls.push(pair(BASE.en, BASE.es, b.live.en[0]?.date));
     for (const p of b.live.en) urls.push(pair(p.url, p.twin.url, p.date));
@@ -50,6 +50,7 @@ export async function sitemap() {
     for (const x of r.byLang.en) urls.push(pair(x.url, x.twinUrl, day(x.updatedAt)));
   }
   if (q.quotes.length) urls.push(pair("/quotes/", "/es/quotes/"));
+  for (const x of q.quotes) urls.push(pair(`/quotes/${x.slug}/`, `/es/quotes/${x.slug}/`));
   const body = `<?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.join("\n")}
