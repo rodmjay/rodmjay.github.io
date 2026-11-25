@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 
+import { REMOVE_LIVE } from "@/lib/public";
 const LOOKUP_VERSION = "lookup-2026-11-24";
 const RESUME_API = "https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/resume-request";
 type T = Record<string, string>;
@@ -19,6 +20,7 @@ const FIELDS = [
 type Field = (typeof FIELDS)[number]["name"];
 
 export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref: string; t: T }) {
+  const removeHref = lang.indexOf("es") === 0 ? "/es/remove/" : "/remove/";
   const started = useRef(Date.now());
   const form = useRef<HTMLFormElement>(null);
   const box = useRef<HTMLDivElement>(null);
@@ -104,7 +106,7 @@ export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref
         <button className="ds-btn" type="submit" id="rf-submit" ref={btn} disabled={sending !== null} style={sending ? { width: sending } : undefined}>
           {sending !== null ? t.sending : t.submit}
         </button>
-        <p className="ds-supporting">{t.note} <Link href={privacyHref}>{t.privacyLink}</Link></p>
+        <p className="ds-supporting">{t.note} <Link href={privacyHref}>{t.privacyLink}</Link>{REMOVE_LIVE && <> · <Link href={removeHref}>{t.removeLink}</Link></>}</p>
       </form>
       <div className="rdone" id="rdone" role="status" hidden={!done}>
         <svg className="rcheck" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" /><path d="M10 16.5l4 4 8-9" /></svg>

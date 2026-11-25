@@ -24,6 +24,8 @@ export const PRIVACY_UPDATED = process.env.PRIVACY_UPDATED || "";
 if (PRIVACY_HOSTING === "azure" && !/^\d{4}-\d{2}-\d{2}$/.test(PRIVACY_UPDATED)) throw new Error("PRIVACY_HOSTING=azure needs PRIVACY_UPDATED=YYYY-MM-DD");
 // The Recipes nav item waits for RECIPES_LIVE=1; the sample state (chip, noindex, no sitemap) comes off with RECIPES_APPROVED=1.
 export const RECIPES_LIVE = process.env.RECIPES_LIVE === "1";
+// The "Remove my information" links and sitemap entry wait for REMOVE_LIVE=1 (the erase-request function being live).
+export const REMOVE_LIVE = process.env.REMOVE_LIVE === "1";
 export const RECIPES_APPROVED = process.env.RECIPES_APPROVED === "1";
 
 export const read = (p) => readFileSync(join(ROOT, p), "utf8");

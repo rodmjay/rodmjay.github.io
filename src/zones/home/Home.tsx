@@ -34,6 +34,7 @@ export function Home({ lang }: { lang: Lang }) {
         <section id="resume">
           <h2 className="ds-title-large">{r.heading}</h2>
           <p className="ds-body-large">{r.lede}</p>
+          <p className="ds-supporting"><a href="https://www.linkedin.com/in/rodmjay/details/recommendations/" target="_blank" rel="noopener">{r.recs} <svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14"><path fill="currentColor" d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2zM14 3v2h3.6l-9.8 9.8 1.4 1.4L19 6.4V10h2V3z" /></svg> <span className="sr-only">{r.recsSr}</span></a></p>
           <ResumeForm lang={HTML_LANG[lang]} privacyHref={lang === "en" ? "/privacy/" : "/privacy/es/"} t={r} />
         </section>
 

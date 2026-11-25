@@ -1,6 +1,6 @@
 // The privacy page, one per language, from the same dictionaries. {email} is the privacy inbox (Compliance 11/21).
 import Link from "next/link";
-import { dict, HTML_LANG, PRIVACY_EMAIL, PRIVACY_HOSTING, PRIVACY_SUBJECT, PRIVACY_UPDATED } from "@/lib/site.mjs";
+import { dict, HTML_LANG, PRIVACY_EMAIL, PRIVACY_HOSTING, PRIVACY_SUBJECT, PRIVACY_UPDATED, REMOVE_LIVE } from "@/lib/site.mjs";
 import { meta } from "@/lib/meta";
 
 type Lang = "en" | "es";
@@ -37,6 +37,13 @@ export function Privacy({ lang }: { lang: Lang }) {
               {pv.lookups.items.map((it: { lead: string; text: string }) => <li key={it.lead}><p className="ds-body-large"><strong>{it.lead}</strong> {it.text}</p></li>)}
             </ul>
             {(() => { const [a, b] = pv.lookups.rights.split("{email}"); return <p className="ds-body-large">{a}{mail}{b}</p>; })()}
+          </>
+        )}
+        {REMOVE_LIVE && (
+          <>
+            <h2 className="ds-title-large">{dict(lang).remove.privacyHeading}</h2>
+            <p className="ds-body-large">{dict(lang).remove.privacyBody}</p>
+            <p><Link className="ds-btn tonal" href={lang === "en" ? "/remove/" : "/es/remove/"}>{dict(lang).remove.privacyBtn}</Link></p>
           </>
         )}
         <p className="ds-body-small ds-variant">{updated}</p>
