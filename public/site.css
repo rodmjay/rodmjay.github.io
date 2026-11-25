@@ -37,7 +37,7 @@ h3 a { color: inherit; text-underline-offset: 3px; }
   .bar nav.bar-links { display: none; }
   .bar { justify-content: space-between; gap: var(--space-3); }
   .bar .mark { margin-right: auto; }
-  .bar-menu { display: inline-flex; min-height: 48px; }
+  [data-js] .bar-menu { display: inline-flex; min-height: 48px; }
   .phone-nav { display: flex; flex-direction: column; position: absolute; left: 0; right: 0; z-index: 20; padding: var(--space-2) 0;
     background: var(--md-sys-color-surface-container); box-shadow: var(--md-sys-elevation-level2); }
   .phone-nav.static { position: static; box-shadow: none; }

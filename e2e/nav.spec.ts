@@ -138,3 +138,13 @@ test("phone menu: open, Esc, follow a link", async ({ page, isMobile }) => {
   await expect(panel).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => window.innerWidth));
 });
+
+test("phone menu: without script the button is hidden and the links are listed", async ({ browser, isMobile }) => {
+  test.skip(!isMobile, "phones only");
+  const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 375, height: 812 } });
+  const page = await ctx.newPage();
+  await page.goto("/blog/");
+  await expect(page.locator(".bar-menu")).toBeHidden();
+  await expect(page.locator("nav.phone-nav.static").getByRole("link", { name: "Blog" })).toBeVisible();
+  await ctx.close();
+});
