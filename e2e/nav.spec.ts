@@ -40,7 +40,7 @@ test("home: section links and the privacy link stay in the page", async ({ page,
   test.skip(isMobile, "the section links are hidden on phones");
   await page.goto("/");
   await mark(page);
-  for (const id of ["about", "resume", "building", "contact"]) {
+  for (const id of ["about", "resume", "projects", "contact"]) {
     await page.locator(`header.bar nav a[href="/#${id}"]`).click();
     await expectStayed(page, new RegExp(`/#${id}$`));
   }

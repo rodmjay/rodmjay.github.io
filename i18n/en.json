@@ -9,7 +9,7 @@
     "home": "Rod Johnson, home",
     "label": "Sections",
     "about": "About",
-    "building": "Building",
+    "building": "Projects",
     "contact": "Contact",
     "language": "Language",
     "resume": "Resume",
@@ -31,7 +31,7 @@
     "p2": "I'm good at getting different teams pulling in the same direction, setting standards that stick, and shaping how teams hire and test. I've worked in banking, real estate, marketing, logistics, procurement, government, healthcare and e-learning. I'm based in Salt Lake City and work in English and Spanish."
   },
   "building": {
-    "heading": "What I'm building",
+    "heading": "Projects",
     "lede": "On my own time I build with AI agents, end to end.",
     "items": [
       {
