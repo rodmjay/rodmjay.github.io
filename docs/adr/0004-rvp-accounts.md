@@ -136,7 +136,8 @@ the resume form (migration 0155: visitors as contacts) and on remove-my-info (mi
     - `taken_at`.
 
     The answers plus the bank version are the truth. The derived columns can be recomputed, but no row is ever edited.
-  - View `contact_personality`: built only for people who tick choice (d) (see Who sees a result).
+  - View `contact_personality`: the latest result for every account holder, shown with their contact (Rod 11/25, see
+    Who sees a result).
 - **Write path:** `rvp_account_start(...)` and `rvp_result_save(auth_user_id, bank_version, answers, derived)`.
   - The function checks that the bank version exists and that the answers decode under it.
   - The derived fields come from the same engine (`src/rvp/engine.ts`, run in the Edge Function, Deno).
@@ -154,12 +155,17 @@ the resume form (migration 0155: visitors as contacts) and on remove-my-info (mi
 
 ### Consent, export and delete, from day one
 
-- **Three separate choices, all unticked** (Compliance, 11/25). Each one stores its source, date and wording version.
-  - **(a) Save my result to an account.** This is required to save, and it covers nothing else.
-  - **(b) Add me to Rod Johnson's contacts.** It's its own purpose and is not needed for (a). The wording says Rod can
-    see individual results.
-  - **(c) Email (or texts) about new things.** This is off in v1. The choice ships only when a sender exists, and texts
-    also need a phone number plus the texting gate's consent source and date.
+- **One required box, unticked** (Compliance, 11/25; Rod 11/25). It stores the source, the date and a hash of the
+  exact wording.
+  - It covers the account, the contact and Rod seeing the result.
+  - It says, in EN and ES:
+    - you're 18 or older;
+    - Rod keeps your email, first name and results in his contacts and **sees your result with your contact**;
+    - he won't sell them, text you or add you to a mailing list;
+    - you can download or delete everything.
+  - It links the privacy page.
+  - **Email or texts about new things** would be a separate, optional box, off in v1. It ships only when a sender
+    exists, and texts also need a phone number plus the texting gate's consent source and date.
 - **The page's "nothing is sent to a server" line** is rewritten in EN and ES in the same PR that adds saving. Taking
   the test without saving stays entirely local.
 - **What we never do** with results:
@@ -283,16 +289,19 @@ Rod chose his personal project over a separate one, after seeing Compliance's re
     gifts. Instead, the texting gate, Investigator and the gift routine skip anyone with the `source/rvp` tag, and the
     probe tests that. Compliance to confirm that's enough.
 
-### Who sees a result (Philosopher 11/25; Rod's yes needed on the default)
+### Who sees a result (Rod 11/25: "just store all the data for people that complete it and create account")
 
-- **A saved result belongs to the person.**
-  - Rod, Life Coach and every agent see no individual archetype.
-  - The archetype is not part of the contact record.
-  - No agent infers or stores an archetype for anyone.
-- **By default, Rod sees aggregates only:** counts per archetype, with no names.
-- **The `contact_personality` view is not built** unless the person ticks a separate choice:
-  - **(d) Let Rod see my result with my contact.** Plain words about who sees it. Off by default.
-- This narrows Rod's "everybody … will have a personality", so EA brings him the default as one question.
+- **People who take the test without an account:** nothing is stored. Their answers stay in their browser.
+- **People who create an account:**
+  - their full results are stored;
+  - Rod sees them with their contact, through `contact_personality`;
+  - the consent box says so plainly.
+- This replaces Philosopher's totals-only default and choice (d). Rod decided on 11/25 (DECISIONS).
+- **Agents:**
+  - Every agent still follows "never infer or store an archetype for anyone": the only archetype on a contact is the
+    one the person saved.
+  - No agent uses a result for texting, Investigator enrichment, gifts, posts or any decision about the person.
+  - Totals still hide any count under 5.
 - **Profile framing:** "Your result from <date>: how you lean right now, in your own answers. A map, not a verdict. It
   can change."
   - The latest result is shown first, with a quiet list of earlier results (date, archetype, bank version).
@@ -310,13 +319,15 @@ Rod chose his personal project over a separate one, after seeing Compliance's re
 
 - **Compliance:** a design-stage PASS at 0d52b01, with these conditions. Compliance re-checks the privacy PR and
   again before go-live.
-  - **Consent wording.** One required box for the account plus the contact, with the 18+ line and a privacy link. It
-    starts unticked, and the stored version is a hash of the exact text. It names email and first name only.
-    - EN: "I'm 18 or older. Save my result to an account on rodmjay.com. Rod Johnson will keep my email and first
-      name in his own contacts. He won't sell them, text me or add me to a mailing list. I can download or delete
-      everything at any time."
-    - Choice (d) is separate and covers the results.
-    - Spanish: Compliance's es-419 text, adjusted the same way.
+  - **Consent wording.** One required box, with the 18+ line and a privacy link. It starts unticked, and the stored
+    version is a hash of the exact text. After Rod's 11/25 answer, it names the results too. Compliance re-checks it.
+    - EN: "I'm 18 or older. Save my result to an account on rodmjay.com. Rod Johnson will keep my email, first name
+      and test results in his own contacts and will see my result with my contact details. He won't sell them, text me
+      or add me to a mailing list. I can download or delete everything at any time. Privacy details"
+    - ES: "Tengo 18 años o más. Guardar mi resultado en una cuenta de rodmjay.com. Rod Johnson conservará mi correo,
+      mi nombre y mis resultados del test en sus contactos propios y verá mi resultado junto con mis datos de contacto.
+      No los venderá, no me enviará mensajes de texto ni me añadirá a listas de correo. Puedo descargar o borrar todo
+      en cualquier momento. Detalles de privacidad"
   - **Retention.**
     - The account lasts until 24 months after the last sign-in, with one service-only reminder first.
     - `ip_hash` is purged after 30 days.
@@ -344,7 +355,8 @@ Rod chose his personal project over a separate one, after seeing Compliance's re
   - `/rvp/signin/`, and a "Sign in" link in the RVP header and the footer;
   - one-time-code input, resend after 30 seconds;
   - no disabled buttons.
-- **Philosopher:** fits with conditions. Who sees a result (above) and bank 1.0 first.
+- **Philosopher:** fits with conditions: the profile framing and bank 1.0 first. Its totals-only default was replaced
+  by Rod's 11/25 answer (Who sees a result).
 
 ### Not in v1
 
