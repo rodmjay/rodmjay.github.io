@@ -139,3 +139,4 @@ h3 a { color: inherit; text-underline-offset: 3px; }
   .quote-stage { grid-template-columns: 1fr minmax(0, 40rem) 1fr; grid-template-areas: "prev fig next" ". pos ."; }
 }
 .quote-more section { margin-top: var(--space-6); }
+.quotes-page { padding-top: var(--space-8); }
