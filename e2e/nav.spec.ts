@@ -116,3 +116,25 @@ test("resume form shows the rate limit message", async ({ page, baseURL }) => {
   await page.locator("#rf-submit").click();
   await expect(page.locator("#rf-banner")).toContainText("12 minutes");
 });
+
+// Phones get a Menu button (Designer 11/24): it opens the same links over the content without moving the header;
+// Esc closes it and returns focus; following a link closes it.
+test("phone menu: open, Esc, follow a link", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "phones only");
+  await page.goto("/blog/");
+  const header = await page.locator("header.bar").boundingBox();
+  const menu = page.getByRole("button", { name: "Menu" });
+  await expect(menu).toHaveAttribute("aria-expanded", "false");
+  await menu.click();
+  await expect(menu).toHaveAttribute("aria-expanded", "true");
+  const panel = page.locator("#phone-nav");
+  await expect(panel.getByRole("link", { name: "Blog" })).toHaveAttribute("aria-current", "page");
+  expect(await page.locator("header.bar").boundingBox()).toEqual(header);
+  await page.keyboard.press("Escape");
+  await expect(panel).toHaveCount(0);
+  await expect(menu).toBeFocused();
+  await menu.click();
+  await panel.getByRole("link", { name: "Blog" }).click();
+  await expect(panel).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => window.innerWidth));
+});
