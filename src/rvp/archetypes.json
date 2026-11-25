@@ -1,0 +1,738 @@
+{
+ "source": "Rod's RVP PDFs in ~/Development/Trichotomy (Rvp Personality Roles; Rvp Personality Strengths Weaknesses), English word for word; Spanish (es-419) is our own translation, draft for Philosopher and PR Person to check.",
+ "facets": {
+  "R": {
+   "Physical": {
+    "en": "Physical",
+    "es": "Físico"
+   },
+   "Intellectual": {
+    "en": "Intellectual",
+    "es": "Intelectual"
+   },
+   "Social": {
+    "en": "Social",
+    "es": "Social"
+   }
+  },
+  "V": {
+   "Moral": {
+    "en": "Moral",
+    "es": "Moral"
+   },
+   "Aesthetic": {
+    "en": "Aesthetic",
+    "es": "Estético"
+   },
+   "Pragmatic": {
+    "en": "Pragmatic",
+    "es": "Pragmático"
+   }
+  },
+  "P": {
+   "Creative": {
+    "en": "Creative",
+    "es": "Creativo"
+   },
+   "Adaptive": {
+    "en": "Adaptive",
+    "es": "Adaptativo"
+   },
+   "Sustaining": {
+    "en": "Sustaining",
+    "es": "Sostenedor"
+   }
+  }
+ },
+ "dimensions": {
+  "R": {
+   "en": "Resources",
+   "es": "Recursos"
+  },
+  "V": {
+   "en": "Values",
+   "es": "Valores"
+  },
+  "P": {
+   "en": "Processes",
+   "es": "Procesos"
+  }
+ },
+ "archetypes": [
+  {
+   "n": 1,
+   "slug": "builder-of-good",
+   "key": "R.Physical-V.Moral-P.Creative",
+   "name": {
+    "en": "The Builder of Good",
+    "es": "El Constructor del Bien"
+   },
+   "role": {
+    "en": "Crafts tangible acts of virtue.",
+    "es": "Convierte la virtud en actos concretos."
+   },
+   "examples": {
+    "en": "A humanitarian engineer or ethical designer.",
+    "es": "Un ingeniero humanitario o un diseñador ético."
+   },
+   "strengths": {
+    "en": "Grounded integrity, practical compassion, turns ideals into tangible results.",
+    "es": "Integridad con los pies en la tierra, compasión práctica; convierte ideales en resultados tangibles."
+   },
+   "shadow": {
+    "en": "Can become rigid or moralizing, struggles with abstraction.",
+    "es": "Puede volverse rígido o moralista; le cuesta lo abstracto."
+   }
+  },
+  {
+   "n": 2,
+   "slug": "healer",
+   "key": "R.Physical-V.Moral-P.Adaptive",
+   "name": {
+    "en": "The Healer",
+    "es": "El Sanador"
+   },
+   "role": {
+    "en": "Responds to pain with compassion.",
+    "es": "Responde al dolor con compasión."
+   },
+   "examples": {
+    "en": "Nurse, therapist, or field medic.",
+    "es": "Enfermería, terapia o medicina de campo."
+   },
+   "strengths": {
+    "en": "Empathy, adaptability, emotional steadiness under pressure.",
+    "es": "Empatía, adaptabilidad, calma emocional bajo presión."
+   },
+   "shadow": {
+    "en": "May absorb others’ pain, risk of burnout or blurred boundaries.",
+    "es": "Puede cargar con el dolor ajeno; riesgo de agotamiento o de límites borrosos."
+   }
+  },
+  {
+   "n": 3,
+   "slug": "steward",
+   "key": "R.Physical-V.Moral-P.Sustaining",
+   "name": {
+    "en": "The Steward",
+    "es": "El Custodio"
+   },
+   "role": {
+    "en": "Preserves wellbeing and order.",
+    "es": "Preserva el bienestar y el orden."
+   },
+   "examples": {
+    "en": "A caretaker, groundskeeper, or guardian.",
+    "es": "Un cuidador, un jardinero de terrenos o un guardián."
+   },
+   "strengths": {
+    "en": "Loyalty, discipline, reliability, commitment to duty.",
+    "es": "Lealtad, disciplina, confiabilidad, compromiso con el deber."
+   },
+   "shadow": {
+    "en": "Resistant to change, may equate order with virtue.",
+    "es": "Se resiste al cambio; puede confundir orden con virtud."
+   }
+  },
+  {
+   "n": 4,
+   "slug": "artisan",
+   "key": "R.Physical-V.Aesthetic-P.Creative",
+   "name": {
+    "en": "The Artisan",
+    "es": "El Artesano"
+   },
+   "role": {
+    "en": "Creates beauty through form.",
+    "es": "Crea belleza a través de la forma."
+   },
+   "examples": {
+    "en": "Sculptor, chef, or craftsperson.",
+    "es": "Escultura, cocina u oficios artesanales."
+   },
+   "strengths": {
+    "en": "Creativity through hands and senses, intuitive design sense.",
+    "es": "Creatividad con las manos y los sentidos, intuición para el diseño."
+   },
+   "shadow": {
+    "en": "Can be perfectionistic, overly focused on form over meaning.",
+    "es": "Puede ser perfeccionista y fijarse más en la forma que en el sentido."
+   }
+  },
+  {
+   "n": 5,
+   "slug": "performer",
+   "key": "R.Physical-V.Aesthetic-P.Adaptive",
+   "name": {
+    "en": "The Performer",
+    "es": "El Intérprete"
+   },
+   "role": {
+    "en": "Embodies art and movement.",
+    "es": "Encarna el arte y el movimiento."
+   },
+   "examples": {
+    "en": "Dancer, actor, athlete.",
+    "es": "Danza, actuación, deporte."
+   },
+   "strengths": {
+    "en": "Expressive, dynamic, attuned to feedback and flow.",
+    "es": "Expresivo, dinámico, atento a la respuesta y al ritmo."
+   },
+   "shadow": {
+    "en": "May rely too much on external validation, restless when unseen.",
+    "es": "Puede depender demasiado de la aprobación ajena; se inquieta cuando nadie lo ve."
+   }
+  },
+  {
+   "n": 6,
+   "slug": "curator-of-comfort",
+   "key": "R.Physical-V.Aesthetic-P.Sustaining",
+   "name": {
+    "en": "The Curator of Comfort",
+    "es": "El Curador del Confort"
+   },
+   "role": {
+    "en": "Maintains elegance and balance.",
+    "es": "Mantiene la elegancia y el equilibrio."
+   },
+   "examples": {
+    "en": "Interior designer, spa director.",
+    "es": "Diseño de interiores, dirección de un spa."
+   },
+   "strengths": {
+    "en": "Creates peace and beauty, maintains stability.",
+    "es": "Crea paz y belleza, mantiene la estabilidad."
+   },
+   "shadow": {
+    "en": "Risk of complacency or resistance to necessary disruption.",
+    "es": "Riesgo de conformismo o de resistirse a cambios necesarios."
+   }
+  },
+  {
+   "n": 7,
+   "slug": "inventor",
+   "key": "R.Physical-V.Pragmatic-P.Creative",
+   "name": {
+    "en": "The Inventor",
+    "es": "El Inventor"
+   },
+   "role": {
+    "en": "Transforms raw matter into useful innovation.",
+    "es": "Transforma la materia prima en innovación útil."
+   },
+   "examples": {
+    "en": "Mechanic, maker, technologist.",
+    "es": "Mecánica, fabricación, tecnología."
+   },
+   "strengths": {
+    "en": "Resourceful, innovative, motivated by usefulness.",
+    "es": "Ingenioso, innovador, motivado por lo útil."
+   },
+   "shadow": {
+    "en": "Impatient with theory, may neglect the ethical or aesthetic dimensions.",
+    "es": "Impaciente con la teoría; puede descuidar lo ético o lo estético."
+   }
+  },
+  {
+   "n": 8,
+   "slug": "technician",
+   "key": "R.Physical-V.Pragmatic-P.Adaptive",
+   "name": {
+    "en": "The Technician",
+    "es": "El Técnico"
+   },
+   "role": {
+    "en": "Hands-on troubleshooter.",
+    "es": "Resuelve problemas con las manos."
+   },
+   "examples": {
+    "en": "Mechanic, field engineer, EMT.",
+    "es": "Mecánica, ingeniería de campo, paramédico."
+   },
+   "strengths": {
+    "en": "Precision, consistency, mastery of tools and technique.",
+    "es": "Precisión, constancia, dominio de herramientas y técnica."
+   },
+   "shadow": {
+    "en": "May struggle with creativity or empathy; can be overly procedural.",
+    "es": "Le puede costar la creatividad o la empatía; puede ser demasiado procedimental."
+   }
+  },
+  {
+   "n": 9,
+   "slug": "operator",
+   "key": "R.Physical-V.Pragmatic-P.Sustaining",
+   "name": {
+    "en": "The Operator",
+    "es": "El Operador"
+   },
+   "role": {
+    "en": "Ensures reliability of systems.",
+    "es": "Asegura que los sistemas funcionen."
+   },
+   "examples": {
+    "en": "Facility manager, logistics coordinator.",
+    "es": "Administración de instalaciones, coordinación logística."
+   },
+   "strengths": {
+    "en": "Dependable, disciplined, maintains systems and safety.",
+    "es": "Confiable, disciplinado, cuida los sistemas y la seguridad."
+   },
+   "shadow": {
+    "en": "Inflexible, slow to adapt, risk of burnout from routine.",
+    "es": "Inflexible, lento para adaptarse; riesgo de agotamiento por la rutina."
+   }
+  },
+  {
+   "n": 10,
+   "slug": "philosopher",
+   "key": "R.Intellectual-V.Moral-P.Creative",
+   "name": {
+    "en": "The Philosopher",
+    "es": "El Filósofo"
+   },
+   "role": {
+    "en": "Designs ethical systems and visionary ideals.",
+    "es": "Diseña sistemas éticos e ideales visionarios."
+   },
+   "examples": {
+    "en": "Ethicist, social theorist.",
+    "es": "Ética, teoría social."
+   },
+   "strengths": {
+    "en": "Visionary thinking, moral imagination, intellectual courage.",
+    "es": "Pensamiento visionario, imaginación moral, valentía intelectual."
+   },
+   "shadow": {
+    "en": "May lose touch with reality or fail to act decisively.",
+    "es": "Puede perder contacto con la realidad o no actuar con decisión."
+   }
+  },
+  {
+   "n": 11,
+   "slug": "mediator",
+   "key": "R.Intellectual-V.Moral-P.Adaptive",
+   "name": {
+    "en": "The Mediator",
+    "es": "El Mediador"
+   },
+   "role": {
+    "en": "Balances competing truths.",
+    "es": "Equilibra verdades en conflicto."
+   },
+   "examples": {
+    "en": "Policy analyst, counselor, diplomat.",
+    "es": "Análisis de políticas, consejería, diplomacia."
+   },
+   "strengths": {
+    "en": "Balance, empathy, analytical fairness.",
+    "es": "Equilibrio, empatía, justicia analítica."
+   },
+   "shadow": {
+    "en": "Can overanalyze, avoid conflict, or dilute strong convictions.",
+    "es": "Puede analizar de más, evitar el conflicto o diluir convicciones firmes."
+   }
+  },
+  {
+   "n": 12,
+   "slug": "scholar",
+   "key": "R.Intellectual-V.Moral-P.Sustaining",
+   "name": {
+    "en": "The Scholar",
+    "es": "El Erudito"
+   },
+   "role": {
+    "en": "Keeps moral and intellectual traditions alive.",
+    "es": "Mantiene vivas las tradiciones morales e intelectuales."
+   },
+   "examples": {
+    "en": "Professor, historian, archivist.",
+    "es": "Docencia universitaria, historia, archivística."
+   },
+   "strengths": {
+    "en": "Depth, memory, continuity, devotion to truth.",
+    "es": "Profundidad, memoria, continuidad, devoción por la verdad."
+   },
+   "shadow": {
+    "en": "Can resist innovation, isolate within tradition.",
+    "es": "Puede resistirse a la innovación y aislarse en la tradición."
+   }
+  },
+  {
+   "n": 13,
+   "slug": "poet-architect",
+   "key": "R.Intellectual-V.Aesthetic-P.Creative",
+   "name": {
+    "en": "The Poet-Architect",
+    "es": "El Poeta-Arquitecto"
+   },
+   "role": {
+    "en": "Creates beauty of thought and design.",
+    "es": "Crea belleza en el pensamiento y el diseño."
+   },
+   "examples": {
+    "en": "Writer, architect, theorist.",
+    "es": "Escritura, arquitectura, teoría."
+   },
+   "strengths": {
+    "en": "Elegant imagination, harmony of intellect and art.",
+    "es": "Imaginación elegante, armonía entre intelecto y arte."
+   },
+   "shadow": {
+    "en": "May detach from practicality, prone to idealism.",
+    "es": "Puede alejarse de lo práctico; tiende al idealismo."
+   }
+  },
+  {
+   "n": 14,
+   "slug": "translator",
+   "key": "R.Intellectual-V.Aesthetic-P.Adaptive",
+   "name": {
+    "en": "The Translator",
+    "es": "El Traductor"
+   },
+   "role": {
+    "en": "Bridges ideas and cultures.",
+    "es": "Tiende puentes entre ideas y culturas."
+   },
+   "examples": {
+    "en": "Critic, curator, cultural liaison.",
+    "es": "Crítica, curaduría, enlace cultural."
+   },
+   "strengths": {
+    "en": "Cross-cultural insight, adaptability, clear expression.",
+    "es": "Comprensión entre culturas, adaptabilidad, expresión clara."
+   },
+   "shadow": {
+    "en": "Can lose their own voice or conviction while mediating others.",
+    "es": "Puede perder su propia voz o sus convicciones al mediar entre otros."
+   }
+  },
+  {
+   "n": 15,
+   "slug": "conservator",
+   "key": "R.Intellectual-V.Aesthetic-P.Sustaining",
+   "name": {
+    "en": "The Conservator",
+    "es": "El Conservador"
+   },
+   "role": {
+    "en": "Protects legacy and heritage.",
+    "es": "Protege el legado y el patrimonio."
+   },
+   "examples": {
+    "en": "Museum director, librarian.",
+    "es": "Dirección de museo, bibliotecología."
+   },
+   "strengths": {
+    "en": "Custodian of legacy and wisdom, cultivates reverence.",
+    "es": "Custodio del legado y la sabiduría, cultiva el respeto."
+   },
+   "shadow": {
+    "en": "May cling to the past, resist evolution.",
+    "es": "Puede aferrarse al pasado y resistirse a evolucionar."
+   }
+  },
+  {
+   "n": 16,
+   "slug": "strategist",
+   "key": "R.Intellectual-V.Pragmatic-P.Creative",
+   "name": {
+    "en": "The Strategist",
+    "es": "El Estratega"
+   },
+   "role": {
+    "en": "Designs smart systems for progress.",
+    "es": "Diseña sistemas inteligentes para avanzar."
+   },
+   "examples": {
+    "en": "Entrepreneur, systems designer.",
+    "es": "Emprendimiento, diseño de sistemas."
+   },
+   "strengths": {
+    "en": "Visionary pragmatism, system builder, high efficiency.",
+    "es": "Pragmatismo visionario, constructor de sistemas, alta eficiencia."
+   },
+   "shadow": {
+    "en": "May manipulate for outcome, neglect human emotion.",
+    "es": "Puede manipular para lograr un resultado y descuidar las emociones."
+   }
+  },
+  {
+   "n": 17,
+   "slug": "analyst",
+   "key": "R.Intellectual-V.Pragmatic-P.Adaptive",
+   "name": {
+    "en": "The Analyst",
+    "es": "El Analista"
+   },
+   "role": {
+    "en": "Applies logic to changing realities.",
+    "es": "Aplica la lógica a realidades cambiantes."
+   },
+   "examples": {
+    "en": "Consultant, researcher, data scientist.",
+    "es": "Consultoría, investigación, ciencia de datos."
+   },
+   "strengths": {
+    "en": "Rational clarity, objective assessment, data-driven insight.",
+    "es": "Claridad racional, evaluación objetiva, conclusiones basadas en datos."
+   },
+   "shadow": {
+    "en": "May lack empathy or creativity under pressure.",
+    "es": "Bajo presión le puede faltar empatía o creatividad."
+   }
+  },
+  {
+   "n": 18,
+   "slug": "administrator",
+   "key": "R.Intellectual-V.Pragmatic-P.Sustaining",
+   "name": {
+    "en": "The Administrator",
+    "es": "El Administrador"
+   },
+   "role": {
+    "en": "Maintains order in complex systems.",
+    "es": "Mantiene el orden en sistemas complejos."
+   },
+   "examples": {
+    "en": "Engineer, bureaucrat, executive.",
+    "es": "Ingeniería, función pública, dirección ejecutiva."
+   },
+   "strengths": {
+    "en": "Order, discipline, consistency, manages complexity.",
+    "es": "Orden, disciplina, constancia; maneja la complejidad."
+   },
+   "shadow": {
+    "en": "Can become bureaucratic, resistant to change or innovation.",
+    "es": "Puede volverse burocrático y resistirse al cambio o a la innovación."
+   }
+  },
+  {
+   "n": 19,
+   "slug": "organizer",
+   "key": "R.Social-V.Moral-P.Creative",
+   "name": {
+    "en": "The Organizer",
+    "es": "El Organizador"
+   },
+   "role": {
+    "en": "Mobilizes people around conscience.",
+    "es": "Moviliza a las personas en torno a la conciencia."
+   },
+   "examples": {
+    "en": "Activist, community founder.",
+    "es": "Activismo, fundación de comunidades."
+   },
+   "strengths": {
+    "en": "Inspires collective action, moral leadership, unites causes.",
+    "es": "Inspira la acción colectiva, liderazgo moral, une causas."
+   },
+   "shadow": {
+    "en": "Can become self-righteous, may impose ideals too strongly.",
+    "es": "Puede volverse santurrón e imponer sus ideales con demasiada fuerza."
+   }
+  },
+  {
+   "n": 20,
+   "slug": "counselor",
+   "key": "R.Social-V.Moral-P.Adaptive",
+   "name": {
+    "en": "The Counselor",
+    "es": "El Consejero"
+   },
+   "role": {
+    "en": "Listens and guides with empathy.",
+    "es": "Escucha y guía con empatía."
+   },
+   "examples": {
+    "en": "Therapist, social worker, mediator.",
+    "es": "Terapia, trabajo social, mediación."
+   },
+   "strengths": {
+    "en": "Deep listener, emotional intelligence, relational stability.",
+    "es": "Sabe escuchar, inteligencia emocional, estabilidad en las relaciones."
+   },
+   "shadow": {
+    "en": "Over-identifies with others, avoids necessary confrontation.",
+    "es": "Se identifica demasiado con los demás; evita confrontaciones necesarias."
+   }
+  },
+  {
+   "n": 21,
+   "slug": "caretaker",
+   "key": "R.Social-V.Moral-P.Sustaining",
+   "name": {
+    "en": "The Caretaker",
+    "es": "El Cuidador"
+   },
+   "role": {
+    "en": "Protects community trust.",
+    "es": "Protege la confianza de la comunidad."
+   },
+   "examples": {
+    "en": "Teacher, elder, civic leader.",
+    "es": "Docencia, persona mayor de referencia, liderazgo cívico."
+   },
+   "strengths": {
+    "en": "Nurturing presence, reliability, fosters community trust.",
+    "es": "Presencia protectora, confiabilidad, fomenta la confianza en la comunidad."
+   },
+   "shadow": {
+    "en": "Self-sacrificing, hesitant to assert own needs.",
+    "es": "Se sacrifica; le cuesta afirmar sus propias necesidades."
+   }
+  },
+  {
+   "n": 22,
+   "slug": "performer-artist",
+   "key": "R.Social-V.Aesthetic-P.Creative",
+   "name": {
+    "en": "The Performer-Artist",
+    "es": "El Artista Escénico"
+   },
+   "role": {
+    "en": "Creates connection through shared experience.",
+    "es": "Crea conexión a través de experiencias compartidas."
+   },
+   "examples": {
+    "en": "Musician, actor, storyteller.",
+    "es": "Música, actuación, narración."
+   },
+   "strengths": {
+    "en": "Inspires emotion and unity, channels creativity socially.",
+    "es": "Inspira emoción y unidad, canaliza la creatividad en lo social."
+   },
+   "shadow": {
+    "en": "Can seek attention, may confuse approval with purpose.",
+    "es": "Puede buscar atención y confundir la aprobación con el propósito."
+   }
+  },
+  {
+   "n": 23,
+   "slug": "connector",
+   "key": "R.Social-V.Aesthetic-P.Adaptive",
+   "name": {
+    "en": "The Connector",
+    "es": "El Conector"
+   },
+   "role": {
+    "en": "Brings harmony to groups.",
+    "es": "Lleva armonía a los grupos."
+   },
+   "examples": {
+    "en": "Event planner, PR specialist, facilitator.",
+    "es": "Organización de eventos, relaciones públicas, facilitación."
+   },
+   "strengths": {
+    "en": "Harmonizer, intuitive social sense, network builder.",
+    "es": "Armoniza, intuición social, construye redes."
+   },
+   "shadow": {
+    "en": "Avoids solitude or introspection, can scatter focus.",
+    "es": "Evita la soledad o la introspección; puede dispersarse."
+   }
+  },
+  {
+   "n": 24,
+   "slug": "cultural-guardian",
+   "key": "R.Social-V.Aesthetic-P.Sustaining",
+   "name": {
+    "en": "The Cultural Guardian",
+    "es": "El Guardián Cultural"
+   },
+   "role": {
+    "en": "Preserves rituals, symbols, and beauty.",
+    "es": "Preserva rituales, símbolos y belleza."
+   },
+   "examples": {
+    "en": "Museum educator, heritage keeper.",
+    "es": "Educación en museos, custodia del patrimonio."
+   },
+   "strengths": {
+    "en": "Loyalty to heritage, fosters belonging, maintains continuity.",
+    "es": "Lealtad al patrimonio, fomenta la pertenencia, mantiene la continuidad."
+   },
+   "shadow": {
+    "en": "May resist progress or diversity of thought.",
+    "es": "Puede resistirse al progreso o a la diversidad de pensamiento."
+   }
+  },
+  {
+   "n": 25,
+   "slug": "entrepreneur",
+   "key": "R.Social-V.Pragmatic-P.Creative",
+   "name": {
+    "en": "The Entrepreneur",
+    "es": "El Emprendedor"
+   },
+   "role": {
+    "en": "Builds networks that deliver innovation.",
+    "es": "Construye redes que hacen realidad la innovación."
+   },
+   "examples": {
+    "en": "Startup founder, organizer.",
+    "es": "Fundación de startups, organización."
+   },
+   "strengths": {
+    "en": "Energetic, visionary, mobilizes people and resources effectively.",
+    "es": "Enérgico, visionario, moviliza personas y recursos con eficacia."
+   },
+   "shadow": {
+    "en": "Impulsive, can sacrifice ethics or relationships for success.",
+    "es": "Impulsivo; puede sacrificar la ética o las relaciones por el éxito."
+   }
+  },
+  {
+   "n": 26,
+   "slug": "negotiator",
+   "key": "R.Social-V.Pragmatic-P.Adaptive",
+   "name": {
+    "en": "The Negotiator",
+    "es": "El Negociador"
+   },
+   "role": {
+    "en": "Finds efficient compromise.",
+    "es": "Encuentra acuerdos eficientes."
+   },
+   "examples": {
+    "en": "Manager, diplomat, HR leader.",
+    "es": "Gerencia, diplomacia, liderazgo de recursos humanos."
+   },
+   "strengths": {
+    "en": "Balanced, diplomatic, skilled at conflict resolution.",
+    "es": "Equilibrado, diplomático, hábil para resolver conflictos."
+   },
+   "shadow": {
+    "en": "Can become indecisive, seeks compromise even when clarity is needed.",
+    "es": "Puede volverse indeciso y buscar acuerdos aun cuando hace falta claridad."
+   }
+  },
+  {
+   "n": 27,
+   "slug": "administrator-of-people",
+   "key": "R.Social-V.Pragmatic-P.Sustaining",
+   "name": {
+    "en": "The Administrator of People",
+    "es": "El Administrador de Personas"
+   },
+   "role": {
+    "en": "Manages stable structures of cooperation.",
+    "es": "Gestiona estructuras estables de cooperación."
+   },
+   "examples": {
+    "en": "Director, executive, institution builder.",
+    "es": "Dirección, alta gerencia, construcción de instituciones."
+   },
+   "strengths": {
+    "en": "Responsible leadership, stability, long-term stewardship.",
+    "es": "Liderazgo responsable, estabilidad, custodia a largo plazo."
+   },
+   "shadow": {
+    "en": "Can prioritize order over creativity, resistant to emotional depth.",
+    "es": "Puede anteponer el orden a la creatividad; se resiste a la profundidad emocional."
+   }
+  }
+ ]
+}
