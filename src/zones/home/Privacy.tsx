@@ -29,6 +29,16 @@ export function Privacy({ lang }: { lang: Lang }) {
           const [a, b] = text.split("{email}");
           return <p key={text} className="ds-body-large">{a}{b !== undefined && <>{mail}{b}</>}</p>;
         })}
+        {pv.lookups && (
+          <>
+            <h2 className="ds-title-large lookups-h" id={pv.lookups.id}>{pv.lookups.heading}</h2>
+            <p className="ds-body-large">{pv.lookups.intro}</p>
+            <ul className="plain">
+              {pv.lookups.items.map((it: { lead: string; text: string }) => <li key={it.lead}><p className="ds-body-large"><strong>{it.lead}</strong> {it.text}</p></li>)}
+            </ul>
+            {(() => { const [a, b] = pv.lookups.rights.split("{email}"); return <p className="ds-body-large">{a}{mail}{b}</p>; })()}
+          </>
+        )}
         <p className="ds-body-small ds-variant">{updated}</p>
         <p><Link href={lang === "en" ? "/" : "/es/"}>{pv.back}</Link></p>
       </section>
