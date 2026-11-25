@@ -27,6 +27,3 @@
 .shk-i { font-style: italic; }
 .shk-b { font-weight: bold; }
 .shk-u { text-decoration: underline; }
-
-/* Post dates in the caption style, sentence case (Designer 11/25; the design system still carries the old mono rule). */
-.ds .ds-post-list time, .ds .ds-post-list .ds-post-date { font: 400 var(--md-sys-typescale-body-small-size)/1.5 var(--md-ref-typeface-body, inherit); letter-spacing: 0; text-transform: none; }
