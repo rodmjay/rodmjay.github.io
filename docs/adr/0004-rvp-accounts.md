@@ -51,28 +51,67 @@ the resume form (migration 0155: visitors as contacts) and on remove-my-info (mi
   - fill time;
   - rate limits.
 
-  Everything else is just signing in: `signInWithOtp({ shouldCreateUser: false })`.
+  Signing in later goes through the same function (Security 11/25, below). The browser never calls `/auth/v1`.
 - **Mail goes through our own mailer, not Supabase's.** A Supabase **Send Email Hook** calls an Edge Function, which
   sends the code through psh Notifications over ACS. That is the same mailer and pattern remove-my-info uses: an IdP
   client with send scope only, and fixed EN/ES templates `rvp-code`. Supabase's built-in mailer is never used.
-- **What the browser holds:**
-  - The Supabase publishable (anon) key, used only by the auth client. It can't read a table: RLS stays on with no
-    policies, and `anon` and `authenticated` keep **no grants**. This is the one new thing the browser holds; Security
-    to pass it.
-  - The Supabase session, in `localStorage` (supabase-js default). Sign-out clears it.
-- **CSP:** `connect-src` adds `https://ibrovaaqbddkhqsmadqk.supabase.co/auth/v1/` next to the existing `/functions/v1/`
-  path. No other origins.
-- A sign-up that never enters its code is deleted after 24 hours, together with its auth user: we keep nothing from it.
+  - The hook checks its signature and fails closed. It never logs the code.
+  - It refuses email-change and recovery mails, so `/auth/v1/user` can't be used to change an email.
+- **All auth runs on the server; the browser holds no Supabase key** (Security MUST 1–3, 11/25).
+  - `rvp-account` calls GoTrue server-side for every step:
+    - `start`, which creates the user and sends a code;
+    - `login`, which sends a code;
+    - `verify`, which checks the code;
+    - `refresh`;
+    - `signout`.
+  - The browser talks only to `/functions/v1/`, so the CSP doesn't change and the anon key never ships.
+  - `start` and `login` always answer `200` with the same body, whether the email is new, existing, pending or one of
+    Rod's contacts. The mail is queued afterwards, so the response time doesn't reveal the case.
+  - Codes:
+    - 6 digits, valid 10 minutes (`mailer_otp_exp = 600`), single use;
+    - a new code cancels the old one;
+    - 5 wrong tries per user, counted in SQL, kill the code.
+- **The session** (Security MUST 5–6):
+  - Access tokens last 15 minutes or less, with refresh rotation and reuse detection.
+  - The session is held in `sessionStorage`, never `localStorage`.
+  - RVP pages keep `script-src 'self'` and use no `innerHTML`.
+  - `export` and `delete` need a fresh code (5 minutes or less).
+  - `delete` signs out every session.
+- **JWT checks in the function** (MUST 4):
+  - signature, expiry, `aud`/`role` = `authenticated`;
+  - the user id comes from `sub` only, never from `user_metadata` or the email;
+  - the anon JWT is refused;
+  - the profile is looked up on every call, and anything not active is refused.
+- **Caps, in SQL** (MUST 7). Over a cap, the answer is the same neutral reply, and an incident is raised:
+  - per email: 3 an hour, 10 a day;
+  - per IP hash: 5 an hour;
+  - global: 200 new auth users and 500 mails a day;
+  - saves: 20 a day;
+  - new contacts: 50 a day (a circuit breaker).
+
+  Honeypot and fill time are speed bumps only. An unconfirmed user can do nothing.
+- **Whole-project grant sweep** (MUST 1, DBA). Existing Edge Functions use the Data API with the service role, so it
+  stays on, with these guards:
+  - EXECUTE on every function is revoked from `PUBLIC`, `anon` and `authenticated`;
+  - default privileges are set the same way;
+  - a nightly check alerts if `anon` or `authenticated` ever hold a grant.
+- **Side effects:** new `source/rvp` contacts trigger no ask-rod, Todoist or automation events. The export uses an
+  allow-list: it never returns Rod's notes, groups or tags for an existing contact.
+- Security's full threat model and its 30 probes are in the EA notes folder
+  (`security-rvp-accounts-threat-model-2026-11-25.md`). Security signs the exact head it probed.
+- A sign-up that never enters its code is deleted after 24 hours, together with its auth user, by a purge with a
+  heartbeat. We keep nothing from it.
 
 ### Data: in Rod's Supabase, through one Edge Function and security-definer functions
 
 - **One Edge Function, `rvp-account`:**
   - CORS rodmjay.com only, 8 KB cap.
-  - `start` is public: honeypot, fill time and rate limits, like `resume-request`.
+  - `start`, `login` and `verify` are public: honeypot, fill time and rate limits, like `resume-request`.
   - Every other action needs a verified Supabase JWT, and the function takes the user id from the JWT, never from the
     body.
   - Actions:
-    - `start {email, name?, lang, consent_version, hp, t}`
+    - `start {email, name?, lang, consent_version, hp, t}`, `login {email}`, `verify {email, code}`, `refresh`,
+      `signout`
     - `save {fragment}` (`v=<bank>&a=<27 digits>`)
     - `me`
     - `export`
@@ -233,6 +272,7 @@ Rod chose his personal project over a separate one, after seeing Compliance's re
 ## Consequences
 
 - Rod's personal Supabase gains public, self-registered users. That is the main risk, and the design keeps it narrow:
+  - no Supabase key in the browser;
   - no grants;
   - every write through definer functions;
   - no group;
