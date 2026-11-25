@@ -2,7 +2,8 @@
 // between pages), the footer, the stylesheets and the preloaded fonts. One per language: app/(en) and app/(es) are the
 // two root layouts, so `lang` is in the HTML itself. Switching language is a full load, as it was on Pages.
 import type { ReactNode } from "react";
-import { HTML_LANG, RECIPES_LIVE, asset, dict } from "@/lib/site.mjs";
+import Link from "next/link";
+import { HTML_LANG, RECIPES_LIVE, REMOVE_LIVE, asset, dict } from "@/lib/site.mjs";
 import { LANG_SRC } from "@/lib/langscript.mjs";
 import { altMap } from "@/lib/routes.mjs";
 import { loadQuotes } from "@/lib/quotes.mjs";
@@ -39,7 +40,7 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
         <a className="skip" href="#main">{d.nav.skip}</a>
         <Header lang={lang} nav={nav} showRecipes={RECIPES_LIVE} showQuotes={hasQuotes} alt={alt} />
         {children}
-        <footer className="foot col"><p className="ds-body-small ds-variant">{d.footer.copy} · {d.footer.cookies}</p></footer>
+        <footer className="foot col"><p className="ds-body-small ds-variant">{d.footer.copy} · {d.footer.cookies}{REMOVE_LIVE && <> · <Link href={lang === "en" ? "/remove/" : "/es/remove/"}>{d.remove.footerLink}</Link></>}</p></footer>
       </body>
     </html>
   );

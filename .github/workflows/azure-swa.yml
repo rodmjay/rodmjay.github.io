@@ -37,6 +37,9 @@ env:
   # The one public read path for Supabase data (src/lib/feeds.mjs, getFeed(key); personal architecture/decisions/0004).
   # Public URL, no key: it serves only feeds Security passed and DBA turned on; an off feed answers 404 and hides its section.
   LIFE_API: https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/public-life
+  # "Remove my information" links wait for REMOVE_LIVE=1 (erase-request function live).
+  REMOVE_LIVE: ${{ vars.REMOVE_LIVE }}
+  NEXT_PUBLIC_REMOVE_LIVE: ${{ vars.REMOVE_LIVE }}
   RECIPES_LIVE: ${{ vars.RECIPES_LIVE }}
   RECIPES_APPROVED: ${{ vars.RECIPES_APPROVED }}
   RECIPES_TRUST_MINUTES: ${{ vars.RECIPES_TRUST_MINUTES }}
