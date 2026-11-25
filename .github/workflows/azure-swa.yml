@@ -44,6 +44,9 @@ env:
   RECIPES_APPROVED: ${{ vars.RECIPES_APPROVED }}
   RECIPES_TRUST_MINUTES: ${{ vars.RECIPES_TRUST_MINUTES }}
   NEXT_TELEMETRY_DISABLED: "1"
+  # The RVP archetype test (src/rvp): built for staging and pull-request checks; production only once Rod says yes to
+  # publish and the repo variable RVP_LIVE=1 is set (DECISIONS 11/25). Off, scripts/postbuild.mjs removes its pages.
+  RVP_ON: ${{ (vars.RVP_LIVE == '1' || github.ref != 'refs/heads/main') && '1' || '' }}
   # The privacy page's hosting line (src/lib/site.mjs): Microsoft (Azure Static Web Apps), dated the cutover day.
   # Compliance approved the exact words (EN and ES) 11/23.
   PRIVACY_HOSTING: azure
@@ -110,6 +113,8 @@ jobs:
           done
       - name: Every old URL still exists
         run: npm run test:urls
+      - name: RVP test engine (scoring, links, all 27 archetypes)
+        run: npm run test:rvp
       - name: Accessibility and navigation tests
         run: |
           npx playwright install --with-deps chromium

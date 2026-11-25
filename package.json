@@ -8,6 +8,7 @@
     "build": "node scripts/cms-snapshot.mjs && next build && node scripts/postbuild.mjs && node scripts/should.mjs",
     "test": "node tests/old-urls.mjs && playwright test",
     "test:urls": "node tests/old-urls.mjs",
+    "test:rvp": "node --test tests/rvp.test.ts",
     "test:e2e": "playwright test"
   },
   "engines": {

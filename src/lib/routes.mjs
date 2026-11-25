@@ -3,6 +3,7 @@
 import { loadBlog } from "./blog.mjs";
 import { loadRecipes } from "./recipes.mjs";
 import { loadQuotes, quoteUrl } from "./quotes.mjs";
+import archetypes from "../rvp/archetypes.json" with { type: "json" };
 
 let memo;
 export function altMap() {
@@ -17,6 +18,8 @@ export function altMap() {
     for (const l of recipes.lists) map[l.path] = l.otherPath;
     for (const r of recipes.recipes) map[r.url] = r.twinUrl;
     for (const q of (await loadQuotes()).quotes) { map[quoteUrl("en", q.slug)] = quoteUrl("es", q.slug); map[quoteUrl("es", q.slug)] = quoteUrl("en", q.slug); }
+    // The RVP test (src/rvp), only where it is built (RVP_ON; production after Rod's yes).
+    if (process.env.RVP_ON === "1") for (const p of ["", "take/", "result/", ...archetypes.archetypes.map((a) => `${a.slug}/`)]) { map[`/rvp/${p}`] = `/es/rvp/${p}`; map[`/es/rvp/${p}`] = `/rvp/${p}`; }
     return map;
   })());
 }
