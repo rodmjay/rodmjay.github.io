@@ -31,9 +31,19 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .nf { padding: var(--space-16) var(--gutter); }
 /* Medium screens: name and language on the first row, the links on their own row under them */
 @media (min-width: 600.02px) and (max-width: 54rem) { .bar { row-gap: var(--space-2); } .bar nav { order: 3; flex-basis: 100%; margin-right: 0; } .bar .ds-lang { margin-left: auto; } }
+/* Phones: a Menu button instead of the links; its panel sits over the content right under the header (Designer 11/24). */
+.bar-menu, .phone-nav { display: none; }
 @media (max-width: 600px) {
-  .bar nav { display: none; }
-  .bar { justify-content: space-between; }
+  .bar nav.bar-links { display: none; }
+  .bar { justify-content: space-between; gap: var(--space-3); }
+  .bar .mark { margin-right: auto; }
+  .bar-menu { display: inline-flex; min-height: 48px; }
+  .phone-nav { display: flex; flex-direction: column; position: absolute; left: 0; right: 0; z-index: 20; padding: var(--space-2) 0;
+    background: var(--md-sys-color-surface-container); box-shadow: var(--md-sys-elevation-level2); }
+  .phone-nav.static { position: static; box-shadow: none; }
+  .phone-nav a { display: flex; align-items: center; min-height: 48px; padding: 0 var(--gutter); border-left: 3px solid transparent;
+    color: var(--md-sys-color-on-surface); text-decoration: none; font-weight: 500; }
+  .phone-nav a[aria-current] { border-left-color: var(--md-sys-color-primary); color: var(--md-sys-color-primary); }
 }
 
 /* Work items outlined in cyan (Designer 11/21). */

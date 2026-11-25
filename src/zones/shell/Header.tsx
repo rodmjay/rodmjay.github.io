@@ -1,10 +1,14 @@
 "use client";
 // The header: the name, the section links and the EN/ES menu. It lives in the root layout and never re-mounts; every
 // link is a Next <Link>, so moving between pages swaps only the content. The current section gets aria-current.
+// Phones (≤600px) get a "Menu" button instead of the row of links (Designer 11/24): it opens a panel of the same links
+// right under the header, over the content (the header never changes height). Esc, a second tap or following a link
+// closes it; Esc returns focus to the button. Without script the same list is in a <noscript>, so it stays reachable.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
-type Nav = Record<"label" | "home" | "about" | "resume" | "building" | "contact" | "blog" | "recipes" | "quotes" | "language", string>;
+type Nav = Record<"label" | "menu" | "home" | "about" | "resume" | "building" | "contact" | "blog" | "recipes" | "quotes" | "language", string>;
 const NAMES = { en: "English", es: "Español" } as const;
 const HTML_LANG = { en: "en", es: "es-419" } as const;
 
@@ -23,23 +27,35 @@ export function Header({ lang, nav, showRecipes, showQuotes, alt }: { lang: "en"
   const home = lang === "en" ? "/" : "/es/";
   const blog = `${home}blog/`, recipes = `${home}recipes/`, quotes = `${home}quotes/`;
   const current = (base: string) => (path.startsWith(base) ? "page" : undefined);
+  const [open, setOpen] = useState(false);
+  const button = useRef<HTMLButtonElement>(null);
+  useEffect(() => { setOpen(false); }, [path]);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") { setOpen(false); button.current?.focus(); } };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+  const links = (close?: () => void) => [
+    <Link key="about" href={`${home}#about`} onClick={close}>{nav.about}</Link>,
+    <Link key="resume" href={`${home}#resume`} onClick={close}>{nav.resume}</Link>,
+    <Link key="building" href={`${home}#building`} onClick={close}>{nav.building}</Link>,
+    <Link key="contact" href={`${home}#contact`} onClick={close}>{nav.contact}</Link>,
+    <Link key="blog" href={blog} aria-current={current(blog)} onClick={close}>{nav.blog}</Link>,
+    showRecipes && <Link key="recipes" href={recipes} aria-current={current(recipes)} onClick={close}>{nav.recipes}</Link>,
+    showQuotes && <Link key="quotes" href={quotes} aria-current={current(quotes)} onClick={close}>{nav.quotes}</Link>,
+  ];
   const onLang = (e: React.ChangeEvent<HTMLSelectElement>) => {
     try { localStorage.setItem("ds-lang", e.target.value); } catch {}
     const here = path.endsWith("/") ? path : `${path}/`;
     location.assign(otherPath(here, lang, alt) + (here === home ? location.hash : ""));
   };
   return (
+    <>
     <header className="bar">
       <Link className="mark" href={home} aria-label={nav.home}>Rod Johnson</Link>
-      <nav aria-label={nav.label}>
-        <Link href={`${home}#about`}>{nav.about}</Link>
-        <Link href={`${home}#resume`}>{nav.resume}</Link>
-        <Link href={`${home}#building`}>{nav.building}</Link>
-        <Link href={`${home}#contact`}>{nav.contact}</Link>
-        <Link href={blog} aria-current={current(blog)}>{nav.blog}</Link>
-        {showRecipes && <Link href={recipes} aria-current={current(recipes)}>{nav.recipes}</Link>}
-        {showQuotes && <Link href={quotes} aria-current={current(quotes)}>{nav.quotes}</Link>}
-      </nav>
+      <nav aria-label={nav.label} className="bar-links">{links()}</nav>
+      <button ref={button} type="button" className="ds-btn text bar-menu" aria-expanded={open} aria-controls="phone-nav" onClick={() => setOpen((o) => !o)}>{nav.menu}</button>
       <span className="ds-lang">
         <label>
           <span className="ds-lang-label">{nav.language}</span>
@@ -49,5 +65,8 @@ export function Header({ lang, nav, showRecipes, showQuotes, alt }: { lang: "en"
         </label>
       </span>
     </header>
+    {open && <nav id="phone-nav" aria-label={nav.label} className="phone-nav">{links(() => setOpen(false))}</nav>}
+    <noscript><nav aria-label={nav.label} className="phone-nav static">{links()}</nav></noscript>
+    </>
   );
 }
