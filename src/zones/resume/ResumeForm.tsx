@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 
+const LOOKUP_VERSION = "lookup-2026-11-24";
 const RESUME_API = "https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/resume-request";
 type T = Record<string, string>;
 type Reply = { ok?: boolean; url?: string; error?: string; retry_minutes?: number };
@@ -24,6 +25,7 @@ export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref
   const btn = useRef<HTMLButtonElement>(null);
   const doneTitle = useRef<HTMLHeadingElement>(null);
   const [tried, setTried] = useState(false);
+  const [lookupErr, setLookupErr] = useState(false);
   const [errs, setErrs] = useState<Partial<Record<Field, string>>>({});
   const [sending, setSending] = useState<number | null>(null);
   const [banner, setBanner] = useState("");
@@ -40,7 +42,8 @@ export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref
     const f = form.current!;
     return fetch(RESUME_API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
       name: value("name").trim(), email: value("email").trim(), company: value("company").trim() || null, role: value("role").trim() || null,
-      source: value("source").trim() || null, consent: (f.elements.namedItem("consent") as HTMLInputElement).checked, hp: value("website"), t: started.current,
+      source: value("source").trim() || null, consent: (f.elements.namedItem("consent") as HTMLInputElement).checked,
+      lookup_consent: true, lookup_consent_version: LOOKUP_VERSION, hp: value("website"), t: started.current,
       lang: lang.indexOf("es") === 0 ? "es" : "en",
     }) }).then((r) => r.json());
   }
@@ -52,7 +55,10 @@ export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref
     const next = { name: checkOne("name"), email: checkOne("email") };
     setErrs(next);
     const bad = (["name", "email"] as const).filter((n) => next[n]);
+    const lookup = form.current!.elements.namedItem("lookup") as HTMLInputElement;
+    setLookupErr(!lookup.checked);
     if (bad.length) { (form.current!.elements.namedItem(bad[0]) as HTMLInputElement).focus(); return; }
+    if (!lookup.checked) { lookup.focus(); return; }
     setSending(btn.current?.offsetWidth ?? null);
     reply().then((res) => {
       if (res && res.ok && res.url) {
@@ -62,6 +68,7 @@ export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref
       }
       throw res;
     }).catch((res: Reply) => {
+      if (res && res.error === "lookup_consent_required") { setLookupErr(true); setBanner(""); return; }
       setBanner(res && res.error === "rate_limited" ? t.rateLimited.replace("{n}", String(res.retry_minutes || 60)) : t.serverError);
     }).then(() => setSending(null));
   }
@@ -84,6 +91,14 @@ export function ResumeForm({ lang, privacyHref, t }: { lang: string; privacyHref
           })}
         </div>
         <div className="hp" aria-hidden="true"><label htmlFor="rf-website">{t.honeypot}</label><input id="rf-website" name="website" type="text" tabIndex={-1} autoComplete="off" /></div>
+        <div className="ds-field consent">
+          <label className="ds-check"><input type="checkbox" id="rf-lookup" name="lookup" required aria-required="true" aria-invalid={lookupErr ? true : undefined}
+            aria-describedby="rf-lookup-help rf-lookup-err" onChange={(e) => { if (e.target.checked) setLookupErr(false); }} /> {t.lookupLabel} {t.required}</label>
+          <p className="ds-supporting" id="rf-lookup-help">{t.lookupExample}{" "}
+            <a href={`${privacyHref}#${lang.indexOf("es") === 0 ? "consultas" : "lookups"}`} target="_blank" rel="noopener">{t.lookupLink} <span className="sr-only">{t.lookupLinkSr}</span></a></p>
+          <p className="ds-supporting lookup-err" id="rf-lookup-err" role="alert" hidden={!lookupErr}>
+            <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-2h2zm0-4h-2V7h2z" /></svg> {t.errLookup}</p>
+        </div>
         <div className="ds-field consent"><label className="ds-check"><input type="checkbox" id="rf-consent" name="consent" /> {t.consent}</label></div>
         <div className="ds-banner error" id="rf-banner" role="alert" hidden={!banner}><p>{banner}</p></div>
         <button className="ds-btn" type="submit" id="rf-submit" ref={btn} disabled={sending !== null} style={sending ? { width: sending } : undefined}>

@@ -104,7 +104,7 @@
     "consent": "Rod puede contactarme sobre esto (opcional)",
     "submit": "Obtener el currículum",
     "sending": "Enviando…",
-    "note": "Se usa para darle el enlace al currículum y, si aceptó, para que Rod lo contacte. Nunca se vende ni se comparte.",
+    "note": "Se usa para darle el enlace al currículum, para comprobar quién lo solicita y, si aceptó, para que Rod lo contacte. Nunca se vende ni se comparte, salvo con los servicios que lo almacenan para Rod.",
     "errName": "Escriba su nombre",
     "errEmail": "Escriba un correo como ana@empresa.com",
     "rateLimited": "Demasiadas solicitudes desde aquí. Vuelva a intentarlo en {n} minutos.",
@@ -113,7 +113,13 @@
     "doneBody": "El enlace funciona durante 24 horas.",
     "download": "Descargar currículum (PDF)",
     "honeypot": "Deje esto vacío",
-    "privacyLink": "Privacidad"
+    "privacyLink": "Privacidad",
+    "lookupLabel": "Acepto que Rod pueda consultar información pública sobre mí y mi empresa, solo para comprobar que mi empresa y yo somos reales.",
+    "required": "(obligatorio)",
+    "lookupExample": "Por ejemplo, que soy un reclutador o una empresa que contrata de verdad, con un puesto real.",
+    "lookupLink": "Cómo funciona",
+    "lookupLinkSr": "(se abre en una pestaña nueva)",
+    "errLookup": "Marque la casilla para obtener el currículum."
   },
   "privacy": {
     "title": "Privacidad",
@@ -121,7 +127,7 @@
     "updated": "Última actualización: 21 de noviembre de 2026.",
     "p": [
       "Cuando solicita mi currículum en este sitio, guardo lo que escribe: su nombre, correo, empresa, cargo y, si lo agrega, cómo me encontró. También guardo si marcó “Rod puede contactarme” y cuándo.",
-      "Lo uso para darle el enlace al currículum. Si marcó la casilla, también puedo contactarlo sobre esto. No lo uso para nada más, y nunca se vende ni se comparte.",
+      "Lo uso para darle el enlace al currículum y para comprobar quién lo solicita (vea Consultas más abajo). Si marcó la casilla, también puedo contactarlo sobre esto. No lo uso para nada más, y nunca se vende.",
       "Todo se guarda en mi propia base de datos (Supabase). No guardo su dirección IP; solo conservo un hash con sal para limitar el abuso. Mis proveedores de alojamiento (GitHub y Supabase) pueden registrarla brevemente por seguridad.",
       "Si marcó la casilla, conservo sus datos durante 12 meses. Si no, durante 90 días. Las solicitudes bloqueadas o automatizadas se conservan 90 días.",
       "Para ver o eliminar lo que tengo sobre usted, escriba a {email}. Le responderé en un plazo de 30 días.",
@@ -131,6 +137,34 @@
     "azure": {
       "hosting": "Todo se guarda en mi propia base de datos (Supabase). No guardo su dirección IP; solo conservo un hash con sal para limitar el abuso. Mis proveedores de alojamiento (Microsoft, mediante Azure Static Web Apps, y Supabase) pueden registrarla brevemente por seguridad.",
       "updated": "Última actualización: {date}."
+    },
+    "lookups": {
+      "id": "consultas",
+      "heading": "Consultas",
+      "intro": "Esto trata del formulario del currículum. Soy Rod Johnson y soy el responsable.",
+      "items": [
+        {
+          "lead": "Qué.",
+          "text": "Cuando solicita el currículum, puedo buscar su nombre, su empresa y el cargo en fuentes públicas, como el sitio web de su empresa, páginas públicas de LinkedIn, registros mercantiles públicos y resultados de búsqueda. Herramientas automáticas y asistentes de IA pueden hacer estas consultas por mí."
+        },
+        {
+          "lead": "Para qué.",
+          "text": "Solo para comprobar que usted y su empresa son reales, por ejemplo, un reclutador o una empresa que contrata de verdad, con un puesto real. Mi base legal es mi interés legítimo en comprobar un contacto profesional. Puedo decidir no responder, o no enviar el currículum, según lo que encuentre. Los resultados pueden ser erróneos, y usted puede pedir verlos, corregirlos o borrarlos."
+        },
+        {
+          "lead": "Qué no hago.",
+          "text": "Uso solo lo que es visible públicamente, nada privado ni protegido por un acceso que no me han dado. No uso sitios de corredores de datos ni de búsqueda de personas, y no compro datos. No uso fotos, ni reconocimiento facial, ni búsquedas inversas de imágenes, ni nada sobre rasgos personales como edad, salud, familia, religión o política. Busco solo a usted y a su empresa, una vez por solicitud, sin repetir la consulta y sin crear perfiles."
+        },
+        {
+          "lead": "Cuánto tiempo se guarda.",
+          "text": "Registro solo un veredicto (real, poco claro o no encontrado) y enlaces a las fuentes públicas. Lo borro 12 meses después de su solicitud, o 3 meses después si la consulta no encuentra nada o la solicitud era spam."
+        },
+        {
+          "lead": "Con quién se comparte.",
+          "text": "Nunca se vende y no se comparte con nadie más, salvo con los servicios que lo almacenan y procesan por mí (como Supabase), o cuando la ley lo exija."
+        }
+      ],
+      "rights": "Para ver, corregir o borrar una consulta, o para oponerse a ella, escriba a {email}. Si está en la UE o el Reino Unido, tiene derecho a oponerse a esta consulta. Si prefiere no aceptar, no podrá obtener el currículum con este formulario; escríbame y hablamos directamente."
     }
   },
   "blog": {

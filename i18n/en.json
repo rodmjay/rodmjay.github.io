@@ -104,7 +104,7 @@
     "consent": "Rod may contact me about this (optional)",
     "submit": "Get the resume",
     "sending": "Sending…",
-    "note": "Used to give you the resume link and, if you said yes, for Rod to reach you. Never sold or shared.",
+    "note": "Used to give you the resume link, to check who is asking, and, if you said yes, for Rod to reach you. Never sold, and not shared except with the services that store it for Rod.",
     "errName": "Enter your name",
     "errEmail": "Enter an email like ana@company.com",
     "rateLimited": "Too many requests from here. Try again in {n} minutes.",
@@ -113,7 +113,13 @@
     "doneBody": "The link works for 24 hours.",
     "download": "Download resume (PDF)",
     "honeypot": "Leave this empty",
-    "privacyLink": "Privacy"
+    "privacyLink": "Privacy",
+    "lookupLabel": "I agree that Rod may look up public information about me and my company, only to check that we're real.",
+    "required": "(required)",
+    "lookupExample": "For example, that I'm a recruiter or hiring company with a real role.",
+    "lookupLink": "How this works",
+    "lookupLinkSr": "(opens in a new tab)",
+    "errLookup": "Check the box to get the resume."
   },
   "privacy": {
     "title": "Privacy",
@@ -121,7 +127,7 @@
     "updated": "Last updated November 21, 2026.",
     "p": [
       "When you ask for my resume on this site, I keep what you type: your name, email, company, role and, if you add it, how you found me. I also keep whether you checked “Rod may contact me”, and when.",
-      "I use it to give you the resume link. If you checked the box, I may also reach out to you about it. I don't use it for anything else, and it's never sold or shared.",
+      "I use it to give you the resume link and to check who is asking (see Lookups below). If you checked the box, I may also reach out to you about it. I don't use it for anything else, and it's never sold.",
       "Everything is stored in my own database (Supabase). I don't keep your IP address; I keep only a salted hash of it to limit abuse. My hosting providers (GitHub and Supabase) may log it briefly for security.",
       "If you checked the box, I keep your details for 12 months. If you didn't, I keep them for 90 days. Blocked or automated requests are kept for 90 days.",
       "To see or delete what I hold about you, email {email}. I'll answer within 30 days.",
@@ -131,6 +137,34 @@
     "azure": {
       "hosting": "Everything is stored in my own database (Supabase). I don't keep your IP address; I keep only a salted hash of it to limit abuse. My hosting providers (Microsoft, through Azure Static Web Apps, and Supabase) may log it briefly for security.",
       "updated": "Last updated {date}."
+    },
+    "lookups": {
+      "id": "lookups",
+      "heading": "Lookups",
+      "intro": "This is about the resume form. I'm Rod Johnson, and I'm responsible for it.",
+      "items": [
+        {
+          "lead": "What.",
+          "text": "When you ask for the resume, I may look up your name, your company and the role on public sources, such as your company's website, public LinkedIn pages, public business records and search results. Automated tools and AI assistants may run these lookups for me."
+        },
+        {
+          "lead": "Why.",
+          "text": "Only to check that you and your company are real, for example a real recruiter or hiring company with a real role. My legal basis is my legitimate interest in checking a business contact. I may decide not to reply, or not to send the resume, based on what I find. Results can be wrong, and you can ask to see, correct or delete them."
+        },
+        {
+          "lead": "What I don't do.",
+          "text": "I use only what is publicly visible, nothing private or behind access I'm not given. I don't use data-broker or people-search sites, and I don't buy data. No photos, face matching or reverse-image searches, and nothing about personal traits such as age, health, family, religion or politics. I look up only you and your company, once per request, with no re-checks and no profiles."
+        },
+        {
+          "lead": "How long I keep it.",
+          "text": "I record only a verdict (real, unclear or not found) and links to the public sources. I delete it 12 months after your request, or after 3 months if the check finds nothing or the request was spam."
+        },
+        {
+          "lead": "Who sees it.",
+          "text": "Never sold, and not shared with anyone else, except the services that store and process it for me (such as Supabase), or when the law requires it."
+        }
+      ],
+      "rights": "To see, correct or delete a lookup, or to object to it, email {email}. If you're in the EU or UK, you have the right to object to this lookup. If you'd rather not agree, you can't get the resume through this form, so email me and we can talk directly."
     }
   },
   "blog": {
