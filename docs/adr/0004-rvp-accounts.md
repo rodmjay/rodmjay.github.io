@@ -22,14 +22,17 @@ the resume form (migration 0155: visitors as contacts) and on remove-my-info (mi
 2. To save, the visitor enters an email, an optional first name and a language. They confirm their age (a neutral
    screen, 18+) and make the separate, unticked choices described below. We email them a **6-digit code**, which they type into the same tab. The result is saved
    and they are signed in.
-3. **My profile** (`/rvp/me/`, `/es/rvp/me/`) shows:
+3. **The dashboard** (`/dashboard/`, `/es/dashboard/`; Rod 11/25: "they will be directed to dashboard"). Every
+   sign-in lands there. It shows:
    - their latest result: the full result page, read from the server;
    - every earlier take, with its date and test version;
    - Retake, which saves the new result as a new row;
    - Download my data (JSON);
    - Delete my account;
    - Sign out.
-4. Signing in later uses the same email and code. There are no passwords and no Google or Apple sign-in in v1.
+4. Sign-in is **passwordless, by email only** (Rod 11/25). Returning users use the "Sign in" link (`/signin/`,
+   `/es/signin/`), enter their email, type the code, and land on the dashboard. There are no passwords anywhere and no
+   Google or Apple sign-in in v1.
 5. Profiles are **private**. v1 has no public profile pages, no directory and no comparing people. Adding public
    profiles later is reversible: a new ADR, an opt-in per person, and a Designer and Compliance pass.
 
@@ -352,7 +355,8 @@ Rod chose his personal project over a separate one, after seeing Compliance's re
 - **Security:** NOT YET. The 7 MUSTs and addendum A–H (probes P31–P36) are now in this ADR. The next pass is on the
   staging build.
 - **Designer:** the spec is `design/specs/rvp-accounts.md` in the personal repo, with:
-  - `/rvp/signin/`, and a "Sign in" link in the RVP header and the footer;
+  - `/signin/` and `/dashboard/` (Rod 11/25), and a "Sign in" link in the RVP header and the footer;
+  - the consent box: one long, fully clickable label, with "Privacy details" on its own line;
   - one-time-code input, resend after 30 seconds;
   - no disabled buttons.
 - **Philosopher:** fits with conditions: the profile framing and bank 1.0 first. Its totals-only default was replaced
@@ -400,6 +404,6 @@ Rod chose his personal project over a separate one, after seeing Compliance's re
   - `text_tier = never`;
   - verified email only;
   - self-serve export and delete.
-- The RVP result page gets one optional card and the site gets two pages (`/rvp/me/` and its ES twin). The test itself
+- The RVP result page gets one optional card and the site gets four pages (`/signin/` and `/dashboard/`, each with its ES twin). The test itself
   is unchanged.
 - The `0.1-draft` results saved on staging are test data, and they're purged before launch.
