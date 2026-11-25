@@ -95,15 +95,15 @@
     "cta": "Ir al inicio"
   },
   "resume": {
-    "heading": "Obtenga mi currículum",
-    "lede": "Dígame quién es y el PDF es suyo.",
+    "heading": "Solicite mi currículum",
+    "lede": "Dígame quién es. Leo cada solicitud y, si la apruebo, le enviaré por correo el enlace al currículum.",
     "name": "Nombre",
     "email": "Correo electrónico",
     "company": "Empresa (opcional)",
     "role": "Cargo (opcional)",
     "source": "¿Cómo me encontró? (opcional)",
     "consent": "Rod puede contactarme sobre esto (opcional)",
-    "submit": "Obtener el currículum",
+    "submit": "Solicitar el currículum",
     "sending": "Enviando…",
     "note": "Se usa para darle el enlace al currículum, para comprobar quién lo solicita y, si aceptó, para que Rod lo contacte. Nunca se vende ni se comparte, salvo con los servicios que lo almacenan para Rod.",
     "errName": "Escriba su nombre",
@@ -120,10 +120,12 @@
     "lookupExample": "Por ejemplo, que soy un reclutador o una empresa que contrata de verdad, con un puesto real.",
     "lookupLink": "Cómo funciona",
     "lookupLinkSr": "(se abre en una pestaña nueva)",
-    "errLookup": "Marque la casilla para obtener el currículum.",
+    "errLookup": "Marque la casilla para solicitar el currículum.",
     "recs": "13 recomendaciones en LinkedIn",
     "recsSr": "(se abre en una pestaña nueva)",
-    "removeLink": "Quitar mi información"
+    "removeLink": "Quitar mi información",
+    "pendingTitle": "Solicitud recibida",
+    "pendingBody": "Reviso cada solicitud. Si la apruebo, le enviaré un enlace a la dirección que indicó. El enlace funciona durante 24 horas, para hasta 5 descargas. Solo recibirá noticias mías si la apruebo."
   },
   "privacy": {
     "title": "Privacidad",

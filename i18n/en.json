@@ -95,15 +95,15 @@
     "cta": "Go to the home page"
   },
   "resume": {
-    "heading": "Get my resume",
-    "lede": "Tell me who you are and the PDF is yours.",
+    "heading": "Request my resume",
+    "lede": "Tell me who you are. I read every request, and if I approve it I'll email you the resume link.",
     "name": "Name",
     "email": "Email",
     "company": "Company (optional)",
     "role": "Role (optional)",
     "source": "How did you find me? (optional)",
     "consent": "Rod may contact me about this (optional)",
-    "submit": "Get the resume",
+    "submit": "Request the resume",
     "sending": "Sending…",
     "note": "Used to give you the resume link, to check who is asking, and, if you said yes, for Rod to reach you. Never sold, and not shared except with the services that store it for Rod.",
     "errName": "Enter your name",
@@ -120,10 +120,12 @@
     "lookupExample": "For example, that I'm a recruiter or hiring company with a real role.",
     "lookupLink": "How this works",
     "lookupLinkSr": "(opens in a new tab)",
-    "errLookup": "Check the box to get the resume.",
+    "errLookup": "Check the box to request the resume.",
     "recs": "13 recommendations on LinkedIn",
     "recsSr": "(opens in a new tab)",
-    "removeLink": "Remove my information"
+    "removeLink": "Remove my information",
+    "pendingTitle": "Request received",
+    "pendingBody": "I review each request. If I approve it, I'll email a link to the address you gave. The link works for 24 hours, for up to 5 downloads. You'll only hear from me if I approve it."
   },
   "privacy": {
     "title": "Privacy",
