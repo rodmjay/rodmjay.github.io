@@ -95,7 +95,9 @@ test("csp: the rest of the site keeps its policy", async ({ request }) => {
   expect(OUT.responseOverrides).toEqual(SITE.responseOverrides);
   // The copied sites' own routes (scripts/sites.mjs) come after the site's.
   const copied = /^\/(should|altura|agentic-squared|agency-squared|moodboard)(\/|$)/;
-  expect(OUT.routes.filter((r: { route: string }) => !copied.test(r.route))).toEqual(SITE.routes);
+  // The account pages' no-store rules leave out/ with the pages where accounts are off (scripts/postbuild.mjs).
+  const account = /^\/(es\/)?(signin|dashboard)\/\*$/, accounts = existsSync("out/signin/index.html") || !existsSync("out/staticwebapp.config.json");
+  expect(OUT.routes.filter((r: { route: string }) => !copied.test(r.route))).toEqual(SITE.routes.filter((r: { route: string }) => accounts || !account.test(r.route)));
   for (const path of ["/", "/blog/", "/recipes/", "/no-such-page/", "/shouldnt/"])
     expect((await request.get(path)).headers()["content-security-policy"], path).toBe(SITE_CSP);
 });

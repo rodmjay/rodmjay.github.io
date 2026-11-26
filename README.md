@@ -65,6 +65,18 @@ npm run test:e2e     # Playwright: axe (WCAG 2.1 AA) at 1280 and 375 in EN and E
 - Photos are self-hosted: `python3 scripts/recipe-images.py <folder> <slug>…` writes WebP at 1600 and 800 px (never
   wider than the source) and a JPEG fallback into `public/recipes/images/`. Dish photos only.
 
+## Accounts (personality test)
+
+- `/signin/`, `/dashboard/` (and `/es/…`), the result page's "Save my result" card and the header's "Sign in" /
+  "Dashboard" link (`src/account/`; ADR 0004 and 0005; Designer's rvp-accounts.md and site-roles.md). The browser talks
+  only to the `rvp-account` Edge Function and keeps the session in sessionStorage.
+- Built only where `ACCOUNTS_ON=1` and `NEXT_PUBLIC_ACCOUNTS_ON=1` (staging and checks; production after the reviews,
+  Rod's yes and the repo variable `ACCOUNTS_LIVE=1`). The pages are `page.acct.tsx`; everything the always-built pages
+  use comes through `src/account/gate.ts`, which next.config swaps for nulls when off, so no account code ships.
+- Never an automatic save: a signed-in visitor taps "Save to my dashboard". `tests/consent-hashes.mjs` pins the sha256
+  of every consent wording the page shows to the one the function records (`npm run test:consent`).
+- The test moved from `/rvp/` to `/personality-test/` and `/es/test-de-personalidad/` (Rod 11/26); every old path 301s.
+
 ## Design system
 
 `public/ds/` is a stripped public copy of the shared design system (rod brand, self-hosted fonts), stamped with its
