@@ -1,9 +1,12 @@
 # 0005. Signed-in features by group
 
-Date: 2026-11-26. Status: **proposed**. Nothing is built until Rod picks the starter features and the reviews below
-pass. Deciders: Rod, who asked for this in the EA chat on 11/26 (DECISIONS): "we want to make a login for rodmjay,
+Date: 2026-11-26. Status: **accepted**, staging first. Rod picked the features on 11/26 (below), and his pick is
+his "Publishes:" yes for the commands each group already has by text. Anything beyond the text menus goes back to
+EA. Deciders: Rod, who asked for this in the EA chat on 11/26 (DECISIONS): "we want to make a login for rodmjay,
 here is the catch, we want to have a few different roles, depending on who the person is, mostly based on their
-security group from supabase we want to attach different features to those groups". Software Architect leads.
+security group from supabase we want to attach different features to those groups". His pick, the same day: "they
+get their commands from the text prompting, but through the api, for example book coffee, it needs to function in
+similar way but with better UI". Software Architect leads; Text Concierge owns the commands and the listener.
 Reviewers:
 
 - Security Officer and Compliance Officer, before any build.
@@ -18,9 +21,9 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
 
 - **Anyone** can still use the site without signing in. Nothing changes for them.
 - **Anyone who signs in** gets what 0004 gives: their own RVP results and the dashboard.
-- **Someone Rod knows** who signs in with an email Rod has linked to them also sees the features their group allows,
-  in the same dashboard and the same nav. A cousin sees family features, a close friend sees friend features, and
-  someone in no group sees only their own results.
+- **Someone Rod knows** who signs in with an email Rod has linked to them also gets their group's commands, the same
+  ones their text menu has (coffee, what's new, leave friends and so on), in the dashboard and the nav, with buttons
+  and cards in place of 1/2/3 texts. Someone in no group sees only their own results.
 - The nav shows only what the person may use. A feature they don't have isn't hidden behind a lock. It isn't there.
 
 ## Decisions
@@ -61,6 +64,7 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
     usa para enviarme mensajes ni correos. Puedo eliminar mi cuenta desde mi panel en cualquier momento, y así se
     borran estos datos."
   - The privacy and terms PR adds linked sign-in, these logs, and the AI tools Rod uses as recipients.
+  - Compliance re-words the examples ("an RSVP or a wish-list line") for commands, such as asking Rod for coffee.
 
 ### Identity: a contact, only through an email Rod linked
 
@@ -95,75 +99,64 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
   - Not linked, or in no group → a plain 0004 account.
   - The account never shows the group's name, the chain or who else is in it.
 
-### Features: data in the database, never in the UI
+### Features are the group's text commands (Rod 11/26)
 
-- **A feature catalog, `site.site_features`:** key, EN and ES names, the data it reads, whether a minor may use it,
-  `erase_on_revoke`, and a status `off | staging | on`. A feature at `on` is published, so only Rod's yes turns one on
-  (EA brings it).
-- **A mode, `site_roles_on` = `off | staging | on`,** audited and changed only through a function (like 0004's
-  `rvp_set_mode`). A feature's effective status is the lower of its own status and the mode, which is how the
-  database knows it's on staging.
-- **Grants are a table, `site.site_feature_grants(group_key, feature_key)`** (DBA 11/26), with foreign keys to
-  `contact_groups` and `site_features` and an audit trigger, so a misspelled key fails at write time.
-  `group_effective()` returns their union along the chain, the same additive inheritance the texting commands use,
-  so there's still one place that answers what a group may do (P12), and the portal's group page shows it.
-  - `move_contact_group()` counts any grant row as a privilege, so moving someone into a group that grants any
-    feature still needs Rod's yes.
-  - A grant row reaches everyone in that group, so writing one needs Rod's yes. DBA is the only writer, through a
-    function that leaves an `audit_log` row. It's never a free edit on the portal.
-- **The resolver, `site.features_for(auth_user_id)`**: the catalog features at the effective status, that
-  the person's group grants, minus the minor-unsafe ones when `minor` is true, plus `rvp` for every account. The UI
-  draws only this list. It has no group names or rules of its own.
-- **Each feature has its own definer function and its own curated view** in schema `site`, returning only the
-  columns that feature needs, scoped to the viewer where it can be. There is no generic "read a view" endpoint.
+One command list, two front ends. The site never has a command the person's text menu doesn't.
 
-### Starter matrix (a proposal; Rod picks)
+- **The catalog is `menu_commands`** (key, label, active), the table the text menu is built from. DBA adds a Spanish
+  label if it's missing. There is no separate site catalog.
+- **The grants are `group_privileges.commands`**, resolved up the tree by `group_effective()`, exactly as the
+  listener resolves them for a text. There is no separate site grants table: a group gets a command on the site
+  because it has it by text, and a grant change reaches both front ends at once. Grants still change only with Rod's
+  yes (the portal Groups page, `move_contact_group()`'s rule), and DBA adds a check that every key in `commands` is
+  an active `menu_commands` key, so a typo fails when it's written.
+- **The resolver, `site.features_for(auth_user_id)`**: `rvp` for every account, plus, for a linked person, their
+  group's active commands, after the same filters the text flow applies (`opted_out` gives none, `minor` follows the
+  text flow's rules). `help` isn't shown: the nav is the help. The mode `site_roles_on` = `off | staging | on` is
+  audited and changed only through a function, like 0004's `rvp_set_mode`.
+- **The same backend runs the command** (Rod: "it needs to function in similar way").
+  - Today a text command is a row in `inbound_texts`. The listener on Rod's computer claims it through `inbox-claim`
+    and runs the guarded agent with `GUEST_PROMPT` and the group's menu file. Rod's approval still comes by his
+    1/2/3 text (`ask-rod`, `meetup_requests`).
+  - A site command is a row in a sibling queue, `site.command_requests`: the contact (from the token), the command
+    key, the step (start, a chosen option, or a short free-text answer), and `channel = 'web'`. The listener claims
+    it the same way, with the same caps, holds and daily guest-run budget. It runs the same prompt and menu file
+    with `channel: web`, which changes one thing: instead of texting the person, the run ends with a structured reply
+    that code checks and stores in `site.command_replies`.
+  - **The reply shape:** `message` (plain text, 600 characters or fewer), up to 3 `options` (key and label, such as
+    three coffee times with their places), `input` (whether a short free-text answer is expected, as in "ask me
+    anything") and `done`. Code rejects anything else, and the UI renders it as cards and buttons.
+  - The browser asks `site-data` for the reply (`poll`, every 2 seconds for up to 2 minutes) and shows "RodBot is on
+    it" meanwhile. A pick sends the next step to the same request.
+  - Rod's side doesn't change: his 1/2/3 approval text, the calendar event, the meetup row. When Rod confirms, the
+    dashboard shows it. The person gets a text only if they already use RodBot by text and haven't opted out
+    (Compliance to confirm).
+- **Dashboard status:** a curated view of the person's own open requests (`meetup_requests` for their contact: the
+  kind, the status, the chosen time and place) with "needs you" when a reply waits on them.
+- **Mechanical first:** commands that need no judgment (`links`, `language`, `whatsnew`, leaving the group) can
+  later move to shared SQL functions that both front ends call, and answer at once. Until then, they go through the
+  listener like the rest. Text Concierge decides the order.
 
-Groups, most to least trusted: `family_kids` › `family_close` › `family`, then `friend`, `girlfriend`, and accounts
-with no group. Grants flow down: what `family` gets, `family_close` and `family_kids` get too. These are the active
-keys. The older family layer groups (`family_parents`, `family_siblings` and the rest) are inactive and outside the
-tree, so they get no grants; DBA tests inheritance on the live tree.
+### Not in v1: the earlier starter list
 
-| Feature | What it shows | Proposed for | Minor OK |
-|---|---|---|---|
-| `rvp` | Your own RVP results (0004) | Every account | No (RVP is 18+) |
-| `family-recipes` | The family recipe book: recipes Rod marks as family, with favorites | `family` | Yes |
-| `events` | Events you're invited to, with your RSVP and the headcount | `family`, `friend` | Yes |
-| `family-calendar` | Shared family events Rod marks shareable: title, day, time, venue | `family_close` | Yes |
-| `kids-calendar` | Each child's own dates and pickup times with Rod, nothing else | `family_kids` | Yes |
-| `wish-list` | Your own gift wish list, which you can add to; Rod sees it | `family_kids` | Yes |
-| `photos` | Shared albums Rod picks | `family_close` (later) | Yes |
-| `friends-news` | Rod's what's-new and links, the same as the friend texting menu | `friend` | No |
+The first proposal's list (family recipe book, events with RSVP, family and kids' calendars, wish list, photos) isn't
+in v1. Rod chose the text commands. If any of those comes back, it goes through EA as a new command or feature, and
+the reviewed rules for it stay in this ADR's history (PR #95 at a1834b9): kids' calendar per child with no messaging
+or tracking (Legal 11/26), shareable-only family calendar, guest names only within the same or a higher group.
 
-- `photos` needs a private store (a private Supabase bucket or Azure Blob with short signed links) and its own pass
-  from Security, Compliance and Designer. It's listed so Rod can choose it, but it ships after the others.
-- `girlfriend` gets no site features in this proposal.
+### Least data
 
-### Least data per feature
-
-- Every feature view follows `security/NEVER-SHARE.md`. No feature ever shows Rod's home or live location, money,
-  health numbers, his employer, legal or court matters, or anyone else's contact details.
-- `family-calendar` reads only a dedicated shared calendar that Scheduler fills on purpose, never Rod's primary
-  calendar, and only events Rod marks shareable: no travel, no parenting schedule, no availability, no home. The place
-  is a venue name only.
-- `kids-calendar` is scoped to each child: a child sees only their own dates and times, never a sibling's, and never
-  the whole group's. It also reads only the dedicated calendar.
-  It has no messaging and no location or tracking of any kind (Legal 11/26).
-- `events`: you see your own invite, your RSVP and the headcount. Other guests' names appear only when the host turns
-  that on for the event **and** every listed guest is in the viewer's group or a higher one. Otherwise it's the
-  headcount only. Guests always show by first name only.
-- **Free text** (a wish-list line, an RSVP note) has a size cap and is rendered as plain text, with no links and no
-  HTML. Agents read it as data, never as instructions. Event and RSVP ids are never trusted alone: each lookup is
-  joined to the caller's own contact.
-- `family-recipes` reads the site's recipes plus a curated table, `site.recipe_marks(slug, feature_key)`. Rod's own
-  tables (such as `recipe_favorites`) never carry a site flag. Every later feature follows the same pattern: its own
-  curated table, never a flag on a table Rod uses.
-- **Writes** are narrow and per feature: an RSVP, a wish-list line, a favorite. Each is a definer function that writes
-  only the caller's own row. The per-feature size caps and per-user call limits live in SQL (`site.gate`, like
-  `rvp.gate`).
-- **On revoke:** each feature's `erase_on_revoke` says what happens to the person's rows. Wish-list lines and
-  favorites are erased. An adult's RSVPs stay on the event as Rod's guest record, unlinked from the login. A minor's
-  data is all erased at once. `erasure_run` and `erasure_holds` cover the `site` tables, as they do for RVP.
+- Every command run follows `security/NEVER-SHARE.md` exactly as the text flow does today: the prompt, menu files and
+  privacy guard are the same.
+- **Free text** a person types (an "ask me anything" question, a short answer) has a size cap (280 characters, as a
+  text) and is rendered as plain text, with no links and no HTML. The agent reads it as data, never as instructions,
+  the same as a text. The agent's reply is plain text too.
+- **Writes** are narrow: `site.command_submit` writes only a queue row for the caller's own contact, and
+  `site.command_poll` reads only replies to the caller's own requests. Request ids are never trusted alone: each
+  lookup is joined to the caller's contact. Caps and per-user limits live in SQL (`site.gate`).
+- **On revoke:** the person's queue rows and replies are erased. Meetup rows stay with Rod's records, as they do for
+  a text, unlinked from the login. A minor's data is all erased at once. `erasure_run` and `erasure_holds` cover the
+  `site` tables.
 
 ### Minors
 
@@ -179,8 +172,9 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
   - for any other minor in the family tree, that child's own parent must say yes, and Rod records it.
 - **Under 13: no account at all** (COPPA). `grant_login` enforces it, never the UI. A contact with no known birthday
   can't be linked as a minor until Rod records one.
-- A minor's account sees only features marked minor-safe, and no feature shows a minor's free text to anyone else. It
-  collects nothing beyond the sign-in log and what the feature writes. It never gets RVP, never becomes a texting or
+- A minor's account gets only what the text flow already gives that minor (no conversation mode, the same command
+  rules), and nothing a minor types is shown to anyone else. It collects nothing beyond the sign-in log and the
+  command requests. It never gets RVP, never becomes a texting or
   mailing target, and its data is erased at once when the link is removed.
 
 ### Security
@@ -191,7 +185,8 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
   - the user is checked with `GET /auth/v1/user` and taken from `sub` only, and the anon JWT is refused;
   - `Cache-Control: no-store` on every answer, and no edge cache for signed-in data.
 - **Database role.** `site-data` connects as a dedicated role, `site_api`, which may only EXECUTE a named allow-list
-  of feature functions (Security 11/26), never `site.*` as a whole: no USAGE on `public`, no other grants, no
+  of functions (Security 11/26): `site.me`, `site.command_submit`, `site.command_poll` and `site.my_requests`, never
+  `site.*` as a whole: no USAGE on `public`, no other grants, no
   BYPASSRLS. `grant_login`, the grant writers and `move_contact_group` live in a schema `site_api` can't reach, so a
   leaked `site_api` can't grant itself anything. It follows the pattern RVP was built with
   (migration 0219, Security's ruling): NOLOGIN with no password, each call does `set local role`, and every function
@@ -229,8 +224,12 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
   - email variants: case, plus, dot and unicode;
   - revoking a link, or removing the contact's email, while a token is live;
   - two contacts sharing one email;
-  - IDOR on event and RSVP ids;
-  - XSS in wish-list text;
+  - IDOR on request and reply ids;
+  - XSS in a typed answer and in an agent reply;
+  - a site command from a `friend` account can't run a `family` command, and the listener resolves the group from the
+    queue row's contact (never a phone number) for `channel = 'web'`;
+  - the web run has no tool that texts or emails the person; a malformed agent reply is rejected, never shown;
+  - holds (`pause_non_rod`, the daily cap, the guest-run budget) stop web commands the same as texts;
   - a real contact on staging;
   - UPDATE and DELETE refused on the event tables;
   - after a revoke, access ends on the very next call, before `site-auth-admin` drains the queue;
@@ -238,16 +237,16 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
   - the 30-day IP-hash null and the 6- and 12-month purges actually run;
   - the rotation test.
 - **Staging shares Rod's one database** (Security 11/26). `site_logins.is_test` marks test links. Staging mode serves
-  only test links, a feature at `staging` is never visible in production mode, and the mode comes from server config,
+  only test links, the listener answers `is_test` requests without queueing a real prompt to Rod, and the mode comes from server config,
   never from the client.
-- **Residual risk, stated.** If the `site_api` path were compromised, it would expose the curated feature data of
-  every linked person, and nothing else. 0004's fixed call shape and role guard limit it, and a rotation test is part
+- **Residual risk, stated.** If the `site_api` path were compromised, it could read the queued requests and replies of
+  every linked person and submit commands as them (each still needs Rod's 1 to do anything), and nothing else. 0004's fixed call shape and role guard limit it, and a rotation test is part
   of the staging probe.
 
 ### The nav
 
 - `me` returns the person's features in a stable order: `key`, `name_en`, `name_es` and `needs_you` (a count of
-  steps waiting on that person, such as an unanswered RSVP). The design system's nav draws exactly that list as a
+  steps waiting on that person, such as a coffee time to pick). The design system's nav draws exactly that list as a
   second sticky tab row on `/dashboard/` and `/me/*`, with "Dashboard" always first and the red badge only when
   `needs_you` is above zero. There are no group names and no locks anywhere.
 - v1 calendars are agenda lists only, with no month view.
@@ -270,18 +269,22 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
 
 ## Rollout gates
 
-1. This ADR goes to Security, Compliance, Designer and DBA. Rod picks the starter features (EA brings the list).
+1. Reviewed by Security, Compliance, Designer, DBA and Legal; Rod picked the text commands (11/26). The delta for
+   commands gets a short re-check by Security and Compliance, and Text Concierge agrees the listener change.
 2. DBA's migration, with a rolled-back probe:
-   - the `site` schema and `site_logins`, `site_features` and `site_feature_grants`;
-   - `features_for`, `grant_login`, the revoke queue, `site.gate` and `recipe_marks`;
+   - the `site` schema and `site_logins`, and a Spanish label and a key check on `menu_commands`;
+   - `features_for`, `grant_login`, the revoke queue, `site.gate`;
+   - `command_requests`, `command_replies`, `command_submit`, `command_poll`, `my_requests`, and the
+     `inbox-claim` actions the listener uses for them;
    - the roles, the two event tables and their purge;
    - the erasure coverage, and the `site_roles_on` mode, set to `off`.
 3. Staging build behind `SITE_ROLES_ON`, after 0004's staging build, which it depends on. Only `is_test` links are
    served on staging.
 4. Passes: Security's probes, Compliance's go-live check, Designer's check, DBA's advisors.
-5. EA brings Rod one **"Publishes:"** yes covering the features he picked. Each later feature gets its own.
+5. Rod's 11/26 pick is the "Publishes:" yes for the commands each group already has by text, so production follows
+   the passes. A command or feature that isn't in a text menu needs its own yes through EA.
 
-**Review status (11/26):**
+**Review status (11/26, before the switch to text commands):**
 - Compliance: a conditional PASS at 40607c2f, and a yes at 72f8f1a to the consent screen coming after the code. Its
   conditions are written into this ADR: minors, consent and its screen, retention, calendars and events. `photos` of
   the kids waits for its own review. Its go-live check runs on the built screens.
@@ -296,11 +299,13 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
 
 - Rod's contacts can now see a little of his data on the site. The design keeps that small and deliberate:
   - Rod links every person by hand;
-  - each feature reads its own curated view;
+  - the site runs only the commands each group already has by text, through the same guarded agent;
   - the group is checked on every call;
   - nothing private is in the static build;
   - every sign-in and feature use is logged.
 - Group changes now change what someone sees on the site, not only their texting menu. The portal's group page shows
   both.
-- Each new feature is a catalog row, a view, a definer function, a screen and a grant. None of it touches the auth
-  code.
+- A new text command reaches the site with no site change beyond a screen, because both front ends read the same
+  command list. None of it touches the auth code.
+- Web commands share the listener's budget and Rod's computer: if the listener is down, web commands wait, as texts
+  do, and the page says so after 2 minutes.
