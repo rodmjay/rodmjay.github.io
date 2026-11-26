@@ -1,0 +1,9 @@
+[Unit]
+Description=rodmjay.com recipe photos, every 10 minutes 7 AM to 11 PM
+
+[Timer]
+OnCalendar=*-*-* 07..23:00/10
+Persistent=true
+
+[Install]
+WantedBy=timers.target
