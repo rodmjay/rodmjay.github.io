@@ -53,8 +53,13 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
     filled "Take the personality test" card (or "Continue the test" when a partial test is in the browser). After
     the test the result saves to the account automatically ("Saved to your dashboard") and the result card takes
     the test card's place.
-  - Both paths use `site-account` `login` (or `start` from the result page) and `verify`; a new action, `attach
-    {fragment}`, saves the browser's result as a new take on the signed-in account, for new and existing accounts.
+  - Both paths use `site-account` `login` (or `start` from the result page) and `verify`. Saving the browser's
+    result to the signed-in account is 0004's `save {fragment}`, for new and existing accounts (Security J): the
+    account comes from the verified token only, and the fragment goes through the same server-side decode, size cap,
+    take limit (20 a day, 200 in all) and rate limit. `login` creates an account for a new email the same way `start`
+    does (migration 0223).
+  - Saving automatically after sign-in, with no click, is Compliance's call; until it rules, the signed-in result
+    page shows a one-tap "Save to my dashboard" instead.
   - Each path has an end-to-end test on staging (Playwright, against a test mailbox, `is_test` rows).
 - The response to `start` and `login` is the same neutral `200` in every case, and it takes the same time: the mail
   is queued the same way for linked, unlinked and unknown emails, so neither the body nor the timing reveals whether
@@ -83,8 +88,10 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
     para publicidad. El sitio no me enviará mensajes ni correos, salvo que, si ya escribo a la línea de texto de Rod
     y no me he dado de baja, la respuesta a una solicitud puede llegar también por mensaje. Puedo eliminar mi cuenta
     desde mi panel en cualquier momento, y así se borran estos datos."
-  - **Leads** see 0004's consent box (it already says Rod keeps their email and results in his contacts). Compliance
-    confirms whether it must also say they're kept as a lead, and names the retention period.
+  - **People who sign in without a match** (leads) see a box that says Rod keeps their email and name as a contact so
+    he knows who signed in, without the word "lead" and without a results claim when they haven't taken the test. It
+    keeps the 18+, no-sale, no-texts and no-mailing-list lines, and it's a new `consent_wordings` version (Compliance
+    11/26). Saving a result later uses 0004's box.
   - The privacy and terms PR adds linked sign-in, leads, the logs, request text, and the AI tools that handle
     requests as recipients, in EN and ES. A sincere "is this an AI?" still gets a straight yes.
 
@@ -133,11 +140,26 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
   repeat sign-in finds it. 0004's test path joins `leads` too, in a new migration.
 - **An email that matches an existing contact is never auto-linked or moved.** That person gets their own results
   only until Rod links the email (Identity, below).
-- **Quiet leads are removed** after the period Compliance sets: no sign-in or activity, nothing else on the contact,
-  no other group, no texts, calls or other tags. Soft delete, the same rule as 0004's RVP contact expiry. A lead Rod
-  moves to a real group leaves `leads` and is exempt.
-- The texting gate, Investigator, the gift routine and the Quo contact sync skip `leads` the way they skip
-  `source/rvp`.
+- **The contact is made only after a verified code and consent.** `account_create_lead` only creates: it never
+  touches an existing contact and makes at most one lead per auth user. The email match is lower-cased against live
+  `contact_methods` and `site_logins`. The name is capped plain text with control characters stripped, treated as
+  unverified data. The sign-in reply stays identical for matched and unmatched emails (Security I, Compliance c).
+- **A lower cap for leads** (Security I): 20 new leads a day, with an incident when it's hit, inside 0004's 200 new
+  users a day. Creating a lead raises no `automation_events`, Todoist task, `ask-rod` prompt or text; the morning
+  text carries one daily count.
+- **Quiet leads** (Compliance 11/26):
+  - a lead with no saved results gets a reminder, then the account is deleted and the contact soft-deleted 12 months
+    after the last sign-in;
+  - a lead with results keeps 0004's 24 months;
+  - an unverified sign-up is purged at 24 hours, as before;
+  - the soft delete runs only when nothing else is on the contact (no calls, texts, other group, relationship or
+    other data). Otherwise it raises a `waiting_for` row for Rod;
+  - a lead Rod moves to a real group leaves `leads` and is exempt.
+- **A person's own delete** erases an auto-made contact that holds nothing else, through `erasure_run` (0202), not a
+  soft delete, so the email and name don't stay in the database. Expiry stays a soft delete.
+- **Everything else fails closed on `leads` and its tag:** texting, gifts and mailing, Investigator (no social,
+  broker or people lookups), the Quo contact sync, the portal's contact views, `search_docs` and the new-contact
+  approval flow.
 
 ### Features are the group's text commands (Rod 11/26)
 
@@ -194,6 +216,12 @@ One command list, two front ends. The site never has a command the person's text
   - F. A web action texts the person only where the rules below already allow it.
   - Replies with links (the `links` command) are plain text, or anchors only to allow-listed domains with
     `noopener nofollow`.
+  - G. **`cmd.*` is never a door for `site_api`.** `cmd.start` and `cmd.answer` take a contact id, so `site_api` gets
+    only the `site.*` wrappers, which derive the contact from the token. `cmd.confirm` is Rod's approval: it runs only
+    from the path that handles Rod's own 1/2/3 answer, after checking that the `text_prompts` row was answered from
+    Rod's number. A person can never approve their own request.
+  - H. **Leaving takes no target.** "Leave friends/family" and STOP on the site can only remove privileges (the
+    opt-out, or a move into `leads`). There is no group parameter, so it can't be used to move up the tree.
 - **When Rod confirms** (Compliance 11/26), the dashboard shows it. A text also goes out only to a number that
   already texted the line or had a Rod-approved intake, hasn't opted out, and passes the normal send gate (consent
   and STOP). Never a number that never texted us, never an email address or a new number on the account, and a minor
@@ -299,6 +327,10 @@ or tracking (Legal 11/26), shareable-only family calendar, guest names only with
   - a site command from a `friend` account can't run a `family` command, and the listener resolves the group from the
     queue row's contact (never a phone number) for `channel = 'web'`;
   - the web run has no tool that texts or emails the person; a malformed agent reply is rejected, never shown;
+  - `site_api` calling any `cmd.*` function is refused, and so is leave with a target parameter;
+  - a lead flood hits the cap and raises an incident;
+  - case, plus and dot variants of an existing contact's email never create a lead;
+  - an oversized or forged `save` fragment is refused;
   - holds (`pause_non_rod`, the daily cap, the guest-run budget) stop web commands the same as texts;
   - a real contact on staging;
   - UPDATE and DELETE refused on the event tables;
@@ -362,6 +394,9 @@ or tracking (Legal 11/26), shareable-only family calendar, guest names only with
 4. Passes: Security's probes, Compliance's go-live check, Designer's check, DBA's advisors.
 5. Rod's 11/26 pick is the "Publishes:" yes for the commands each group already has by text, so production follows
    the passes. A command or feature that isn't in a text menu needs its own yes through EA.
+
+**Leads re-check (11/26):** Security PASS with G to J; Compliance PASS with conditions (a) to (c). All written in
+above.
 
 **Review status (11/26, text commands):** Security PASS with conditions A to F (written in above); Compliance PASS
 with conditions (the new consent wording, texts on confirmation, leaving, request retention, the privacy page);
