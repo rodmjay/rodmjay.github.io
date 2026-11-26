@@ -153,7 +153,7 @@ export function Dashboard({ lang, s, rvp, links }: { lang: Lang; s: S; rvp: Reco
                   <h2 className="ds-title-medium" id="acct-lead-h">{fill(shown ? s.resultFrom : s.latestLabel, { date: date(take.taken_at) })}</h2>
                   <Link href={links.take} className="ds-btn">{s.retake}</Link>
                 </div>
-                <p className="ds-body-small ds-variant">{s.retakeNote}</p>
+                <p className="ds-body-medium ds-variant">{s.retakeNote}</p>
                 {shown ? <p><button type="button" className="ds-btn text" onClick={() => setShown(0)}>{s.showLatest}</button></p> : null}
                 <RvpResult key={take.id} lang={lang} s={rvp} fragment={fragmentOf(take)} />
               </div>

@@ -43,7 +43,12 @@
 /* Phones: the header row has no room, so the link moves into the Menu panel (and stays in the footer). */
 @media (max-width: 600px) { .bar .acct-slot { display: none; } .phone-nav .acct-slot { justify-content: flex-start; min-width: 0; } }
 /* The dashboard. The lead block keeps one minimum height for the skeleton, the test card and the result card. */
-.acct-dash { display: grid; gap: var(--space-8); }
+.acct-dash { display: grid; gap: var(--space-6); }
+/* site.css pads every <main> section by --space-12 for the long pages; the dashboard spaces its blocks with the grid gap only
+   (Designer 11/26: the lead block sits --space-6 under the header). */
+.acct-dash section { padding-top: 0; }
+/* The saved result inside the outlined lead card reads as one card: a tonal surface, no second shadow (Designer 11/26). */
+.acct-result .rvp-card { box-shadow: none; background: var(--md-sys-color-surface-container); }
 .acct-dash-head { display: grid; gap: var(--space-1); }
 .acct-dash-head h1, .acct-who { margin: 0; }
 .acct-dash-head h1:focus { outline: none; }
