@@ -137,8 +137,11 @@ jobs:
       contents: read
       id-token: write # OIDC to Azure
     env:
-      # Which site this run replaces: the skew store below is kept per environment.
+      # Which site this run replaces: the skew store below is kept per environment. Repo variables (Security 11/25):
+      # SKEW_EPOCH is part of the store's key, so bumping it starts a clean store (a Security removal: a bundled secret or
+      # an XSS fix must not stay live for old pages for 7 days); SKEW_OFF=1 skips the carry entirely.
       SKEW_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+      SKEW_KEY: skew-${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}-${{ vars.SKEW_EPOCH || '0' }}-
     steps:
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
@@ -150,18 +153,21 @@ jobs:
       # from a per-environment actions/cache store that only this job writes (pull requests never run it), and saves the
       # store again only after a successful deploy. A cache miss (first run, eviction) carries nothing and deploys as before.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: vars.SKEW_OFF != '1'
         with:
           sparse-checkout: scripts/skew.mjs
           sparse-checkout-cone-mode: false
           path: _src
           persist-credentials: false
       - name: Restore the files earlier deploys served
+        if: vars.SKEW_OFF != '1'
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: _skew
-          key: skew-${{ env.SKEW_ENV }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: skew-${{ env.SKEW_ENV }}-
+          key: ${{ env.SKEW_KEY }}${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: ${{ env.SKEW_KEY }}
       - name: Carry them forward into out/
+        if: vars.SKEW_OFF != '1'
         run: node _src/scripts/skew.mjs out _skew --days 7 --max-mb 60
       - uses: azure/login@7184910d9eb2b1c5e48f7073824a90609bb9b6d6 # v2.3.1
         with:
@@ -201,10 +207,11 @@ jobs:
           skip_api_build: true
           deployment_environment: staging
       - name: Remember the files this deploy served
+        if: vars.SKEW_OFF != '1'
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: _skew
-          key: skew-${{ env.SKEW_ENV }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: ${{ env.SKEW_KEY }}${{ github.run_id }}-${{ github.run_attempt }}
       - name: Log out
         if: always()
         run: az logout || true

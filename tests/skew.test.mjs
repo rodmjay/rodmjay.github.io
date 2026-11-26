@@ -2,7 +2,7 @@
 // after --days. Run: node --test tests/skew.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, symlinkSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, readdirSync, existsSync, symlinkSync, rmSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
@@ -74,4 +74,31 @@ test("refuses an empty build", () => {
   const t = mkdtempSync(join(tmpdir(), "skew-")), out = join(t, "out");
   mkdirSync(out);
   assert.throws(() => run(out, join(t, "store")));
+});
+
+test("a symlinked directory in the store can't read from or write outside it (Security 11/25)", () => {
+  const t = mkdtempSync(join(tmpdir(), "skew-")), out = join(t, "out"), store = join(t, "store"), elsewhere = join(t, "elsewhere");
+  build(out, { "_next/static/chunks/a.js": "A" });
+  run(out, store);
+  // A poisoned cache: files/_next/static/chunks is a link to a directory outside the store, holding a "chunk".
+  put(elsewhere, "secret.js", "outside");
+  rmSync(join(store, "files/_next/static/chunks"), { recursive: true });
+  symlinkSync(elsewhere, join(store, "files/_next/static/chunks"));
+  const m = JSON.parse(readFileSync(join(store, "manifest.json"), "utf8"));
+  m.files["_next/static/chunks/secret.js"] = { last: Date.now() };
+  writeFileSync(join(store, "manifest.json"), JSON.stringify(m));
+  build(out, { "_next/static/chunks/b.js": "B" });
+  assert.match(run(out, store), /removed 1 symlink.*\n.*carried 0 older file/s);
+  assert.ok(!existsSync(join(out, "_next/static/chunks/secret.js")), "nothing from outside reaches out/");
+  assert.deepEqual(readdirSync(elsewhere), ["secret.js"], "nothing is written outside the store");
+  assert.ok(existsSync(join(store, "files/_next/static/chunks/b.js")));
+});
+
+test("a symlinked _next/static in out/ is refused or cleared before use", () => {
+  const t = mkdtempSync(join(tmpdir(), "skew-")), out = join(t, "out"), store = join(t, "store"), elsewhere = join(t, "elsewhere");
+  put(elsewhere, "chunks/x.js", "X");
+  mkdirSync(join(out, "_next"), { recursive: true });
+  symlinkSync(elsewhere, join(out, "_next/static"));
+  assert.throws(() => run(out, store)); // the link is removed, leaving an empty build: refused
+  assert.deepEqual(readdirSync(join(elsewhere, "chunks")), ["x.js"]);
 });

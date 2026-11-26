@@ -11,7 +11,7 @@
 // leaves the store (and the site) once no build has shipped it for --days days, or earliest-first when the carried files
 // pass --max-mb. Only regular files under _next/static/ are ever read or written; the new build's files always win (they
 // are never overwritten), and a missing or unreadable store just means this deploy carries nothing.
-import { readdirSync, readFileSync, writeFileSync, mkdirSync, copyFileSync, lstatSync, rmSync, existsSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, copyFileSync, lstatSync, rmSync, existsSync, realpathSync } from "node:fs";
 import { join, resolve, sep, dirname } from "node:path";
 
 const [outArg, storeArg, ...rest] = process.argv.slice(2);
@@ -28,6 +28,30 @@ const okRel = (rel) => typeof rel === "string" && rel.startsWith(ROOT) && !/[\\\
 const inside = (base, rel) => { const p = resolve(base, rel); if (!p.startsWith(base + sep)) throw new Error(`path escapes ${base}: ${rel}`); return p; };
 const isFile = (p) => { try { return lstatSync(p).isFile(); } catch { return false; } };
 
+// Symlinks (Security 11/25, PR #84): the store comes from a cache that the build job's npm scripts could in principle
+// write, so a symlinked *directory* inside it must never let a read or write leave the store (or out/). Two layers:
+// every symlink in the store is deleted before anything else, at any depth, without following it; and every read and
+// write checks that the real path of its directory is still inside the real path of its base.
+function purgeLinks(dir) {
+  let st; try { st = lstatSync(dir); } catch { return 0; }
+  if (st.isSymbolicLink()) { rmSync(dir); return 1; }
+  if (!st.isDirectory()) return 0;
+  let n = 0;
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name), s2 = lstatSync(p);
+    if (s2.isSymbolicLink()) { rmSync(p); n++; } else if (s2.isDirectory()) n += purgeLinks(p);
+  }
+  return n;
+}
+function real(base, rel, write) {
+  const p = inside(base, rel), d = dirname(p);
+  if (write) mkdirSync(d, { recursive: true });
+  const rb = realpathSync(base), rd = realpathSync(d);
+  if (rd !== rb && !rd.startsWith(rb + sep)) throw new Error(`path leaves ${base} through a link: ${rel}`);
+  if (lstatSync(p, { throwIfNoEntry: false })?.isSymbolicLink()) throw new Error(`link at ${rel}`);
+  return p;
+}
+
 function list(base) {
   const found = new Map(), start = join(base, ROOT);
   if (!existsSync(start)) return found;
@@ -41,7 +65,13 @@ function list(base) {
   })(start);
   return found;
 }
-const copy = (from, to) => { mkdirSync(dirname(to), { recursive: true }); copyFileSync(from, to); };
+const stored = (rel) => { try { return isFile(real(FILES, rel, false)); } catch { return false; } };
+// Every copy is between two checked real paths: [base, rel] pairs.
+const copy = ([fromBase, rel], [toBase]) => copyFileSync(real(fromBase, rel, false), real(toBase, rel, true));
+
+for (const d of [OUT, STORE]) if (lstatSync(d, { throwIfNoEntry: false })?.isSymbolicLink()) { console.error(`skew: ${d} is a link; refusing`); process.exit(1); }
+const links = purgeLinks(STORE) + purgeLinks(join(OUT, "_next")); // no trailing slash: lstat must see the link itself
+if (links) console.log(`skew: removed ${links} symlink(s) before starting (never expected)`);
 
 let manifest = {};
 try {
@@ -54,19 +84,19 @@ const current = list(OUT);
 if (current.size === 0) { console.error(`skew: ${OUT}/${ROOT} is empty; refusing to touch the store`); process.exit(1); }
 for (const [rel, bytes] of current) {
   manifest[rel] = { last: now, bytes };
-  copy(inside(OUT, rel), inside(FILES, rel));
+  copy([OUT, rel], [FILES]);
 }
 
 // 2. Earlier builds' files still inside the window, newest first, up to the size cap.
 const older = Object.entries(manifest)
-  .filter(([rel, m]) => !current.has(rel) && okRel(rel) && m && Number.isFinite(m.last) && m.last >= cutoff && isFile(inside(FILES, rel)))
+  .filter(([rel, m]) => !current.has(rel) && okRel(rel) && m && Number.isFinite(m.last) && m.last >= cutoff && stored(rel))
   .sort((a, b) => b[1].last - a[1].last);
 const keep = new Set(current.keys());
 let carried = 0, carriedBytes = 0, capped = 0;
 for (const [rel] of older) {
-  const src = inside(FILES, rel), size = lstatSync(src).size;
+  const size = lstatSync(real(FILES, rel, false)).size;
   if (carriedBytes + size > MAX_BYTES) { capped++; continue; }
-  copy(src, inside(OUT, rel)); // never an existing out/ file: current files aren't in `older`
+  copy([FILES, rel], [OUT]); // never an existing out/ file: current files aren't in `older`
   keep.add(rel); carried++; carriedBytes += size;
 }
 
@@ -74,7 +104,7 @@ for (const [rel] of older) {
 for (const rel of Object.keys(manifest)) if (!keep.has(rel)) delete manifest[rel];
 let dropped = 0;
 for (const rel of list(FILES).keys()) {
-  if (!keep.has(rel)) { rmSync(inside(FILES, rel)); dropped++; }
+  if (!keep.has(rel)) { rmSync(real(FILES, rel, false)); dropped++; }
 }
 mkdirSync(STORE, { recursive: true });
 writeFileSync(MANIFEST, JSON.stringify({ version: 1, updated: new Date(now).toISOString(), files: manifest }));

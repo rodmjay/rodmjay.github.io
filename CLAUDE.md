@@ -27,6 +27,9 @@ through a deploy:
   the account flow while someone could be mid-way through it: that kind waits for the window.
 - Don't turn off the carry steps, and don't purge the `skew-*` caches, to work around a deploy problem. Ask Software
   Architect.
+- **The exception is a Security removal** (a bundled secret, an XSS fix that old pages must stop serving): bump the
+  repo variable `SKEW_EPOCH` (a clean store), redeploy, and confirm the removed file now answers 404. `SKEW_OFF=1`
+  skips the carry entirely. Security Officer's call, no other approval needed.
 
 ## Data: only through Edge Functions over curated views
 
