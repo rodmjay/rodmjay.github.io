@@ -58,8 +58,11 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
     account comes from the verified token only, and the fragment goes through the same server-side decode, size cap,
     take limit (20 a day, 200 in all) and rate limit. `login` creates an account for a new email the same way `start`
     does (migration 0223).
-  - Saving automatically after sign-in, with no click, is Compliance's call; until it rules, the signed-in result
-    page shows a one-tap "Save to my dashboard" instead.
+  - **No auto-save** (Compliance 11/26): a signed-in person saves with one tap, "Save to my dashboard". It saves
+    only that result, on that tap, and only if the person's recorded consent covers results. If it doesn't (a lead's
+    sign-in consent covers only email and name), the tap first shows 0004's results consent box, unticked, and records
+    it. `rvp.me` says whether the recorded consent covers results. An off-by-default "Save my results automatically"
+    setting with its own consent line could come later if Rod wants it; it isn't in v1.
   - Each path has an end-to-end test on staging (Playwright, against a test mailbox, `is_test` rows).
 - The response to `start` and `login` is the same neutral `200` in every case, and it takes the same time: the mail
   is queued the same way for linked, unlinked and unknown emails, so neither the body nor the timing reveals whether
