@@ -1,0 +1,65 @@
+# Recipes publish continuously (Rod 11/26: "Just publish them as you go … That's how I'm going to verify that they're done").
+# Every 5 minutes this reads the public-recipes feed (the same one the build reads), and when its content changed since the
+# last check it starts the production deploy (azure-swa.yml on main). No secrets: the feed is public and GET only, and the
+# deploy is started with this run's own GITHUB_TOKEN (workflow_dispatch is the one event that token may start).
+# A schedule runs only from the default branch, so this refreshes production; staging still moves on pushes to next.
+name: Recipes watch
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: recipes-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      RECIPES_API: https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/public-recipes
+    steps:
+      - name: Hash the published recipes
+        id: feed
+        run: |
+          set -euo pipefail
+          [ -n "$RECIPES_API" ] || { echo "RECIPES_API is not set"; exit 1; }
+          sep='?'; case "$RECIPES_API" in *\?*) sep='&';; esac
+          # Both languages, sorted keys, so the hash moves only when a recipe's content does.
+          { curl -fsS --max-time 30 "${RECIPES_API}${sep}lang=en"; curl -fsS --max-time 30 "${RECIPES_API}${sep}lang=es"; } \
+            | jq -S -c . | sha256sum | cut -c1-64 > feed.sha
+          echo "sha=$(cat feed.sha)" >> "$GITHUB_OUTPUT"
+      # The last hash deployed lives in the Actions cache: each run saves a new entry under a unique key and restores the
+      # newest one by prefix.
+      - name: Last deployed hash
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: last.sha
+          key: recipes-feed-${{ github.run_id }}
+          restore-keys: recipes-feed-
+      - name: Deploy when the feed changed
+        id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ steps.feed.outputs.sha }}
+        run: |
+          set -euo pipefail
+          last="$(cat last.sha 2>/dev/null || true)"
+          if [ "$last" = "$SHA" ]; then echo "No recipe change."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "Recipes changed (${last:-none} -> $SHA): starting the production deploy."
+          gh workflow run azure-swa.yml --repo "$GITHUB_REPOSITORY" --ref main
+          echo "$SHA" > last.sha
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "Recipes changed: production deploy started." >> "$GITHUB_STEP_SUMMARY"
+      - name: Remember this hash
+        if: steps.decide.outputs.changed == 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: last.sha
+          key: recipes-feed-${{ github.run_id }}
