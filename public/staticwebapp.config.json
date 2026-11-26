@@ -205,11 +205,6 @@
       "statusCode": 301
     },
     {
-      "route": "/rvp",
-      "redirect": "/personality-test/",
-      "statusCode": 301
-    },
-    {
       "route": "/rvp/*",
       "redirect": "/personality-test/",
       "statusCode": 301
@@ -362,11 +357,6 @@
     {
       "route": "/es/rvp/administrator-of-people/",
       "redirect": "/es/test-de-personalidad/administrator-of-people/",
-      "statusCode": 301
-    },
-    {
-      "route": "/es/rvp",
-      "redirect": "/es/test-de-personalidad/",
       "statusCode": 301
     },
     {
