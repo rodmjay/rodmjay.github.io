@@ -5,7 +5,9 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 //   season:summer  skewers, mango salsa               season:winter  arroz con pollo, turkey, sweet potato
 //   diet:vegetarian  gallo pinto, mango salsa, sweet potato      occasion:christmas  turkey, sweet potato
 //   occasion:weeknight  gallo pinto, arroz con pollo             cuisine:mexican  mango salsa only (tag page, no chip)
-// Desktop picks chips in the card above the grid; the phone opens the "Filter" sheet.
+//   dish:rice-beans, dish:skillet  gallo pinto, arroz con pollo
+// Desktop picks chips in the card above the grid; the phone opens the "Filter" sheet (and its "More filters" when needed).
+// Course and Dish lead the block (Designer 11/26); the other groups sit under "More filters".
 
 test.beforeEach(async ({ page }) => { await page.addInitScript(() => { try { localStorage.setItem("ds-lang", "en"); } catch {} }); });
 
@@ -28,6 +30,8 @@ async function chips(page: Page, isMobile: boolean): Promise<Locator> {
   const sheet = page.locator("dialog.recipe-sheet");
   if (!(await sheet.isVisible())) await page.locator(".recipe-filter-open button").click();
   await expect(sheet).toBeVisible();
+  const more = sheet.locator("details.recipe-more"); // collapsed in the sheet: open it to reach the other groups
+  if ((await more.count()) && !(await more.evaluate((d) => (d as HTMLDetailsElement).open))) await more.locator("summary").click();
   return sheet;
 }
 const chip = (scope: Locator, tag: string) => scope.locator(`button.ds-chip[data-tag="${tag}"]`);
@@ -40,6 +44,10 @@ async function closeSheet(page: Page, isMobile: boolean) {
 const count = (page: Page) => page.locator(".recipe-count");
 const cards = (page: Page) => page.locator(".recipe-grid .recipe-card");
 const query = (page: Page) => new URL(page.url()).searchParams.get("tags");
+const GROUPS_EN = ["Course", "Dish", "Occasion", "Season", "Cuisine", "Main ingredient", "Diet"];
+// The data-tag of every chip in one group, in page order.
+const order = (scope: Locator, group: string) =>
+  scope.locator(`[role=group][aria-labelledby$="-${group}"] button.ds-chip`).evaluateAll((els) => els.map((e) => e.getAttribute("data-tag")));
 
 test("OR inside a group, AND across groups, with the right counts", async ({ page, isMobile }) => {
   await open(page, "/recipes/");
@@ -145,7 +153,8 @@ test("phone: one Filter button and a full-height sheet; desktop: the card", asyn
   if (!isMobile) {
     await expect(btn).toBeHidden();
     await expect(page.locator("section.recipe-filters")).toBeVisible();
-    await expect(page.locator("section.recipe-filters h3")).toHaveText(["Course", "Occasion", "Season", "Cuisine", "Main ingredient", "Diet"]);
+    await expect(page.locator("section.recipe-filters h3")).toHaveText(GROUPS_EN);
+    await expect(page.locator("section.recipe-filters details.recipe-more")).toHaveAttribute("open", ""); // open on desktop
     return;
   }
   await expect(page.locator("section.recipe-filters")).toBeHidden();
@@ -155,11 +164,17 @@ test("phone: one Filter button and a full-height sheet; desktop: the card", asyn
   await expect(sheet).toBeVisible();
   const box = await sheet.boundingBox();
   expect(box!.height).toBeGreaterThanOrEqual(page.viewportSize()!.height - 1);
-  await expect(sheet.locator("h3")).toHaveText(["Course", "Occasion", "Season", "Cuisine", "Main ingredient", "Diet"]);
+  await expect(sheet.locator("h3")).toHaveText(GROUPS_EN);
+  // Course and Dish first; the rest collapsed under "More filters".
+  await expect(sheet.locator(".recipe-lead h3")).toHaveText(["Course", "Dish"]);
+  await expect(chip(sheet, "course:main")).toBeVisible();
+  await expect(sheet.locator("details.recipe-more")).not.toHaveAttribute("open", "");
+  await expect(chip(sheet, "season:summer")).toBeHidden();
   await page.keyboard.press("Escape");
   await expect(sheet).toBeHidden();
   await expect(btn).toBeFocused();
   await btn.click();
+  await sheet.locator(".recipe-more-summary").click();
   await chip(sheet, "season:summer").click();
   await expect(chip(sheet, "season:summer")).toBeFocused();
   await expect(sheet.locator(".recipe-sheet-bar .ds-btn:not(.text)")).toHaveText("Show 2 recipes");
@@ -199,8 +214,8 @@ test("tag page: sibling chips of the same group, then Combine filters", async ({
   await expect(page.locator("h1")).toHaveText("Summer");
   await expect(page.locator(".page-head p")).toHaveText("Season");
   const sib = page.locator(".recipe-siblings .ds-chip");
-  await expect(sib).toHaveText(["All", "Fall", "Summer", "Winter"]);
-  await expect(sib.nth(2)).toHaveAttribute("aria-current", "page");
+  await expect(sib).toHaveText(["All", "Summer", "Fall", "Winter"]); // the catalog's order, not the alphabet
+  await expect(sib.nth(1)).toHaveAttribute("aria-current", "page");
   await expect(cards(page)).toHaveCount(2);
   await page.locator(".recipe-siblings").getByRole("link", { name: "Winter" }).click();
   await expect(page).toHaveURL(/\/recipes\/tag\/season-winter\/$/);
@@ -240,7 +255,8 @@ test("Spanish: labels, counts, URL and tag pages", async ({ page, isMobile }) =>
   await expect(page.getByRole("button", { name: "Quitar Verano" })).toBeVisible();
   const scope = await chips(page, isMobile);
   await expect(chip(scope, "season:summer")).toContainText("Verano");
-  await expect(scope.locator("h3")).toHaveText(["Tipo de plato", "Ocasión", "Temporada", "Cocina", "Ingrediente principal", "Dieta"]);
+  await expect(scope.locator("h3")).toHaveText(["Tipo de plato", "Preparación", "Ocasión", "Temporada", "Cocina", "Ingrediente principal", "Dieta"]);
+  await expect(scope.locator(".recipe-more-summary")).toHaveText("Más filtros");
   await chip(scope, "diet:paleo-friendly").click();
   await expect(count(page)).toHaveText("2 recetas");
   await chip(scope, "course:side").click();
@@ -255,7 +271,7 @@ test("Spanish: labels, counts, URL and tag pages", async ({ page, isMobile }) =>
   await page.goto("/es/recipes/tag/season-summer/");
   await expect(page.locator("h1")).toHaveText("Verano");
   await expect(page.locator(".page-head p")).toHaveText("Temporada");
-  await expect(page.locator(".recipe-siblings .ds-chip")).toHaveText(["Todas", "Invierno", "Otoño", "Verano"]);
+  await expect(page.locator(".recipe-siblings .ds-chip")).toHaveText(["Todas", "Verano", "Otoño", "Invierno"]);
   await expect(page.locator(".recipe-siblings").getByRole("link", { name: "Combinar filtros" })).toHaveAttribute("href", "/es/recipes/?tags=season:summer");
   await page.goto("/es/recipes/roast-turkey-breast/");
   await expect(page.locator(".recipe-tags .recipe-tags-label")).toHaveText("Etiquetas");
@@ -290,4 +306,100 @@ test("live data: chips filter the list and the URL keeps them", async ({ page, i
   const n = await cards(page).count();
   expect(n).toBeGreaterThan(0);
   expect(n).toBeLessThanOrEqual(total);
+});
+
+test("chip order follows the catalog's sort; cuisine and main stay alphabetical in each language", async ({ page, isMobile }) => {
+  await open(page, "/recipes/");
+  let scope = await chips(page, isMobile);
+  expect(await order(scope, "course")).toEqual(["course:main", "course:side"]);
+  expect(await order(scope, "dish")).toEqual(["dish:skillet", "dish:rice-beans"]);
+  expect(await order(scope, "occasion")).toEqual(["occasion:holiday", "occasion:christmas", "occasion:party", "occasion:weeknight"]);
+  expect(await order(scope, "season")).toEqual(["season:summer", "season:winter"]);
+  expect(await order(scope, "cuisine")).toEqual(["cuisine:american", "cuisine:costa-rican"]); // American, Costa Rican
+  await page.addInitScript(() => { try { localStorage.setItem("ds-lang", "es"); } catch {} });
+  await open(page, "/es/recipes/");
+  scope = await chips(page, isMobile);
+  expect(await order(scope, "cuisine")).toEqual(["cuisine:costa-rican", "cuisine:american"]); // Costarricense, Estadounidense
+  expect(await order(scope, "occasion")).toEqual(["occasion:holiday", "occasion:christmas", "occasion:party", "occasion:weeknight"]);
+});
+
+test("Course and Dish lead with 56px chips; the rest under More filters, same OR/AND rule", async ({ page, isMobile }) => {
+  await open(page, "/recipes/");
+  const scope = await chips(page, isMobile);
+  await expect(scope.locator(".recipe-lead h3")).toHaveText(["Course", "Dish"]);
+  await expect(scope.locator(".recipe-more-summary")).toHaveText("More filters");
+  await expect(scope.locator(".recipe-more-groups h3")).toHaveText(["Occasion", "Season", "Cuisine", "Main ingredient", "Diet"]);
+  expect((await chip(scope, "dish:skillet").boundingBox())!.height).toBe(56);
+  await pick(page, isMobile, "dish:rice-beans");
+  await expect(count(page)).toHaveText("2 recipes");
+  await pick(page, isMobile, "dish:skillet"); // OR inside Dish
+  await expect(count(page)).toHaveText("2 recipes");
+  await pick(page, isMobile, "season:winter"); // AND with Season
+  await expect(count(page)).toHaveText("1 recipe");
+  expect(query(page)).toBe("dish:skillet,dish:rice-beans,season:winter");
+  await closeSheet(page, isMobile);
+  await expect(cards(page).locator(".recipe-card-title")).toHaveText(["Arroz con Pollo"]);
+});
+
+// A 48px target whatever it looks like: the box, plus an invisible ::before reaching past it, is at least 48px each way,
+// and the control (not a neighbour) is what a tap 23px above, below, left and right of its centre lands on.
+async function hit48(loc: Locator, what: string) {
+  await loc.scrollIntoViewIfNeeded();
+  const r = await loc.evaluate((el) => {
+    const b = el.getBoundingClientRect(), cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+    const at = (x: number, y: number) => { const e = document.elementFromPoint(x, y); return !!e && (e === el || el.contains(e)); };
+    const cs = getComputedStyle(el), pre = getComputedStyle(el, "::before");
+    const out = (v: string) => (pre.position === "absolute" ? Math.max(0, -(parseFloat(v) || 0)) : 0);
+    return { probes: [at(cx, cy - 23), at(cx, cy + 23), at(cx - 23, cy), at(cx + 23, cy)],
+      reach: [b.height + out(pre.top) + out(pre.bottom), b.width + out(pre.left) + out(pre.right)],
+      look: b.height - parseFloat(cs.borderTopWidth) - parseFloat(cs.borderBottomWidth) };
+  });
+  expect(r.probes, `${what}: taps land on it`).toEqual([true, true, true, true]);
+  expect(Math.min(...r.reach), `${what}: 48px reach`).toBeGreaterThanOrEqual(47.9);
+  return r.look;
+}
+
+test("live data: every control has a 48px hit area; chips keep their 32px look", async ({ page, isMobile }) => {
+  await open(page, "/recipes/");
+  const scope = await chips(page, isMobile);
+  const plain = scope.locator(".recipe-more-groups button.ds-chip").first();
+  expect(await hit48(plain, "chip")).toBe(32);
+  await hit48(scope.locator(".recipe-lead button.ds-chip").first(), "lead chip");
+  await hit48(scope.locator(".recipe-more-summary"), "More filters");
+  if (isMobile) {
+    await hit48(scope.getByRole("button", { name: "Close" }), "sheet close");
+    await hit48(scope.locator(".recipe-sheet-bar .ds-btn.text"), "sheet Clear all");
+    await hit48(scope.locator(".recipe-sheet-bar .ds-btn:not(.text)"), "Show N recipes");
+  }
+  await scope.locator("button.ds-chip[data-tag]:not([aria-disabled=\"true\"])").first().click();
+  await closeSheet(page, isMobile);
+  if (isMobile) await hit48(page.locator(".recipe-filter-open button"), "Filter");
+  expect(await hit48(page.locator(".recipe-selected").first(), "selected chip")).toBe(32);
+  await hit48(page.locator(".recipe-summary .recipe-clear"), "Clear all");
+  await page.locator(".recipe-summary .recipe-clear").click();
+  const pager = page.locator(".recipe-pager .ds-btn");
+  if (await pager.count()) await hit48(pager.first(), "Older");
+  await cards(page).first().click();
+  await expect(page.locator(".recipe-steps")).toBeVisible();
+  const tag = page.locator(".recipe-tags a.ds-chip").first();
+  if (await tag.count()) expect(await hit48(tag, "recipe tag")).toBe(32);
+  await hit48(page.locator(".recipe-actions .ds-btn"), "Print");
+});
+
+test("live data: a filtered URL is noindex with its canonical at /recipes/", async ({ page }) => {
+  const filtered = 'meta[name="robots"][data-filtered]';
+  await open(page, "/recipes/?tags=season:summer");
+  await expect(page.locator(filtered)).toHaveAttribute("content", "noindex");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://rodmjay.com/recipes/");
+  await open(page, "/es/recipes/?tags=season:summer");
+  await expect(page.locator(filtered)).toHaveAttribute("content", "noindex");
+  await open(page, "/recipes/");
+  await expect(page.locator(filtered)).toHaveCount(0);
+  await page.goto("/recipes/tag/season-summer/");
+  await expect(page.locator(filtered)).toHaveCount(0);
+  // Leaving a filtered index in the same visit takes the tag away.
+  await open(page, "/recipes/?tags=season:summer");
+  await cards(page).first().click();
+  await expect(page.locator(".recipe-steps")).toBeVisible();
+  await expect(page.locator(filtered)).toHaveCount(0);
 });

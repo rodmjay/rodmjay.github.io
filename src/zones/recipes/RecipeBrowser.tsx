@@ -14,7 +14,10 @@ export type FacetValue = { tag: string; label: string; url: string; chip: boolea
 export type FacetGroup = { group: string; label: string; values: FacetValue[] };
 export type BrowserWords = Record<
   "count" | "countOne" | "show" | "showOne" | "clearAll" | "clearAllFilters" | "remove" | "selected" | "noMatch" | "emptyTitle" |
-  "emptyBody" | "filter" | "filterCount" | "filterHeading" | "close" | "newer" | "older" | "page" | "pages", string>;
+  "emptyBody" | "filter" | "filterCount" | "filterHeading" | "moreFilters" | "close" | "newer" | "older" | "page" | "pages", string>;
+
+// The lead block: bigger chips, always open, first in the sheet.
+const LEAD = ["course", "dish"];
 
 const fmt = (s: string, vars: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m));
 // Layout effects only run in the browser; the server render never measures.
@@ -60,6 +63,11 @@ export function RecipeBrowser({ base, items, groups, page0, perPage, sampleLabel
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  // The head script marks a filtered load noindex (langscript.mjs); leaving the index takes that tag away again.
+  useEffect(() => () => {
+    document.querySelector('meta[name="robots"][data-filtered]')?.remove();
   }, []);
 
   // The URL's selection on load, and on Back/Forward.
@@ -128,25 +136,40 @@ export function RecipeBrowser({ base, items, groups, page0, perPage, sampleLabel
   const chipGroups = groups.map((g) => ({ ...g, values: g.values.filter((v) => v.chip) })).filter((g) => g.values.length);
 
   // A plain function, not a component, so the chip buttons keep their identity and focus across renders.
+  const lead = chipGroups.filter((g) => LEAD.includes(g.group)), more = chipGroups.filter((g) => !LEAD.includes(g.group));
+
+  const facet = (g: FacetGroup, where: "inline" | "sheet") => (
+    <div key={g.group} className="recipe-facet" role="group" aria-labelledby={`rf-${where}-${g.group}`}>
+      <h3 className="ds-label-large" id={`rf-${where}-${g.group}`}>{g.label}</h3>
+      <ul className="recipe-chips">
+        {g.values.map((v) => {
+          const on = sel.includes(v.tag), off = !on && !reachable(v, g.group);
+          return (
+            <li key={v.tag}>
+              <button type="button" className="ds-chip" data-tag={v.tag} aria-pressed={on} aria-disabled={off || undefined}
+                aria-describedby={off ? `rf-${where}-nomatch` : undefined} onClick={() => toggle(v.tag, off)}>{v.label}</button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+  // Course and Dish lead as a larger first block; the other groups sit under "More filters", open on desktop and
+  // collapsed in the phone sheet (Designer 11/26). A plain function, not a component, so the chip buttons keep their
+  // identity and focus across renders. The <details> keeps whatever the visitor last chose: React never resets `open`.
   const chipBlock = (where: "inline" | "sheet") => (
     <>
       <span id={`rf-${where}-nomatch`} hidden>{w.noMatch}</span>
-      {chipGroups.map((g) => (
-        <div key={g.group} className="recipe-facet" role="group" aria-labelledby={`rf-${where}-${g.group}`}>
-          <h3 className="ds-label-large" id={`rf-${where}-${g.group}`}>{g.label}</h3>
-          <ul className="recipe-chips">
-            {g.values.map((v) => {
-              const on = sel.includes(v.tag), off = !on && !reachable(v, g.group);
-              return (
-                <li key={v.tag}>
-                  <button type="button" className="ds-chip" data-tag={v.tag} aria-pressed={on} aria-disabled={off || undefined}
-                    aria-describedby={off ? `rf-${where}-nomatch` : undefined} onClick={() => toggle(v.tag, off)}>{v.label}</button>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ))}
+      {lead.length > 0 && <div className="recipe-lead">{lead.map((g) => facet(g, where))}</div>}
+      {more.length > 0 && (
+        <details className="recipe-more" open={where === "inline"}>
+          <summary className="ds-label-large recipe-more-summary">
+            {w.moreFilters}
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="ds-icon sm"><path d="M12 15.4 6 9.4 7.4 8l4.6 4.6L16.6 8 18 9.4Z" /></svg>
+          </summary>
+          <div className="recipe-more-groups">{more.map((g) => facet(g, where))}</div>
+        </details>
+      )}
     </>
   );
 
@@ -180,8 +203,8 @@ export function RecipeBrowser({ base, items, groups, page0, perPage, sampleLabel
           </dialog>
           {/* Without script: the chips are links to the flat tag pages. */}
           <nav className="ds-card outlined recipe-filters-nojs" aria-label={w.filterHeading}>
-            {chipGroups.map((g) => (
-              <div key={g.group} className="recipe-facet">
+            {[...lead, ...more].map((g) => (
+              <div key={g.group} className={`recipe-facet${LEAD.includes(g.group) ? " recipe-lead-facet" : ""}`}>
                 <h3 className="ds-label-large">{g.label}</h3>
                 <ul className="recipe-chips">{g.values.map((v) => <li key={v.tag}><Link className="ds-chip" href={v.url}>{v.label}</Link></li>)}</ul>
               </div>

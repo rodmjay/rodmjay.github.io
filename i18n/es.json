@@ -222,6 +222,7 @@
     "filterHeading": "Filtrar recetas",
     "filter": "Filtrar",
     "filterCount": "Filtrar ({n})",
+    "moreFilters": "Más filtros",
     "count": "{n} recetas",
     "countOne": "1 receta",
     "show": "Ver {n} recetas",

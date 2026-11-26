@@ -37,11 +37,13 @@
     "pairs_with": "Fresh orange juice",
     "sources": [],
     "facets": [
-      { "group": "course", "key": "breakfast", "tag": "course:breakfast", "label": "Breakfast" },
-      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Weeknight" },
-      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costa Rican" },
-      { "group": "main", "key": "beans", "tag": "main:beans", "label": "Beans" },
-      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetarian" }
+      { "group": "course", "key": "breakfast", "tag": "course:breakfast", "label": "Breakfast", "sort": 1 },
+      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Weeknight", "sort": 8 },
+      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costa Rican", "sort": 3 },
+      { "group": "main", "key": "beans", "tag": "main:beans", "label": "Beans", "sort": 7 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetarian", "sort": 2 },
+      { "group": "dish", "key": "skillet", "tag": "dish:skillet", "label": "Skillet or one-pan", "sort": 5 },
+      { "group": "dish", "key": "rice-beans", "tag": "dish:rice-beans", "label": "Rice or beans", "sort": 13 }
     ]
   },
   {
@@ -82,11 +84,13 @@
     "pairs_with": "Jugo de naranja natural",
     "sources": [],
     "facets": [
-      { "group": "course", "key": "breakfast", "tag": "course:breakfast", "label": "Desayuno" },
-      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Entre semana" },
-      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costarricense" },
-      { "group": "main", "key": "beans", "tag": "main:beans", "label": "Frijoles" },
-      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetariana" }
+      { "group": "course", "key": "breakfast", "tag": "course:breakfast", "label": "Desayuno", "sort": 1 },
+      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Entre semana", "sort": 8 },
+      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costarricense", "sort": 3 },
+      { "group": "main", "key": "beans", "tag": "main:beans", "label": "Frijoles", "sort": 7 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetariana", "sort": 2 },
+      { "group": "dish", "key": "skillet", "tag": "dish:skillet", "label": "Sartén o una sola olla", "sort": 5 },
+      { "group": "dish", "key": "rice-beans", "tag": "dish:rice-beans", "label": "Arroz o frijoles", "sort": 13 }
     ]
   },
   {
@@ -129,12 +133,14 @@
     "pairs_with": "Agua de jamaica",
     "sources": [],
     "facets": [
-      { "group": "course", "key": "main", "tag": "course:main", "label": "Main dish" },
-      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Weeknight" },
-      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Party or potluck" },
-      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Winter" },
-      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costa Rican" },
-      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Chicken" }
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Main dish", "sort": 2 },
+      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Weeknight", "sort": 8 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Party or potluck", "sort": 6 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Winter", "sort": 4 },
+      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costa Rican", "sort": 3 },
+      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Chicken", "sort": 1 },
+      { "group": "dish", "key": "skillet", "tag": "dish:skillet", "label": "Skillet or one-pan", "sort": 5 },
+      { "group": "dish", "key": "rice-beans", "tag": "dish:rice-beans", "label": "Rice or beans", "sort": 13 }
     ]
   },
   {
@@ -177,12 +183,14 @@
     "pairs_with": "Agua de jamaica",
     "sources": [],
     "facets": [
-      { "group": "course", "key": "main", "tag": "course:main", "label": "Plato fuerte" },
-      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Entre semana" },
-      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Fiesta o convivio" },
-      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Invierno" },
-      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costarricense" },
-      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Pollo" }
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Plato fuerte", "sort": 2 },
+      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Entre semana", "sort": 8 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Fiesta o convivio", "sort": 6 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Invierno", "sort": 4 },
+      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costarricense", "sort": 3 },
+      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Pollo", "sort": 1 },
+      { "group": "dish", "key": "skillet", "tag": "dish:skillet", "label": "Sartén o una sola olla", "sort": 5 },
+      { "group": "dish", "key": "rice-beans", "tag": "dish:rice-beans", "label": "Arroz o frijoles", "sort": 13 }
     ]
   },
   {
@@ -218,13 +226,14 @@
     "updated_at": "2026-11-22T00:00:00Z",
     "from_credit": "From Rod's kitchen",
     "facets": [
-      { "group": "course", "key": "main", "tag": "course:main", "label": "Main dish" },
-      { "group": "occasion", "key": "july-4th", "tag": "occasion:july-4th", "label": "July 4th" },
-      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Party or potluck" },
-      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Summer" },
-      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "American" },
-      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Chicken" },
-      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly" }
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Main dish", "sort": 2 },
+      { "group": "occasion", "key": "july-4th", "tag": "occasion:july-4th", "label": "July 4th", "sort": 5 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Party or potluck", "sort": 6 },
+      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Summer", "sort": 2 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "American", "sort": 1 },
+      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Chicken", "sort": 1 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly", "sort": 1 },
+      { "group": "dish", "key": "grill", "tag": "dish:grill", "label": "Grill or kebabs", "sort": 12 }
     ]
   },
   {
@@ -260,13 +269,14 @@
     "updated_at": "2026-11-22T00:00:00Z",
     "from_credit": "De la cocina de Rod",
     "facets": [
-      { "group": "course", "key": "main", "tag": "course:main", "label": "Plato fuerte" },
-      { "group": "occasion", "key": "july-4th", "tag": "occasion:july-4th", "label": "4 de julio" },
-      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Fiesta o convivio" },
-      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Verano" },
-      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "Estadounidense" },
-      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Pollo" },
-      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo" }
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Plato fuerte", "sort": 2 },
+      { "group": "occasion", "key": "july-4th", "tag": "occasion:july-4th", "label": "4 de julio", "sort": 5 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Fiesta o convivio", "sort": 6 },
+      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Verano", "sort": 2 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "Estadounidense", "sort": 1 },
+      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Pollo", "sort": 1 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo", "sort": 1 },
+      { "group": "dish", "key": "grill", "tag": "dish:grill", "label": "Parrilla o brochetas", "sort": 12 }
     ]
   },
   {
@@ -300,12 +310,13 @@
     "updated_at": "2026-11-21T00:00:00Z",
     "from_credit": "From Rod's kitchen",
     "facets": [
-      { "group": "course", "key": "side", "tag": "course:side", "label": "Side" },
-      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Party or potluck" },
-      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Summer" },
-      { "group": "cuisine", "key": "mexican", "tag": "cuisine:mexican", "label": "Mexican" },
-      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetarian" },
-      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly" }
+      { "group": "course", "key": "side", "tag": "course:side", "label": "Side", "sort": 3 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Party or potluck", "sort": 6 },
+      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Summer", "sort": 2 },
+      { "group": "cuisine", "key": "mexican", "tag": "cuisine:mexican", "label": "Mexican", "sort": 2 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetarian", "sort": 2 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly", "sort": 1 },
+      { "group": "dish", "key": "sauce-dip", "tag": "dish:sauce-dip", "label": "Sauce or dip", "sort": 11 }
     ]
   },
   {
@@ -339,12 +350,13 @@
     "updated_at": "2026-11-21T00:00:00Z",
     "from_credit": "De la cocina de Rod",
     "facets": [
-      { "group": "course", "key": "side", "tag": "course:side", "label": "Acompañamiento" },
-      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Fiesta o convivio" },
-      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Verano" },
-      { "group": "cuisine", "key": "mexican", "tag": "cuisine:mexican", "label": "Mexicana" },
-      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetariana" },
-      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo" }
+      { "group": "course", "key": "side", "tag": "course:side", "label": "Acompañamiento", "sort": 3 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Fiesta o convivio", "sort": 6 },
+      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Verano", "sort": 2 },
+      { "group": "cuisine", "key": "mexican", "tag": "cuisine:mexican", "label": "Mexicana", "sort": 2 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetariana", "sort": 2 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo", "sort": 1 },
+      { "group": "dish", "key": "sauce-dip", "tag": "dish:sauce-dip", "label": "Salsa o untable", "sort": 11 }
     ]
   },
   {
@@ -378,15 +390,15 @@
     "updated_at": "2026-11-20T00:00:00Z",
     "from_credit": "From Rod's kitchen",
     "facets": [
-      { "group": "course", "key": "main", "tag": "course:main", "label": "Main dish" },
-      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Holiday" },
-      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Christmas" },
-      { "group": "occasion", "key": "thanksgiving", "tag": "occasion:thanksgiving", "label": "Thanksgiving" },
-      { "group": "season", "key": "fall", "tag": "season:fall", "label": "Fall" },
-      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Winter" },
-      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "American" },
-      { "group": "main", "key": "turkey", "tag": "main:turkey", "label": "Turkey" },
-      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly" }
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Main dish", "sort": 2 },
+      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Holiday", "sort": 1 },
+      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Christmas", "sort": 2 },
+      { "group": "occasion", "key": "thanksgiving", "tag": "occasion:thanksgiving", "label": "Thanksgiving", "sort": 3 },
+      { "group": "season", "key": "fall", "tag": "season:fall", "label": "Fall", "sort": 3 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Winter", "sort": 4 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "American", "sort": 1 },
+      { "group": "main", "key": "turkey", "tag": "main:turkey", "label": "Turkey", "sort": 4 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly", "sort": 1 }
     ]
   },
   {
@@ -420,15 +432,15 @@
     "updated_at": "2026-11-20T00:00:00Z",
     "from_credit": "De la cocina de Rod",
     "facets": [
-      { "group": "course", "key": "main", "tag": "course:main", "label": "Plato fuerte" },
-      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Fiestas" },
-      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Navidad" },
-      { "group": "occasion", "key": "thanksgiving", "tag": "occasion:thanksgiving", "label": "Día de Acción de Gracias" },
-      { "group": "season", "key": "fall", "tag": "season:fall", "label": "Otoño" },
-      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Invierno" },
-      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "Estadounidense" },
-      { "group": "main", "key": "turkey", "tag": "main:turkey", "label": "Pavo" },
-      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo" }
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Plato fuerte", "sort": 2 },
+      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Fiestas", "sort": 1 },
+      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Navidad", "sort": 2 },
+      { "group": "occasion", "key": "thanksgiving", "tag": "occasion:thanksgiving", "label": "Día de Acción de Gracias", "sort": 3 },
+      { "group": "season", "key": "fall", "tag": "season:fall", "label": "Otoño", "sort": 3 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Invierno", "sort": 4 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "Estadounidense", "sort": 1 },
+      { "group": "main", "key": "turkey", "tag": "main:turkey", "label": "Pavo", "sort": 4 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo", "sort": 1 }
     ]
   },
   {
@@ -461,13 +473,13 @@
     "updated_at": "2026-11-19T00:00:00Z",
     "from_credit": "From Rod's kitchen",
     "facets": [
-      { "group": "course", "key": "side", "tag": "course:side", "label": "Side" },
-      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Holiday" },
-      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Christmas" },
-      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Winter" },
-      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "American" },
-      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetarian" },
-      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly" }
+      { "group": "course", "key": "side", "tag": "course:side", "label": "Side", "sort": 3 },
+      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Holiday", "sort": 1 },
+      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Christmas", "sort": 2 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Winter", "sort": 4 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "American", "sort": 1 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetarian", "sort": 2 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly", "sort": 1 }
     ]
   },
   {
@@ -500,13 +512,13 @@
     "updated_at": "2026-11-19T00:00:00Z",
     "from_credit": "De la cocina de Rod",
     "facets": [
-      { "group": "course", "key": "side", "tag": "course:side", "label": "Acompañamiento" },
-      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Fiestas" },
-      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Navidad" },
-      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Invierno" },
-      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "Estadounidense" },
-      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetariana" },
-      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo" }
+      { "group": "course", "key": "side", "tag": "course:side", "label": "Acompañamiento", "sort": 3 },
+      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Fiestas", "sort": 1 },
+      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Navidad", "sort": 2 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Invierno", "sort": 4 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "Estadounidense", "sort": 1 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetariana", "sort": 2 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo", "sort": 1 }
     ]
   }
 ]
