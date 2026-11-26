@@ -120,6 +120,8 @@ jobs:
         run: npm run test:urls
       - name: Consent words match what the account function records (Security 11/26)
         run: npm run test:consent
+      - name: No photo carries EXIF or XMP metadata (Security 11/26)
+        run: npm run test:exif
       - name: RVP test engine (scoring, links, all 27 archetypes)
         run: npm run test:rvp
       - name: Deploy skew carry (scripts/skew.mjs)

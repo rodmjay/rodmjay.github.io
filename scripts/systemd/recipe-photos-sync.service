@@ -1,0 +1,16 @@
+# rodmjay.com recipe photos (scripts/recipe-photos-sync.py). Owner Software Architect; installed by IT Guy.
+# Runs the sync from its own worktree of the site repo; gh and git use Rod's existing login on this machine.
+[Unit]
+Description=rodmjay.com: bring new or changed recipe photos to the site
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/.local/share/recipe-photos-sync/site
+ExecStartPre=/usr/bin/bash -c 'test -d %h/.local/share/recipe-photos-sync/site || git -C %h/dev/rodmjay.github.io worktree add --detach %h/.local/share/recipe-photos-sync/site origin/main'
+# Always start from the reviewed origin/main (Security 11/26): fetch, then a clean detached checkout of it.
+ExecStartPre=/usr/bin/git -C %h/.local/share/recipe-photos-sync/site fetch -q origin
+ExecStartPre=/usr/bin/git -C %h/.local/share/recipe-photos-sync/site checkout -q -f --detach origin/main
+ExecStartPre=/usr/bin/git -C %h/.local/share/recipe-photos-sync/site clean -fdq
+ExecStart=/usr/bin/python3 %h/.local/share/recipe-photos-sync/site/scripts/recipe-photos-sync.py
+TimeoutStartSec=45min
+Nice=10
