@@ -111,7 +111,7 @@ function FacetIndex({ r, l }: { r: any; l: any }) {
   return (
     <>
       <header className="page-head wide-col"><h1 className="ds-headline-large" id="recipes-title">{R.title}</h1><p className="ds-body-large">{R.tagline}</p>{r.sample && <Chip lang={lang} />}</header>
-      <main id="main" className="wide-col ix recipes">
+      <main id="main" className="wide-col ix recipes" data-recipes-source={r.sampleData ? "fixture" : "feed"}>
         {r.sample && <p className="ds-banner sample">{R.sample}</p>}
         <RecipeBrowser base={BASE[lang]} items={r.byLang[lang].map(card)} groups={facetGroups(r, lang)} page0={l.n} perPage={PER_PAGE}
           sampleLabel={r.sample ? R.sampleChip : undefined} w={w} />

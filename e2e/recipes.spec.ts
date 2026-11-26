@@ -9,6 +9,15 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => { await page.addInitScript(() => { try { localStorage.setItem("ds-lang", "en"); } catch {} }); });
 
+// The counts below are the fixture's. A deploy build reads the live feed (Health Agent publishes as it goes), so there these
+// tests step aside and the data-independent check at the end runs instead.
+let fixture: boolean | undefined;
+test.beforeEach(async ({ request }, info) => {
+  if (info.title.startsWith("live data:")) return;
+  if (fixture === undefined) fixture = /data-recipes-source="fixture"/.test(await (await request.get("/recipes/")).text());
+  test.skip(!fixture, "built from the live recipes feed: the fixture's counts don't apply");
+});
+
 async function open(page: Page, path: string) {
   await page.goto(path);
   await expect(page.locator(".recipe-summary[data-ready]")).toBeAttached(); // hydrated: chips answer clicks
@@ -266,4 +275,19 @@ test.describe("without script", () => {
     await page.goto("/recipes/tag/season-summer/");
     await expect(cards(page)).toHaveCount(2);
   });
+});
+
+test("live data: chips filter the list and the URL keeps them", async ({ page, isMobile }) => {
+  await open(page, "/recipes/");
+  const total = await cards(page).count();
+  expect(total).toBeGreaterThan(0);
+  const scope = await chips(page, isMobile);
+  const first = scope.locator("button.ds-chip[data-tag]:not([aria-disabled=\"true\"])").first();
+  const tag = await first.getAttribute("data-tag");
+  await first.click();
+  await closeSheet(page, isMobile);
+  await expect.poll(() => query(page)).toBe(tag);
+  const n = await cards(page).count();
+  expect(n).toBeGreaterThan(0);
+  expect(n).toBeLessThanOrEqual(total);
 });
