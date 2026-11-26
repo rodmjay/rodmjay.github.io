@@ -312,7 +312,7 @@
     "backups": "Entries in my nightly database backups are gone within 30 days. Older private backups, including a private contact-list file in a private repository, may still contain your name and email. I don't use them, and if I ever restore one, I delete your entry again."
   },
   "rvp": {
-    "metaTitle": "RVP archetype test",
+    "metaTitle": "Personality test",
     "metaDescription": "Twenty-seven questions about what you have, what you value and how you work. Your answers stay in your browser.",
     "title": "Which RVP archetype are you?",
     "lede": "RVP maps three things: the resources you draw on, the values that decide for you, and how you get things done. Twenty-seven short questions, about five minutes.",
