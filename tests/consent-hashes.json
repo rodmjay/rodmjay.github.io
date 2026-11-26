@@ -1,0 +1,18 @@
+{
+  "note": "Security 11/26: the consent words the page shows must be the words the function records (it stores the sha256 of its own copy: database/functions/rvp-account/consent.json and site-consent.json in the personal workspace). A new approved wording means a new pin here, from Compliance's text, never from i18n.",
+  "results": {
+    "key": "account.consent",
+    "en": "82c1d707d20170df7d570fc166984d2d2eff36d4e234b6ef3369103f3174763a",
+    "es": "342565f8aa0ebb926069e660f9c59ef6d948192eaac3a9611250d3aed20b423c"
+  },
+  "linked": {
+    "key": "account.consentLinked",
+    "en": "67263146af169596a733fd392d872830704ce77d4455e1fc5360a714c7525520",
+    "es": "e0b649b215a35ffa8eb8d5246fd70a4a60f576df267db37aaaa30f977e4bc2cc"
+  },
+  "lead": {
+    "key": "account.consentLead",
+    "en": "af87909e060bee7326b4700dc706a3cfd820a24fb86ae23bf1bdeb03bda33484",
+    "es": "c2e20de090b104d818ad48a956c2eb124924f788753bd6e2bcaf229453f27d77"
+  }
+}

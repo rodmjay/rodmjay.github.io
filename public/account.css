@@ -1,0 +1,70 @@
+/* Accounts on the personality test (src/account; Designer's specs rvp-accounts.md and site-roles.md). System components
+   only (ds-card, ds-field, ds-btn, ds-banner, ds-dialog, ds-skeleton); these rules only place them. */
+.acct-page { padding-top: var(--space-12); display: grid; gap: var(--space-6); }
+.acct-card { display: grid; gap: var(--space-4); padding: var(--space-6); max-width: 40rem; }
+.acct-card h1, .acct-card h2, .acct-step h2, .acct-step p, .acct-form p { margin: 0; }
+.acct-form, .acct-step { display: grid; gap: var(--space-4); }
+.acct-card :is(h1, h2):focus { outline: none; }
+.acct-card :is(h1, h2):focus-visible { outline: 2px solid var(--md-sys-color-primary); outline-offset: 4px; }
+.acct-form .ds-btn, .acct-step .ds-btn { justify-self: start; min-height: 48px; }
+.acct-inline-btn { padding-inline: 0; min-height: 48px; }
+.acct-line { margin: 0; }
+.acct-err { display: flex; align-items: flex-start; gap: var(--space-2); margin: 0; color: var(--md-sys-color-error); }
+.acct-err[hidden] { display: none; }
+.acct-err svg { flex: none; margin-top: 0.1em; }
+/* The long consent label: a 24px box in a 48px row, the label beside it at 16px, the privacy link on its own line. */
+.acct-consent { display: grid; gap: var(--space-2); }
+.acct-consent-row { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: start; cursor: pointer; }
+.acct-consent-row input[type="checkbox"] { width: 24px; height: 24px; margin: 12px; accent-color: var(--md-sys-color-primary); }
+.acct-consent-row input[aria-invalid="true"] { outline: 2px solid var(--md-sys-color-error); outline-offset: 2px; }
+.acct-consent-row span { font-size: max(1rem, var(--md-sys-typescale-body-medium-size)); line-height: 1.5; padding-top: 12px; }
+.acct-consent .acct-err, .acct-privacy { padding-left: 48px; margin: 0; }
+.acct-privacy a { display: inline-flex; align-items: center; min-height: 48px; }
+/* The busy button keeps its label and width; the spinner takes no space until it shows. */
+.acct-busy-btn { gap: var(--space-2); }
+.acct-spin { display: none; }
+.acct-spin[data-on] { display: inline-block; animation: acct-spin 0.9s linear infinite; }
+@keyframes acct-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .acct-spin[data-on] { animation: none; } }
+.acct-code { letter-spacing: 20px; font-variant-numeric: tabular-nums; font-size: max(1rem, var(--md-sys-typescale-body-large-size)); }
+.acct-resend { display: grid; gap: var(--space-2); justify-items: start; }
+.acct-resend p { margin: 0; }
+.acct-hold { min-height: 22rem; }
+.acct-save { margin-top: var(--space-2); }
+.acct-check { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.acct-check svg { color: var(--md-sys-color-primary); flex: none; }
+.acct-saved-line p { margin: 0; }
+.acct-banner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.acct-banner p { margin: 0; }
+/* The header slot: a fixed width so "Sign in" / "Dashboard" (and the Spanish) fill in after load without moving anything. */
+.acct-slot { display: inline-flex; justify-content: flex-end; align-items: center; min-width: 7.5rem; min-height: 48px; }
+.acct-slot a { color: var(--md-sys-color-on-surface-variant); text-decoration: none; font-weight: 500; }
+.acct-slot a:hover { color: var(--md-sys-color-on-surface); }
+/* Phones: the header row has no room, so the link moves into the Menu panel (and stays in the footer). */
+@media (max-width: 600px) { .bar .acct-slot { display: none; } .phone-nav .acct-slot { justify-content: flex-start; min-width: 0; } }
+/* The dashboard. The lead block keeps one minimum height for the skeleton, the test card and the result card. */
+.acct-dash { display: grid; gap: var(--space-8); }
+.acct-dash-head { display: grid; gap: var(--space-1); }
+.acct-dash-head h1, .acct-who { margin: 0; }
+.acct-dash-head h1:focus { outline: none; }
+.acct-who-hold { display: inline-block; width: 14rem; height: 1.25em; vertical-align: middle; }
+.acct-lead-card { display: grid; gap: var(--space-3); align-content: start; min-height: 18rem; padding: var(--space-6); }
+.acct-lead-card > p, .acct-lead-card h2 { margin: 0; }
+.acct-lead-hold { height: 100%; min-height: 15rem; }
+.acct-test { align-content: center; }
+.acct-test .ds-btn { min-height: 48px; }
+.acct-result-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.acct-result-head h2 { margin: 0; }
+@media (max-width: 600px) { .acct-result-head { flex-direction: column; align-items: start; } }
+.acct-result .rvp-stage { min-height: 0; }
+.acct-history h2, .acct-history > p { margin: 0 0 var(--space-3); }
+.acct-takes { list-style: none; margin: 0; padding: 0; }
+.acct-takes li { display: flex; align-items: center; gap: var(--space-3); min-height: 48px; border-top: 1px solid var(--md-sys-color-outline-variant); }
+.acct-takes li:last-child { border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+.acct-takes li .ds-btn { margin-left: auto; }
+.acct-data-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.acct-data-row p, .acct-data p { margin: 0; }
+.ds-btn.outlined.acct-danger { color: var(--md-sys-color-error); }
+.acct-fresh { display: grid; gap: var(--space-3); }
+.acct-fresh-hold { min-height: 12rem; }
+@media (min-width: 600.02px) and (max-width: 54rem) { .bar .acct-slot { margin-left: auto; } .bar .acct-slot + .ds-lang { margin-left: 0; } }

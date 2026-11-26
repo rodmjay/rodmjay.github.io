@@ -23,6 +23,38 @@
       }
     },
     {
+      "route": "/signin/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    },
+    {
+      "route": "/es/signin/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    },
+    {
+      "route": "/dashboard/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    },
+    {
+      "route": "/es/dashboard/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    },
+    {
       "route": "/rvp/",
       "redirect": "/personality-test/",
       "statusCode": 301

@@ -47,6 +47,11 @@ env:
   # The RVP archetype test (src/rvp): built for staging and pull-request checks; production only once Rod says yes to
   # publish and the repo variable RVP_LIVE=1 is set (DECISIONS 11/25). Off, scripts/postbuild.mjs removes its pages.
   RVP_ON: ${{ (vars.RVP_LIVE == '1' || github.ref != 'refs/heads/main') && '1' || '' }}
+  # Accounts on the personality test (ADR 0004, src/account: /signin/, /dashboard/, the save card, the header's Sign in):
+  # staging and pull-request checks; production only once the reviews pass, Rod says yes and ACCOUNTS_LIVE=1 is set.
+  # The browser code reads NEXT_PUBLIC_ACCOUNTS_ON (inlined at build); off, none of it ships.
+  ACCOUNTS_ON: ${{ (vars.ACCOUNTS_LIVE == '1' || github.ref != 'refs/heads/main') && '1' || '' }}
+  NEXT_PUBLIC_ACCOUNTS_ON: ${{ (vars.ACCOUNTS_LIVE == '1' || github.ref != 'refs/heads/main') && '1' || '' }}
   # The privacy page's hosting line (src/lib/site.mjs): Microsoft (Azure Static Web Apps), dated the cutover day.
   # Compliance approved the exact words (EN and ES) 11/23.
   PRIVACY_HOSTING: azure
@@ -113,6 +118,8 @@ jobs:
           done
       - name: Every old URL still exists
         run: npm run test:urls
+      - name: Consent words match what the account function records (Security 11/26)
+        run: npm run test:consent
       - name: RVP test engine (scoring, links, all 27 archetypes)
         run: npm run test:rvp
       - name: Deploy skew carry (scripts/skew.mjs)
