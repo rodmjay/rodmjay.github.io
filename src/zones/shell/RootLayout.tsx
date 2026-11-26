@@ -13,7 +13,6 @@ import { Header } from "./Header";
 
 type Lang = "en" | "es";
 
-const ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2305071a'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='16' font-weight='700' fill='%23ff3d8b' text-anchor='middle'%3ERJ%3C/text%3E%3C/svg%3E";
 const FONTS = ["/ds/fonts/inter/inter-latin-wght-normal.woff2", "/ds/fonts/space-grotesk/space-grotesk-latin-wght-normal.woff2"];
 
 export async function RootLayout({ lang, children }: { lang: Lang; children: ReactNode }) {
@@ -30,7 +29,6 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
         {/* Language picker (src/lib/langscript.mjs): an external file, so the CSP allows no inline script. */}
         <script src={LANG_SRC} />
         <meta name="google" content="notranslate" />
-        <link rel="icon" href={ICON} />
         {FONTS.map((f) => <link key={f} rel="preload" href={f} as="font" type="font/woff2" crossOrigin="anonymous" />)}
         <link rel="stylesheet" href="/ds/fonts.css" />
         <link rel="stylesheet" href={asset("ds/design-system.css")} />

@@ -35,5 +35,11 @@ export function meta(m: MetaIn): Metadata {
       ...(m.published ? { publishedTime: m.published } : {}),
     },
     twitter: { card: m.image ? "summary_large_image" : "summary" },
+    // Favicon set (Designer's ridge mark, design/brand/final/rod): own-host site, so the files sit at the root.
+    icons: {
+      icon: [{ url: "/favicon.ico", sizes: "32x32" }, { url: "/favicon.svg", type: "image/svg+xml" }],
+      apple: "/apple-touch-icon.png",
+    },
+    manifest: "/site.webmanifest",
   };
 }
