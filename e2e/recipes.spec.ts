@@ -44,7 +44,7 @@ async function closeSheet(page: Page, isMobile: boolean) {
 const count = (page: Page) => page.locator(".recipe-count");
 const cards = (page: Page) => page.locator(".recipe-grid .recipe-card");
 const query = (page: Page) => new URL(page.url()).searchParams.get("tags");
-const GROUPS_EN = ["Course", "Dish", "Occasion", "Season", "Cuisine", "Main ingredient", "Diet"];
+const GROUPS_EN = ["Course", "Dish type", "Occasion", "Season", "Cuisine", "Main ingredient", "Diet"];
 // The data-tag of every chip in one group, in page order.
 const order = (scope: Locator, group: string) =>
   scope.locator(`[role=group][aria-labelledby$="-${group}"] button.ds-chip`).evaluateAll((els) => els.map((e) => e.getAttribute("data-tag")));
@@ -166,7 +166,7 @@ test("phone: one Filter button and a full-height sheet; desktop: the card", asyn
   expect(box!.height).toBeGreaterThanOrEqual(page.viewportSize()!.height - 1);
   await expect(sheet.locator("h3")).toHaveText(GROUPS_EN);
   // Course and Dish first; the rest collapsed under "More filters".
-  await expect(sheet.locator(".recipe-lead h3")).toHaveText(["Course", "Dish"]);
+  await expect(sheet.locator(".recipe-lead h3")).toHaveText(["Course", "Dish type"]);
   await expect(chip(sheet, "course:main")).toBeVisible();
   await expect(sheet.locator("details.recipe-more")).not.toHaveAttribute("open", "");
   await expect(chip(sheet, "season:summer")).toBeHidden();
@@ -255,7 +255,7 @@ test("Spanish: labels, counts, URL and tag pages", async ({ page, isMobile }) =>
   await expect(page.getByRole("button", { name: "Quitar Verano" })).toBeVisible();
   const scope = await chips(page, isMobile);
   await expect(chip(scope, "season:summer")).toContainText("Verano");
-  await expect(scope.locator("h3")).toHaveText(["Tipo de plato", "Preparación", "Ocasión", "Temporada", "Cocina", "Ingrediente principal", "Dieta"]);
+  await expect(scope.locator("h3")).toHaveText(["Parte del menú", "Tipo de preparación", "Ocasión", "Temporada", "Cocina", "Ingrediente principal", "Dieta"]);
   await expect(scope.locator(".recipe-more-summary")).toHaveText("Más filtros");
   await chip(scope, "diet:paleo-friendly").click();
   await expect(count(page)).toHaveText("2 recetas");
@@ -326,7 +326,7 @@ test("chip order follows the catalog's sort; cuisine and main stay alphabetical 
 test("Course and Dish lead with 56px chips; the rest under More filters, same OR/AND rule", async ({ page, isMobile }) => {
   await open(page, "/recipes/");
   const scope = await chips(page, isMobile);
-  await expect(scope.locator(".recipe-lead h3")).toHaveText(["Course", "Dish"]);
+  await expect(scope.locator(".recipe-lead h3")).toHaveText(["Course", "Dish type"]);
   await expect(scope.locator(".recipe-more-summary")).toHaveText("More filters");
   await expect(scope.locator(".recipe-more-groups h3")).toHaveText(["Occasion", "Season", "Cuisine", "Main ingredient", "Diet"]);
   expect((await chip(scope, "dish:skillet").boundingBox())!.height).toBe(56);
