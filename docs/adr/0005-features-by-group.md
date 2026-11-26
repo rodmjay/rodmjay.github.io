@@ -39,8 +39,15 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
   for linked, unlinked and unknown emails, so neither the body nor the timing reveals whether an email belongs to one
   of Rod's contacts. Invited creations count against 0004's caps.
 - **The order on first sign-in** (Designer's spec): code first, then a one-time "Before you start" screen with the
-  consent below. Declining signs out and deletes the account. Consent comes after the code so the sign-in reply stays
-  neutral.
+  consent below. Consent comes after the code so the sign-in reply stays neutral. Compliance agreed on 11/26, with
+  these conditions:
+  - `site-data` refuses every feature call until the consent is recorded on the server. The screen is never only a
+    gate in the browser;
+  - the box starts unticked, and it is recorded with source, date and the hash of the wording shown, which must be on
+    the allowlist;
+  - declining deletes the account and its events, not only the session. The only thing kept is an anonymous count,
+    with no email and no contact link;
+  - a minor sees the short parental-consent notice instead, and the parent's consent must already be on the link.
 - **Consent for invited people** is its own box (Compliance 11/26), unticked, recorded at the verified step by the
   signed-in holder, with its wording hash on the allowlist. It never names a group. A minor sees a short notice
   instead, and Rod's (or the other parent's) consent is recorded with the link.
@@ -225,7 +232,11 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
   - IDOR on event and RSVP ids;
   - XSS in wish-list text;
   - a real contact on staging;
-  - UPDATE and DELETE refused on the event tables.
+  - UPDATE and DELETE refused on the event tables;
+  - after a revoke, access ends on the very next call, before `site-auth-admin` drains the queue;
+  - the consent hash is on the allowlist, and calling `site-data` directly can't skip the consent screen;
+  - the 30-day IP-hash null and the 6- and 12-month purges actually run;
+  - the rotation test.
 - **Staging shares Rod's one database** (Security 11/26). `site_logins.is_test` marks test links. Staging mode serves
   only test links, a feature at `staging` is never visible in production mode, and the mode comes from server config,
   never from the client.
@@ -271,12 +282,14 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
 5. EA brings Rod one **"Publishes:"** yes covering the features he picked. Each later feature gets its own.
 
 **Review status (11/26):**
-- Compliance: a conditional PASS at 40607c2f. Its conditions are written into this ADR: minors, consent, retention,
-  calendars and events. It should confirm that the consent screen coming after the code is fine. `photos` of the kids
-  waits for its own review.
+- Compliance: a conditional PASS at 40607c2f, and a yes at 72f8f1a to the consent screen coming after the code. Its
+  conditions are written into this ADR: minors, consent and its screen, retention, calendars and events. `photos` of
+  the kids waits for its own review. Its go-live check runs on the built screens.
 - DBA: the shape is agreed with the changes above: the grants table, the mode, link checks, the revoke queue,
   erasure, the recipe marks, `site.gate`, the 0219 role pattern and a known age on every link.
-- Security: its nine changes are written in. It will PASS on this head.
+- Security: PASS on the design at 72f8f1a, recorded in its message. Later pushes (Legal's answer, Compliance's
+  screen conditions, the added probes) need its re-read.
+- Legal Advisor: answered on the kids' accounts (11/26).
 - Designer: the spec is written (`design/specs/site-roles.md`). Its design check runs on staging.
 
 ## Consequences
