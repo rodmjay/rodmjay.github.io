@@ -37,9 +37,9 @@ export function Header({ lang, nav, showRecipes, showQuotes, alt }: { lang: "en"
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
   const links = (close?: () => void) => [
-    <Link key="about" href={`${home}#about`} onClick={close}>{nav.about}</Link>,
-    <Link key="resume" href={`${home}#resume`} onClick={close}>{nav.resume}</Link>,
     <Link key="building" href={`${home}#projects`} onClick={close}>{nav.building}</Link>,
+    <Link key="about" href={`${home}about/`} aria-current={current(`${home}about/`)} onClick={close}>{nav.about}</Link>,
+    <Link key="resume" href={`${home}about/#resume`} onClick={close}>{nav.resume}</Link>,
     <Link key="contact" href={`${home}#contact`} onClick={close}>{nav.contact}</Link>,
     <Link key="blog" href={blog} aria-current={current(blog)} onClick={close}>{nav.blog}</Link>,
     showRecipes && <Link key="recipes" href={recipes} aria-current={current(recipes)} onClick={close}>{nav.recipes}</Link>,

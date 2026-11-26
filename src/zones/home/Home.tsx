@@ -1,10 +1,9 @@
-// The home page: a calm hero (Designer, rodmjay-professional.md), then about, the resume form, projects, how I work and contact.
+// The home page: the cover hero, then projects (Rod 11/25: "make my projects more of the focus"), the RVP card and contact. About, the resume form and how I work moved to /about/.
 // Same markup and copy as src/page.html on Pages; the copy is i18n/{en,es}.json.
-import { dict, HTML_LANG, SITE } from "@/lib/site.mjs";
+import { dict, SITE } from "@/lib/site.mjs";
 import { meta } from "@/lib/meta";
 const RVP_ON = process.env.RVP_ON === "1"; // the test is built only where RVP_ON=1 (production after Rod's yes)
 const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/rvp/" : "/rvp/");
-import { ResumeForm } from "@/zones/resume/ResumeForm";
 
 type Lang = "en" | "es";
 type Item = { title: string; body: string; url?: string };
@@ -20,7 +19,6 @@ export function homeMeta(lang: Lang) {
 
 export function Home({ lang }: { lang: Lang }) {
   const d = dict(lang);
-  const r = d.resume;
   return (
     <>
       {/* A profile-header cover (Designer, rodmjay-professional.md 11/25, Rod: same as his LinkedIn banner): decorative, no text over it. */}
@@ -45,23 +43,13 @@ export function Home({ lang }: { lang: Lang }) {
           </div>
           <p className="ds-body-large hero-lede">{d.hero.lede}</p>
           <div className="hero-actions">
-            <a className="ds-btn" href="#resume">{d.hero.ctaResume}</a>
-            <a className="ds-btn outlined" href="#contact">{d.hero.ctaContact}</a>
+            <a className="ds-btn" href="#projects">{d.nav.building}</a>
+            <a className="ds-btn outlined" href={lang === "en" ? "/about/" : "/es/about/"}>{d.nav.about}</a>
+            
           </div>
         </section>
 
-        <section id="about">
-          <h2 className="ds-title-large">{d.about.heading}</h2>
-          <p className="ds-body-large">{d.about.p1}</p>
-          <p className="ds-body-large">{d.about.p2}</p>
-        </section>
 
-        <section id="resume">
-          <h2 className="ds-title-large">{r.heading}</h2>
-          <p className="ds-body-large">{r.lede}</p>
-          <p className="ds-supporting"><a href="https://www.linkedin.com/in/rodmjay/details/recommendations/" target="_blank" rel="noopener">{r.recs} <svg viewBox="0 0 24 24" aria-hidden="true" width="14" height="14"><path fill="currentColor" d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2zM14 3v2h3.6l-9.8 9.8 1.4 1.4L19 6.4V10h2V3z" /></svg> <span className="sr-only">{r.recsSr}</span></a></p>
-          <ResumeForm lang={HTML_LANG[lang]} privacyHref={lang === "en" ? "/privacy/" : "/privacy/es/"} t={r} />
-        </section>
 
         <section id="projects">
           <span id="building" aria-hidden="true" /> {/* the old anchor, so existing #building links still land here */}
@@ -82,14 +70,6 @@ export function Home({ lang }: { lang: Lang }) {
           </section>
         )}
 
-        <section id="how">
-          <h2 className="ds-title-large">{d.how.heading}</h2>
-          <figure className="quote"><blockquote className="ds-title-medium">“{d.how.quote}”</blockquote><figcaption className="ds-label-large ds-variant">{d.how.cite}</figcaption></figure>
-          <ul className="plain">
-            {d.how.items.map((it: Item) => <li key={it.title}><h3 className="ds-title-medium">{it.title}</h3><p className="ds-body-medium ds-variant">{it.body}</p></li>)}
-          </ul>
-          <p className="ds-body-medium ds-variant">{d.how.stack}</p>
-        </section>
 
         <section id="contact">
           <h2 className="ds-title-large">{d.contact.heading}</h2>

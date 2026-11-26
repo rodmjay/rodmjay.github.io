@@ -10,7 +10,8 @@ export function altMap() {
   return (memo ||= (async () => {
     const map = { "/": "/es/", "/es/": "/", "/privacy/": "/privacy/es/", "/privacy/es/": "/privacy/",
       "/remove/": "/es/remove/", "/es/remove/": "/remove/", "/remove/confirm/": "/es/remove/confirm/", "/es/remove/confirm/": "/remove/confirm/",
-      "/quotes/": "/es/quotes/", "/es/quotes/": "/quotes/", };
+      "/quotes/": "/es/quotes/", "/es/quotes/": "/quotes/",
+      "/about/": "/es/about/", "/es/about/": "/about/", };
     const blog = await loadBlog();
     for (const l of blog.lists) map[l.path] = l.otherPath;
     for (const p of blog.posts) if (p.url) map[p.url] = p.twinUrl;

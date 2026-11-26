@@ -40,7 +40,7 @@ export function Project({ lang }: { lang: Lang }) {
           {p.stack.map((s: string) => <li key={s} className="ds-chip status">{s}</li>)}
         </ul>
         <p className="ds-body-small ds-variant">{p.note}</p>
-        <p><Link href={`${home}#resume`}>{p.resume}</Link></p>
+        <p><Link href={`${home}about/#resume`}>{p.resume}</Link></p>
         <p><Link href={home}>{p.back}</Link></p>
       </section>
     </main>
