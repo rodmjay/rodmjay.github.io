@@ -1,7 +1,7 @@
 ---
 id: regular-and-orderly
-title: Aburrido a propósito
-dek: Por qué dejé de guardar las cosas en la cabeza, y qué tiene que ver eso con la arquitectura.
+title: Ordenado y constante
+dek: Cómo mantengo en marcha lo cotidiano de la vida, y qué cambió cuando la IA pudo encargarse del mantenimiento.
 date: 2026-11-21
 tags: [habits, architecture, focus]
 toc: false
@@ -9,20 +9,18 @@ draft: false
 ---
 La frase de Flaubert que tengo en mi biografía de X es lo más parecido que tengo a una filosofía de trabajo: «Sea constante y ordenado en su vida, para que pueda ser violento y original en su trabajo». Así escribió *Madame Bovary*, con una rutina diaria estricta.
 
-Al principio de mi carrera llevaba todo en la cabeza. Fechas límite, seguimientos, lo que le había prometido a alguien en un pasillo. La mayoría de las semanas funcionaba. Después llegaba una mala, algo se me pasaba, y me tocaba dedicar la semana siguiente a arreglarlo.
+He intentado trabajar así durante casi toda mi carrera, con las herramientas que hubiera en cada momento: listas de pendientes, aplicaciones de tareas, calendarios y recordatorios. Me ayudaron, y aun así todo el trabajo lo hacía yo. Anotaba cada tarea, mantenía las listas al día, movía fechas y revisaba que nada se quedara atrás. Mantener el sistema funcionando ya exigía mucho esfuerzo mental por sí solo.
 
-No era cuestión de esfuerzo. La memoria es una pésima base de datos. Falla bajo carga, y la carga es justo cuando más se necesita.
+Con la IA, gran parte de ese mantenimiento se puede automatizar. Los agentes agregan tareas, ponen fechas, limpian duplicados y dan seguimiento a los pendientes, y yo reviso una sola lista con horario fijo. Las cuentas se pagan en automático y el trabajo recurrente está en el calendario.
 
-Así que dejé de pedirle ese trabajo. Si algo lo voy a tener que recordar dos veces, lo anoto o lo automatizo. Las cuentas se pagan en automático y el trabajo recurrente está en el calendario. Todo lo pendiente vive en un solo lugar, y lo reviso con horario fijo, no cuando me entra la ansiedad.
+Así que lo ordinario corre en segundo plano. Mis mañanas empiezan igual y casi todas las semanas se parecen. El sábado repaso la semana y elijo qué sigue, y el domingo es para descansar.
 
-Es aburrido, y está bien. Cuando lo ordinario va sobre rieles, deja de pelear por mi atención. Las mañanas empiezan igual y casi todas las semanas se parecen. El sábado repaso la semana y decido qué sigue. El domingo descanso, y lo cuido para que siga así.
-
-Entonces, cuando llega un problema de diseño difícil, digamos un sistema que tiene que aguantar diez años de cambios, le puedo dar toda mi atención. No estoy al mismo tiempo pensando si se pagó la luz.
+Eso deja espacio para los problemas de diseño difíciles, como un sistema que tiene que aguantar diez años de cambios, y les puedo dar toda mi atención.
 
 ## En el trabajo es igual
 
-En algún momento me di cuenta de que hago arquitectura de la misma manera. Una buena plataforma hace que el camino común sea aburrido. El registro de eventos funciona igual en todos los servicios y los despliegues se parecen entre sí, así que nadie tiene que pensar en eso. Los equipos no gastan sus buenas ideas en la plomería. Las guardan para el producto de verdad.
+Llevo la arquitectura de la misma manera. En una buena plataforma, el trabajo común es predecible. El registro de eventos funciona igual en todos los servicios y los despliegues se parecen entre sí, así que los equipos pueden dedicar su atención al producto.
 
-He visto equipos ir en sentido contrario: cada servicio arma su propio registro y cada proyecto arranca desde una carpeta vacía. Durante unos seis meses se siente como libertad. Después es la razón por la que nada sale. Todos vuelven a decidir cosas que debieron decidirse una sola vez.
+También he visto equipos donde cada servicio arma su propio registro y cada proyecto arranca desde una carpeta vacía. Esos equipos avanzan rápido durante unos meses, luego dedican cada vez más tiempo a volver a decidir cosas que debieron quedar resueltas una sola vez, y las entregas se vuelven más lentas.
 
-Si quiere probarlo, hubo un par de cosas que me sirvieron. Tenga las tareas en un lugar y las fechas en otro; en cuanto algo vive en dos lugares, deja de confiar en los dos. Revíselo con horario (yo lo hago el sábado en la mañana), no cuando se ponga nervioso. Y con el trabajo recurrente, la primera vez hágalo a mano. La segunda, escríbalo. Si hay una tercera, automatícelo.
+Si quiere probarlo, hubo algunos hábitos que me ayudaron. Tengo las tareas en un lugar y las fechas en otro, así hay una sola copia vigente de cada cosa. Reviso la lista con horario fijo; en mi caso, el sábado en la mañana. Cuando un trabajo se repite, anoto los pasos y después se lo paso a la automatización.
