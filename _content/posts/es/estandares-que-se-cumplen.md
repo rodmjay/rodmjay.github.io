@@ -1,30 +1,42 @@
 ---
 id: standards-that-stick
-title: Estándares que perduraron
-dek: Los estándares míos que duraron fueron bibliotecas y código base que la gente podía instalar o copiar.
+title: Ponga sus estándares donde trabajan sus agentes
+dek: Escriba los estándares, intégrelos al flujo de trabajo y haga que sus agentes de IA los carguen.
 date: 2026-11-21
 tags: [architecture, standards, leadership]
 toc: false
 draft: false
 ---
-La mayoría de los estándares que he escrito terminaron ignorados. Unos pocos se volvieron la norma sin que nadie tuviera que pedir que se usaran.
+Una página de estándares en una wiki se pasa por alto cuando aprieta la fecha de entrega, y un agente de IA nunca la ve. Ahora sigo tres pasos.
 
-Alguien con experiencia escribe una página larga en la wiki sobre el registro de eventos, los nombres y la forma en que los servicios deben comunicarse entre sí. Se aprueba en una reunión y nadie la vuelve a abrir. Seguir la página implica trabajo extra, y quien tiene una fecha de entrega encima deja de lado el trabajo extra.
+## 1. Escriba el estándar como texto
 
-## Código que la gente podía instalar o copiar
+Mantenga cada estándar breve y en el repositorio, junto al código: nombres, registro de eventos, formato de errores, cómo se comunican los servicios entre sí, cómo escribimos. Los archivos markdown funcionan bien porque tanto las personas como los agentes pueden leerlos.
 
-Cada estándar mío que se mantuvo era algo que la gente podía instalar o copiar.
+## 2. Intégrelo al flujo de trabajo
 
-Cuando trabajé con el grupo de Ingeniería de Confiabilidad de Sitios (SRE) de Microsoft, el problema era el registro de eventos. Cada servicio lo hacía un poco distinto, así que seguir una solicitud de un servicio a otro era lento y engorroso. Por eso construí una biblioteca de registro. Bastaba con agregarla al servicio para registrar de la forma correcta casi sin esfuerzo. Los equipos la adoptaron porque les ahorraba escribir la suya, y con el tiempo se volvió el estándar del departamento.
+Ponga el estándar donde ocurre el trabajo:
 
-Hice lo mismo con una arquitectura de referencia para microservicios. Construí una, funcionando y documentada, y los servicios que vinieron después se armaron a partir de ella. Los equipos podían verla en marcha y copiarla, así que se difundió sin que yo tuviera que insistir mucho.
+- una biblioteca compartida o una plantilla inicial que ya lo cumpla
+- una regla de lint o una verificación de CI que haga fallar la compilación cuando no se cumple
+- una lista de revisión construida a partir del mismo archivo
 
-En Solution Stream fue una base de código compartida en .NET. Los proyectos nuevos arrancaban desde ahí, así que todos empezaban con la misma estructura y las mismas correcciones de errores, y se mantenían consistentes.
+## 3. Haga que su agente lo cargue
 
-Viéndolo ahora, los que duraron tenían otras cosas en común. Fijaban reglas firmes para lo aburrido, como el registro de eventos, los nombres y la estructura del proyecto, y el equipo dueño de cada problema tomaba sus propias decisiones de diseño.
+Con Claude Code hay varias formas de hacerlo:
 
-También eran fáciles de cambiar. Yo aceptaba pull requests, y cuando un equipo encontraba una mejor forma, la incorporaba para que todos la recibieran. Cada uno tenía un responsable que lo arreglaba cuando se rompía.
+- **CLAUDE.md** en el repositorio apunta a los archivos de estándares, así cada sesión los lee.
+- **Skills** empaquetan un estándar con sus pasos, por ejemplo "escribir una migración" o "escribir notas de versión".
+- **Hooks** ejecutan una verificación por sí solos, antes de un commit o después de escribir un archivo, y detienen el trabajo que no cumple el estándar.
+- **Un servidor MCP** puede entregar sus estándares a cualquier agente. Dele una herramienta para consultar un estándar y otra para revisar un borrador contra él, y todas las herramientas que usa su equipo leerán la misma fuente.
 
-Todavía escribo muchos documentos. Los que vuelvo a consultar dejan registrado por qué elegimos una base de datos, o a qué renunciamos para llegar ahí. Para eso sirven los registros de decisiones de arquitectura (ADR), y rinden años después, cuando alguien pregunta por qué el sistema está hecho como está. Mantengo los ADR y las bibliotecas compartidas lado a lado. El ADR guarda el razonamiento, y los equipos usan la biblioteca en el día a día.
+## Manténgalo al día
 
-Un año después reviso si los equipos siguen usando un estándar. Los equipos siguen usando la biblioteca de registro.
+Cuando alguien encuentre una mejor forma, cambie el estándar en un solo lugar y luego actualice a partir de él la biblioteca, las verificaciones y las instrucciones del agente. Asigne un responsable a cada estándar. Cuando tome una decisión que alguien cuestionará más adelante, escriba un ADR con el razonamiento.
+
+## Empiece en pequeño
+
+1. Elija un estándar sobre el que su equipo discute.
+2. Escríbalo como un archivo markdown breve en el repositorio.
+3. Agregue una verificación automática para él.
+4. Haga que CLAUDE.md apunte a él y agregue un hook que ejecute la verificación.

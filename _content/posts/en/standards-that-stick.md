@@ -1,30 +1,42 @@
 ---
 id: standards-that-stick
-title: Standards that stuck
-dek: The standards of mine that lasted were libraries and starter code that people could install or copy.
+title: Put your standards where your agents work
+dek: Write the standards down, build them into the workflow, and make your AI agents load them.
 date: 2026-11-21
 tags: [architecture, standards, leadership]
 toc: false
 draft: false
 ---
-Most standards I've written got ignored. A few became the default without anyone being told to use them.
+A standards page on a wiki gets skipped on deadlines, and an AI agent never sees it. I now follow three steps.
 
-Someone senior writes a long wiki page on logging, naming, and how services should call each other. It gets approved in a meeting and then nobody opens it again. Following the page takes extra work, and people on a deadline skip extra work.
+## 1. Write the standard as text
 
-## Code people could install or copy
+Keep each standard short and in the repo, next to the code: naming, logging, error format, how services call each other, how we write. Markdown files work well because people and agents can both read them.
 
-Every standard of mine that stuck was something people could install or copy.
+## 2. Build it into the workflow
 
-When I worked with Microsoft's Site Reliability Engineering group, the problem was logging. Each service did it a bit differently, so following one request across services was slow and painful. So I built a logging library. You added it to your service and you were logging the right way with almost no effort. Teams picked it up because it saved them from writing their own, and over time it became the department's standard.
+Put the standard where the work happens:
 
-I did the same with a reference microservice architecture. I built one, working and documented, and later services were built off it. Teams could see it running and copy it, so it spread without much push from me.
+- a shared library or starter template that already follows it
+- a lint rule or CI check that fails the build when it's broken
+- a review checklist built from the same file
 
-At Solution Stream it was a shared .NET codebase. New projects started from it, so they all began with the same structure and the same bug fixes, and they stayed consistent.
+## 3. Make your agent load it
 
-Looking back, the ones that lasted had more in common. They set firm rules for the boring stuff like logging, naming and project layout, and the team that owns a problem made its own design decisions.
+With Claude Code there are a few ways to do this:
 
-They were also easy to change. I took pull requests, and when a team found a better way I folded it in so everyone got it. Each one had an owner who fixed it when it broke.
+- **CLAUDE.md** in the repo points to the standards files, so every session reads them.
+- **Skills** package a standard with its steps, for example "write a migration" or "write release notes".
+- **Hooks** run a check on their own, before a commit or after a file is written, and stop work that breaks the standard.
+- **An MCP server** can serve your standards to any agent. Give it one tool to look up a standard and one to check a draft against it, and every tool your team uses reads the same source.
 
-I still write a lot of documents. The ones I come back to record why we picked a database, or what we gave up to get there. That's what architecture decision records are for, and they pay off years later when someone asks why the system looks the way it does. I keep ADRs and shared libraries side by side. The ADR holds the reasoning, and teams use the library day to day.
+## Keep it current
 
-A year later I check whether teams still use a standard. Teams still use the logging library.
+When someone finds a better way, change the standard in one place, then update the library, the checks and the agent instructions from it. Give each standard an owner. When you make a call someone will question later, write an ADR with the reasoning.
+
+## Start small
+
+1. Pick one standard your team argues about.
+2. Write it as a short markdown file in the repo.
+3. Add one automated check for it.
+4. Point CLAUDE.md at it and add a hook that runs the check.
