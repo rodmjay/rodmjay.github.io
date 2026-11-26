@@ -13,7 +13,7 @@ shows X"; you ship it. This file is how to do that safely. The layout, build and
 
 ## Releasing without kicking anyone offline (Rod 11/25, DECISIONS)
 
-Rod: "if people are doing a quiz or something, I don't want to break them." Three layers keep an open page working
+Rod: "if people are doing a quiz or something, I don't want to break them." Two layers keep an open page working
 through a deploy:
 
 - **Old files stay.** The deploy job carries the last 7 days of `/_next/static` files into each deploy
@@ -22,9 +22,8 @@ through a deploy:
   had nothing to carry.
 - **One reload, then resume.** If a chunk still fails, the head script (`src/lib/langscript.mjs`) reloads the same URL
   once. RVP answers live in sessionStorage and results in the URL hash, so the visitor picks up where they were.
-- **Release window.** Promote `next` → `main` outside **8 AM–10 PM Mountain** when it can wait; the daily scheduled
-  build already runs at 4:17 AM. Urgent fixes ship any time. Never ship a change that alters an RVP question bank or
-  the account flow while someone could be mid-way through it: that kind waits for the window.
+- **Release any time** (Rod 11/25, DECISIONS: "Just update the site."). There's no release window; the two layers
+  above are what keep open pages working.
 - Don't turn off the carry steps, and don't purge the `skew-*` caches, to work around a deploy problem. Ask Software
   Architect.
 - **The exception is a Security removal** (a bundled secret, an XSS fix that old pages must stop serving): bump the
