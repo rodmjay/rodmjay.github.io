@@ -381,5 +381,8 @@
     "cardEdge": "Growth edge: {facet}",
     "cardPractice": "Today's practice",
     "cardFooter": "rodmjay.com · a map, not a prison"
+  },
+  "account": {
+    "testName": "Personality test"
   }
 }

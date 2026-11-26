@@ -4,7 +4,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 const RVP_ON = process.env.RVP_ON === "1"; // the test is built only where RVP_ON=1 (production after Rod's yes)
-const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/rvp/" : "/rvp/");
+const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/test-de-personalidad/" : "/personality-test/");
 import { HTML_LANG, RECIPES_LIVE, REMOVE_LIVE, asset, dict } from "@/lib/site.mjs";
 import { LANG_SRC } from "@/lib/langscript.mjs";
 import { altMap } from "@/lib/routes.mjs";
@@ -40,7 +40,7 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
         <a className="skip" href="#main">{d.nav.skip}</a>
         <Header lang={lang} nav={nav} showRecipes={RECIPES_LIVE} showQuotes={hasQuotes} alt={alt} />
         {children}
-        <footer className="foot col"><p className="ds-body-small ds-variant">{d.footer.copy} · {d.footer.cookies}{RVP_ON && <> · <Link href={rvpUrl(lang, "")}>{d.rvp.title}</Link></>}{REMOVE_LIVE && <> · <Link href={lang === "en" ? "/remove/" : "/es/remove/"}>{d.remove.footerLink}</Link></>}</p></footer>
+        <footer className="foot col"><p className="ds-body-small ds-variant">{d.footer.copy} · {d.footer.cookies}{RVP_ON && <> · <Link href={rvpUrl(lang, "")}>{d.account.testName}</Link></>}{REMOVE_LIVE && <> · <Link href={lang === "en" ? "/remove/" : "/es/remove/"}>{d.remove.footerLink}</Link></>}</p></footer>
       </body>
     </html>
   );

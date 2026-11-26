@@ -40,7 +40,9 @@ export const dimName = (lang: Lang, d: Dim) => DIMS[d][lang];
 /** Spanish questions only when every question and option has them; until then the Spanish test points to English. */
 export const bankHasSpanish = (b: Bank = BANK) => b.questions.every((q) => q.prompt_es?.trim() && q.options.every((o) => o.text_es?.trim()));
 
-export const BASE: Record<Lang, string> = { en: "/rvp/", es: "/es/rvp/" };
+// Rod 11/26: "the personality test is separate from RVP": the test lives at /personality-test/ and /es/test-de-personalidad/
+// (the old /rvp/ paths 301 here, public/staticwebapp.config.json). RVP stays the internal name of the module.
+export const BASE: Record<Lang, string> = { en: "/personality-test/", es: "/es/test-de-personalidad/" };
 export const rvpUrl = (lang: Lang, page: "" | "take" | "result" | string) => `${BASE[lang]}${page ? `${page}/` : ""}`;
 
 /** Built only where RVP_ON=1 (staging, and pull-request builds): production waits for Rod's yes (DECISIONS 11/25).
