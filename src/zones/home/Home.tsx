@@ -68,7 +68,7 @@ export function Home({ lang }: { lang: Lang }) {
           <h2 className="ds-title-large">{d.building.heading}</h2>
           <p className="ds-body-large">{d.building.lede}</p>
           <ul className="plain">
-            {d.building.items.map((it: Item) => <li key={it.title}><h3 className="ds-title-medium"><a href={it.url}>{it.title}</a></h3><p className="ds-body-medium ds-variant">{it.body}</p></li>)}
+            {d.building.items.map((it: Item) => <li key={it.title}>{/* the icon slot keeps room for the other projects' icons (Designer 11/25: Should first) */}<div className="proj-icon">{it.url?.includes("/should/") && <img src="/img/should-icon.svg" width={48} height={48} alt="" />}</div><h3 className="ds-title-medium"><a href={it.url}>{it.title}</a></h3><p className="ds-body-medium ds-variant">{it.body}</p></li>)}
           </ul>
         </section>
 
