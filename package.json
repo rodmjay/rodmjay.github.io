@@ -9,7 +9,8 @@
     "test": "node tests/old-urls.mjs && playwright test",
     "test:urls": "node tests/old-urls.mjs",
     "test:rvp": "node --test tests/rvp.test.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:skew": "node --test tests/skew.test.mjs"
   },
   "engines": {
     "node": ">=20"
