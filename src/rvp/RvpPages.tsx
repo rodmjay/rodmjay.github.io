@@ -9,6 +9,12 @@ import { ARCHETYPES, archetypeBySlug, facetName, rvpUrl, type Lang } from "./dat
 import { RvpTake } from "./RvpTake";
 import { RvpResult } from "./RvpResult";
 import { ArchetypeDetails } from "./Details";
+import { Account } from "@/account/gate";
+
+// Accounts (ADR 0004): the save card under the result and the signed-out note, only where ACCOUNTS_ON=1.
+const ACCOUNTS_ON = process.env.ACCOUNTS_ON === "1";
+const acct = (lang: Lang) => dict(lang).account as Record<string, string>;
+const home = (lang: Lang) => (lang === "en" ? "/" : "/es/");
 
 const other = (lang: Lang): Lang => (lang === "en" ? "es" : "en");
 const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
@@ -33,6 +39,7 @@ export function RvpIndex({ lang }: { lang: Lang }) {
   const s = strings(lang);
   return (
     <main id="main" className="col rvp-page rvp-index">
+      {ACCOUNTS_ON && Account ? <Account.SignedOutBanner text={acct(lang).signedOut} dismiss={acct(lang).dismiss} /> : null}
       <h1 className="ds-headline-large">{s.title}</h1>
       <p className="ds-body-large">{s.lede}</p>
       <p className="ds-body-medium">{s.privacy}</p>
@@ -77,7 +84,9 @@ export function RvpResultPage({ lang }: { lang: Lang }) {
     <main id="main" className="col rvp-page">
       <p className="quote-link-row"><Link href={rvpUrl(lang, "")} className="ds-btn text">← {s.metaTitle}</Link></p>
       <h1 className="ds-headline-small" tabIndex={-1}>{s.resultTitle}</h1>
-      <RvpResult lang={lang} s={s} />
+      <RvpResult lang={lang} s={s}>
+        {ACCOUNTS_ON && Account ? <Account.SaveCard lang={lang} s={acct(lang)} dashHref={`${home(lang)}dashboard/`} privacyHref={lang === "en" ? "/privacy/" : "/privacy/es/"} /> : null}
+      </RvpResult>
     </main>
   );
 }

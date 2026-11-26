@@ -20,7 +20,9 @@ export function altMap() {
     for (const r of recipes.recipes) map[r.url] = r.twinUrl;
     for (const q of (await loadQuotes()).quotes) { map[quoteUrl("en", q.slug)] = quoteUrl("es", q.slug); map[quoteUrl("es", q.slug)] = quoteUrl("en", q.slug); }
     // The RVP test (src/rvp), only where it is built (RVP_ON; production after Rod's yes).
-    if (process.env.RVP_ON === "1") for (const p of ["", "take/", "result/", ...archetypes.archetypes.map((a) => `${a.slug}/`)]) { map[`/rvp/${p}`] = `/es/rvp/${p}`; map[`/es/rvp/${p}`] = `/rvp/${p}`; }
+    if (process.env.RVP_ON === "1") for (const p of ["", "take/", "result/", ...archetypes.archetypes.map((a) => `${a.slug}/`)]) { map[`/personality-test/${p}`] = `/es/test-de-personalidad/${p}`; map[`/es/test-de-personalidad/${p}`] = `/personality-test/${p}`; }
+    // Accounts (src/account), only where they are built (ACCOUNTS_ON; ADR 0004).
+    if (process.env.ACCOUNTS_ON === "1") for (const p of ["signin/", "dashboard/"]) { map[`/${p}`] = `/es/${p}`; map[`/es/${p}`] = `/${p}`; }
     return map;
   })());
 }

@@ -55,7 +55,7 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .cover { background-color: #162a4a; overflow: hidden; aspect-ratio: 3 / 2; }
 .cover img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 64% 30%; }
 @media (min-width: 600px) { .cover { aspect-ratio: 12 / 5; } .cover img { object-position: 60% 30%; } }
-@media (min-width: 840px) { .cover { aspect-ratio: 16 / 5; max-height: 460px; } .cover img { object-position: 50% 23%; } }
+@media (min-width: 840px) { .cover { aspect-ratio: auto; width: 100%; height: min(460px, 31.25vw); } .cover img { object-position: 50% 23%; } }
 /* Avatar overlaps the cover's bottom edge by half, left aligned with the text column; a surface-colored ring plus the hairline outline. */
 .hero .hero-top { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
 .hero .hero-photo { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; display: block; flex: none; margin-top: -48px; position: relative;

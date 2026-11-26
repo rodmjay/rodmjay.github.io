@@ -12,7 +12,7 @@ async function built(page: Page, path: string) {
 }
 
 test("rvp: take all 27 questions by keyboard, get a result, reopen it from the link", async ({ page }) => {
-  await built(page, "/rvp/take/");
+  await built(page, "/personality-test/take/");
   // Only the page's own files load while taking the test: no request leaves for another host, and none carries answers.
   const sent: string[] = [];
   page.on("request", (r) => { const u = new URL(r.url()); if (u.host !== new URL(page.url()).host || /[?&#]a=/.test(r.url())) sent.push(r.url()); });
@@ -30,7 +30,7 @@ test("rvp: take all 27 questions by keyboard, get a result, reopen it from the l
     await expect(first).toBeChecked();
     await page.keyboard.press("Enter");
   }
-  await expect(page).toHaveURL(/\/rvp\/result\/#v=[^&]+&a=[0-2]{27}$/);
+  await expect(page).toHaveURL(/\/personality-test\/result\/#v=[^&]+&a=[0-2]{27}$/);
   await expect(page.locator(".rvp-card h2")).toHaveText(/^The /);
   await expect(page.locator(".rvp-section").first().locator("li")).toHaveCount(3);
   await expect(page.locator("body")).not.toContainText("undefined");
@@ -44,12 +44,12 @@ test("rvp: take all 27 questions by keyboard, get a result, reopen it from the l
 });
 
 test("rvp: a broken or old link says so instead of guessing", async ({ page }) => {
-  await built(page, "/rvp/result/#v=0.0&a=000");
+  await built(page, "/personality-test/result/#v=0.0&a=000");
   await expect(page.locator(".rvp-stage")).toContainText("no result");
 });
 
 test("rvp: a refresh keeps the answers so far; Start over clears them", async ({ page }) => {
-  await built(page, "/rvp/take/");
+  await built(page, "/personality-test/take/");
   for (let i = 0; i < 3; i++) { await page.locator(".ds-qa-choice").first().click(); await page.getByRole("button", { name: "Next" }).click(); }
   await page.reload();
   await expect(page.locator(".ds-qa-count")).toHaveText("Question 4 of 27");
@@ -58,12 +58,12 @@ test("rvp: a refresh keeps the answers so far; Start over clears them", async ({
 });
 
 test("rvp: index, an archetype page and Spanish", async ({ page }) => {
-  await built(page, "/rvp/");
+  await built(page, "/personality-test/");
   await expect(page.locator(".rvp-grid li")).toHaveCount(27);
   await page.getByRole("link", { name: "The Strategist" }).click();
-  await expect(page).toHaveURL(/\/rvp\/strategist\/$/);
+  await expect(page).toHaveURL(/\/personality-test\/strategist\/$/);
   await expect(page.locator("h1")).toHaveText("The Strategist");
-  await page.goto("/es/rvp/strategist/");
+  await page.goto("/es/test-de-personalidad/strategist/");
   await expect(page.locator("h1")).toHaveText("Estratega");
   await expect(page.locator("html")).toHaveAttribute("lang", /^es/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => window.innerWidth));
@@ -71,10 +71,10 @@ test("rvp: index, an archetype page and Spanish", async ({ page }) => {
 });
 
 test("rvp: no accessibility violations on the take and result pages", async ({ page }) => {
-  await built(page, "/rvp/take/");
+  await built(page, "/personality-test/take/");
   await expect(page.locator(".ds-qa-choice").first()).toBeVisible();
   expect((await new AxeBuilder({ page: page as never }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze()).violations).toEqual([]);
-  await page.goto("/rvp/result/#v=0.1-draft&a=" + "0".repeat(27));
+  await page.goto("/personality-test/result/#v=0.1-draft&a=" + "0".repeat(27));
   await expect(page.locator(".rvp-card h2")).toBeVisible();
   expect((await new AxeBuilder({ page: page as never }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze()).violations).toEqual([]);
 });
@@ -85,7 +85,7 @@ const target: Record<string, string> = { R: "R.Intellectual", V: "V.Pragmatic", 
 const strategist = `v=${encodeURIComponent(bank.version)}&a=${bank.questions.map((q: any) => q.options.findIndex((o: any) => o.facet === target[q.dimension])).join("")}`;
 
 test("rvp: a full result is useful: pattern, lean on, watch for, growth edge, fit, people unlike you, 7 days, a card", async ({ page }) => {
-  await built(page, `/rvp/result/#${strategist}`);
+  await built(page, `/personality-test/result/#${strategist}`);
   await expect(page.locator(".rvp-card h2")).toHaveText("The Strategist");
   for (const h of ["Your pattern, in words", "Lean on this", "Watch for this", "Where it fits", "A 7-day practice", "Your growth edge", "Working with people unlike you"]) {
     await expect(page.getByRole("heading", { name: h })).toBeVisible();
@@ -105,7 +105,7 @@ test("rvp: a full result is useful: pattern, lean on, watch for, growth edge, fi
 });
 
 test("rvp: Spanish result shows English where the Spanish isn't written yet, marked lang=en", async ({ page }) => {
-  await built(page, `/es/rvp/result/#${strategist}`);
+  await built(page, `/es/test-de-personalidad/result/#${strategist}`);
   await expect(page.locator(".rvp-card h2")).toHaveText("Estratega");
   await expect(page.getByRole("heading", { name: "Apóyese en esto" })).toBeVisible();
   const en = page.locator('.rvp-section [lang="en"]');
@@ -113,9 +113,33 @@ test("rvp: Spanish result shows English where the Spanish isn't written yet, mar
 });
 
 test("rvp: the Spanish test asks its questions in Spanish", async ({ page }) => {
-  await built(page, "/es/rvp/take/");
+  await built(page, "/es/test-de-personalidad/take/");
   await expect(page.locator(".ds-qa-count")).toHaveText("Pregunta 1 de 27");
   await expect(page.locator(".rvp-qa legend")).toHaveText(bank.questions[0].prompt_es);
   await expect(page.locator(".rvp-qa")).not.toHaveAttribute("lang", "en");
   await expect(page.getByText("Por ahora las preguntas están en inglés.")).toHaveCount(0);
+});
+
+// Rod 11/26: the personality test moved off /rvp/. Old links (a result with its #fragment, an archetype, the Spanish
+// pages) 301 to the same page at the new address, and the fragment comes along.
+test("rvp: old /rvp/ links 301 to the personality test, the result link keeps its answers", async ({ page, request }) => {
+  await built(page, "/personality-test/");
+  for (const [from, to] of [["/rvp/", "/personality-test/"], ["/rvp/take/", "/personality-test/take/"], ["/rvp/strategist/", "/personality-test/strategist/"],
+    ["/es/rvp/", "/es/test-de-personalidad/"], ["/es/rvp/result/", "/es/test-de-personalidad/result/"], ["/es/rvp/strategist/", "/es/test-de-personalidad/strategist/"]]) {
+    const r = await request.get(from, { maxRedirects: 0 });
+    expect(r.status(), from).toBe(301);
+    expect(new URL(r.headers()["location"], "http://x").pathname, from).toBe(to);
+  }
+  await page.goto(`/rvp/result/#${strategist}`);
+  await expect(page).toHaveURL(new RegExp(`/personality-test/result/#${strategist.replace(/[.]/g, "\\.")}$`));
+  await expect(page.locator(".rvp-card h2")).toHaveText("The Strategist");
+});
+
+// A half-finished test kept in this tab survives the rename: the answers' sessionStorage key never had the path in it.
+test("rvp: progress on the new path survives a reload, under the same storage key", async ({ page }) => {
+  await built(page, "/personality-test/take/");
+  for (let i = 0; i < 2; i++) { await page.locator(".ds-qa-choice").first().click(); await page.getByRole("button", { name: "Next" }).click(); }
+  expect(await page.evaluate((k) => sessionStorage.getItem(k), `rvp:answers:${bank.version}`)).not.toBeNull();
+  await page.reload();
+  await expect(page.locator(".ds-qa-count")).toHaveText("Question 3 of 27");
 });

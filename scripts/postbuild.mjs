@@ -42,7 +42,16 @@ function walk(dir) {
 }
 rmSync(join(OUT, "404"), { recursive: true, force: true });
 // The RVP test ships only where RVP_ON=1 (staging and checks; production after Rod's yes): otherwise it isn't served.
-if (process.env.RVP_ON !== "1") for (const d of ["rvp", "es/rvp"]) rmSync(join(OUT, d), { recursive: true, force: true });
+if (process.env.RVP_ON !== "1") for (const d of ["personality-test", "es/test-de-personalidad"]) rmSync(join(OUT, d), { recursive: true, force: true });
+// Accounts the same way (ACCOUNTS_ON, ADR 0004): off, no /signin/ or /dashboard/ page and none of their header rules.
+const ACCOUNT_PAGES = ["signin", "es/signin", "dashboard", "es/dashboard"];
+if (process.env.ACCOUNTS_ON !== "1") {
+  for (const d of ACCOUNT_PAGES) rmSync(join(OUT, d), { recursive: true, force: true });
+  rmSync(join(OUT, "account.css"), { force: true });
+  const file = join(OUT, "staticwebapp.config.json"), cfg = JSON.parse(readFileSync(file, "utf8"));
+  cfg.routes = (cfg.routes || []).filter((r) => !ACCOUNT_PAGES.some((d) => r.route === `/${d}/*`));
+  writeFileSync(file, `${JSON.stringify(cfg, null, 2)}\n`);
+}
 walk(OUT);
 for (const f of ["404.html", "index.html", "es/index.html", "blog/feed.xml", "es/blog/feed.xml", "sitemap.xml", "robots.txt", "staticwebapp.config.json"])
   if (!existsSync(join(OUT, f))) bad.push(`out/${f} is missing`);

@@ -5,11 +5,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { questionOrder, encode, type Answers } from "./engine";
-import { BANK, RESULT_HANDOFF, bankHasSpanish, rvpUrl, type Lang } from "./data";
+import { BANK, RESULT_HANDOFF, ANSWERS_KEY, bankHasSpanish, rvpUrl, type Lang } from "./data";
 
 type S = Record<string, string>;
 const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
-const KEY = `rvp:answers:${BANK.version}`;
+const KEY = ANSWERS_KEY;
 
 function shuffle(n: number): number[] {
   const a = Array.from({ length: n }, (_, i) => i), r = new Uint32Array(n);

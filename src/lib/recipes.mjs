@@ -24,6 +24,8 @@ const TRUST_MINUTES = process.env.RECIPES_TRUST_MINUTES === "1" || !API;
 const BANNED = new Set(("wine wines beer beers ale lager rum vodka tequila mezcal whiskey whisky bourbon brandy gin liqueur sake " +
   "champagne prosecco cocktail cocktails margarita margaritas sangria mimosa coffee espresso latte cappuccino mocha tea teas " +
   "matcha chai kombucha vino vinos cerveza cervezas ron licor licores aguardiente guaro café cafés té tés").split(" "));
+// Whole phrases taken out before the banned-word check: alcohol-free things named with a banned word.
+const SOFT_DRINKS = /\b(?:ginger\s+ale|hot\s+buttered\s+rum\s+(?:mix|batter))\b/gi;
 const PRIVATE = /\b(for rod|para rod)\b|\b(kcal|calories|calorías|protein target|meta de proteína)\b/i;
 
 async function fetchRows() {
@@ -85,7 +87,8 @@ async function build() {
     if (!rec.ingredients.length) fail(`${where}: needs ingredients`);
     if (!rec.steps.length) fail(`${where}: needs steps`);
     const text = [rec.title, rec.dek, rec.imageAlt, rec.tip, rec.serveWith, rec.pairsWith, rec.credit, ...rec.tags, ...rec.ingredients, ...rec.steps].join("\n");
-    for (const w of words(text)) if (BANNED.has(w)) fail(`${where}: "${w}" (no alcohol, coffee or tea on the site)`);
+    // Alcohol-free things whose names hold a banned word are fine (EA 11/26: ginger ale, and the hot buttered rum mix).
+    for (const w of words(text.replace(SOFT_DRINKS, " "))) if (BANNED.has(w)) fail(`${where}: "${w}" (no alcohol, coffee or tea on the site)`);
     if (PRIVATE.test(text)) fail(`${where}: a private section or health number (dishes only)`);
     if (rec.lang === "es") checkUsted(text, where, fail);
     if (RECIPES_APPROVED && /\[ES TODO/i.test(text)) fail(`${where}: a Spanish placeholder is still there`);
@@ -112,7 +115,23 @@ async function build() {
     bySlug.set(r.slug, g);
   }
   for (const [slug, g] of bySlug) for (const lang of LANGS) if (!g[lang]) fail(`recipe ${slug}: no ${lang === "en" ? "English" : "Spanish"} version (both languages or none)`);
-  if (errors.length) throw new Error(`recipes:\n${errors.join("\n")}`);
+  // Recipes publish continuously (Rod 11/26: "Just publish them as you go"), so one recipe that fails a check is left off
+  // the site, in both languages, instead of stopping every deploy. The checks are unchanged: nothing that fails one is shown.
+  // The skipped list goes to the build log and the run summary for Health Agent. A failure not tied to a recipe still stops
+  // the build, and so does a deploy build that would be left with no recipes at all.
+  const bad = new Set(), loose = [];
+  for (const m of errors) { const slug = /^recipe ([^/:\s]+)/.exec(m)?.[1]; if (slug) bad.add(slug); else loose.push(m); }
+  if (loose.length) throw new Error(`recipes:\n${loose.join("\n")}`);
+  if (bad.size) {
+    console.warn(`recipes: left off the site until fixed (${bad.size}):\n${errors.join("\n")}`);
+    if (process.env.GITHUB_STEP_SUMMARY) {
+      const { appendFileSync } = await import("node:fs");
+      appendFileSync(process.env.GITHUB_STEP_SUMMARY, `### Recipes left off the site (${bad.size})\n\n${errors.map((e) => `- ${e}`).join("\n")}\n`);
+    }
+    for (let i = recipes.length - 1; i >= 0; i--) if (bad.has(recipes[i].slug)) recipes.splice(i, 1);
+    for (const slug of bad) bySlug.delete(slug);
+    if (!recipes.length && process.env.CI && !sampleData) throw new Error(`recipes: every recipe failed a check:\n${errors.join("\n")}`);
+  }
   for (const r of recipes) r.twinUrl = bySlug.get(r.slug)[r.lang === "en" ? "es" : "en"].url;
 
   const newest = (a, b) => b.updatedAt.localeCompare(a.updatedAt) || a.title.localeCompare(b.title);

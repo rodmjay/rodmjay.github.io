@@ -32,11 +32,11 @@ test("a file that stays missing reloads once and stops (no loop)", async ({ page
 test("rvp: a result that lost its #fragment on the way (deploy mid-test) is put back from the hand-off", async ({ page }) => {
   const bank = JSON.parse(readFileSync("src/rvp/bank.json", "utf8"));
   const frag = `v=${encodeURIComponent(bank.version)}&a=${"0".repeat(bank.questions.length)}`;
-  const r = await page.goto("/rvp/take/");
+  const r = await page.goto("/personality-test/take/");
   test.skip(r?.status() === 404, "the RVP test isn't built here (RVP_ON off)");
   // What RvpTake leaves when the last answer is in; Next then arrives by a full load without the fragment.
   await page.evaluate((f) => sessionStorage.setItem("rvp:result", f), frag);
-  await page.goto("/rvp/result/");
+  await page.goto("/personality-test/result/");
   await expect(page.locator(".rvp-card h2")).toHaveText(/^The /);
   expect(new URL(page.url()).hash).toBe(`#${frag}`);
   expect(await page.evaluate(() => sessionStorage.getItem("rvp:result"))).toBeNull(); // used once

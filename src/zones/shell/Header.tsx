@@ -6,7 +6,7 @@
 // closes it; Esc returns focus to the button. Without script the same list is in a <noscript>, so it stays reachable.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type Nav = Record<"label" | "menu" | "home" | "about" | "resume" | "building" | "contact" | "blog" | "recipes" | "quotes" | "language", string>;
 const NAMES = { en: "English", es: "Español" } as const;
@@ -22,7 +22,8 @@ function otherPath(path: string, lang: "en" | "es", alt: Record<string, string>)
   return to === "es" ? "/es/" : "/";
 }
 
-export function Header({ lang, nav, showRecipes, showQuotes, alt }: { lang: "en" | "es"; nav: Nav; showRecipes: boolean; showQuotes: boolean; alt: Record<string, string> }) {
+// `account` is the "Sign in" / "Dashboard" slot at the right end, next to the language menu (only where accounts are on).
+export function Header({ lang, nav, showRecipes, showQuotes, alt, account }: { lang: "en" | "es"; nav: Nav; showRecipes: boolean; showQuotes: boolean; alt: Record<string, string>; account?: ReactNode }) {
   const path = usePathname() || "/";
   const home = lang === "en" ? "/" : "/es/";
   const blog = `${home}blog/`, recipes = `${home}recipes/`, quotes = `${home}quotes/`;
@@ -56,6 +57,7 @@ export function Header({ lang, nav, showRecipes, showQuotes, alt }: { lang: "en"
       <Link className="mark" href={home} aria-label={nav.home}>Rod Johnson</Link>
       <nav aria-label={nav.label} className="bar-links">{links()}</nav>
       <button ref={button} type="button" className="ds-btn text bar-menu" aria-expanded={open} aria-controls="phone-nav" onClick={() => setOpen((o) => !o)}>{nav.menu}</button>
+      {account}
       <span className="ds-lang">
         <label>
           <span className="ds-lang-label">{nav.language}</span>
@@ -65,7 +67,7 @@ export function Header({ lang, nav, showRecipes, showQuotes, alt }: { lang: "en"
         </label>
       </span>
     </header>
-    {open && <nav id="phone-nav" aria-label={nav.label} className="phone-nav">{links(() => setOpen(false))}</nav>}
+    {open && <nav id="phone-nav" aria-label={nav.label} className="phone-nav">{links(() => setOpen(false))}{account}</nav>}
     <noscript><nav aria-label={nav.label} className="phone-nav static">{links()}</nav></noscript>
     </>
   );

@@ -2,7 +2,7 @@
 // a folder without the trailing slash redirects to it, and anything missing gets 404.html with a 404. It sends the
 // headers from out/staticwebapp.config.json (globalHeaders, then the first matching route's headers win: route
 // evaluation stops at the first match), the CSP included, so the tests see what the browser sees on Azure. A route's
-// rewrite serves its target with a 200 (the /should/demo/* deep links).
+// rewrite serves its target with a 200 (the /should/demo/* deep links); a redirect answers with its statusCode.
 //   node tests/serve.mjs [port]
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
@@ -21,6 +21,9 @@ createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
   let path = normalize(decodeURIComponent(url.pathname)).replace(/^(\.\.[/\\])+/, "");
   let file = join(ROOT, path);
+  // A route's redirect answers before any file (the old /rvp/ paths, Rod 11/26). Static Web Apps carries no wildcard tail.
+  const moved = routeFor(path)?.redirect;
+  if (moved) { res.writeHead(routeFor(path).statusCode || 302, headersFor(path, { location: moved })); return res.end(); }
   try {
     const s = await stat(file);
     if (s.isDirectory()) {
