@@ -49,7 +49,7 @@ test("csp: the resume form's request is allowed (answered here, never sent)", as
     reached = true; // CSP is checked in the page before the request leaves it, so a blocked fetch never gets here.
     await route.fulfill({ json: { ok: true, url: "https://example.test/resume.pdf" } });
   });
-  await page.goto("/#resume");
+  await page.goto("/about/#resume");
   await page.fill("#rf-name", "CSP Check");
   await page.fill("#rf-email", "csp@example.test");
   await page.check("#rf-lookup");

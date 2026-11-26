@@ -36,14 +36,16 @@ test("blog: index → post → tag → index → home, no reload, header still",
   }
 });
 
-test("home: section links and the privacy link stay in the page", async ({ page, isMobile }) => {
+test("home and about: section links and the privacy link stay in the page", async ({ page, isMobile }) => {
   test.skip(isMobile, "the section links are hidden on phones");
   await page.goto("/");
   await mark(page);
-  for (const id of ["about", "resume", "projects", "contact"]) {
+  for (const id of ["projects", "contact"]) {
     await page.locator(`header.bar nav a[href="/#${id}"]`).click();
     await expectStayed(page, new RegExp(`/#${id}$`));
   }
+  await page.locator('header.bar nav a[href="/about/"]').click();
+  await expectStayed(page, /\/about\/$/);
   await page.locator("#rform").getByRole("link", { name: "Privacy", exact: true }).click();
   await expectStayed(page, /\/privacy\/$/);
 });
@@ -87,7 +89,7 @@ test("resume form posts what site.js posted, to the same function", async ({ pag
     sent = req.postDataJSON();
     await route.fulfill({ json: { ok: true, url: "https://example.test/resume.pdf" } });
   });
-  await page.goto("/es/#resume");
+  await page.goto("/es/about/#resume");
   await page.locator("#rf-submit").click();
   await expect(page.locator("#rf-name-err")).toBeVisible();
   await page.fill("#rf-name", "Ana Prueba");
@@ -109,7 +111,7 @@ test("resume form posts what site.js posted, to the same function", async ({ pag
 
 test("resume form shows the rate limit message", async ({ page, baseURL }) => {
   test.skip(!/localhost/.test(baseURL!), "?mock= works only on localhost; elsewhere this would send a real request");
-  await page.goto("/?mock=rate#resume");
+  await page.goto("/about/?mock=rate#resume");
   await page.fill("#rf-name", "Ana");
   await page.fill("#rf-email", "ana@example.test");
   await page.check("#rf-lookup");
@@ -151,7 +153,7 @@ test("phone menu: without script the button is hidden and the links are listed",
 
 test("resume form: a pending answer says Rod reviews each request and shows no download", async ({ page }) => {
   await page.route("https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/resume-request", (route) => route.fulfill({ json: { ok: true, pending: true } }));
-  await page.goto("/#resume");
+  await page.goto("/about/#resume");
   await page.fill("#rf-name", "Ana Prueba");
   await page.fill("#rf-email", "ana@example.test");
   await page.check("#rf-lookup");

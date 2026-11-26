@@ -7,6 +7,8 @@ const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/rvp/" : "/rvp
 
 type Lang = "en" | "es";
 type Item = { title: string; body: string; url?: string };
+// Project icons (Designer 11/25; picks in design/brand/PICKS-2026-11-25.md, swappable).
+const projIcon = (url?: string) => url?.includes("/should/") ? "/img/should-icon.svg" : url?.includes("agency.squared.pro") ? "/img/agencypro-icon.svg" : url?.includes("privacy.squared.pro") ? "/img/privacy-icon.svg" : "";
 
 export function homeMeta(lang: Lang) {
   const d = dict(lang);
@@ -56,7 +58,7 @@ export function Home({ lang }: { lang: Lang }) {
           <h2 className="ds-title-large">{d.building.heading}</h2>
           <p className="ds-body-large">{d.building.lede}</p>
           <ul className="plain">
-            {d.building.items.map((it: Item) => <li key={it.title}>{/* the icon slot keeps room for the other projects' icons (Designer 11/25: Should first) */}<div className="proj-icon">{it.url?.includes("/should/") && <img src="/img/should-icon.svg" width={48} height={48} alt="" />}</div><h3 className="ds-title-medium"><a href={it.url}>{it.title}</a></h3><p className="ds-body-medium ds-variant">{it.body}</p></li>)}
+            {d.building.items.map((it: Item) => <li key={it.title}>{/* the icon slot keeps room for the other projects' icons (Designer 11/25: Should first) */}{projIcon(it.url) && <div className="proj-icon"><img src={projIcon(it.url)} width={48} height={48} alt="" /></div>}<h3 className="ds-title-medium"><a href={it.url}>{it.title}</a></h3><p className="ds-body-medium ds-variant">{it.body}</p></li>)}
           </ul>
         </section>
 
