@@ -211,8 +211,8 @@
     "ogLocale": "es_419",
     "photoCredit": "Imagen generada con IA",
     "groups": {
-      "course": "Tipo de plato",
-      "dish": "Preparación",
+      "course": "Parte del menú",
+      "dish": "Tipo de preparación",
       "occasion": "Ocasión",
       "season": "Temporada",
       "cuisine": "Cocina",
