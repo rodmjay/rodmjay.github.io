@@ -36,7 +36,7 @@ export function Home({ lang }: { lang: Lang }) {
       <main id="main" className="col">
         <section className="hero" aria-labelledby="hero-name">
           <div className="hero-top">
-            <img className="hero-photo" src="/img/rod-256.webp" srcSet="/img/rod-256.webp 256w, /img/rod-384.webp 384w" sizes="(min-width: 840px) 128px, 96px"
+            <img className="hero-photo" src="/img/rod-p-256.webp" srcSet="/img/rod-p-256.webp 256w, /img/rod-p-384.webp 384w" sizes="(min-width: 840px) 128px, 96px"
               width={128} height={128} alt={d.hero.photoAlt} fetchPriority="high" decoding="async" />
             <div>
               <h1 className="ds-headline-large" id="hero-name">{d.hero.name}</h1>
