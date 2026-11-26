@@ -1,52 +1,28 @@
 ---
 id: standards-that-stick
-title: Standards that stick
-dek: Most engineering standards die in a wiki. The ones that stick are code people want to use. Here's what made the difference for me.
+title: Standards people actually use
+dek: For me, the standards that lasted were libraries and starter code, not wiki pages.
 date: 2026-11-21
 tags: [architecture, standards, leadership]
 toc: false
 draft: false
 ---
-I've written engineering standards that nobody followed. I've also built a few that became the default without anyone being told to use them. The difference had almost nothing to do with authority.
+Most standards I've written got ignored. A few became the default without anyone being told to use them, and it wasn't about who approved them.
 
-## The wiki page that dies
+Someone senior writes a long wiki page on logging, naming, and how services should call each other. It gets approved in a meeting and then nobody opens it again. It isn't stubbornness. Following the page is extra work, and on a deadline people skip extra work.
 
-You know the pattern. Someone senior writes a long page: how we log, how we name things, how services talk to each other. It gets a meeting and a round of approval. Then it gets ignored.
+## The ones that worked were code
 
-Not because engineers are stubborn. Because following it costs something, and ignoring it costs nothing. The page asks people to do extra work on a deadline, and the deadline always wins.
+Every standard of mine that stuck was something people could install or copy.
 
-A standard that depends on everyone remembering to follow it is a wish.
+When I worked with Microsoft's Site Reliability Engineering group, the problem was logging. Each service did it a bit differently, so following one request across services was slow and painful. I could have written a logging guideline. I built a library instead. You added it to your service and you were logging the right way with almost no effort. It became the department's standard without anyone mandating it, mostly because it was less work than writing your own.
 
-## Make the right way the easy way
+Same with a reference microservice architecture. I didn't write up what a good service should look like. I built one, working and documented, and later services were built off it. People copy whatever already works, so a working example spreads on its own.
 
-The standards that stuck for me all had one thing in common: they were code, not documents.
+At Solution Stream it was a shared .NET codebase. New projects started from it, so they all started with the same structure and the same bug fixes. We never had to police consistency.
 
-When I worked with Microsoft's Site Reliability Engineering group, the problem was logging. Every service did it a little differently, so following one request across services was slow and painful. Instead of writing a logging guideline, I built a logging library. Add it, and your service logged the right way with almost no effort.
+Looking back, the ones that lasted had a few other things in common. They were opinionated about the boring stuff, logging and naming and project layout, and left the real design decisions to the team that owns the problem. They were easy to change. If you can't improve a standard, people end up fighting it instead, so take pull requests, and when a team finds a better way, fold it in so everyone gets it. And someone has to own it and fix it when it breaks.
 
-It became the department's standard. Nobody mandated it. It was simply less work than doing it yourself.
+I still write a lot of documents. The useful ones record why we picked a database, or what we gave up to get there. That's what architecture decision records are for, and they pay off years later when someone asks why the system looks the way it does. An ADR is the why. The library is the thing people actually use. You need both.
 
-The same thing happened with a reference microservice architecture. I didn't describe what a good service should look like. I built one, working and documented, and it became the model later services were built from. Engineers copy what works. Give them something worth copying.
-
-At Solution Stream it was a shared .NET codebase. Every new project started from it, so every project got the same structure, the same patterns and the same fixes on day one. Consistency wasn't a rule anyone had to enforce. It was the starting point.
-
-## What makes a standard stick
-
-Looking back, these are the things that mattered:
-
-1. **It saves time on day one.** If adopting the standard is slower than ignoring it, people will ignore it. Lead with the shortcut.
-2. **It's opinionated about the boring parts only.** Standardize logging, structure, deployment and naming. Leave the interesting design decisions to the team that owns the problem.
-3. **There's a working example.** One real service built the right way teaches more than any document.
-4. **It's easy to change.** A standard you can't improve turns into a fight. Take pull requests. When a team finds a better way, fold it in so everyone gets it.
-5. **Someone owns it.** Shared code with no owner rots. Give it a maintainer and a way to report problems.
-
-## Where documents still help
-
-I'm not against writing things down. I write a lot of them. The useful kind records *why*: why we chose this database, why services talk this way, what we gave up. That's what an architecture decision record is for, and it pays off years later when someone asks "why is it like this?"
-
-The document explains the decision. The code carries it out. When you only have the document, you have a standard on paper. When you have the code, you have a standard in production.
-
-## The real test
-
-Here's how I judge whether a standard worked: a year later, is anyone still talking about it?
-
-The best ones disappear. Nobody debates the logging library anymore. They just use it, and they spend their energy on the work that actually needs them.
+My test is whether people are still talking about it a year later. If they aren't, it worked. Nobody brings up the logging library anymore. They just use it.

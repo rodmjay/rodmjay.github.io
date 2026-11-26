@@ -1,58 +1,46 @@
 ---
 id: ai-writes-the-code
-title: Cuando la IA escribe el código, la arquitectura importa más
-dek: La IA abarató escribir código. No abarató decidir qué construir, y por eso la arquitectura importa más ahora, no menos.
+title: Con la IA escribiendo el código, la arquitectura importa más
+dek: El código se abarató. Decidir qué construir, no.
 date: 2026-11-21
 tags: [ai, architecture, delivery]
 toc: false
 draft: false
 ---
-Una predicción común dice que las herramientas de IA para programar harán menos necesarios a los arquitectos. Si un modelo puede escribir el servicio, ¿para qué se necesita a alguien que decida cómo deben construirse los servicios?
+Escucho seguido que las herramientas de IA para programar van a hacer menos necesarios a los arquitectos. La idea es que si un modelo puede escribir el servicio, ya no hace falta alguien que decida cómo se construyen los servicios.
 
-Creo que es al revés. La IA abarató escribir código. No abarató decidir qué construir, y no hizo más barato deshacer una mala decisión.
+No creo que sea así. Lo que se abarató fue teclear. Escoger qué construir sigue siendo igual de difícil, y echar atrás una mala decisión sigue doliendo lo mismo.
 
-## Más código, más rápido, en más direcciones
+## Mucho más código, muy rápido
 
-Dele buenas herramientas de IA a un equipo y lo primero que notará es el volumen. Los cambios llegan más grandes y más rápido. Los prototipos que tomaban una semana toman una tarde.
+Dele buenas herramientas de IA a un equipo y lo primero que se nota es el volumen. Los pull requests son más grandes y llegan más seguido. Un prototipo que antes tomaba una semana ahora sale en una tarde.
 
-Eso es real, y es bueno. Pero el volumen sin dirección es solo una forma más rápida de construir un desorden. Un modelo escribirá con gusto una quinta forma de llamar a la misma API, inventará un formato de error un poco distinto o traerá una biblioteca que nadie más usa. Cada pieza se ve bien por sí sola. Juntas forman un sistema que nadie puede entender.
+Sin dirección, todo ese volumen solo lo lleva más rápido a un desorden. Un modelo le escribe sin problema una quinta forma de llamar a la misma API. Si lo deja, se inventa su propio formato de error. Cada PR se ve bien por separado, y unos meses después nadie sabe explicar cómo encaja el sistema. Por eso todos, personas y modelos, tienen que seguir los mismos patrones.
 
-Mientras más rápido se produce el código, más importa que todos, personas y modelos, construyan hacia la misma forma.
+En una base de código limpia, con patrones claros, lo que escribe un modelo encaja sin esfuerzo. Si le da un repositorio con cinco estilos distintos, va a tomar el primero que vea. Por eso el trabajo aburrido (bibliotecas compartidas, servicios de referencia, una estructura de proyecto consistente) termina siendo casi la mejor instrucción que le puede dar a un modelo. Los ingenieros nuevos siempre han aprendido el sistema a partir de un buen servicio de referencia, y ahora los modelos también.
 
-## Los patrones son la instrucción
+Los registros de decisiones importan más por lo mismo. Un modelo no puede ir a preguntarle al ingeniero que se fue hace dos años por qué las cosas están hechas así. Si alguien dejó el razonamiento por escrito, el modelo lo puede leer.
 
-Esto es lo que he visto que funciona: los modelos copian lo que tienen enfrente. Apunte una herramienta de IA a una base de código limpia con patrones claros y escribirá código que encaja. Apúntela a una base de código con cinco estilos que compiten entre sí y escogerá uno al azar.
+## La revisión no da abasto
 
-Así que el trabajo de arquitectura de siempre, bibliotecas compartidas, servicios de referencia, estructura consistente, resulta ser la mejor instrucción que puede escribir. Una buena implementación de referencia antes enseñaba a los ingenieros nuevos. Ahora también enseña a cada modelo que trabaja en el repositorio.
+Cuando el código llega más rápido, se acumula en la revisión humana. La solución es mover los controles más temprano y automatizarlos.
 
-Los registros de decisiones también importan más. Un modelo no puede preguntarle a la persona que se fue hace dos años por qué el sistema está hecho así. Si el razonamiento está escrito, lo puede leer.
+- Revise dependencias, secretos y patrones débiles conocidos en cada cambio, dentro del flujo de entrega. No lo deje para una auditoría trimestral.
+- Las pruebas son el contrato. Si un comportamiento importa, tiene su prueba. Así ya no me importa mucho si el código lo escribió una persona o un modelo.
+- Los despliegues tienen que ser automáticos y aburridos, para que publicar sea rutina y revertir sea fácil.
+- Los límites claros entre servicios evitan que un error en un lugar se riegue a todo lo demás.
 
-## Las barreras automáticas ganan a la revisión
+Con eso en su lugar, los revisores pueden dedicar su tiempo a lo que las máquinas todavía juzgan mal, como si de verdad conviene construir esto y si encaja con hacia dónde va el sistema.
 
-Cuando el código llega más rápido, la revisión humana se vuelve el cuello de botella. No se arregla pidiendo a los revisores que lean más rápido. Se arregla moviendo los controles antes y haciéndolos automáticos:
+## Lo que la IA no toca
 
-- **Controles de seguridad en el flujo de entrega,** no en una auditoría trimestral. Revise dependencias, secretos y patrones débiles conocidos en cada cambio.
-- **Las pruebas como contrato.** Si el comportamiento importa, tiene una prueba. Entonces no importa quién, o qué, escribió el código.
-- **Despliegues automáticos y aburridos,** para que publicar sea rutina y revertir sea fácil.
-- **Límites claros entre servicios,** para que un error en un lugar se quede en ese lugar.
+Sigue haciendo falta alguien que entienda el negocio lo suficiente para saber para qué es el sistema. Esa persona pesa el costo contra la velocidad y la flexibilidad contra la simplicidad, piensa en lo que vamos a necesitar en cinco años y no solo ahora, logra que los equipos jalen para el mismo lado y dice que no cuando hace falta. Nada de eso es nuevo.
 
-Así los revisores dedican su tiempo a las preguntas que las máquinas no responden bien: ¿es esto lo correcto para construir, y encaja con hacia dónde va el sistema?
+Si su equipo está empezando a usar estas herramientas, esto es lo que yo haría primero.
 
-## Lo que no cambia
+1. Limpie un servicio de referencia y conviértalo en el ejemplo del que parten todos, modelos incluidos.
+2. Escriba sus diez decisiones más importantes como registros de decisiones cortos.
+3. Pase un control manual al flujo de entrega este mes.
+4. Mida lo que sale a producción y si funciona, no las líneas de código.
 
-Hay cosas que la IA no toca.
-
-Alguien todavía tiene que entender el negocio lo suficiente para saber para qué es el sistema. Alguien tiene que sopesar las concesiones: costo contra velocidad, flexibilidad contra simplicidad, hoy contra dentro de cinco años. Alguien tiene que lograr que equipos distintos jalen en la misma dirección. Y alguien tiene que decir que no.
-
-Ese siempre fue el trabajo. Las herramientas solo lo hicieron más evidente.
-
-## Por dónde empezaría
-
-Si su equipo está adoptando herramientas de IA para programar, esto es lo que yo haría primero:
-
-1. **Limpie un servicio de referencia** y vuélvalo el ejemplo del que parten todos, personas y modelos.
-2. **Escriba sus diez decisiones principales** como registros de decisiones cortos.
-3. **Mueva un control manual al flujo de entrega** este mes.
-4. **Mida lo que sale a producción, no las líneas escritas.** Las líneas de código nunca fueron lo importante.
-
-La IA es el cambio más grande que he visto en 21 años en la forma de construir software. Premia a los equipos con buena arquitectura y castiga a los que no la tienen, más rápido que nunca.
+Llevo unos 21 años construyendo software, y este es el cambio más grande que he visto en la forma de hacerlo. Si su arquitectura es un desorden, simplemente se va a dar cuenta más rápido.

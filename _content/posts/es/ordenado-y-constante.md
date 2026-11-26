@@ -1,52 +1,28 @@
 ---
 id: regular-and-orderly
-title: Ordenado y constante
-dek: Por qué las partes más aburridas de mi semana son la razón de que pase el trabajo interesante, y qué tiene que ver eso con la arquitectura.
+title: Aburrido a propósito
+dek: Por qué dejé de guardar las cosas en la cabeza, y qué tiene que ver eso con la arquitectura.
 date: 2026-11-21
 tags: [habits, architecture, focus]
 toc: false
 draft: false
 ---
-Hay una frase de Gustave Flaubert en mi biografía de X: «Sea constante y ordenado en su vida, para que pueda ser violento y original en su trabajo».
+La frase de Flaubert que tengo en mi biografía de X es lo más parecido que tengo a una filosofía de trabajo: «Sea constante y ordenado en su vida, para que pueda ser violento y original en su trabajo». Así escribió *Madame Bovary*, con una rutina diaria estricta.
 
-No la puse porque suene bien. La puse porque es la descripción más exacta de cómo trabajo.
+Al principio de mi carrera llevaba todo en la cabeza. Fechas límite, seguimientos, lo que le había prometido a alguien en un pasillo. La mayoría de las semanas funcionaba. Después llegaba una mala, algo se me pasaba, y me tocaba dedicar la semana siguiente a arreglarlo.
 
-## La fuerza de voluntad es un mal lugar para guardar cosas
+No era cuestión de esfuerzo. La memoria es una pésima base de datos. Falla bajo carga, y la carga es justo cuando más se necesita.
 
-Al principio de mi carrera, mi cabeza era el sistema. Las fechas límite, los seguimientos y lo que le prometí a alguien en un pasillo vivían en la memoria. En una buena semana funcionaba. En una mala semana algo se caía, y me pasaba la semana siguiente arreglándolo.
+Así que dejé de pedirle ese trabajo. Si algo lo voy a tener que recordar dos veces, lo anoto o lo automatizo. Las cuentas se pagan en automático y el trabajo recurrente está en el calendario. Todo lo pendiente vive en un solo lugar, y lo reviso con horario fijo, no cuando me entra la ansiedad.
 
-El problema no era el esfuerzo. La memoria es una pésima base de datos: no tiene respaldos ni búsqueda, y falla bajo carga, que es justo cuando más la necesita.
+Es aburrido, y está bien. Cuando lo ordinario va sobre rieles, deja de pelear por mi atención. Las mañanas empiezan igual y casi todas las semanas se parecen. El sábado repaso la semana y decido qué sigue. El domingo descanso, y lo cuido para que siga así.
 
-Así que dejé de pedirle ese trabajo. Todo lo que tendría que recordar dos veces ahora queda por escrito o automatizado. Las cuentas se pagan solas. El trabajo recurrente vive en un calendario. Cada pendiente tiene un solo lugar, y reviso ese lugar con un horario fijo, no cada vez que me da ansiedad.
+Entonces, cuando llega un problema de diseño difícil, digamos un sistema que tiene que aguantar diez años de cambios, le puedo dar toda mi atención. No estoy al mismo tiempo pensando si se pagó la luz.
 
-## Lo aburrido es lo importante
+## En el trabajo es igual
 
-Nada de esto es interesante. Ese es el punto.
+En algún momento me di cuenta de que hago arquitectura de la misma manera. Una buena plataforma hace que el camino común sea aburrido. El registro de eventos funciona igual en todos los servicios y los despliegues se parecen entre sí, así que nadie tiene que pensar en eso. Los equipos no gastan sus buenas ideas en la plomería. Las guardan para el producto de verdad.
 
-Cuando las partes ordinarias de la vida van sobre rieles, dejan de competir por la atención. Mis mañanas empiezan igual. Mi semana tiene la misma forma. El sábado es para revisar lo que pasó y decidir qué importa después. El domingo es para descansar, y lo protejo.
+He visto equipos ir en sentido contrario: cada servicio arma su propio registro y cada proyecto arranca desde una carpeta vacía. Durante unos seis meses se siente como libertad. Después es la razón por la que nada sale. Todos vuelven a decidir cosas que debieron decidirse una sola vez.
 
-Lo que gano es espacio. Cuando aparece un problema de diseño difícil, un sistema que tiene que aguantar diez años de cambios, tengo toda mi atención para dárselo. Nada en el fondo me está preguntando en voz baja si pagué la luz.
-
-## Es lo mismo que hago en el trabajo
-
-Me tomó más tiempo del que debería notarlo. La forma en que llevo mi semana es la forma en que hago arquitectura.
-
-Una buena plataforma hace que el camino común sea aburrido. El registro de eventos funciona igual en cada servicio. Los proyectos nuevos empiezan del mismo código compartido. Los despliegues se ven idénticos, así que nadie tiene que pensar en ellos. Los equipos no gastan su creatividad en la plomería.
-
-La gastan en el problema que solo ellos pueden resolver.
-
-He visto equipos intentarlo al revés. Cada servicio inventa su propio registro. Cada proyecto empieza desde una carpeta vacía. Se siente como libertad durante unos seis meses, y después se vuelve la razón por la que nada sale. La gente quema su mejor energía en decisiones que debieron tomarse una sola vez.
-
-Ordenado y constante abajo. Original arriba.
-
-## Tres cosas que sí ayudan
-
-Si quiere probarlo, aquí es donde yo empezaría:
-
-1. **Elija un solo lugar para cada tipo de cosa.** Tareas en un lugar, fechas en otro, notas en otro. Dos lugares para lo mismo significa que no confiará en ninguno.
-2. **Revise con horario, no por sensación.** Una revisión semanal corta es mejor que un pánico largo. Yo hago la mía el sábado en la mañana.
-3. **Automatice la segunda vez.** La primera vez que hace algo a mano, solo hágalo. La segunda, escríbalo. La tercera, haga que funcione sin usted.
-
-Nada de esto lo vuelve brillante. Despeja el espacio donde ocurre el buen trabajo.
-
-Flaubert escribió *Madame Bovary* con una rutina diaria estricta. La rutina no era el arte. Era lo que hacía posible el arte.
+Si quiere probarlo, hubo un par de cosas que me sirvieron. Tenga las tareas en un lugar y las fechas en otro; en cuanto algo vive en dos lugares, deja de confiar en los dos. Revíselo con horario (yo lo hago el sábado en la mañana), no cuando se ponga nervioso. Y con el trabajo recurrente, la primera vez hágalo a mano. La segunda, escríbalo. Si hay una tercera, automatícelo.
