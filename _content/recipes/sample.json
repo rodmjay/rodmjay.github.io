@@ -35,7 +35,16 @@
     "tip": "Salsa Lizano, the Costa Rican splash on top, dates to 1920 in Alajuela.",
     "serve_with": null,
     "pairs_with": "Fresh orange juice",
-    "sources": []
+    "sources": [],
+    "facets": [
+      { "group": "course", "key": "breakfast", "tag": "course:breakfast", "label": "Breakfast", "sort": 1 },
+      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Weeknight", "sort": 8 },
+      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costa Rican", "sort": 3 },
+      { "group": "main", "key": "beans", "tag": "main:beans", "label": "Beans", "sort": 7 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetarian", "sort": 2 },
+      { "group": "dish", "key": "skillet", "tag": "dish:skillet", "label": "Skillet or one-pan", "sort": 5 },
+      { "group": "dish", "key": "rice-beans", "tag": "dish:rice-beans", "label": "Rice or beans", "sort": 13 }
+    ]
   },
   {
     "slug": "gallo-pinto",
@@ -73,7 +82,16 @@
     "tip": "La Salsa Lizano, el toque costarricense de encima, existe desde 1920 en Alajuela.",
     "serve_with": null,
     "pairs_with": "Jugo de naranja natural",
-    "sources": []
+    "sources": [],
+    "facets": [
+      { "group": "course", "key": "breakfast", "tag": "course:breakfast", "label": "Desayuno", "sort": 1 },
+      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Entre semana", "sort": 8 },
+      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costarricense", "sort": 3 },
+      { "group": "main", "key": "beans", "tag": "main:beans", "label": "Frijoles", "sort": 7 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetariana", "sort": 2 },
+      { "group": "dish", "key": "skillet", "tag": "dish:skillet", "label": "Sartén o una sola olla", "sort": 5 },
+      { "group": "dish", "key": "rice-beans", "tag": "dish:rice-beans", "label": "Arroz o frijoles", "sort": 13 }
+    ]
   },
   {
     "slug": "arroz-con-pollo",
@@ -113,7 +131,17 @@
     "tip": "Made in an electric pressure cooker (Instant Pot).",
     "serve_with": null,
     "pairs_with": "Agua de jamaica",
-    "sources": []
+    "sources": [],
+    "facets": [
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Main dish", "sort": 2 },
+      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Weeknight", "sort": 8 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Party or potluck", "sort": 6 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Winter", "sort": 4 },
+      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costa Rican", "sort": 3 },
+      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Chicken", "sort": 1 },
+      { "group": "dish", "key": "skillet", "tag": "dish:skillet", "label": "Skillet or one-pan", "sort": 5 },
+      { "group": "dish", "key": "rice-beans", "tag": "dish:rice-beans", "label": "Rice or beans", "sort": 13 }
+    ]
   },
   {
     "slug": "arroz-con-pollo",
@@ -153,6 +181,344 @@
     "tip": "Se prepara en una olla de presión eléctrica (Instant Pot).",
     "serve_with": null,
     "pairs_with": "Agua de jamaica",
-    "sources": []
+    "sources": [],
+    "facets": [
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Plato fuerte", "sort": 2 },
+      { "group": "occasion", "key": "weeknight", "tag": "occasion:weeknight", "label": "Entre semana", "sort": 8 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Fiesta o convivio", "sort": 6 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Invierno", "sort": 4 },
+      { "group": "cuisine", "key": "costa-rican", "tag": "cuisine:costa-rican", "label": "Costarricense", "sort": 3 },
+      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Pollo", "sort": 1 },
+      { "group": "dish", "key": "skillet", "tag": "dish:skillet", "label": "Sartén o una sola olla", "sort": 5 },
+      { "group": "dish", "key": "rice-beans", "tag": "dish:rice-beans", "label": "Arroz o frijoles", "sort": 13 }
+    ]
+  },
+  {
+    "image": null,
+    "image_alt": "",
+    "serve_with": null,
+    "pairs_with": null,
+    "sources": [],
+    "tip": null,
+    "slug": "grilled-chicken-skewers",
+    "lang": "en",
+    "title": "Grilled Chicken Skewers",
+    "dek": "Lime and garlic chicken on the grill, ready in half an hour.",
+    "servings": 4,
+    "minutes": 30,
+    "tags": [
+      "Dinner",
+      "Chicken",
+      "Grill"
+    ],
+    "ingredients": [
+      "2 lb chicken thighs, in 1-inch pieces",
+      "2 limes, juiced",
+      "3 cloves garlic, minced",
+      "1 tsp cumin",
+      "Salt and pepper"
+    ],
+    "steps": [
+      "Toss the chicken with the lime juice, garlic, cumin, salt and pepper.",
+      "Thread onto skewers.",
+      "Grill over medium-high heat, turning, about 12 minutes."
+    ],
+    "updated_at": "2026-11-22T00:00:00Z",
+    "from_credit": "From Rod's kitchen",
+    "facets": [
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Main dish", "sort": 2 },
+      { "group": "occasion", "key": "july-4th", "tag": "occasion:july-4th", "label": "July 4th", "sort": 5 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Party or potluck", "sort": 6 },
+      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Summer", "sort": 2 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "American", "sort": 1 },
+      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Chicken", "sort": 1 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly", "sort": 1 },
+      { "group": "dish", "key": "grill", "tag": "dish:grill", "label": "Grill or kebabs", "sort": 12 }
+    ]
+  },
+  {
+    "image": null,
+    "image_alt": "",
+    "serve_with": null,
+    "pairs_with": null,
+    "sources": [],
+    "tip": null,
+    "slug": "grilled-chicken-skewers",
+    "lang": "es",
+    "title": "Pinchos de pollo a la parrilla",
+    "dek": "Pollo con limón y ajo a la parrilla, listo en media hora.",
+    "servings": 4,
+    "minutes": 30,
+    "tags": [
+      "Cena",
+      "Pollo",
+      "Parrilla"
+    ],
+    "ingredients": [
+      "900 g (2 lb) de muslos de pollo, en trozos de 2,5 cm",
+      "2 limones, en jugo",
+      "3 dientes de ajo, picados",
+      "1 cdta de comino",
+      "Sal y pimienta"
+    ],
+    "steps": [
+      "Mezcle el pollo con el jugo de limón, el ajo, el comino, la sal y la pimienta.",
+      "Ensarte el pollo en los pinchos.",
+      "Ase a fuego medio alto, dándoles vuelta, unos 12 minutos."
+    ],
+    "updated_at": "2026-11-22T00:00:00Z",
+    "from_credit": "De la cocina de Rod",
+    "facets": [
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Plato fuerte", "sort": 2 },
+      { "group": "occasion", "key": "july-4th", "tag": "occasion:july-4th", "label": "4 de julio", "sort": 5 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Fiesta o convivio", "sort": 6 },
+      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Verano", "sort": 2 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "Estadounidense", "sort": 1 },
+      { "group": "main", "key": "chicken", "tag": "main:chicken", "label": "Pollo", "sort": 1 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo", "sort": 1 },
+      { "group": "dish", "key": "grill", "tag": "dish:grill", "label": "Parrilla o brochetas", "sort": 12 }
+    ]
+  },
+  {
+    "image": null,
+    "image_alt": "",
+    "serve_with": null,
+    "pairs_with": null,
+    "sources": [],
+    "tip": null,
+    "slug": "mango-salsa",
+    "lang": "en",
+    "title": "Mango Salsa",
+    "dek": "Sweet mango, red onion and cilantro with a squeeze of lime.",
+    "servings": 6,
+    "minutes": 10,
+    "tags": [
+      "Side",
+      "Fruit"
+    ],
+    "ingredients": [
+      "2 ripe mangoes, diced",
+      "½ red onion, diced",
+      "1 jalapeño, minced",
+      "1 lime, juiced",
+      "Cilantro and salt"
+    ],
+    "steps": [
+      "Mix everything in a bowl.",
+      "Rest 10 minutes so the flavors meet."
+    ],
+    "updated_at": "2026-11-21T00:00:00Z",
+    "from_credit": "From Rod's kitchen",
+    "facets": [
+      { "group": "course", "key": "side", "tag": "course:side", "label": "Side", "sort": 3 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Party or potluck", "sort": 6 },
+      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Summer", "sort": 2 },
+      { "group": "cuisine", "key": "mexican", "tag": "cuisine:mexican", "label": "Mexican", "sort": 2 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetarian", "sort": 2 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly", "sort": 1 },
+      { "group": "dish", "key": "sauce-dip", "tag": "dish:sauce-dip", "label": "Sauce or dip", "sort": 11 }
+    ]
+  },
+  {
+    "image": null,
+    "image_alt": "",
+    "serve_with": null,
+    "pairs_with": null,
+    "sources": [],
+    "tip": null,
+    "slug": "mango-salsa",
+    "lang": "es",
+    "title": "Salsa de mango",
+    "dek": "Mango dulce, cebolla morada y cilantro con un chorrito de limón.",
+    "servings": 6,
+    "minutes": 10,
+    "tags": [
+      "Acompañamiento",
+      "Fruta"
+    ],
+    "ingredients": [
+      "2 mangos maduros, en cubos",
+      "½ cebolla morada, picada",
+      "1 chile jalapeño, picado",
+      "1 limón, en jugo",
+      "Cilantro y sal"
+    ],
+    "steps": [
+      "Mezcle todo en un tazón.",
+      "Deje reposar 10 minutos para que se mezclen los sabores."
+    ],
+    "updated_at": "2026-11-21T00:00:00Z",
+    "from_credit": "De la cocina de Rod",
+    "facets": [
+      { "group": "course", "key": "side", "tag": "course:side", "label": "Acompañamiento", "sort": 3 },
+      { "group": "occasion", "key": "party", "tag": "occasion:party", "label": "Fiesta o convivio", "sort": 6 },
+      { "group": "season", "key": "summer", "tag": "season:summer", "label": "Verano", "sort": 2 },
+      { "group": "cuisine", "key": "mexican", "tag": "cuisine:mexican", "label": "Mexicana", "sort": 2 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetariana", "sort": 2 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo", "sort": 1 },
+      { "group": "dish", "key": "sauce-dip", "tag": "dish:sauce-dip", "label": "Salsa o untable", "sort": 11 }
+    ]
+  },
+  {
+    "image": null,
+    "image_alt": "",
+    "serve_with": null,
+    "pairs_with": null,
+    "sources": [],
+    "tip": null,
+    "slug": "roast-turkey-breast",
+    "lang": "en",
+    "title": "Roast Turkey Breast",
+    "dek": "A holiday turkey without the whole bird: herb butter, high heat, juicy slices.",
+    "servings": 6,
+    "minutes": 90,
+    "tags": [
+      "Dinner",
+      "Holiday"
+    ],
+    "ingredients": [
+      "3 lb bone-in turkey breast",
+      "2 tbsp ghee, soft",
+      "1 tbsp chopped rosemary and thyme",
+      "Salt and pepper"
+    ],
+    "steps": [
+      "Heat the oven to 400°F.",
+      "Rub the turkey with the ghee, herbs, salt and pepper.",
+      "Roast until 160°F inside, about 75 minutes, then rest 15 minutes before slicing."
+    ],
+    "updated_at": "2026-11-20T00:00:00Z",
+    "from_credit": "From Rod's kitchen",
+    "facets": [
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Main dish", "sort": 2 },
+      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Holiday", "sort": 1 },
+      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Christmas", "sort": 2 },
+      { "group": "occasion", "key": "thanksgiving", "tag": "occasion:thanksgiving", "label": "Thanksgiving", "sort": 3 },
+      { "group": "season", "key": "fall", "tag": "season:fall", "label": "Fall", "sort": 3 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Winter", "sort": 4 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "American", "sort": 1 },
+      { "group": "main", "key": "turkey", "tag": "main:turkey", "label": "Turkey", "sort": 4 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly", "sort": 1 }
+    ]
+  },
+  {
+    "image": null,
+    "image_alt": "",
+    "serve_with": null,
+    "pairs_with": null,
+    "sources": [],
+    "tip": null,
+    "slug": "roast-turkey-breast",
+    "lang": "es",
+    "title": "Pechuga de pavo al horno",
+    "dek": "Un pavo de fiesta sin el ave entera: mantequilla de hierbas, horno fuerte y rebanadas jugosas.",
+    "servings": 6,
+    "minutes": 90,
+    "tags": [
+      "Cena",
+      "Fiestas"
+    ],
+    "ingredients": [
+      "1,4 kg (3 lb) de pechuga de pavo con hueso",
+      "2 cdas de ghee, suave",
+      "1 cda de romero y tomillo picados",
+      "Sal y pimienta"
+    ],
+    "steps": [
+      "Caliente el horno a 200 °C (400 °F).",
+      "Unte el pavo con el ghee, las hierbas, la sal y la pimienta.",
+      "Hornee hasta 71 °C (160 °F) por dentro, unos 75 minutos, y deje reposar 15 minutos antes de rebanar."
+    ],
+    "updated_at": "2026-11-20T00:00:00Z",
+    "from_credit": "De la cocina de Rod",
+    "facets": [
+      { "group": "course", "key": "main", "tag": "course:main", "label": "Plato fuerte", "sort": 2 },
+      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Fiestas", "sort": 1 },
+      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Navidad", "sort": 2 },
+      { "group": "occasion", "key": "thanksgiving", "tag": "occasion:thanksgiving", "label": "Día de Acción de Gracias", "sort": 3 },
+      { "group": "season", "key": "fall", "tag": "season:fall", "label": "Otoño", "sort": 3 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Invierno", "sort": 4 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "Estadounidense", "sort": 1 },
+      { "group": "main", "key": "turkey", "tag": "main:turkey", "label": "Pavo", "sort": 4 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo", "sort": 1 }
+    ]
+  },
+  {
+    "image": null,
+    "image_alt": "",
+    "serve_with": null,
+    "pairs_with": null,
+    "sources": [],
+    "tip": null,
+    "slug": "sweet-potato-mash",
+    "lang": "en",
+    "title": "Sweet Potato Mash",
+    "dek": "Roasted sweet potatoes mashed with ghee and a little cinnamon.",
+    "servings": 6,
+    "minutes": 50,
+    "tags": [
+      "Side",
+      "Holiday"
+    ],
+    "ingredients": [
+      "3 lb sweet potatoes",
+      "3 tbsp ghee",
+      "½ tsp cinnamon",
+      "Salt"
+    ],
+    "steps": [
+      "Roast the sweet potatoes at 400°F until soft, about 45 minutes.",
+      "Peel and mash with the ghee, cinnamon and salt."
+    ],
+    "updated_at": "2026-11-19T00:00:00Z",
+    "from_credit": "From Rod's kitchen",
+    "facets": [
+      { "group": "course", "key": "side", "tag": "course:side", "label": "Side", "sort": 3 },
+      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Holiday", "sort": 1 },
+      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Christmas", "sort": 2 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Winter", "sort": 4 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "American", "sort": 1 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetarian", "sort": 2 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Paleo-friendly", "sort": 1 }
+    ]
+  },
+  {
+    "image": null,
+    "image_alt": "",
+    "serve_with": null,
+    "pairs_with": null,
+    "sources": [],
+    "tip": null,
+    "slug": "sweet-potato-mash",
+    "lang": "es",
+    "title": "Puré de camote",
+    "dek": "Camote asado y machacado con ghee y un poco de canela.",
+    "servings": 6,
+    "minutes": 50,
+    "tags": [
+      "Acompañamiento",
+      "Fiestas"
+    ],
+    "ingredients": [
+      "1,4 kg (3 lb) de camote",
+      "3 cdas de ghee",
+      "½ cdta de canela",
+      "Sal"
+    ],
+    "steps": [
+      "Ase el camote a 200 °C (400 °F) hasta que esté suave, unos 45 minutos.",
+      "Pélelo y macháquelo con el ghee, la canela y la sal."
+    ],
+    "updated_at": "2026-11-19T00:00:00Z",
+    "from_credit": "De la cocina de Rod",
+    "facets": [
+      { "group": "course", "key": "side", "tag": "course:side", "label": "Acompañamiento", "sort": 3 },
+      { "group": "occasion", "key": "holiday", "tag": "occasion:holiday", "label": "Fiestas", "sort": 1 },
+      { "group": "occasion", "key": "christmas", "tag": "occasion:christmas", "label": "Navidad", "sort": 2 },
+      { "group": "season", "key": "winter", "tag": "season:winter", "label": "Invierno", "sort": 4 },
+      { "group": "cuisine", "key": "american", "tag": "cuisine:american", "label": "Estadounidense", "sort": 1 },
+      { "group": "diet", "key": "vegetarian", "tag": "diet:vegetarian", "label": "Vegetariana", "sort": 2 },
+      { "group": "diet", "key": "paleo-friendly", "tag": "diet:paleo-friendly", "label": "Apta para paleo", "sort": 1 }
+    ]
   }
 ]

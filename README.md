@@ -57,11 +57,25 @@ npm run test:e2e     # Playwright: axe (WCAG 2.1 AA) at 1280 and 375 in EN and E
 ## Recipes
 
 - Read at build time only from the `public-recipes` Edge Function (`RECIPES_API`, GET, `?lang=en|es`). Until it returns
-  rows, the build uses the three sample dishes in `_content/recipes/sample.json`.
+  rows, the build uses the six sample dishes in `_content/recipes/sample.json`.
 - Two switches (repo variables in CI): `RECIPES_LIVE=1` adds "Recipes" to the nav; `RECIPES_APPROVED=1` removes the
   Sample chip and the noindex and adds the recipes to the sitemap, together.
 - The build fails on a recipe without both languages, Spanish that isn't usted, alcohol, coffee or tea, a private
   section ("For Rod", health numbers), or, once approved, an `[ES TODO` placeholder.
+- **Tags and filters** (Designer's spec, "Update 2026-11-26", and the staging review). When any row carries `facets`
+  ({group, key, tag, label, sort}; groups course, dish, occasion, season, cuisine, main, diet in that order), tag pages are
+  `/recipes/tag/<group>-<key>/` (one per value, sibling chips of the same group, "Combine filters"), the recipe page lists
+  its tags (8, then "Show all tags"), and the index filters in the browser (`src/zones/recipes/RecipeBrowser.tsx`): OR
+  inside a group, AND across groups, `?tags=season:summer,occasion:christmas`, one `pushState` per change, dimmed chips
+  for no matches. Course and Dish lead as a larger block (56px chips); the other groups sit under "More filters", open on
+  desktop and collapsed in the phone "Filter" sheet. Values follow the catalog's `sort` (alphabetical when it's null);
+  cuisine and main stay alphabetical in each language. Every control has a 48px hit area with the 32px chip look kept
+  (a transparent border on chips, an invisible `::before` on buttons). A value on only one recipe gets a tag page but no
+  chip. Filtered views are the same static page: canonical `/recipes/`, and the head script (`src/lib/langscript.mjs`)
+  adds a robots noindex when `?tags=` is present; the tag pages are the indexable ones (sitemap once approved). Without
+  script the chips are links to the tag pages. With no facets anywhere, the old section tags (`tags`) drive the tag pages
+  as before. The build fails on an unknown group, a bad key, EN and ES rows with different tags, or a banned word in a
+  tag label. `e2e/recipes.spec.ts` covers it (fixture counts skip on live-feed builds; the "live data:" tests always run).
 - Photos are self-hosted: `python3 scripts/recipe-images.py <folder> <slug>…` writes WebP at 1600 and 800 px (never
   wider than the source) and a JPEG fallback into `public/recipes/images/`. Dish photos only.
 
