@@ -6,6 +6,8 @@
 #   - the required `build` check on the head commit passed.
 # Then it starts the production deploy (a merge by this token doesn't fire push workflows). pull_request, never
 # pull_request_target: nothing from the branch runs here except the files it reads as data.
+# Limit (Security 11/26): a PR can also edit this file, and the machine's gh login can merge after `build` anyway, so this
+# gate constrains the timer and accidents, not the holder of that login (an accepted baseline: every agent uses it).
 name: Recipe photos merge
 
 on:
