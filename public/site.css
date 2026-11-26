@@ -206,3 +206,8 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .proj-icon { width: 48px; height: 48px; margin-bottom: var(--space-4); }
 .proj-icon img { display: block; width: 100%; height: 100%; }
 @media (max-width: 599.98px) { .proj-icon { width: 40px; height: 40px; } }
+/* Projects as rows: icon left, title and line right (Rod 11/25: projects are the focus) */
+#projects ul.plain > li { display: grid; grid-template-columns: 48px minmax(0, 1fr); column-gap: var(--space-4); align-items: start; }
+#projects ul.plain > li .proj-icon { grid-row: span 2; margin-bottom: 0; }
+#projects ul.plain > li > :not(.proj-icon) { grid-column: 2; }
+@media (max-width: 599.98px) { #projects ul.plain > li { grid-template-columns: 40px minmax(0, 1fr); } }
