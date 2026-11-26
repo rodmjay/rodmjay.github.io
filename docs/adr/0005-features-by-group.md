@@ -30,15 +30,26 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
 - Sign-in stays exactly as 0004 defines it: Supabase Auth, an email code checked by our own function, public sign-up
   off, no passwords, no Google or Apple, the browser holds no Supabase key.
 - 0004's function `rvp-account` is renamed **`site-account`** before it's built, because it now signs people in for
-  more than RVP. Its RVP actions (`save`, `me`, `export`, `delete`) keep their shape. The auth admin function becomes
-  `site-auth-admin` (create user, delete user, and now **sign out user**).
+  more than RVP. Its RVP actions (`save`, `me`, `export`, `delete`) keep their shape, and the database schema `rvp`
+  stays as built; new objects go in schema `site`. The auth admin function becomes `site-auth-admin` (create user,
+  delete user, and now **sign out user**).
 - **Invited sign-in.** A person Rod has linked (below) can sign in without taking the test first. `site-account`
   `login` creates their auth user on first use. Everyone else still gets an account only through the RVP save flow.
   The response is the same neutral `200` in every case, so the form never reveals whether an email belongs to one of
   Rod's contacts.
-- **Consent for invited people** is its own short box (EN and ES, Compliance writes it): what we keep (the sign-in
-  email, sign-in times, what they do in a feature such as an RSVP), that Rod already has their contact, and how to
-  delete the account. It never says which group they're in.
+- **Consent for invited people** is its own box (Compliance 11/26), unticked, recorded at the verified step by the
+  signed-in holder, with its wording hash on the allowlist. It never names a group. A minor sees a short notice
+  instead, and Rod's (or the other parent's) consent is recorded with the link.
+  - EN: "I'm signing in with an email Rod Johnson linked to me. I understand the site keeps my sign-in email, the
+    times I sign in, and what I do in a feature, such as an RSVP or a wish-list line. Rod already has my contact
+    details. None of this is sold or used for ads, and it is never used to text or email me. I can delete my account
+    from my dashboard at any time, and that deletes this data."
+  - ES: "Entro con un correo que Rod Johnson vinculó conmigo. Entiendo que el sitio guarda mi correo, las fechas y
+    horas en que inicio sesión y lo que hago en una función, como una confirmación de asistencia o una línea de mi
+    lista de deseos. Rod ya tiene mis datos de contacto. Nada de esto se vende ni se usa para publicidad, y nunca se
+    usa para enviarme mensajes ni correos. Puedo eliminar mi cuenta desde mi panel en cualquier momento, y así se
+    borran estos datos."
+  - The privacy and terms PR adds linked sign-in, these logs, and the AI tools Rod uses as recipients.
 
 ### Identity: a contact, only through an email Rod linked
 
@@ -46,13 +57,17 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
   record, `site_logins`. Being on `contact_methods` alone is not enough.
   - Why: `contact_methods` emails come from imports (phone, LinkedIn, Gmail). Some are old, shared or work
     addresses. Proving you read an inbox shouldn't by itself open family data.
-  - A link holds: contact id, the email (lower case, unique across all links), who added it, when, and when it was
-    revoked. The email must also be on that contact's `contact_methods` (kind `email`, not deleted).
+  - A link (`site.site_logins`) holds: contact id, the email (unique index on its lower case), who added it, when,
+    and when it was revoked. `site.grant_login` checks that the email is on a live `contact_methods` row (kind
+    `email`) and that the contact isn't soft-deleted, and `features_for` checks both again on every call, so a deleted
+    method or contact loses access at once.
   - One contact can have several linked emails. One email links to at most one contact. If an email would match two
     contacts, no link is made and Relationship Manager merges them first.
 - **Adding a link is a grant**, so it follows `move_contact_group()`'s rule: only Rod, or Relationship Manager
   recording Rod's decision (`p_by` = `rod` or `relationship-manager: <Rod's decision>`), through a definer function
-  `site.grant_login(contact, email, by)`. Removing a link needs no yes and also signs that user out everywhere.
+  `site.grant_login(contact, email, by)`. Removing a link needs no yes. SQL can't call the Auth admin API, so a
+  revoke writes a queue row, and `site-auth-admin` drains it: it signs that user out everywhere and deletes the auth
+  user.
 - **Group:** on every request the function resolves `contact_privileges(contact_id)` → the chain, `opted_out` and
   `minor`. Nothing about the group is stored in the token or the browser, so a move or a removal takes effect on the
   next request.
@@ -62,14 +77,19 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
 
 ### Features: data in the database, never in the UI
 
-- **A feature catalog, `site_features`:** key, EN and ES names, the data it reads, whether a minor may use it, and a
-  status `off | staging | on`. A feature at `on` is published, so only Rod's yes turns one on (EA brings it).
-- **Grants live with the other group privileges.** `group_privileges` gains a `site_features text[]` column, and
-  `group_effective()` returns their union along the chain, the same additive inheritance the texting commands use.
-  There's one home for what a group may do (P12), and the portal's group page shows it.
-  - `move_contact_group()` counts `site_features` as a privilege, so moving someone into a group that grants any
+- **A feature catalog, `site.site_features`:** key, EN and ES names, the data it reads, whether a minor may use it,
+  `erase_on_revoke`, and a status `off | staging | on`. A feature at `on` is published, so only Rod's yes turns one on
+  (EA brings it).
+- **A mode, `site_roles_on` = `off | staging | on`,** audited and changed only through a function (like 0004's
+  `rvp_set_mode`). A feature's effective status is the lower of its own status and the mode, which is how the
+  database knows it's on staging.
+- **Grants are a table, `site.site_feature_grants(group_key, feature_key)`** (DBA 11/26), with foreign keys to
+  `contact_groups` and `site_features` and an audit trigger, so a misspelled key fails at write time.
+  `group_effective()` returns their union along the chain, the same additive inheritance the texting commands use,
+  so there's still one place that answers what a group may do (P12), and the portal's group page shows it.
+  - `move_contact_group()` counts any grant row as a privilege, so moving someone into a group that grants any
     feature still needs Rod's yes.
-- **The resolver, `site.features_for(auth_user_id)`**: the catalog features at `on` (or `staging` on staging), that
+- **The resolver, `site.features_for(auth_user_id)`**: the catalog features at the effective status, that
   the person's group grants, minus the minor-unsafe ones when `minor` is true, plus `rvp` for every account. The UI
   draws only this list. It has no group names or rules of its own.
 - **Each feature has its own definer function and its own curated view** in schema `site`, returning only the
@@ -78,15 +98,17 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
 ### Starter matrix (a proposal; Rod picks)
 
 Groups, most to least trusted: `family_kids` › `family_close` › `family`, then `friend`, `girlfriend`, and accounts
-with no group. Grants flow down: what `family` gets, `family_close` and `family_kids` get too.
+with no group. Grants flow down: what `family` gets, `family_close` and `family_kids` get too. These are the active
+keys. The older family layer groups (`family_parents`, `family_siblings` and the rest) are inactive and outside the
+tree, so they get no grants; DBA tests inheritance on the live tree.
 
 | Feature | What it shows | Proposed for | Minor OK |
 |---|---|---|---|
 | `rvp` | Your own RVP results (0004) | Every account | No (RVP is 18+) |
 | `family-recipes` | The family recipe book: recipes Rod marks as family, with favorites | `family` | Yes |
-| `events` | Events you're invited to, with your RSVP; the guest list only when the host shows it | `family`, `friend` | Yes |
-| `family-calendar` | Shared family events: title, day, time, place name | `family_close` | Yes |
-| `kids-calendar` | The kids' own dates and pickup times with Rod, nothing else | `family_kids` | Yes |
+| `events` | Events you're invited to, with your RSVP and the headcount | `family`, `friend` | Yes |
+| `family-calendar` | Shared family events Rod marks shareable: title, day, time, venue | `family_close` | Yes |
+| `kids-calendar` | Each child's own dates and pickup times with Rod, nothing else | `family_kids` | Yes |
 | `wish-list` | Your own gift wish list, which you can add to; Rod sees it | `family_kids` | Yes |
 | `photos` | Shared albums Rod picks | `family_close` (later) | Yes |
 | `friends-news` | Rod's what's-new and links, the same as the friend texting menu | `friend` | No |
@@ -99,27 +121,40 @@ with no group. Grants flow down: what `family` gets, `family_close` and `family_
 
 - Every feature view follows `security/NEVER-SHARE.md`. No feature ever shows Rod's home or live location, money,
   health numbers, his employer, legal or court matters, or anyone else's contact details.
-- `kids-calendar` and `family-calendar` read only a dedicated shared calendar that Scheduler fills on purpose, never
-  Rod's primary calendar. Private events can't leak because they're never in the source.
-- `events`: you see your own invite, your RSVP and the headcount. Other guests' names appear only if the host turns
-  that on for the event.
-- `family-recipes` comes from the recipes already on the site plus a `family` mark, which is a new column on
-  `recipe_favorites` or a tag (DBA's call).
-- **Writes** are narrow and per feature: an RSVP, a wish-list line, a favorite. Each is a definer function with a size
-  cap that writes only the caller's own row.
+- `family-calendar` reads only a dedicated shared calendar that Scheduler fills on purpose, never Rod's primary
+  calendar, and only events Rod marks shareable: no travel, no parenting schedule, no availability, no home. The place
+  is a venue name only.
+- `kids-calendar` is scoped to each child: a child sees only their own dates and times, never a sibling's, and never
+  the whole group's. It also reads only the dedicated calendar.
+- `events`: you see your own invite, your RSVP and the headcount. Other guests' names appear only when the host turns
+  that on for the event **and** every listed guest is in the viewer's group or a higher one. Otherwise it's the
+  headcount only.
+- `family-recipes` reads the site's recipes plus a curated table, `site.recipe_marks(slug, feature_key)`. Rod's own
+  tables (such as `recipe_favorites`) never carry a site flag. Every later feature follows the same pattern: its own
+  curated table, never a flag on a table Rod uses.
+- **Writes** are narrow and per feature: an RSVP, a wish-list line, a favorite. Each is a definer function that writes
+  only the caller's own row. The per-feature size caps and per-user call limits live in SQL (`site.gate`, like
+  `rvp.gate`).
+- **On revoke:** each feature's `erase_on_revoke` says what happens to the person's rows. Wish-list lines and
+  favorites are erased. An adult's RSVPs stay on the event as Rod's guest record, unlinked from the login. A minor's
+  data is all erased at once. `erasure_run` and `erasure_holds` cover the `site` tables, as they do for RVP.
 
 ### Minors
 
 - `contact_privileges()` sets `minor` from a known birthday, and treats anyone in the family tree without a known 18+
   birthday as a minor. That's the safe default.
-- 0004's 18+ rule stays for self sign-up and RVP. A minor can have an account **only through a link Rod adds**: Rod
-  is the parent giving consent.
-- **Under 13: no account at all** (COPPA). The link function refuses it, and a contact with no known birthday can't
-  be linked as a minor until Rod records one.
-- A minor's account sees only features marked minor-safe. It collects nothing beyond the sign-in log and what the
-  feature writes. It never gets RVP, never becomes a texting or mailing target, and its data is erased when the link
-  is removed.
-- Compliance rules on this section before build.
+- DBA checks that `contact_privileges()` returns `minor` and a known-birthday signal before this rule depends on it.
+  If it doesn't, that's a small separate change.
+- 0004's 18+ rule stays for self sign-up and RVP. A minor can have an account **only through a link Rod adds**, with
+  a parent's consent recorded (who and when) before the link (Compliance 11/26):
+  - for Rod's own children, Rod consents as their parent. Before any of them is linked, Legal Advisor checks whether
+    the parenting order needs the other parent's agreement;
+  - for any other minor in the family tree, that child's own parent must say yes, and Rod records it.
+- **Under 13: no account at all** (COPPA). `grant_login` enforces it, never the UI. A contact with no known birthday
+  can't be linked as a minor until Rod records one.
+- A minor's account sees only features marked minor-safe, and no feature shows a minor's free text to anyone else. It
+  collects nothing beyond the sign-in log and what the feature writes. It never gets RVP, never becomes a texting or
+  mailing target, and its data is erased at once when the link is removed.
 
 ### Security
 
@@ -129,10 +164,12 @@ with no group. Grants flow down: what `family` gets, `family_close` and `family_
   - the user is checked with `GET /auth/v1/user` and taken from `sub` only, and the anon JWT is refused;
   - `Cache-Control: no-store` on every answer, and no edge cache for signed-in data.
 - **Database role.** `site-data` connects as a dedicated role, `site_api`, which may only EXECUTE the `site.*`
-  definer functions: no USAGE on `public`, no other grants, no BYPASSRLS, the same password and rotation rules as
-  0004's `rvp_api`. The definer functions are owned by `site_owner`, which holds column-level SELECT only on the
-  source columns the features need. RLS stays on everywhere, and `anon` and `authenticated` hold no grants (0004's
-  nightly check covers `site` too).
+  definer functions: no USAGE on `public`, no other grants, no BYPASSRLS. It follows the pattern RVP was built with
+  (migration 0219, Security's ruling): NOLOGIN with no password, each call does `set local role`, and every function
+  starts with `require_role`. The definer functions are owned by `site_owner`, which holds column-level SELECT only on
+  the source columns the features need. The grant and erase functions have their own owner roles, as RVP's do. RLS
+  stays on everywhere, and `anon` and `authenticated` hold no grants (the role-drift and grant-sweep audits cover
+  `site` too).
 - **Every call checks again.** `site-data` resolves `features_for` on each request and refuses a feature that isn't
   in it. A 15-minute access token is the longest anyone keeps access after a change. Revoking a link also signs out
   every session.
@@ -140,9 +177,14 @@ with no group. Grants flow down: what `family` gets, `family_close` and `family_
   `site-data`. A page's code being public is fine, but its data never is. Signed-in pages are `noindex` and carry no
   analytics (psh ADR 0059 is public pages only).
 - **Audit.** Every sign-in attempt goes to an append-only `site.signin_events`: the auth user, the linked contact if
-  any, the result (ok, wrong code, locked, refused), an IP hash, a browser class, and the time. Every feature read or
-  write goes to `site.feature_events` with the user, the feature, the action and the time, never the data itself.
-  Both are kept 12 months, unless Compliance sets a different period. Writes also go through `audit_log` as usual.
+  any, the result (ok, wrong code, locked, refused), an IP hash (the same salted helper RVP uses, exposed through one
+  shared function), a browser class, and the time. Every feature read or write goes to `site.feature_events` with the
+  user, the feature, the action and the time, never the data itself. Writes also go through `audit_log` as usual.
+- **Retention** (Compliance 11/26):
+  - `signin_events` are kept 12 months, `feature_events` 6 months, and the IP hash is nulled at 30 days;
+  - both are erased when the account is deleted or the link is revoked, unless a security incident is open;
+  - the purge runs in the `retention-purge` job with a heartbeat, and is logged in `ops.retention_runs`;
+  - `audit_log` rows follow the 0202 erasure path.
 - **Rate limits.** 0004's caps apply unchanged, counted in SQL, with the same neutral answer and an incident when one
   trips. `site-data` adds 120 calls an hour per user. Three locked codes in a day on a linked account raises a sev 3
   incident to Security Officer. A linked person's first sign-in is one line in the morning text's "Done yesterday".
@@ -177,11 +219,21 @@ with no group. Grants flow down: what `family` gets, `family_close` and `family_
 ## Rollout gates
 
 1. This ADR goes to Security, Compliance, Designer and DBA. Rod picks the starter features (EA brings the list).
-2. DBA's migration: `site_logins`, `site_features`, `group_privileges.site_features`, `features_for`, the `site`
-   schema, `site_api` and `site_owner`, and the two event tables. It's applied with the setting `site_roles_on = off`.
+2. DBA's migration, with a rolled-back probe:
+   - the `site` schema and `site_logins`, `site_features` and `site_feature_grants`;
+   - `features_for`, `grant_login`, the revoke queue, `site.gate` and `recipe_marks`;
+   - the roles, the two event tables and their purge;
+   - the erasure coverage, and the `site_roles_on` mode, set to `off`.
 3. Staging build behind `SITE_ROLES_ON`, after 0004's staging build, which it depends on. Only test contacts are
    linked on staging.
-4. Passes: Security's probes, Compliance (consent, minors, retention), Designer's check, DBA's advisors.
+4. Passes: Security's probes, Compliance's go-live check, Designer's check, DBA's advisors.
+
+**Review status (11/26):**
+- Compliance: a conditional PASS at 40607c2f. Its conditions are written into this ADR (minors, consent, retention,
+  calendars, events). `photos` of the kids waits for its own review.
+- DBA: the shape is agreed with the changes above (the grants table, the mode, link checks, the revoke queue,
+  erasure, the recipe marks, `site.gate`, the 0219 role pattern).
+- Security and Designer: pending.
 5. EA brings Rod one **"Publishes:"** yes covering the features he picked. Each later feature gets its own.
 
 ## Consequences
