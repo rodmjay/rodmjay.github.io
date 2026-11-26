@@ -1,52 +1,26 @@
 ---
 id: regular-and-orderly
 title: Ordenado y constante
-dek: Por qué las partes más aburridas de mi semana son la razón de que pase el trabajo interesante, y qué tiene que ver eso con la arquitectura.
+dek: Cómo mantengo en marcha lo cotidiano de la vida, y qué cambió cuando la IA pudo encargarse del mantenimiento.
 date: 2026-11-21
 tags: [habits, architecture, focus]
 toc: false
 draft: false
 ---
-Hay una frase de Gustave Flaubert en mi biografía de X: «Sea constante y ordenado en su vida, para que pueda ser violento y original en su trabajo».
+La frase de Flaubert que tengo en mi biografía de X es lo más parecido que tengo a una filosofía de trabajo: «Sea constante y ordenado en su vida, para que pueda ser violento y original en su trabajo». Así escribió *Madame Bovary*, con una rutina diaria estricta.
 
-No la puse porque suene bien. La puse porque es la descripción más exacta de cómo trabajo.
+He intentado trabajar así durante casi toda mi carrera, con las herramientas que hubiera en cada momento: listas de pendientes, aplicaciones de tareas, calendarios y recordatorios. Me ayudaron, y aun así todo el trabajo lo hacía yo. Anotaba cada tarea, mantenía las listas al día, movía fechas y revisaba que nada se quedara atrás. Mantener el sistema funcionando ya exigía mucho esfuerzo mental por sí solo.
 
-## La fuerza de voluntad es un mal lugar para guardar cosas
+Con la IA, gran parte de ese mantenimiento se puede automatizar. Los agentes agregan tareas, ponen fechas, limpian duplicados y dan seguimiento a los pendientes, y yo reviso una sola lista con horario fijo. Las cuentas se pagan en automático y el trabajo recurrente está en el calendario.
 
-Al principio de mi carrera, mi cabeza era el sistema. Las fechas límite, los seguimientos y lo que le prometí a alguien en un pasillo vivían en la memoria. En una buena semana funcionaba. En una mala semana algo se caía, y me pasaba la semana siguiente arreglándolo.
+Así que lo ordinario corre en segundo plano. Mis mañanas empiezan igual y casi todas las semanas se parecen. El sábado repaso la semana y elijo qué sigue, y el domingo es para descansar.
 
-El problema no era el esfuerzo. La memoria es una pésima base de datos: no tiene respaldos ni búsqueda, y falla bajo carga, que es justo cuando más la necesita.
+Eso deja espacio para los problemas de diseño difíciles, como un sistema que tiene que aguantar diez años de cambios, y les puedo dar toda mi atención.
 
-Así que dejé de pedirle ese trabajo. Todo lo que tendría que recordar dos veces ahora queda por escrito o automatizado. Las cuentas se pagan solas. El trabajo recurrente vive en un calendario. Cada pendiente tiene un solo lugar, y reviso ese lugar con un horario fijo, no cada vez que me da ansiedad.
+## En el trabajo es igual
 
-## Lo aburrido es lo importante
+Llevo la arquitectura de la misma manera. En una buena plataforma, el trabajo común es predecible. El registro de eventos funciona igual en todos los servicios y los despliegues se parecen entre sí, así que los equipos pueden dedicar su atención al producto.
 
-Nada de esto es interesante. Ese es el punto.
+También he visto equipos donde cada servicio arma su propio registro y cada proyecto arranca desde una carpeta vacía. Esos equipos avanzan rápido durante unos meses, luego dedican cada vez más tiempo a volver a decidir cosas que debieron quedar resueltas una sola vez, y las entregas se vuelven más lentas.
 
-Cuando las partes ordinarias de la vida van sobre rieles, dejan de competir por la atención. Mis mañanas empiezan igual. Mi semana tiene la misma forma. El sábado es para revisar lo que pasó y decidir qué importa después. El domingo es para descansar, y lo protejo.
-
-Lo que gano es espacio. Cuando aparece un problema de diseño difícil, un sistema que tiene que aguantar diez años de cambios, tengo toda mi atención para dárselo. Nada en el fondo me está preguntando en voz baja si pagué la luz.
-
-## Es lo mismo que hago en el trabajo
-
-Me tomó más tiempo del que debería notarlo. La forma en que llevo mi semana es la forma en que hago arquitectura.
-
-Una buena plataforma hace que el camino común sea aburrido. El registro de eventos funciona igual en cada servicio. Los proyectos nuevos empiezan del mismo código compartido. Los despliegues se ven idénticos, así que nadie tiene que pensar en ellos. Los equipos no gastan su creatividad en la plomería.
-
-La gastan en el problema que solo ellos pueden resolver.
-
-He visto equipos intentarlo al revés. Cada servicio inventa su propio registro. Cada proyecto empieza desde una carpeta vacía. Se siente como libertad durante unos seis meses, y después se vuelve la razón por la que nada sale. La gente quema su mejor energía en decisiones que debieron tomarse una sola vez.
-
-Ordenado y constante abajo. Original arriba.
-
-## Tres cosas que sí ayudan
-
-Si quiere probarlo, aquí es donde yo empezaría:
-
-1. **Elija un solo lugar para cada tipo de cosa.** Tareas en un lugar, fechas en otro, notas en otro. Dos lugares para lo mismo significa que no confiará en ninguno.
-2. **Revise con horario, no por sensación.** Una revisión semanal corta es mejor que un pánico largo. Yo hago la mía el sábado en la mañana.
-3. **Automatice la segunda vez.** La primera vez que hace algo a mano, solo hágalo. La segunda, escríbalo. La tercera, haga que funcione sin usted.
-
-Nada de esto lo vuelve brillante. Despeja el espacio donde ocurre el buen trabajo.
-
-Flaubert escribió *Madame Bovary* con una rutina diaria estricta. La rutina no era el arte. Era lo que hacía posible el arte.
+Si quiere probarlo, hubo algunos hábitos que me ayudaron. Tengo las tareas en un lugar y las fechas en otro, así hay una sola copia vigente de cada cosa. Reviso la lista con horario fijo; en mi caso, el sábado en la mañana. Cuando un trabajo se repite, anoto los pasos y después se lo paso a la automatización.

@@ -1,58 +1,44 @@
 ---
 id: ai-writes-the-code
-title: When AI writes the code, architecture matters more
-dek: AI made writing code cheap. It didn't make deciding what to build cheap, which is why architecture matters more now, not less.
+title: What architects do when AI writes the code
+dek: Notes on what changes for software architecture once models write a lot of the code.
 date: 2026-11-21
 tags: [ai, architecture, delivery]
 toc: false
 draft: false
 ---
-A common prediction says AI coding tools will make architects less necessary. If a model can write the service, why do you need someone deciding how services should be built?
+I keep hearing that AI coding tools will make architects less necessary. The argument goes that if a model can write the service, you don't need someone deciding how services get built.
 
-I think it's the opposite. AI made writing code cheap. It didn't make deciding what to build cheap, and it didn't make bad decisions any cheaper to undo.
+I disagree with that. Choosing what to build is as hard as it ever was, and backing out a bad call hurts as much as it always has. A model typing the code doesn't change either of those.
 
-## More code, faster, in more directions
+## A lot more code, very fast
 
-Give a team good AI tools and the first thing you notice is volume. Pull requests get bigger and arrive faster. Prototypes that took a week take an afternoon.
+Give a team good AI tools and the first thing you notice is volume. Pull requests get bigger and show up faster, and a prototype that used to take a week can be done in an afternoon. Without direction, that volume piles up into a mess. A model will happily write a fifth way to call the same API, and it'll make up its own error format if you let it. Each PR can look reasonable when you review it, and after a few months of them nobody can explain how the system hangs together. That's why I want people and models following the same patterns.
 
-That's real, and it's good. But volume without direction is just a faster way to build a mess. A model will happily write a fifth way to call the same API, invent a slightly different error format, or pull in a library nobody else uses. Every piece looks fine on its own. Together they make a system nobody can reason about.
+A model copies what it finds in the repo. In a repo with five competing styles, it grabs whichever one it happens to see. New engineers have always learned the system from a good reference service, and models learn from it the same way, so the boring work of shared libraries and reference services, along with a consistent project layout, gives a model some of the best guidance it can get.
 
-The faster code is produced, the more it matters that everyone, people and models, is building toward the same shape.
+Written decision records help for the same reason. If somebody wrote down why things are built this way, a model can read it. The engineer who made the call may have left two years ago.
 
-## The patterns are the prompt
+## Review can't keep up
 
-Here's what I've found works: models copy what's in front of them. Point an AI tool at a clean codebase with clear patterns and it writes code that fits. Point it at a codebase with five competing styles and it picks one at random.
+When code shows up faster, it piles up waiting for human review. I'd move checks earlier in the process and automate them.
 
-So the old architecture work, shared libraries, reference services, consistent structure, turns out to be the best prompt you can write. A good reference implementation used to teach new engineers. Now it also teaches every model working in the repo.
+- Scan every change in the pipeline for risky dependencies, leaked secrets and known weak code patterns. A quarterly audit is too slow for this volume.
+- Treat tests as the contract. If a behavior matters, it has a test, and once it does I don't care much whether a person or a model wrote the code.
+- Automate deployments so shipping is routine and rolling back is easy.
+- Keep clear boundaries between services so a mistake in one place stays there.
 
-Decision records matter more too. A model can't ask the person who left two years ago why the system is built this way. If the reasoning is written down, it can read it.
+With those in place, reviewers can spend their time on questions machines still answer badly, like whether we should build this at all and whether it fits where the system is going.
 
-## Guardrails beat review
+## What still needs a person
 
-When code arrives faster, human review becomes the bottleneck. You can't fix that by asking reviewers to read faster. You fix it by moving checks earlier and making them automatic:
+You still need someone who understands the business well enough to know what the system is for. That person weighs cost against speed and flexibility against simplicity. They plan for what we'll need in five years as well as today. They get the teams pulling the same way, and they say no when it's needed. Architects have always done this work.
 
-- **Security checks in the pipeline,** not in a quarterly audit. Scan dependencies, secrets and known weak patterns on every change.
-- **Tests as the contract.** If the behavior matters, it has a test. Then it doesn't matter who or what wrote the code.
-- **Automated, boring deployments,** so shipping is routine and rolling back is easy.
-- **Clear boundaries between services,** so a mistake in one place stays in one place.
+If your team is picking up these tools, I'd start with these four things.
 
-Reviewers then spend their time on the questions machines can't answer well: is this the right thing to build, and does it fit where the system is going?
+1. Clean up one reference service and make it the example everyone starts from, models included.
+2. Write your ten biggest decisions down as short decision records.
+3. Move one manual check into the pipeline this month.
+4. Track what ships and whether it works.
 
-## What doesn't change
-
-Some things AI doesn't touch at all.
-
-Someone still has to understand the business well enough to know what the system is for. Someone has to weigh trade-offs: cost against speed, flexibility against simplicity, now against five years from now. Someone has to get different teams pulling in the same direction. And someone has to say no.
-
-That was always the job. The tools just made it more obvious.
-
-## Where I'd start
-
-If your team is adopting AI coding tools, here's what I'd do first:
-
-1. **Clean up one reference service** and make it the example everyone, and every model, starts from.
-2. **Write down your top ten decisions** as short decision records.
-3. **Move one manual check into the pipeline** this month.
-4. **Measure what ships, not lines written.** Lines of code were never the point.
-
-AI is the biggest change to how software gets built that I've seen in 21 years. It rewards teams with good architecture and punishes teams without it, faster than ever.
+I've been building software for about 21 years, and this is the biggest change I've seen in how it gets built. Teams with messy architecture are going to feel the problems sooner.

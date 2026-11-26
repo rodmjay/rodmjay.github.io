@@ -1,52 +1,26 @@
 ---
 id: regular-and-orderly
 title: Regular and orderly
-dek: Why the most boring parts of my week are the reason the interesting work happens, and what that has to do with architecture.
+dek: How I keep the ordinary parts of life running, and what changed once AI could do the upkeep.
 date: 2026-11-21
 tags: [habits, architecture, focus]
 toc: false
 draft: false
 ---
-There's a line from Gustave Flaubert that sits in my X bio: "Be regular and orderly in your life, so that you may be violent and original in your work."
+The Flaubert line in my X bio is the closest thing I have to a work philosophy: "Be regular and orderly in your life, so that you may be violent and original in your work." He wrote *Madame Bovary* that way, on a strict daily routine.
 
-I didn't put it there because it sounds good. I put it there because it's the most accurate description of how I work.
+I've tried to work like that for most of my career, using whatever tools were around at the time: to-do lists, task apps, calendars and reminders. They helped, and I still did all the work myself. I entered every task, kept the lists current, moved dates around and checked that nothing had slipped. Keeping the system running took a lot of mental effort on its own.
 
-## Willpower is a bad place to keep things
+With AI, a lot of that upkeep can be automated. Agents add tasks, set dates, clean up duplicates and follow up on things, and I look at one list on a schedule. Bills are on autopay and recurring work is on the calendar.
 
-Early in my career I treated my head as the system. Deadlines, follow-ups and the thing I promised someone in a hallway all lived in memory. On a good week that worked. On a bad week something slipped, and I spent the next week cleaning up after it.
+So the ordinary stuff runs in the background. My mornings start the same way and most weeks look alike. On Saturday I look back at the week and pick what to do next, and Sunday is for rest.
 
-The problem wasn't effort. Memory is a terrible database: no backups, no search, and it fails under load, which is exactly when you need it.
+That leaves room for hard design problems, like a system that has to survive ten years of change, and I can give them my full attention.
 
-So I stopped asking it to do that job. Anything I'd have to remember twice now gets written down or automated. Bills pay themselves. Recurring work lives on a calendar. Every open loop has one home, and I check that home on a schedule instead of whenever I feel anxious.
+## Same thing at work
 
-## The boring part is the point
+I run architecture the same way. On a good platform the common work is predictable. Logging works the same in every service and deploys all look alike, so teams can spend their attention on the product.
 
-None of this is interesting. That's the point.
+I've also seen teams where every service rolls its own logging and every project starts from an empty folder. Those teams move fast for a few months, then spend more and more time re-deciding things that should have been settled once, and shipping slows down.
 
-When the ordinary parts of life run on rails, they stop competing for attention. My mornings start the same way. My week has the same shape. Saturday is for reviewing what happened and deciding what matters next. Sunday is for rest, and I protect it.
-
-What I get back is room. When a hard design problem shows up, a system that has to survive ten years of change, I have the whole of my attention to give it. Nothing in the background is quietly asking me whether I paid the electric bill.
-
-## It's the same thing I do at work
-
-This took me longer to notice than it should have. The way I run my week is the way I run architecture.
-
-A good platform makes the common path boring. Logging works the same way in every service. New projects start from the same shared code. Deployments look identical, so nobody has to think about them. Teams don't spend creativity on plumbing.
-
-They spend it on the problem only they can solve.
-
-I've watched teams try it the other way. Every service invents its own logging. Every project starts from a blank folder. It feels like freedom for about six months, and then it becomes the reason nothing ships. People burn their best energy on decisions that should have been made once.
-
-Regular and orderly at the bottom. Original at the top.
-
-## Three things that actually help
-
-If you want to try this, here's where I'd start:
-
-1. **Pick one home for each kind of thing.** Tasks in one place, dates in one place, notes in one place. Two homes means you'll trust neither.
-2. **Review on a schedule, not on a feeling.** A short weekly review beats a long panic. I do mine Saturday morning.
-3. **Automate the second time.** The first time you do something by hand, just do it. The second time, write it down. The third time, make it run without you.
-
-None of this makes you brilliant. It clears the space where the good work happens.
-
-Flaubert wrote *Madame Bovary* on a strict daily routine. The routine wasn't the art. It was what made the art possible.
+If you want to try this, a few habits helped me. I keep tasks in one place and dates in another, so there's one current copy of each. I look at the list on a schedule, Saturday morning for me. When work repeats, I write the steps down and then hand it to automation.
