@@ -3,7 +3,7 @@
 import { dict, SITE } from "@/lib/site.mjs";
 import { meta } from "@/lib/meta";
 const RVP_ON = process.env.RVP_ON === "1"; // the test is built only where RVP_ON=1 (production after Rod's yes)
-const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/rvp/" : "/rvp/");
+const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/test-de-personalidad/" : "/personality-test/");
 
 type Lang = "en" | "es";
 type Item = { title: string; body: string; url?: string };
@@ -65,7 +65,7 @@ export function Home({ lang }: { lang: Lang }) {
         {RVP_ON && (
           <section className="rvp-home" aria-labelledby="rvp-home-title">
             <div className="ds-card outlined">
-              <h2 className="ds-title-large" id="rvp-home-title">{dict(lang).rvp.title}</h2>
+              <h2 className="ds-title-large" id="rvp-home-title">{dict(lang).account.testName}</h2>
               <p className="ds-body-large">{dict(lang).rvp.homeBody}</p>
               <a className="ds-btn outlined" href={rvpUrl(lang, "")}>{dict(lang).rvp.homeBtn}</a>
             </div>

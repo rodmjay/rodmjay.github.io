@@ -21,6 +21,358 @@
         "Referrer-Policy": "no-referrer",
         "X-Robots-Tag": "noindex"
       }
+    },
+    {
+      "route": "/signin/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    },
+    {
+      "route": "/es/signin/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    },
+    {
+      "route": "/dashboard/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    },
+    {
+      "route": "/es/dashboard/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    },
+    {
+      "route": "/rvp/",
+      "redirect": "/personality-test/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/take/",
+      "redirect": "/personality-test/take/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/result/",
+      "redirect": "/personality-test/result/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/builder-of-good/",
+      "redirect": "/personality-test/builder-of-good/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/healer/",
+      "redirect": "/personality-test/healer/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/steward/",
+      "redirect": "/personality-test/steward/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/artisan/",
+      "redirect": "/personality-test/artisan/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/performer/",
+      "redirect": "/personality-test/performer/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/curator-of-comfort/",
+      "redirect": "/personality-test/curator-of-comfort/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/inventor/",
+      "redirect": "/personality-test/inventor/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/technician/",
+      "redirect": "/personality-test/technician/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/operator/",
+      "redirect": "/personality-test/operator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/philosopher/",
+      "redirect": "/personality-test/philosopher/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/mediator/",
+      "redirect": "/personality-test/mediator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/scholar/",
+      "redirect": "/personality-test/scholar/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/poet-architect/",
+      "redirect": "/personality-test/poet-architect/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/translator/",
+      "redirect": "/personality-test/translator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/conservator/",
+      "redirect": "/personality-test/conservator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/strategist/",
+      "redirect": "/personality-test/strategist/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/analyst/",
+      "redirect": "/personality-test/analyst/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/administrator/",
+      "redirect": "/personality-test/administrator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/organizer/",
+      "redirect": "/personality-test/organizer/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/counselor/",
+      "redirect": "/personality-test/counselor/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/caretaker/",
+      "redirect": "/personality-test/caretaker/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/performer-artist/",
+      "redirect": "/personality-test/performer-artist/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/connector/",
+      "redirect": "/personality-test/connector/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/cultural-guardian/",
+      "redirect": "/personality-test/cultural-guardian/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/entrepreneur/",
+      "redirect": "/personality-test/entrepreneur/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/negotiator/",
+      "redirect": "/personality-test/negotiator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/administrator-of-people/",
+      "redirect": "/personality-test/administrator-of-people/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp",
+      "redirect": "/personality-test/",
+      "statusCode": 301
+    },
+    {
+      "route": "/rvp/*",
+      "redirect": "/personality-test/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/",
+      "redirect": "/es/test-de-personalidad/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/take/",
+      "redirect": "/es/test-de-personalidad/take/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/result/",
+      "redirect": "/es/test-de-personalidad/result/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/builder-of-good/",
+      "redirect": "/es/test-de-personalidad/builder-of-good/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/healer/",
+      "redirect": "/es/test-de-personalidad/healer/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/steward/",
+      "redirect": "/es/test-de-personalidad/steward/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/artisan/",
+      "redirect": "/es/test-de-personalidad/artisan/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/performer/",
+      "redirect": "/es/test-de-personalidad/performer/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/curator-of-comfort/",
+      "redirect": "/es/test-de-personalidad/curator-of-comfort/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/inventor/",
+      "redirect": "/es/test-de-personalidad/inventor/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/technician/",
+      "redirect": "/es/test-de-personalidad/technician/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/operator/",
+      "redirect": "/es/test-de-personalidad/operator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/philosopher/",
+      "redirect": "/es/test-de-personalidad/philosopher/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/mediator/",
+      "redirect": "/es/test-de-personalidad/mediator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/scholar/",
+      "redirect": "/es/test-de-personalidad/scholar/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/poet-architect/",
+      "redirect": "/es/test-de-personalidad/poet-architect/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/translator/",
+      "redirect": "/es/test-de-personalidad/translator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/conservator/",
+      "redirect": "/es/test-de-personalidad/conservator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/strategist/",
+      "redirect": "/es/test-de-personalidad/strategist/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/analyst/",
+      "redirect": "/es/test-de-personalidad/analyst/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/administrator/",
+      "redirect": "/es/test-de-personalidad/administrator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/organizer/",
+      "redirect": "/es/test-de-personalidad/organizer/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/counselor/",
+      "redirect": "/es/test-de-personalidad/counselor/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/caretaker/",
+      "redirect": "/es/test-de-personalidad/caretaker/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/performer-artist/",
+      "redirect": "/es/test-de-personalidad/performer-artist/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/connector/",
+      "redirect": "/es/test-de-personalidad/connector/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/cultural-guardian/",
+      "redirect": "/es/test-de-personalidad/cultural-guardian/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/entrepreneur/",
+      "redirect": "/es/test-de-personalidad/entrepreneur/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/negotiator/",
+      "redirect": "/es/test-de-personalidad/negotiator/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/administrator-of-people/",
+      "redirect": "/es/test-de-personalidad/administrator-of-people/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp",
+      "redirect": "/es/test-de-personalidad/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/rvp/*",
+      "redirect": "/es/test-de-personalidad/",
+      "statusCode": 301
     }
   ],
   "globalHeaders": {

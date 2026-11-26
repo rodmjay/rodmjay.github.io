@@ -3,7 +3,7 @@
 // no grade, no ranking, no comparison with anyone. Philosopher's spec (SPEC.md, "Making the result useful"): the
 // pattern in words, lean on this, watch for this, the growth edge, where you fit, working with people unlike you, a
 // 7-day practice and a one-page card made on this device. Every line is a reflection prompt, never a diagnosis.
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { decode, score, codeKey, type Result, type DimResult } from "./engine";
 import { BANKS, RESULT_HANDOFF, CONTENT, archetypeByKey, facetName, dimName, pick, rvpUrl, type Archetype, type Lang } from "./data";
@@ -24,11 +24,21 @@ function patternLine(lang: Lang, s: S, d: DimResult) {
 /** The least-used facet overall: the lowest score of all nine (ch. 12: integrate it, never reject it). */
 const weakest = (r: Result) => r.dims.flatMap((d) => d.ranked).reduce((m, f) => (f.score < m.score ? f : m));
 
-export function RvpResult({ lang, s }: { lang: Lang; s: S }) {
+/** The result from the address (#v=…&a=…), or from `fragment` when a page already holds one (the dashboard's saved
+ *  takes: same layout, no second one). `children` sit under the share buttons, only once there is a result (the save card). */
+export function RvpResult({ lang, s, fragment, children }: { lang: Lang; s: S; fragment?: string; children?: ReactNode }) {
   const [state, setState] = useState<{ result: Result; main: Archetype; second: Archetype } | null | undefined>(undefined);
   const [note, setNote] = useState("");
+  const own = fragment === undefined; // reading the address bar (the result page), not a given take
 
   useEffect(() => {
+    if (!own) {
+      const got = decode(BANKS, fragment ?? "");
+      const result = got ? score(got.bank, got.answers) : null;
+      const main = result && archetypeByKey(codeKey(result.code)), second = result && archetypeByKey(codeKey(result.secondary));
+      setState(result && main && second ? { result, main, second } : null);
+      return;
+    }
     // Straight from the last question: take the result RvpTake handed over, once. Normally the URL already has it; after a
     // deploy mid-test Next arrives here by a full load without the #fragment, so put it back in the URL first.
     try {
@@ -48,10 +58,10 @@ export function RvpResult({ lang, s }: { lang: Lang; s: S }) {
     read();
     window.addEventListener("hashchange", read);
     return () => window.removeEventListener("hashchange", read);
-  }, []);
+  }, [own, fragment]);
 
   // Arriving here from the last question: focus the page heading, not the body (Designer 11/25).
-  useEffect(() => { if (state) (document.querySelector("main h1") as HTMLElement | null)?.focus(); }, [state === undefined || state === null ? 0 : 1]);
+  useEffect(() => { if (state && own) (document.querySelector("main h1") as HTMLElement | null)?.focus(); }, [state === undefined || state === null ? 0 : 1]);
 
   if (state === undefined) return <div className="rvp-stage" aria-busy="true"><div className="ds-skeleton rvp-skeleton" /></div>;
   if (state === null) {
@@ -100,7 +110,8 @@ export function RvpResult({ lang, s }: { lang: Lang; s: S }) {
         }))}
       </section>
   );
-  const copy = async () => { try { await navigator.clipboard.writeText(window.location.href); setNote(s.copied); } catch { /* the address bar still has it */ } };
+  const link = () => (own ? window.location.href : `${window.location.origin}${rvpUrl(lang, "result")}#${fragment}`);
+  const copy = async () => { try { await navigator.clipboard.writeText(link()); setNote(s.copied); } catch { /* the address bar still has it */ } };
   const save = async () => { await downloadCard(card, `rvp-${main.slug}.png`); setNote(s.cardSaved); };
 
   return (
@@ -118,6 +129,7 @@ export function RvpResult({ lang, s }: { lang: Lang; s: S }) {
         <button type="button" className="ds-btn text" onClick={() => window.print()}>{s.printCard}</button>
       </div>
       <p className="ds-body-small ds-variant" aria-live="polite">{note}</p>
+      {children}
 
       <section className="rvp-section">
         <h2 className="ds-title-large">{s.patternTitle}</h2>
