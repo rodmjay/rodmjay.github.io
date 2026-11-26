@@ -11,6 +11,26 @@ shows X"; you ship it. This file is how to do that safely. The layout, build and
 3. **Promote**: a PR from `next` into `main`; the required `build` check runs; merge deploys **rodmjay.com**.
 4. Reversible site changes ship **without asking Rod** (standing yes). Tell him in one line what's live.
 
+## Releasing without kicking anyone offline (Rod 11/25, DECISIONS)
+
+Rod: "if people are doing a quiz or something, I don't want to break them." Three layers keep an open page working
+through a deploy:
+
+- **Old files stay.** The deploy job carries the last 7 days of `/_next/static` files into each deploy
+  (`scripts/skew.mjs`, a per-environment cache store). A page from an earlier build keeps loading its chunks. The log
+  line `skew: … carried N older file(s)` shows it worked; `carried 0` right after a cache miss means this one deploy
+  had nothing to carry.
+- **One reload, then resume.** If a chunk still fails, the head script (`src/lib/langscript.mjs`) reloads the same URL
+  once. RVP answers live in sessionStorage and results in the URL hash, so the visitor picks up where they were.
+- **Release window.** Promote `next` → `main` outside **8 AM–10 PM Mountain** when it can wait; the daily scheduled
+  build already runs at 4:17 AM. Urgent fixes ship any time. Never ship a change that alters an RVP question bank or
+  the account flow while someone could be mid-way through it: that kind waits for the window.
+- Don't turn off the carry steps, and don't purge the `skew-*` caches, to work around a deploy problem. Ask Software
+  Architect.
+- **The exception is a Security removal** (a bundled secret, an XSS fix that old pages must stop serving): bump the
+  repo variable `SKEW_EPOCH` (a clean store), redeploy, and confirm the removed file now answers 404. `SKEW_OFF=1`
+  skips the carry entirely. Security Officer's call, no other approval needed.
+
 ## Data: only through Edge Functions over curated views
 
 - The site never holds a database key and never calls Supabase's REST or SQL directly (DECISIONS). Data comes in at

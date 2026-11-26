@@ -6,7 +6,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { decode, score, codeKey, type Result, type DimResult } from "./engine";
-import { BANKS, CONTENT, archetypeByKey, facetName, dimName, pick, rvpUrl, type Archetype, type Lang } from "./data";
+import { BANKS, RESULT_HANDOFF, CONTENT, archetypeByKey, facetName, dimName, pick, rvpUrl, type Archetype, type Lang } from "./data";
 import { differenceFor } from "./content";
 import { ArchetypeDetails, T } from "./Details";
 import { downloadCard, type CardData } from "./card";
@@ -29,6 +29,15 @@ export function RvpResult({ lang, s }: { lang: Lang; s: S }) {
   const [note, setNote] = useState("");
 
   useEffect(() => {
+    // Straight from the last question: take the result RvpTake handed over, once. Normally the URL already has it; after a
+    // deploy mid-test Next arrives here by a full load without the #fragment, so put it back in the URL first.
+    try {
+      const handed = sessionStorage.getItem(RESULT_HANDOFF);
+      if (handed !== null) {
+        sessionStorage.removeItem(RESULT_HANDOFF);
+        if (window.location.hash.length <= 1) history.replaceState(history.state, "", `#${handed}`);
+      }
+    } catch { /* storage blocked: the URL is all there is */ }
     const read = () => {
       const got = decode(BANKS, window.location.hash);
       if (!got) return setState(null);

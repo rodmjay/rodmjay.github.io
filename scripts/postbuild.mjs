@@ -60,6 +60,17 @@ function emit(code) {
   if (!files.has(name)) { writeFileSync(join(INLINE_DIR, name), code); files.add(name); }
   return `<script src="/_next/static/inline/${name}"></script>`;
 }
+// The head script (src/lib/langscript.mjs) carries the deploy safety net (reload once on a missing /_next/static file,
+// Rod 11/25), so it must be listening before any chunk can fail: Next writes its async chunk <script>s at the top of
+// <head>, so move ours to just after <meta charset>. It's blocking, so no chunk element exists until it has run.
+const LANG_TAG = `<script src="${LANG_SRC}"></script>`;
+function guardFirst(html) {
+  if (!html.includes(LANG_TAG)) return html;
+  const rest = html.replace(LANG_TAG, ""), at = rest.match(/<head>(<meta charSet="utf-8"\/>)?/);
+  if (!at) return html;
+  const i = at.index + at[0].length;
+  return rest.slice(0, i) + LANG_TAG + rest.slice(i);
+}
 const htmlFiles = [];
 (function list(dir) {
   for (const name of readdirSync(dir)) {
@@ -82,12 +93,15 @@ for (const file of htmlFiles) {
   }
   flush();
   out += html.slice(last);
+  out = guardFirst(out);
   if (out !== html) writeFileSync(file, out);
 }
 
 // ---- Nothing the CSP would block ----
 for (const file of htmlFiles) {
   const html = readFileSync(file, "utf8"), rel = file.slice(OUT.length);
+  const g = html.indexOf(LANG_TAG), c = html.indexOf("/_next/static/chunks/");
+  if (g >= 0 && c >= 0 && c < g) bad.push(`${rel}: a chunk script comes before the head script (deploy safety net)`);
   for (const m of html.matchAll(SCRIPT)) if (isInlineJs(m[1]) && m[2].trim()) bad.push(`${rel}: inline script left`);
   if (/<style[\s>]/i.test(html)) bad.push(`${rel}: <style> element (the CSP allows only style sheets from the site)`);
   for (const tag of html.match(/<[a-zA-Z][^>]*>/g) || []) {

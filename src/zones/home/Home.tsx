@@ -36,7 +36,7 @@ export function Home({ lang }: { lang: Lang }) {
       <main id="main" className="col">
         <section className="hero" aria-labelledby="hero-name">
           <div className="hero-top">
-            <img className="hero-photo" src="/img/rod-256.webp" srcSet="/img/rod-256.webp 256w, /img/rod-384.webp 384w" sizes="(min-width: 840px) 128px, 96px"
+            <img className="hero-photo" src="/img/rod-p-256.webp" srcSet="/img/rod-p-256.webp 256w, /img/rod-p-384.webp 384w" sizes="(min-width: 840px) 128px, 96px"
               width={128} height={128} alt={d.hero.photoAlt} fetchPriority="high" decoding="async" />
             <div>
               <h1 className="ds-headline-large" id="hero-name">{d.hero.name}</h1>
@@ -68,7 +68,7 @@ export function Home({ lang }: { lang: Lang }) {
           <h2 className="ds-title-large">{d.building.heading}</h2>
           <p className="ds-body-large">{d.building.lede}</p>
           <ul className="plain">
-            {d.building.items.map((it: Item) => <li key={it.title}><h3 className="ds-title-medium"><a href={it.url}>{it.title}</a></h3><p className="ds-body-medium ds-variant">{it.body}</p></li>)}
+            {d.building.items.map((it: Item) => <li key={it.title}>{/* the icon slot keeps room for the other projects' icons (Designer 11/25: Should first) */}<div className="proj-icon">{it.url?.includes("/should/") && <img src="/img/should-icon.svg" width={48} height={48} alt="" />}</div><h3 className="ds-title-medium"><a href={it.url}>{it.title}</a></h3><p className="ds-body-medium ds-variant">{it.body}</p></li>)}
           </ul>
         </section>
 

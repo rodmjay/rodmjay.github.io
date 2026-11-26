@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { questionOrder, encode, type Answers } from "./engine";
-import { BANK, bankHasSpanish, rvpUrl, type Lang } from "./data";
+import { BANK, RESULT_HANDOFF, bankHasSpanish, rvpUrl, type Lang } from "./data";
 
 type S = Record<string, string>;
 const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
@@ -56,7 +56,9 @@ export function RvpTake({ lang, s }: { lang: Lang; s: S }) {
     if (chosen === undefined) { setNeed(true); requestAnimationFrame(() => fieldset.current?.focus()); return; }
     if (!last) return move(i + 1);
     const frag = encode(BANK, answers);
-    try { sessionStorage.removeItem(KEY); } catch { /* fine */ }
+    // The result also goes to sessionStorage: if a deploy landed while they were answering, Next swaps the client-side
+    // move for a full page load and drops the #fragment; RvpResult puts it back (Rod 11/25: don't break people mid-quiz).
+    try { sessionStorage.setItem(RESULT_HANDOFF, frag); sessionStorage.removeItem(KEY); } catch { /* fine */ }
     router.push(`${rvpUrl(lang, "result")}#${frag}`);
   };
   const restart = () => { try { sessionStorage.removeItem(KEY); } catch { /* fine */ } shuffles.current = {}; setAnswers({}); move(0); };
