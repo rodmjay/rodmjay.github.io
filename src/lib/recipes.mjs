@@ -2,8 +2,12 @@
 // ?lang=en|es; Database Administrator 11/23). Locally, when it's unset or returns [], the build uses the sample set in
 // _content/recipes/sample.json; in CI an empty answer fails the build (no sample data in production). Designer's spec: ~/dev/personal/design/specs/rodmjay-recipes.md.
 //
-// Row: {slug, lang, title, dek, image, image_alt, servings, minutes|null, tags[], ingredients[], steps[], updated_at,
-//       from_credit, tip, serve_with, pairs_with, sources[]}. Ingredient lines starting "## " are group labels.
+// Row: {slug, lang, title, dek, image, image_alt, servings, minutes|null, tags[], facets[], ingredients[], steps[],
+//       updated_at, from_credit, tip, serve_with, pairs_with, sources[]}. Ingredient lines starting "## " are group labels.
+// facets[] (public-recipes v3, Health Agent's nutrition/recipe-book/tags.yaml): {group, key, tag: "group:key", label} with
+// the label in the row's language. When any row has facets the site runs in facet mode (Designer's spec, "Update
+// 2026-11-26: tags and filters"): tag pages are /recipes/tag/<group>-<key>/, the index gets the filter chips. With no
+// facets anywhere, the old section tags (tags[]) keep driving the tag pages and chip links as before.
 // The build fails when: a recipe lacks its other language, a required field is empty, the Spanish isn't "usted", a
 // recipe mentions alcohol, coffee or tea, or a private section ("For Rod") slips in. With RECIPES_APPROVED=1 it also
 // fails on any "[ES TODO" placeholder. Photos are the site's own copies (public/recipes/images/<slug>-<w>.webp|jpg).
@@ -26,6 +30,8 @@ const BANNED = new Set(("wine wines beer beers ale lager rum vodka tequila mezca
   "matcha chai kombucha vino vinos cerveza cervezas ron licor licores aguardiente guaro café cafés té tés").split(" "));
 // Whole phrases taken out before the banned-word check: alcohol-free things named with a banned word.
 const SOFT_DRINKS = /\b(?:ginger\s+ale|hot\s+buttered\s+rum\s+(?:mix|batter))\b/gi;
+// The six facet groups, in the order the page shows them (Designer, Health Agent and SA 11/26).
+export const FACETS = ["course", "occasion", "season", "cuisine", "main", "diet"];
 const PRIVATE = /\b(for rod|para rod)\b|\b(kcal|calories|calorías|protein target|meta de proteína)\b/i;
 
 async function fetchRows() {
@@ -76,7 +82,8 @@ async function build() {
     const rec = {
       slug: str(r.slug), lang: str(r.lang), title: str(r.title), dek: str(r.dek), imageAlt: str(r.image_alt),
       servings: r.servings == null ? null : str(r.servings), minutes: TRUST_MINUTES && Number.isFinite(Number(r.minutes)) && r.minutes != null ? Number(r.minutes) : null,
-      tags: list(r.tags), ingredients: list(r.ingredients), steps: list(r.steps), updatedAt: str(r.updated_at),
+      tags: list(r.tags), facets: (Array.isArray(r.facets) ? r.facets : []).map((f) => ({ group: str(f?.group), key: str(f?.key), tag: str(f?.tag), label: str(f?.label) })),
+      ingredients: list(r.ingredients), steps: list(r.steps), updatedAt: str(r.updated_at),
       credit: str(r.from_credit), tip: str(r.tip), serveWith: str(r.serve_with), pairsWith: str(r.pairs_with),
       sources: (Array.isArray(r.sources) ? r.sources : []).map((s) => (typeof s === "string" ? { title: s.trim(), url: "" }
         : { title: str(s?.title ?? s?.name), url: /^https:\/\//.test(str(s?.url)) ? str(s.url) : "" })).filter((s) => s.title),
@@ -86,7 +93,18 @@ async function build() {
     for (const k of ["title", "dek"]) if (!rec[k]) fail(`${where}: needs a ${k}`);
     if (!rec.ingredients.length) fail(`${where}: needs ingredients`);
     if (!rec.steps.length) fail(`${where}: needs steps`);
-    const text = [rec.title, rec.dek, rec.imageAlt, rec.tip, rec.serveWith, rec.pairsWith, rec.credit, ...rec.tags, ...rec.ingredients, ...rec.steps].join("\n");
+    const seen = new Set();
+    for (const f of rec.facets) {
+      if (!f.tag) f.tag = `${f.group}:${f.key}`;
+      if (!FACETS.includes(f.group)) fail(`${where}: unknown tag group "${f.group}" (one of ${FACETS.join(", ")})`);
+      if (!f.key || f.key !== slugify(f.key)) fail(`${where}: tag key "${f.key}" must be a plain slug (a-z, 0-9, -)`);
+      if (f.tag !== `${f.group}:${f.key}`) fail(`${where}: tag "${f.tag}" doesn't match its group and key`);
+      if (!f.label) fail(`${where}: tag ${f.tag} needs a label`);
+      if (seen.has(f.tag)) fail(`${where}: tag ${f.tag} listed twice`);
+      seen.add(f.tag);
+    }
+    rec.facets.sort((a, b) => FACETS.indexOf(a.group) - FACETS.indexOf(b.group));
+    const text = [rec.title, rec.dek, rec.imageAlt, rec.tip, rec.serveWith, rec.pairsWith, rec.credit, ...rec.tags, ...rec.facets.map((f) => f.label), ...rec.ingredients, ...rec.steps].join("\n");
     // Alcohol-free things whose names hold a banned word are fine (EA 11/26: ginger ale, and the hot buttered rum mix).
     for (const w of words(text.replace(SOFT_DRINKS, " "))) if (BANNED.has(w)) fail(`${where}: "${w}" (no alcohol, coffee or tea on the site)`);
     if (PRIVATE.test(text)) fail(`${where}: a private section or health number (dishes only)`);
@@ -104,7 +122,6 @@ async function build() {
     // The function's image_alt is the title; our own alt text says what's in the dish, so it wins when we have it.
     if ((!rec.imageAlt || rec.imageAlt === rec.title) && ownAlt.get(`${rec.slug}/${rec.lang}`)) rec.imageAlt = ownAlt.get(`${rec.slug}/${rec.lang}`);
     if (rec.photo && !rec.imageAlt) fail(`${where}: the photo needs alt text`);
-    rec.tagSlugs = rec.tags.map(slugify);
     recipes.push(rec);
   }
   const bySlug = new Map();
@@ -115,6 +132,13 @@ async function build() {
     bySlug.set(r.slug, g);
   }
   for (const [slug, g] of bySlug) for (const lang of LANGS) if (!g[lang]) fail(`recipe ${slug}: no ${lang === "en" ? "English" : "Spanish"} version (both languages or none)`);
+  // Facet mode: the EN and ES rows of a slug carry the same tag keys, so every tag page has its twin.
+  const facetMode = recipes.some((r) => r.facets.length > 0);
+  if (facetMode) for (const [slug, g] of bySlug) {
+    if (!g.en || !g.es) continue;
+    const keys = (r) => r.facets.map((f) => f.tag).sort().join(",");
+    if (keys(g.en) !== keys(g.es)) fail(`recipe ${slug}: the English and Spanish rows carry different tags (${keys(g.en)} vs ${keys(g.es)})`);
+  }
   // Recipes publish continuously (Rod 11/26: "Just publish them as you go"), so one recipe that fails a check is left off
   // the site, in both languages, instead of stopping every deploy. The checks are unchanged: nothing that fails one is shown.
   // The skipped list goes to the build log and the run summary for Health Agent. A failure not tied to a recipe still stops
@@ -132,13 +156,24 @@ async function build() {
     for (const slug of bad) bySlug.delete(slug);
     if (!recipes.length && process.env.CI && !sampleData) throw new Error(`recipes: every recipe failed a check:\n${errors.join("\n")}`);
   }
+  // Tag pages and chips: in facet mode one per facet value (slug "<group>-<key>"), else one per section tag.
+  for (const r of recipes) {
+    if (facetMode) {
+      r.tagSlugs = r.facets.map((f) => tagSlug(f.tag));
+      r.tagNames = r.facets.map((f) => f.label);
+    } else {
+      r.tagSlugs = r.tags.map(slugify);
+      r.tagNames = r.tags;
+    }
+  }
   for (const r of recipes) r.twinUrl = bySlug.get(r.slug)[r.lang === "en" ? "es" : "en"].url;
 
   const newest = (a, b) => b.updatedAt.localeCompare(a.updatedAt) || a.title.localeCompare(b.title);
   const byLang = Object.fromEntries(LANGS.map((l) => [l, recipes.filter((r) => r.lang === l).sort(newest)]));
 
   // List pages: the index and each tag, 12 to a page. Tag pages link across languages by position in the twin's tags.
-  const tagName = (lang, slug) => byLang[lang].flatMap((r) => r.tags.map((t, i) => [r.tagSlugs[i], t])).find(([s]) => s === slug)?.[1];
+  const tagName = (lang, slug) => byLang[lang].flatMap((r) => r.tagNames.map((t, i) => [r.tagSlugs[i], t])).find(([s]) => s === slug)?.[1];
+  const facetOf = (lang, slug) => byLang[lang].flatMap((r) => r.facets).find((f) => tagSlug(f.tag) === slug);
   const lists = [];
   for (const lang of LANGS) {
     const other = lang === "en" ? "es" : "en";
@@ -151,18 +186,37 @@ async function build() {
     const slugs = [...new Set(byLang[lang].flatMap((r) => r.tagSlugs))].sort((a, b) => tagName(lang, a).localeCompare(tagName(lang, b), lang === "es" ? "es-419" : "en"));
     for (const s of slugs) {
       const items = byLang[lang].filter((r) => r.tagSlugs.includes(s));
-      // The same tag in the other language: the twin of the first recipe here, at the same position.
+      // The same tag in the other language: in facet mode the same slug (both rows carry the same keys); otherwise the
+      // twin of the first recipe here, at the same position.
       const first = items[0], twin = bySlug.get(first.slug)[other], i = first.tagSlugs.indexOf(s);
-      const otherBase = twin.tagSlugs[i] ? `${BASE[other]}tag/${twin.tagSlugs[i]}/` : BASE[other];
-      add(items, `${BASE[lang]}tag/${s}/`, otherBase, { slug: s, name: tagName(lang, s) });
+      const otherSlug = facetMode ? s : twin.tagSlugs[i];
+      const otherBase = otherSlug ? `${BASE[other]}tag/${otherSlug}/` : BASE[other];
+      const f = facetMode ? facetOf(lang, s) : null;
+      add(items, `${BASE[lang]}tag/${s}/`, otherBase, { slug: s, name: tagName(lang, s), ...(f ? { group: f.group, key: f.tag } : {}) });
     }
   }
-  return { recipes, byLang, lists, sample: !RECIPES_APPROVED, sampleData, from, tagUrl: (lang, s) => `${BASE[lang]}tag/${s}/`,
-    usedTags: (lang) => lists.filter((l) => l.lang === lang && l.tag && l.n === 1).map((l) => l.tag) };
+  const usedTags = (lang) => lists.filter((l) => l.lang === lang && l.tag && l.n === 1).map((l) => l.tag);
+  // Facet mode: every tag with its recipe count, grouped in FACETS order, values by label. A tag on only one recipe
+  // gets a tag page but no filter chip (chip: count >= 2); a value no recipe uses is never built.
+  const collator = { en: new Intl.Collator("en"), es: new Intl.Collator("es-419") };
+  const facetGroups = (lang) => !facetMode ? [] : FACETS.map((group) => {
+    const values = new Map();
+    for (const r of byLang[lang]) for (const f of r.facets) if (f.group === group) {
+      const v = values.get(f.tag) || { tag: f.tag, key: f.key, label: f.label, slug: tagSlug(f.tag), url: `${BASE[lang]}tag/${tagSlug(f.tag)}/`, count: 0 };
+      v.count++;
+      values.set(f.tag, v);
+    }
+    return { group, values: [...values.values()].sort((a, b) => collator[lang].compare(a.label, b.label)) };
+  }).filter((g) => g.values.length);
+  return { recipes, byLang, lists, sample: !RECIPES_APPROVED, sampleData, from, facetMode, facetGroups,
+    tagUrl: (lang, s) => `${BASE[lang]}tag/${s}/`, usedTags };
 }
 
 // A US unit after a number (outside parentheses) in a Spanish line.
 const US_ONLY = /(\d|[½¼¾⅓⅔⅛])\s*(?:lb|lbs|libras?|oz|onzas?|tazas?|°\s*F|pulg(?:adas?|\.)?|cuartos? de gal[oó]n|galones?)(?![a-záéíóú])/i;
+
+// "season:summer" → "season-summer": the tag page slug, so values never collide across groups.
+export const tagSlug = (tag) => String(tag).replace(":", "-");
 
 let memo;
 export const loadRecipes = () => (memo ||= build());

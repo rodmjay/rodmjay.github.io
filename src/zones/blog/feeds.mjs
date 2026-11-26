@@ -49,6 +49,8 @@ export async function sitemap() {
     const day = (s) => String(s).slice(0, 10);
     urls.push(pair("/recipes/", "/es/recipes/", day(r.byLang.en[0].updatedAt)));
     for (const x of r.byLang.en) urls.push(pair(x.url, x.twinUrl, day(x.updatedAt)));
+    // Facet mode: the flat tag pages are the indexable ones (filtered ?tags= views canonicalize to /recipes/).
+    if (r.facetMode) for (const l of r.lists) if (l.lang === "en" && l.tag && l.n === 1 && l.items.length) urls.push(pair(l.path, l.otherPath));
   }
   if (REMOVE_LIVE) urls.push(pair("/remove/", "/es/remove/"));
   if (process.env.RVP_ON === "1") urls.push(pair("/personality-test/", "/es/test-de-personalidad/")); // the test's start page; take, result and archetype pages are noindex

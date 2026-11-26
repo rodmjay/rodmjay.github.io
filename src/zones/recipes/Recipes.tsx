@@ -4,10 +4,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { dict, HTML_LANG, t } from "@/lib/site.mjs";
-import { loadBlog } from "@/lib/blog.mjs";
-import { loadRecipes, BASE, splitAmount } from "@/lib/recipes.mjs";
+import { loadRecipes, BASE, PER_PAGE, splitAmount } from "@/lib/recipes.mjs";
 import { meta } from "@/lib/meta";
 import { PrintButton } from "./PrintButton";
+import { Photo, RecipeCard, type CardData } from "./Card";
+import { RecipeBrowser, type BrowserWords, type FacetGroup } from "./RecipeBrowser";
 
 type Lang = "en" | "es";
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -23,13 +24,24 @@ function facts(r: Recipe) {
   return out;
 }
 
-function Photo({ r, sizes, eager }: { r: Recipe; sizes: string; eager?: boolean }) {
-  if (!r.photo) return null;
+// What a card shows, as plain data (the client filter gets the whole list of these).
+const card = (r: Recipe): CardData => ({ url: r.url, title: r.title, dek: r.dek, facts: facts(r), photo: r.photo, imageAlt: r.imageAlt,
+  tags: r.facets.map((f: any) => f.tag) });
+
+// Facet groups for one language, labelled; `chip` is false for a value only one recipe has (tag page, no chip).
+function facetGroups(r: any, lang: Lang): FacetGroup[] {
+  const R = dict(lang).recipes;
+  return r.facetGroups(lang).map((g: any) => ({ group: g.group, label: R.groups[g.group],
+    values: g.values.map((v: any) => ({ tag: v.tag, label: v.label, url: v.url, chip: v.count >= 2 })) }));
+}
+
+function Empty({ lang, title, body, href }: { lang: Lang; title: string; body: string; href: string }) {
   return (
-    <picture>
-      <source type="image/webp" srcSet={r.photo.srcset} sizes={sizes} />
-      <img src={r.photo.jpg} alt={r.imageAlt} width={r.photo.width} height={r.photo.height} loading={eager ? "eager" : "lazy"} decoding="async" />
-    </picture>
+    <div className="ds-card outlined recipe-empty">
+      <h2 className="ds-title-large">{title}</h2>
+      <p className="ds-body-large ds-variant">{body}</p>
+      <Link className="ds-btn" href={href}>{dict(lang).recipes.allRecipes}</Link>
+    </div>
   );
 }
 
@@ -44,6 +56,8 @@ export async function listMeta(path: string) {
   const { r, l } = await findList(path);
   const R = dict(l.lang).recipes;
   const heading = l.tag ? t(l.lang, "recipes.tagged", { tag: l.tag.name }) : R.tagline;
+  // Filtered views (?tags=…) are this same static page, so their canonical is the index; the flat tag pages are the
+  // indexable ones (and in the sitemap once approved).
   const title0 = l.tag ? heading : R.title;
   const title = l.n > 1 ? `${title0} · ${t(l.lang, "recipes.page", { n: l.n, total: l.total })}` : title0;
   return meta({ lang: l.lang, title, description: l.tag ? heading : R.description, path: l.path, alt: l.otherPath, noindex: r.sample || !l.items.length, ogLocale: R.ogLocale });
@@ -51,7 +65,7 @@ export async function listMeta(path: string) {
 
 export async function RecipeList({ path }: { path: string }) {
   const { r, l } = await findList(path);
-  const b = await loadBlog();
+  if (r.facetMode) return l.tag ? <FacetTagPage r={r} l={l} /> : <FacetIndex r={r} l={l} />;
   const lang: Lang = l.lang, R = dict(lang).recipes;
   const heading = l.tag ? t(lang, "recipes.tagged", { tag: l.tag.name }) : R.tagline;
   const used = r.usedTags(lang);
@@ -70,17 +84,7 @@ export async function RecipeList({ path }: { path: string }) {
         {l.items.length ? (
           <ul className="recipe-grid">
             {l.items.map((x: Recipe, i: number) => (
-              <li key={x.url}>
-                <Link className={`ds-card outlined recipe-card${x.photo ? "" : " flat"}`} href={x.url}>
-                  {x.photo ? <Photo r={x} sizes="(min-width: 1024px) 22rem, (min-width: 600px) 45vw, 100vw" eager={i < 3} /> : <span className="flat-title" aria-hidden="true">{x.title}</span>}
-                  <span className="recipe-card-body">
-                    {r.sample && <Chip lang={lang} />}
-                    <span className="ds-title-medium recipe-card-title">{x.title}</span>
-                    <span className="ds-body-medium ds-variant recipe-card-dek">{x.dek}</span>
-                    {facts(x).length > 0 && <span className="ds-overline recipe-card-facts">{facts(x).join(" · ")}</span>}
-                  </span>
-                </Link>
-              </li>
+              <li key={x.url}><RecipeCard x={card(x)} eager={i < 3} sampleLabel={r.sample ? R.sampleChip : undefined} /></li>
             ))}
           </ul>
         ) : <p className="ds-body-large ds-variant">{R.empty}</p>}
@@ -93,6 +97,82 @@ export async function RecipeList({ path }: { path: string }) {
         )}
       </main>
     </>
+  );
+}
+
+// Facet mode, the index and its static pages: the client filter over the whole book (Designer, 11/26).
+function FacetIndex({ r, l }: { r: any; l: any }) {
+  const lang: Lang = l.lang, R = dict(lang).recipes;
+  const w: BrowserWords = {
+    count: R.count, countOne: R.countOne, show: R.show, showOne: R.showOne, clearAll: R.clearAll, clearAllFilters: R.clearAllFilters,
+    remove: R.remove, selected: R.selected, noMatch: R.noMatch, emptyTitle: R.emptyTitle, emptyBody: R.emptyBody, filter: R.filter,
+    filterCount: R.filterCount, filterHeading: R.filterHeading, close: R.close, newer: R.newer, older: R.older, page: R.page, pages: R.pages,
+  };
+  return (
+    <>
+      <header className="page-head wide-col"><h1 className="ds-headline-large" id="recipes-title">{R.title}</h1><p className="ds-body-large">{R.tagline}</p>{r.sample && <Chip lang={lang} />}</header>
+      <main id="main" className="wide-col ix recipes">
+        {r.sample && <p className="ds-banner sample">{R.sample}</p>}
+        <RecipeBrowser base={BASE[lang]} items={r.byLang[lang].map(card)} groups={facetGroups(r, lang)} page0={l.n} perPage={PER_PAGE}
+          sampleLabel={r.sample ? R.sampleChip : undefined} w={w} />
+      </main>
+    </>
+  );
+}
+
+// Facet mode, one tag: a flat page (h1 the tag, its group under it), the group's other values as links to move
+// sideways, and "Combine filters" to the index with this tag chosen.
+function FacetTagPage({ r, l }: { r: any; l: any }) {
+  const lang: Lang = l.lang, R = dict(lang).recipes;
+  const group = facetGroups(r, lang).find((g) => g.group === l.tag.group);
+  const groupLabel = R.groups[l.tag.group];
+  const pageUrl = (n: number) => (n === 1 ? l.base : `${l.base}page/${n}/`);
+  return (
+    <>
+      <header className="page-head wide-col"><h1 className="ds-headline-large" id="recipes-title">{l.tag.name}</h1><p className="ds-body-large">{groupLabel}</p>{r.sample && <Chip lang={lang} />}</header>
+      <main id="main" className="wide-col ix recipes">
+        {r.sample && l.items.length > 0 && <p className="ds-banner sample">{R.sample}</p>}
+        <nav className="recipe-siblings" aria-label={groupLabel}>
+          <ul className="filters">
+            <li><Link className="ds-chip" href={BASE[lang]}>{R.all}</Link></li>
+            {group?.values.map((v) => <li key={v.tag}><Link className="ds-chip" href={v.url} aria-current={v.tag === l.tag.key ? "page" : undefined}>{v.label}</Link></li>)}
+          </ul>
+          <Link className="ds-btn text recipe-combine" href={`${BASE[lang]}?tags=${l.tag.key}`} rel="nofollow">{R.combine}</Link>
+        </nav>
+        {l.items.length ? (
+          <ul className="recipe-grid">
+            {l.items.map((x: Recipe, i: number) => <li key={x.url}><RecipeCard x={card(x)} eager={i < 3} sampleLabel={r.sample ? R.sampleChip : undefined} /></li>)}
+          </ul>
+        ) : <Empty lang={lang} title={R.emptyTitle} body={R.tagEmpty} href={BASE[lang]} />}
+        {l.total > 1 && (
+          <nav className="more" aria-label={R.pages}>
+            {l.n > 1 ? <Link className="ds-btn text" href={pageUrl(l.n - 1)}>← {R.newer}</Link> : null}
+            <span className="ds-body-medium ds-variant">{t(lang, "recipes.page", { n: l.n, total: l.total })}</span>
+            {l.n < l.total ? <Link className="ds-btn text" href={pageUrl(l.n + 1)}>{R.older} →</Link> : null}
+          </nav>
+        )}
+      </main>
+    </>
+  );
+}
+
+// The recipe page's tags (facet mode): chip links in group order, the group as a hidden prefix ("Season: Summer"),
+// at most 8 shown and the rest behind "Show all tags" (a <details>, so it works without script).
+const MAX_TAGS = 8;
+function FacetTags({ r, x, lang }: { r: any; x: Recipe; lang: Lang }) {
+  const R = dict(lang).recipes;
+  const chip = (f: any) => (
+    <Link key={f.tag} className="ds-chip" href={r.tagUrl(lang, x.tagSlugs[x.facets.indexOf(f)])}>
+      <span className="ds-sr">{R.groups[f.group]}: </span>{f.label}
+    </Link>
+  );
+  const first = x.facets.slice(0, MAX_TAGS), rest = x.facets.slice(MAX_TAGS);
+  return (
+    <div className="ds-post-tags recipe-tags">
+      <span className="ds-label-large recipe-tags-label">{R.tags}</span>
+      {first.map(chip)}
+      {rest.length > 0 && <details className="recipe-more-tags"><summary className="ds-btn text">{R.showAllTags}</summary>{rest.map(chip)}</details>}
+    </div>
   );
 }
 
@@ -111,7 +191,6 @@ export async function recipeMeta(lang: Lang, slug: string) {
 
 export async function RecipePage({ lang, slug }: { lang: Lang; slug: string }) {
   const { r, x } = await findRecipe(lang, slug);
-  const b = await loadBlog();
   const R = dict(lang).recipes, other: Lang = lang === "en" ? "es" : "en";
   // Ingredient lines starting "## " are group labels.
   const groups: { label: string; items: string[] }[] = [];
@@ -135,9 +214,10 @@ export async function RecipePage({ lang, slug }: { lang: Lang; slug: string }) {
               <a className="ds-post-lang" href={x.twinUrl} lang={HTML_LANG[other]}>{R.otherLang}</a>
               <PrintButton label={R.print} />
             </p>
-            {x.tags.length > 0 && <div className="ds-post-tags">{x.tags.map((tg: string, i: number) => <Link key={tg} className="ds-chip" href={r.tagUrl(lang, x.tagSlugs[i])}>{tg}</Link>)}</div>}
+            {r.facetMode ? (x.facets.length > 0 && <FacetTags r={r} x={x} lang={lang} />)
+              : x.tags.length > 0 && <div className="ds-post-tags">{x.tags.map((tg: string, i: number) => <Link key={tg} className="ds-chip" href={r.tagUrl(lang, x.tagSlugs[i])}>{tg}</Link>)}</div>}
           </header>
-          {x.photo && <figure className="ds-post-cover recipe-photo"><Photo r={x} sizes="(min-width: 1024px) 60rem, 100vw" eager /><figcaption className="recipe-photo-credit">{dict(lang).recipes.photoCredit}</figcaption></figure>}
+          {x.photo && <figure className="ds-post-cover recipe-photo"><Photo photo={x.photo} alt={x.imageAlt} sizes="(min-width: 1024px) 60rem, 100vw" eager /><figcaption className="recipe-photo-credit">{dict(lang).recipes.photoCredit}</figcaption></figure>}
           <div className="recipe-body">
             <section className="recipe-ingredients" aria-labelledby="ingredients">
               <h2 id="ingredients" className="ds-title-large">{R.ingredients}</h2>

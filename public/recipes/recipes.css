@@ -58,3 +58,64 @@
 /* "AI-generated image" under the recipe photo (Compliance 11/23). Same type as the design system's figure captions
    in .ds-prose (body-small, on-surface-variant); Designer to fold into the system as a plain figure caption. */
 .recipe-photo-credit { margin-top: var(--space-2); font: 400 var(--md-sys-typescale-body-small-size)/1.5 var(--md-ref-typeface-plain); color: var(--md-sys-color-on-surface-variant); }
+
+/* Tag filters on the index (Designer's spec, "Update 2026-11-26: tags and filters"). Layout and states only; chips,
+   cards, buttons and the dialog are the design system's. */
+.recipe-filters, .recipe-filters-nojs { display: block; columns: 2; column-gap: var(--space-8); margin: 0 0 var(--space-4); padding: var(--space-4) var(--space-6); }
+.recipe-facet { break-inside: avoid; padding-bottom: var(--space-2); }
+.recipe-facet h3 { margin: 0; padding-top: var(--space-2); }
+.recipe-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; column-gap: var(--space-2); }
+.recipe-chips > li { display: flex; align-items: center; min-height: 48px; } /* 48px touch row, 8px gap */
+@media (pointer: coarse) { .recipe-chips { row-gap: var(--space-2); } .recipe-chips .ds-chip { height: 3rem; } }
+/* A value with no recipes under the current choice: dimmed, not hidden (no shift), still focusable. Text keeps the
+   chip's on-surface-variant (4.5:1); only the outline fades and the state layer goes. */
+.ds-chip[aria-disabled="true"] { box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant); cursor: default; }
+.ds-chip[aria-disabled="true"]::after { display: none; }
+.recipe-filter-open { margin: 0 0 var(--space-2); }
+/* Desktop shows the card, phones the Filter button; without script (no html[data-js]) only the tag-page links show. */
+@media (min-width: 840px) { .recipe-filter-open { display: none; } }
+@media (max-width: 839.98px) { .recipe-filters { display: none; } .recipe-filters-nojs { columns: 1; } }
+html:not([data-js]) .recipe-filter-js { display: none; }
+html[data-js] .recipe-filters-nojs { display: none; }
+
+/* The selected summary: one reserved row (count, removable chips, Clear all), never wraps or changes height. */
+.recipe-summary { display: flex; align-items: center; gap: var(--space-2); min-height: 48px; margin: 0 0 var(--space-4); overflow-x: auto; scrollbar-width: none; }
+.recipe-count { flex: none; margin: 0 var(--space-2) 0 0; }
+.recipe-count:focus { outline: none; }
+.recipe-count:focus-visible { outline: 2px solid var(--md-sys-color-secondary); outline-offset: 2px; }
+.recipe-selected-list { display: flex; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.recipe-selected-list .ds-chip { flex: none; gap: var(--space-1); padding-right: var(--space-2); }
+.recipe-clear { flex: none; }
+.recipe-clear.is-idle { visibility: hidden; }
+html:not([data-js]) .recipe-summary { display: none; }
+
+.recipe-results { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .recipe-results.is-live .recipe-grid > li { animation: recipe-in 150ms var(--md-sys-motion-easing-standard, ease) both; }
+}
+@keyframes recipe-in { from { opacity: 0; } to { opacity: 1; } }
+.recipe-empty { display: grid; justify-items: start; gap: var(--space-3); padding: var(--space-6); }
+.recipe-empty h2, .recipe-empty p { margin: 0; }
+.recipe-pager { min-height: 2.5rem; }
+
+/* The phone sheet: the system's dialog at full height, the groups scrolling, a sticky bar at the bottom. */
+.ds-dialog.sheet.recipe-sheet { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; border-radius: 0; }
+.recipe-sheet[open] { display: flex; flex-direction: column; }
+.recipe-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-4) var(--space-4) var(--space-2) var(--space-6); }
+.recipe-sheet-head h2 { margin: 0; text-align: left; }
+.recipe-sheet-groups { flex: 1; overflow-y: auto; padding: 0 var(--space-6) var(--space-4); }
+.recipe-sheet-bar { position: sticky; bottom: 0; display: flex; justify-content: space-between; align-items: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-6); background: var(--md-sys-color-surface-container-high); box-shadow: inset 0 1px 0 var(--md-sys-color-outline-variant); }
+
+/* Tag pages: the group's values as links, then "Combine filters". */
+.recipe-siblings { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); margin: 0 0 var(--space-8); }
+.recipe-siblings .filters { margin: 0; }
+.recipe-combine { margin-left: calc(-1 * var(--space-3)); }
+
+/* Recipe page tags: a "Tags" label, chip links, the rest behind "Show all tags". */
+.recipe-tags { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.recipe-tags-label { margin-right: var(--space-2); }
+.recipe-more-tags { display: contents; }
+.recipe-more-tags > summary { list-style: none; }
+.recipe-more-tags > summary::-webkit-details-marker { display: none; }
+.recipe-more-tags[open] > summary { display: none; }
