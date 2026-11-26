@@ -9,11 +9,12 @@ Runs from a timer on Rod's computer (systemd user unit recipe-photos-sync.timer,
 2. For each slug with a source photo, PHOTOS_SRC/<slug>.jpg (Health Agent's 2048x1376 dish photo), compares the photo's
    sha256 with public/recipes/images/sources.json. A new photo, a changed one, or a missing site copy is (re)made with
    scripts/recipe-images.py, which re-encodes it (no EXIF, no GPS), after the slug's old copies are removed.
-3. Commits only public/recipes/images/ on a fresh branch from origin/main, opens a pull request into main, waits for the
-   required `build` check and merges it. The Recipes watch and the push deploy do the rest.
+3. Commits only public/recipes/images/ on a fresh photos/* branch from origin/main and opens a pull request into main. It
+   never merges: .github/workflows/photos-merge.yml checks every path, size and type, waits for the `build` check, merges
+   and deploys (Security 11/26).
 
-It works in its own git worktree (WORKTREE), never in anyone's checkout, and refuses to commit anything outside
-public/recipes/images/. Photos only: the source folder holds dish photos (Health Agent's rule: no people, no card scans).
+It works in its own git worktree (WORKTREE), never in anyone's checkout, runs only as committed on origin/main (it stops if
+its scripts differ from origin/main), and refuses to commit anything outside public/recipes/images/. Photos only: the source folder holds dish photos (Health Agent's rule: no people, no card scans).
 """
 import hashlib
 import json
@@ -58,10 +59,17 @@ def main() -> None:
     run("git", "fetch", "-q", "origin")
     branch = "photos/" + datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
     run("git", "checkout", "-q", "-B", branch, "origin/main")
+    # Fail closed: only the reviewed code on origin/main runs with this machine's GitHub login (Security 11/26).
+    if run("git", "diff", "origin/main", "--", "scripts/", capture=True) or Path(__file__).resolve() != (WT / "scripts/recipe-photos-sync.py").resolve():
+        sys.exit("recipe-photos-sync: scripts differ from origin/main (or not running from the worktree); refusing")
     out = WT / "public/recipes/images"
     manifest_path = out / "sources.json"
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
 
+    # One photo PR at a time: while one is open, wait for photos-merge.yml to merge it.
+    if run("gh", "pr", "list", "-R", GH_REPO, "--state", "open", "--search", "head:photos/", "--json", "number", "--jq", "length", capture=True) not in ("", "0"):
+        print("recipe-photos-sync: a photo PR is still open; next run")
+        return
     todo = []
     for s in slugs():
         src = SRC / f"{s}.jpg"
@@ -98,22 +106,11 @@ def main() -> None:
     run("git", "commit", "-q", "-m", f"Recipes: photos for {names} (recipe-photos-sync)")
     run("git", "push", "-q", "-u", "origin", branch)
     body = (f"Automatic: new or changed dish photos for {names}, re-encoded by scripts/recipe-images.py (no EXIF). "
-            "Images only. Merged by the sync once the build passes (Rod 11/26: recipes publish as they land).")
+            "Images only. photos-merge.yml merges it once every path, size and type checks out and the build passes (Rod 11/26: recipes publish as they land).")
     url = run("gh", "pr", "create", "-R", GH_REPO, "--base", "main", "--head", branch,
               "--title", f"Recipe photos: {len(todo)} updated", "--body", body, capture=True)
     print(f"recipe-photos-sync: {url}")
-    # Wait for the required check to appear and finish, then merge. A failing check leaves the PR open for Software Architect.
-    import time
-    for _ in range(40):
-        if run("gh", "pr", "checks", url, check=False, capture=True):
-            break
-        time.sleep(15)
-    r = run("gh", "pr", "checks", url, "--watch", "--fail-fast", "-i", "30", check=False)
-    if r.returncode != 0:
-        sys.exit(f"recipe-photos-sync: checks failed on {url}; left open")
-    run("gh", "pr", "merge", url, "--merge")
-    run("git", "push", "-q", "origin", "--delete", branch, check=False)
-    print(f"recipe-photos-sync: merged {url}")
+    print("recipe-photos-sync: photos-merge.yml merges it once the checks pass")
 
 
 if __name__ == "__main__":

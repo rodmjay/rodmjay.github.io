@@ -1,0 +1,86 @@
+# Merges the recipe-photo pull requests that scripts/recipe-photos-sync.py opens (Rod 11/26: recipes and their photos publish
+# as they land), so the timer on Rod's computer never merges into main itself (Security 11/26). It merges only when:
+#   - the PR comes from this repo (not a fork), by rodmjay, from a photos/* branch, into main;
+#   - every changed path (from the PR files API: added, changed, renamed and deleted) is a site photo or the sources manifest;
+#   - each file is under the size cap and is really a WebP or JPEG, and sources.json is {slug: sha256};
+#   - the required `build` check on the head commit passed.
+# Then it starts the production deploy (a merge by this token doesn't fire push workflows). pull_request, never
+# pull_request_target: nothing from the branch runs here except the files it reads as data.
+# Limit (Security 11/26): a PR can also edit this file, and the machine's gh login can merge after `build` anyway, so this
+# gate constrains the timer and accidents, not the holder of that login (an accepted baseline: every agent uses it).
+name: Recipe photos merge
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+  checks: read
+
+concurrency:
+  group: photos-merge-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  merge:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login == 'rodmjay' &&
+      startsWith(github.event.pull_request.head.ref, 'photos/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.number }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Only site photos and the manifest
+        run: |
+          set -euo pipefail
+          gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PR/files" --jq '.[] | [.status, .filename, (.previous_filename // "")] | @tsv' > files.tsv
+          n=$(wc -l < files.tsv)
+          [ "$n" -ge 1 ] && [ "$n" -le 600 ] || { echo "file count $n is outside 1..600"; exit 1; }
+          re='^public/recipes/images/([a-z0-9-]+-[0-9]+\.(webp|jpg)|sources\.json)$'
+          while IFS=$'\t' read -r status name prev; do
+            [[ "$name" =~ $re ]] || { echo "not allowed: $name ($status)"; exit 1; }
+            if [ -n "$prev" ]; then [[ "$prev" =~ $re ]] || { echo "not allowed: renamed from $prev"; exit 1; }; fi
+          done < files.tsv
+          echo "$n files, all site photos or the manifest"
+      - name: Check each file's size and type
+        run: |
+          set -euo pipefail
+          while IFS=$'\t' read -r status name prev; do
+            [ "$status" = "removed" ] && continue
+            gh api -H "Accept: application/vnd.github.raw" "repos/$GITHUB_REPOSITORY/contents/$name?ref=$HEAD_SHA" > blob
+            size=$(stat -c %s blob)
+            [ "$size" -le 1048576 ] || { echo "$name is $size bytes (cap 1 MB)"; exit 1; }
+            case "$name" in
+              *.webp) [ "$(head -c 4 blob)" = "RIFF" ] && [ "$(dd if=blob bs=1 skip=8 count=4 2>/dev/null)" = "WEBP" ] || { echo "$name is not a WebP"; exit 1; } ;;
+              *.jpg)  [ "$(head -c 3 blob | od -An -tx1 | tr -d ' \n')" = "ffd8ff" ] || { echo "$name is not a JPEG"; exit 1; } ;;
+              *sources.json) jq -e 'type == "object" and (to_entries | all(.key | test("^[a-z0-9-]+$")) and all(.value | type == "string" and test("^[0-9a-f]{64}$")))' blob > /dev/null || { echo "sources.json is not {slug: sha256}"; exit 1; } ;;
+            esac
+          done < files.tsv
+          echo "sizes and types ok"
+      - name: Wait for the build check
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 70); do
+            res=$(gh api "repos/$GITHUB_REPOSITORY/commits/$HEAD_SHA/check-runs?check_name=build" --jq '[.check_runs[] | select(.app.slug == "github-actions")] | (map(select(.status != "completed")) | length | tostring) + " " + (map(select(.conclusion == "success")) | length | tostring) + " " + (length | tostring)')
+            read -r pending ok total <<< "$res"
+            if [ "$total" -gt 0 ] && [ "$pending" -eq 0 ]; then
+              [ "$ok" -eq "$total" ] || { echo "build check failed"; exit 1; }
+              echo "build passed"; exit 0
+            fi
+            sleep 30
+          done
+          echo "build check didn't finish in time"; exit 1
+      - name: Merge, then deploy production
+        run: |
+          set -euo pipefail
+          gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --merge --match-head-commit "$HEAD_SHA" --delete-branch
+          gh workflow run azure-swa.yml --repo "$GITHUB_REPOSITORY" --ref main
+          echo "Merged #$PR and started the production deploy." >> "$GITHUB_STEP_SUMMARY"
