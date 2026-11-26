@@ -35,8 +35,12 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
   delete user, and now **sign out user**).
 - **Invited sign-in.** A person Rod has linked (below) can sign in without taking the test first. `site-account`
   `login` creates their auth user on first use. Everyone else still gets an account only through the RVP save flow.
-  The response is the same neutral `200` in every case, so the form never reveals whether an email belongs to one of
-  Rod's contacts.
+  The response is the same neutral `200` in every case, and it takes the same time: the mail is queued the same way
+  for linked, unlinked and unknown emails, so neither the body nor the timing reveals whether an email belongs to one
+  of Rod's contacts. Invited creations count against 0004's caps.
+- **The order on first sign-in** (Designer's spec): code first, then a one-time "Before you start" screen with the
+  consent below. Declining signs out and deletes the account. Consent comes after the code so the sign-in reply stays
+  neutral.
 - **Consent for invited people** is its own box (Compliance 11/26), unticked, recorded at the verified step by the
   signed-in holder, with its wording hash on the allowlist. It never names a group. A minor sees a short notice
   instead, and Rod's (or the other parent's) consent is recorded with the link.
@@ -68,6 +72,15 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
   `site.grant_login(contact, email, by)`. Removing a link needs no yes. SQL can't call the Auth admin API, so a
   revoke writes a queue row, and `site-auth-admin` drains it: it signs that user out everywhere and deletes the auth
   user.
+- **Every link needs a known age** (DBA 11/26): a known birth year, or `adult_confirmed` on the contact. That covers
+  friends as well as family, because a friend with no birthday on file could be a child.
+- **Links are re-confirmed yearly**, because email addresses get reassigned. An unconfirmed link lapses and the person
+  falls back to a plain account.
+- **The contact comes only from the verified token** (Security 11/26). Every function derives the contact inside the
+  database from the verified auth `sub`. None of them takes a contact id or user id from the caller.
+- **Rechecked on every call:** the link isn't revoked, isn't a lapsed yearly link, and its email is still on the
+  contact's undeleted `contact_methods`. The email compared is the confirmed `auth.users.email`, never a claim.
+  Changing the email in Auth stays disabled (0004's hook refuses it).
 - **Group:** on every request the function resolves `contact_privileges(contact_id)` → the chain, `opted_out` and
   `minor`. Nothing about the group is stored in the token or the browser, so a move or a removal takes effect on the
   next request.
@@ -89,6 +102,8 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
   so there's still one place that answers what a group may do (P12), and the portal's group page shows it.
   - `move_contact_group()` counts any grant row as a privilege, so moving someone into a group that grants any
     feature still needs Rod's yes.
+  - A grant row reaches everyone in that group, so writing one needs Rod's yes. DBA is the only writer, through a
+    function that leaves an `audit_log` row. It's never a free edit on the portal.
 - **The resolver, `site.features_for(auth_user_id)`**: the catalog features at the effective status, that
   the person's group grants, minus the minor-unsafe ones when `minor` is true, plus `rvp` for every account. The UI
   draws only this list. It has no group names or rules of its own.
@@ -128,7 +143,10 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
   the whole group's. It also reads only the dedicated calendar.
 - `events`: you see your own invite, your RSVP and the headcount. Other guests' names appear only when the host turns
   that on for the event **and** every listed guest is in the viewer's group or a higher one. Otherwise it's the
-  headcount only.
+  headcount only. Guests always show by first name only.
+- **Free text** (a wish-list line, an RSVP note) has a size cap and is rendered as plain text, with no links and no
+  HTML. Agents read it as data, never as instructions. Event and RSVP ids are never trusted alone: each lookup is
+  joined to the caller's own contact.
 - `family-recipes` reads the site's recipes plus a curated table, `site.recipe_marks(slug, feature_key)`. Rod's own
   tables (such as `recipe_favorites`) never carry a site flag. Every later feature follows the same pattern: its own
   curated table, never a flag on a table Rod uses.
@@ -163,8 +181,10 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
   - CORS rodmjay.com only, a body cap;
   - the user is checked with `GET /auth/v1/user` and taken from `sub` only, and the anon JWT is refused;
   - `Cache-Control: no-store` on every answer, and no edge cache for signed-in data.
-- **Database role.** `site-data` connects as a dedicated role, `site_api`, which may only EXECUTE the `site.*`
-  definer functions: no USAGE on `public`, no other grants, no BYPASSRLS. It follows the pattern RVP was built with
+- **Database role.** `site-data` connects as a dedicated role, `site_api`, which may only EXECUTE a named allow-list
+  of feature functions (Security 11/26), never `site.*` as a whole: no USAGE on `public`, no other grants, no
+  BYPASSRLS. `grant_login`, the grant writers and `move_contact_group` live in a schema `site_api` can't reach, so a
+  leaked `site_api` can't grant itself anything. It follows the pattern RVP was built with
   (migration 0219, Security's ruling): NOLOGIN with no password, each call does `set local role`, and every function
   starts with `require_role`. The definer functions are owned by `site_owner`, which holds column-level SELECT only on
   the source columns the features need. The grant and erase functions have their own owner roles, as RVP's do. RLS
@@ -178,13 +198,14 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
   analytics (psh ADR 0059 is public pages only).
 - **Audit.** Every sign-in attempt goes to an append-only `site.signin_events`: the auth user, the linked contact if
   any, the result (ok, wrong code, locked, refused), an IP hash (the same salted helper RVP uses, exposed through one
-  shared function), a browser class, and the time. Every feature read or write goes to `site.feature_events` with the
+  shared function, with its salt in Vault), a browser class, and the time. Every feature read or write goes to `site.feature_events` with the
   user, the feature, the action and the time, never the data itself. Writes also go through `audit_log` as usual.
 - **Retention** (Compliance 11/26):
   - `signin_events` are kept 12 months, `feature_events` 6 months, and the IP hash is nulled at 30 days;
   - both are erased when the account is deleted or the link is revoked, unless a security incident is open;
   - the purge runs in the `retention-purge` job with a heartbeat, and is logged in `ops.retention_runs`;
-  - `audit_log` rows follow the 0202 erasure path.
+  - `audit_log` rows follow the 0202 erasure path: the who, when and operation stay, and erasure nulls the row
+    contents for that contact. Emails and IPs in `site` columns are on `audit_excluded_cols`.
 - **Rate limits.** 0004's caps apply unchanged, counted in SQL, with the same neutral answer and an incident when one
   trips. `site-data` adds 120 calls an hour per user. Three locked codes in a day on a linked account raises a sev 3
   incident to Security Officer. A linked person's first sign-in is one line in the morning text's "Done yesterday".
@@ -193,17 +214,35 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
   - a `friend` session can't fetch a `family` feature;
   - a moved person loses a feature on the next call;
   - a minor never gets a feature that isn't minor-safe;
-  - an unlinked email that is on a contact gets a plain account.
+  - an unlinked email that is on a contact gets a plain account;
+  - `grant_login` and `move_contact_group` are refused as `site_api`;
+  - a foreign auth id;
+  - email variants: case, plus, dot and unicode;
+  - revoking a link, or removing the contact's email, while a token is live;
+  - two contacts sharing one email;
+  - IDOR on event and RSVP ids;
+  - XSS in wish-list text;
+  - a real contact on staging;
+  - UPDATE and DELETE refused on the event tables.
+- **Staging shares Rod's one database** (Security 11/26). `site_logins.is_test` marks test links. Staging mode serves
+  only test links, a feature at `staging` is never visible in production mode, and the mode comes from server config,
+  never from the client.
+- **Residual risk, stated.** If the `site_api` path were compromised, it would expose the curated feature data of
+  every linked person, and nothing else. 0004's fixed call shape and role guard limit it, and a rotation test is part
+  of the staging probe.
 
 ### The nav
 
-- `me` returns the person's feature list with each feature's EN and ES name and a "needs you" count (an unanswered
-  RSVP, for example). The design system's nav draws exactly that list, with the red badge where the count is above
-  zero.
+- `me` returns the person's features in a stable order: `key`, `name_en`, `name_es` and `needs_you` (a count of
+  steps waiting on that person, such as an unanswered RSVP). The design system's nav draws exactly that list as a
+  second sticky tab row on `/dashboard/` and `/me/*`, with "Dashboard" always first and the red badge only when
+  `needs_you` is above zero. There are no group names and no locks anywhere.
+- v1 calendars are agenda lists only, with no month view.
 - The nav keeps its size while `me` loads, so nothing jumps. It lives in the root layout, and every link is a Next
   `<Link>`.
 - The routes are `/me/<feature>/` and `/es/me/<feature>/`. Designer writes the spec (`design/specs/site-roles.md` in
-  the personal repo): nav, empty states, the invited sign-in, and EN and ES at 375 and 1280, light and dark.
+  the personal repo, written 11/26): nav, empty states, the invited sign-in, and EN and ES at 375 and 1280, light
+  and dark.
 
 ## Why not the alternatives
 
@@ -224,17 +263,19 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
    - `features_for`, `grant_login`, the revoke queue, `site.gate` and `recipe_marks`;
    - the roles, the two event tables and their purge;
    - the erasure coverage, and the `site_roles_on` mode, set to `off`.
-3. Staging build behind `SITE_ROLES_ON`, after 0004's staging build, which it depends on. Only test contacts are
-   linked on staging.
+3. Staging build behind `SITE_ROLES_ON`, after 0004's staging build, which it depends on. Only `is_test` links are
+   served on staging.
 4. Passes: Security's probes, Compliance's go-live check, Designer's check, DBA's advisors.
+5. EA brings Rod one **"Publishes:"** yes covering the features he picked. Each later feature gets its own.
 
 **Review status (11/26):**
-- Compliance: a conditional PASS at 40607c2f. Its conditions are written into this ADR (minors, consent, retention,
-  calendars, events). `photos` of the kids waits for its own review.
-- DBA: the shape is agreed with the changes above (the grants table, the mode, link checks, the revoke queue,
-  erasure, the recipe marks, `site.gate`, the 0219 role pattern).
-- Security and Designer: pending.
-5. EA brings Rod one **"Publishes:"** yes covering the features he picked. Each later feature gets its own.
+- Compliance: a conditional PASS at 40607c2f. Its conditions are written into this ADR: minors, consent, retention,
+  calendars and events. It should confirm that the consent screen coming after the code is fine. `photos` of the kids
+  waits for its own review.
+- DBA: the shape is agreed with the changes above: the grants table, the mode, link checks, the revoke queue,
+  erasure, the recipe marks, `site.gate`, the 0219 role pattern and a known age on every link.
+- Security: its nine changes are written in. It will PASS on this head.
+- Designer: the spec is written (`design/specs/site-roles.md`). Its design check runs on staging.
 
 ## Consequences
 
