@@ -27,10 +27,11 @@ for (const [from, to] of Object.entries(moves)) {
     if (!r || r.redirect !== to + tail || r.statusCode !== 301) wrong.push(`${from + tail} must 301 to ${to + tail}`);
     if (process.env.RVP_ON === "1" && !existsSync(join("out", to + tail, "index.html"))) wrong.push(`${to + tail} is missing from out/`);
   }
-  for (const route of [from.slice(0, -1), `${from}*`]) {
+  // Only the wildcard: Static Web Apps treats /rvp and /rvp/ as one route and refuses a deploy that lists both (11/26).
+  for (const route of [`${from}*`]) {
     const r = swa.routes.find((x) => x.route === route);
     if (!r || r.redirect !== to || r.statusCode !== 301) wrong.push(`${route} must 301 to ${to}`);
   }
 }
 if (wrong.length) { console.error(`old RVP URLs:\n${wrong.join("\n")}`); process.exit(1); }
-console.log(`old RVP URLs: all ${Object.keys(moves).length * (archetypes.length + 5)} redirect to the personality test`);
+console.log(`old RVP URLs: all ${Object.keys(moves).length * (archetypes.length + 4)} redirect to the personality test`);
