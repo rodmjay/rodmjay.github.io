@@ -212,6 +212,7 @@
     "photoCredit": "AI-generated image",
     "groups": {
       "course": "Course",
+      "dish": "Dish",
       "occasion": "Occasion",
       "season": "Season",
       "cuisine": "Cuisine",

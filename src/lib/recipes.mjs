@@ -31,7 +31,7 @@ const BANNED = new Set(("wine wines beer beers ale lager rum vodka tequila mezca
 // Whole phrases taken out before the banned-word check: alcohol-free things named with a banned word.
 const SOFT_DRINKS = /\b(?:ginger\s+ale|hot\s+buttered\s+rum\s+(?:mix|batter))\b/gi;
 // The six facet groups, in the order the page shows them (Designer, Health Agent and SA 11/26).
-export const FACETS = ["course", "occasion", "season", "cuisine", "main", "diet"];
+export const FACETS = ["course", "dish", "occasion", "season", "cuisine", "main", "diet"]; // dish: Rod 11/26 "more categories … casseroles"
 const PRIVATE = /\b(for rod|para rod)\b|\b(kcal|calories|calorías|protein target|meta de proteína)\b/i;
 
 async function fetchRows() {
