@@ -35,7 +35,7 @@ DRY = "--dry-run" in sys.argv
 
 def run(*cmd, cwd=WT, check=True, capture=False):
     r = subprocess.run(cmd, cwd=cwd, check=check, text=True, capture_output=capture)
-    return r.stdout.strip() if capture else r
+    return r.stdout.rstrip() if capture else r  # rstrip: `git status --porcelain` lines start with a space
 
 
 def sha(p: Path) -> str:
