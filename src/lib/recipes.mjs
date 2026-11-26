@@ -24,6 +24,8 @@ const TRUST_MINUTES = process.env.RECIPES_TRUST_MINUTES === "1" || !API;
 const BANNED = new Set(("wine wines beer beers ale lager rum vodka tequila mezcal whiskey whisky bourbon brandy gin liqueur sake " +
   "champagne prosecco cocktail cocktails margarita margaritas sangria mimosa coffee espresso latte cappuccino mocha tea teas " +
   "matcha chai kombucha vino vinos cerveza cervezas ron licor licores aguardiente guaro café cafés té tés").split(" "));
+// Whole phrases taken out before the banned-word check: soft drinks named with a banned word.
+const SOFT_DRINKS = /\bginger\s+ale\b/gi;
 const PRIVATE = /\b(for rod|para rod)\b|\b(kcal|calories|calorías|protein target|meta de proteína)\b/i;
 
 async function fetchRows() {
@@ -85,7 +87,8 @@ async function build() {
     if (!rec.ingredients.length) fail(`${where}: needs ingredients`);
     if (!rec.steps.length) fail(`${where}: needs steps`);
     const text = [rec.title, rec.dek, rec.imageAlt, rec.tip, rec.serveWith, rec.pairsWith, rec.credit, ...rec.tags, ...rec.ingredients, ...rec.steps].join("\n");
-    for (const w of words(text)) if (BANNED.has(w)) fail(`${where}: "${w}" (no alcohol, coffee or tea on the site)`);
+    // Soft drinks whose names hold a banned word are fine (EA 11/26: "ginger ale is a soft drink, not alcohol").
+    for (const w of words(text.replace(SOFT_DRINKS, " "))) if (BANNED.has(w)) fail(`${where}: "${w}" (no alcohol, coffee or tea on the site)`);
     if (PRIVATE.test(text)) fail(`${where}: a private section or health number (dishes only)`);
     if (rec.lang === "es") checkUsted(text, where, fail);
     if (RECIPES_APPROVED && /\[ES TODO/i.test(text)) fail(`${where}: a Spanish placeholder is still there`);
