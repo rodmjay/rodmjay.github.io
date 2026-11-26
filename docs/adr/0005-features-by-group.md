@@ -141,6 +141,7 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
   is a venue name only.
 - `kids-calendar` is scoped to each child: a child sees only their own dates and times, never a sibling's, and never
   the whole group's. It also reads only the dedicated calendar.
+  It has no messaging and no location or tracking of any kind (Legal 11/26).
 - `events`: you see your own invite, your RSVP and the headcount. Other guests' names appear only when the host turns
   that on for the event **and** every listed guest is in the viewer's group or a higher one. Otherwise it's the
   headcount only. Guests always show by first name only.
@@ -165,8 +166,9 @@ tree, so they get no grants; DBA tests inheritance on the live tree.
   If it doesn't, that's a small separate change.
 - 0004's 18+ rule stays for self sign-up and RVP. A minor can have an account **only through a link Rod adds**, with
   a parent's consent recorded (who and when) before the link (Compliance 11/26):
-  - for Rod's own children, Rod consents as their parent. Before any of them is linked, Legal Advisor checks whether
-    the parenting order needs the other parent's agreement;
+  - for Rod's own children, Rod consents as their parent. Legal Advisor checked on 11/26: nothing in the records we
+    hold requires the other parent's agreement, but one part of the order can't be confirmed until the certified copy
+    arrives. Legal re-checks it then;
   - for any other minor in the family tree, that child's own parent must say yes, and Rod records it.
 - **Under 13: no account at all** (COPPA). `grant_login` enforces it, never the UI. A contact with no known birthday
   can't be linked as a minor until Rod records one.
