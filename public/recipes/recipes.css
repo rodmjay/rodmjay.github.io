@@ -61,12 +61,41 @@
 
 /* Tag filters on the index (Designer's spec, "Update 2026-11-26: tags and filters"). Layout and states only; chips,
    cards, buttons and the dialog are the design system's. */
-.recipe-filters, .recipe-filters-nojs { display: block; columns: 2; column-gap: var(--space-8); margin: 0 0 var(--space-4); padding: var(--space-4) var(--space-6); }
+/* Course and Dish lead (a row of two groups, 56px chips); the rest under "More filters", in two columns on desktop. */
+.recipe-filters, .recipe-filters-nojs { display: block; margin: 0 0 var(--space-4); padding: var(--space-4) var(--space-6); }
+.recipe-filters-nojs { columns: 2; column-gap: var(--space-8); }
+.recipe-lead { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-8); }
+.recipe-sheet .recipe-lead { grid-template-columns: 1fr; }
+.recipe-more { margin-top: var(--space-2); border-top: 1px solid var(--md-sys-color-outline-variant); }
+.recipe-more-summary { display: flex; align-items: center; gap: var(--space-2); min-height: 48px; width: fit-content; margin-bottom: var(--space-1); cursor: pointer; list-style: none;
+  color: var(--md-sys-color-on-surface); }
+.recipe-more-summary::-webkit-details-marker { display: none; }
+.recipe-more-summary .ds-icon { transition: transform var(--md-sys-motion-duration-short4, 150ms) var(--md-sys-motion-easing-standard, ease); }
+.recipe-more[open] > .recipe-more-summary .ds-icon { transform: rotate(180deg); }
+.recipe-more-groups { columns: 2; column-gap: var(--space-8); }
+.recipe-sheet .recipe-more-groups { columns: 1; }
 .recipe-facet { break-inside: avoid; padding-bottom: var(--space-2); }
 .recipe-facet h3 { margin: 0; padding-top: var(--space-2); }
 .recipe-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; column-gap: var(--space-2); }
-.recipe-chips > li { display: flex; align-items: center; min-height: 48px; } /* 48px touch row, 8px gap */
-@media (pointer: coarse) { .recipe-chips { row-gap: var(--space-2); } .recipe-chips .ds-chip { height: 3rem; } }
+.recipe-chips > li { display: flex; align-items: center; min-height: 48px; } /* 48px rows: hit areas abut, never overlap */
+.recipe-lead .recipe-chips { row-gap: var(--space-2); }
+
+/* 48px hit areas everywhere in Recipes (Designer 11/26), the look unchanged. Chips (32px look): a transparent 8px border
+   top and bottom grows the box to 48px; the background, outline and state layer stay inside it, and the focus ring is
+   pulled back to the 32px chip. Buttons (40px look): an invisible ::before reaches 4px above and below (all round for
+   icon buttons). Rows of chips sit 48px apart with no row gap, so targets touch but never overlap. */
+.ds .recipes .ds-chip:not(.sample-chip, .status) { --look-r: var(--md-sys-shape-corner-small);
+  height: 48px; border: 0; border-block: 8px solid transparent; background-clip: padding-box;
+  border-radius: var(--look-r) / calc(var(--look-r) + 8px); }
+.ds .recipes .ds-chip:not(.sample-chip, .status)::after { border-radius: var(--look-r); }
+.ds .recipes .ds-chip:not(.sample-chip, .status):focus-visible { outline-offset: -6px; }
+.ds .recipes .ds-btn::before { content: ""; position: absolute; inset: -4px 0; }
+.ds .recipes .ds-btn.icon::before { inset: -4px; }
+.recipe-siblings .filters, .recipe-tags, .recipe-selected-list { row-gap: 0; }
+/* The lead block's chips are 56px to the eye, so they need no extension. */
+.ds .recipes :is(.recipe-lead, .recipe-lead-facet) .ds-chip:not(.sample-chip, .status) { height: 56px; padding-inline: var(--space-5); border: 0;
+  border-radius: var(--md-sys-shape-corner-small); }
+.ds .recipes :is(.recipe-lead, .recipe-lead-facet) .ds-chip:not(.sample-chip, .status):focus-visible { outline-offset: 2px; }
 /* A value with no recipes under the current choice: dimmed, not hidden (no shift), still focusable. Text keeps the
    chip's on-surface-variant (4.5:1); only the outline fades and the state layer goes. */
 .ds-chip[aria-disabled="true"] { box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant); cursor: default; }

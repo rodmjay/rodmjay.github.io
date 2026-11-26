@@ -106,7 +106,7 @@ function FacetIndex({ r, l }: { r: any; l: any }) {
   const w: BrowserWords = {
     count: R.count, countOne: R.countOne, show: R.show, showOne: R.showOne, clearAll: R.clearAll, clearAllFilters: R.clearAllFilters,
     remove: R.remove, selected: R.selected, noMatch: R.noMatch, emptyTitle: R.emptyTitle, emptyBody: R.emptyBody, filter: R.filter,
-    filterCount: R.filterCount, filterHeading: R.filterHeading, close: R.close, newer: R.newer, older: R.older, page: R.page, pages: R.pages,
+    filterCount: R.filterCount, filterHeading: R.filterHeading, moreFilters: R.moreFilters, close: R.close, newer: R.newer, older: R.older, page: R.page, pages: R.pages,
   };
   return (
     <>

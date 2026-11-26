@@ -31,7 +31,17 @@ const BANNED = new Set(("wine wines beer beers ale lager rum vodka tequila mezca
 // Whole phrases taken out before the banned-word check: alcohol-free things named with a banned word.
 // coffee cake: a sweet cake with no coffee in it (EA 11/26), also hyphenated as in slugs, and "pastel de café" in Spanish.
 const SOFT_DRINKS = /(?<![\p{L}\p{N}])(?:ginger\s+ale|hot\s+buttered\s+rum\s+(?:mix|batter)|coffee[\s-]+cakes?|pastel(?:es)?\s+de\s+caf[eé])(?![\p{L}\p{N}])/giu;
-// The six facet groups, in the order the page shows them (Designer, Health Agent and SA 11/26).
+// Within a group, values follow the catalog's `sort` (Designer 11/26), except cuisine and main, which stay alphabetical in
+// each language. A value without a sort comes after the sorted ones, alphabetically.
+const ALPHA_GROUPS = new Set(["cuisine", "main"]);
+const COLLATOR = { en: new Intl.Collator("en"), es: new Intl.Collator("es-419") };
+const byValue = (lang) => (a, b) => {
+  const abc = COLLATOR[lang].compare(a.label, b.label);
+  if (ALPHA_GROUPS.has(a.group)) return abc;
+  if (a.sort != null && b.sort != null) return a.sort - b.sort || abc;
+  return (a.sort == null) - (b.sort == null) || abc;
+};
+// The facet groups, in the order the page shows them (Designer, Health Agent and SA 11/26).
 export const FACETS = ["course", "dish", "occasion", "season", "cuisine", "main", "diet"]; // dish: Rod 11/26 "more categories … casseroles"
 const PRIVATE = /\b(for rod|para rod)\b|\b(kcal|calories|calorías|protein target|meta de proteína)\b/i;
 
@@ -83,7 +93,8 @@ async function build() {
     const rec = {
       slug: str(r.slug), lang: str(r.lang), title: str(r.title), dek: str(r.dek), imageAlt: str(r.image_alt),
       servings: r.servings == null ? null : str(r.servings), minutes: TRUST_MINUTES && Number.isFinite(Number(r.minutes)) && r.minutes != null ? Number(r.minutes) : null,
-      tags: list(r.tags), facets: (Array.isArray(r.facets) ? r.facets : []).map((f) => ({ group: str(f?.group), key: str(f?.key), tag: str(f?.tag), label: str(f?.label) })),
+      tags: list(r.tags), facets: (Array.isArray(r.facets) ? r.facets : []).map((f) => ({ group: str(f?.group), key: str(f?.key), tag: str(f?.tag), label: str(f?.label),
+        sort: f?.sort == null || f.sort === "" || !Number.isFinite(Number(f.sort)) ? null : Number(f.sort) })),
       ingredients: list(r.ingredients), steps: list(r.steps), updatedAt: str(r.updated_at),
       credit: str(r.from_credit), tip: str(r.tip), serveWith: str(r.serve_with), pairsWith: str(r.pairs_with),
       sources: (Array.isArray(r.sources) ? r.sources : []).map((s) => (typeof s === "string" ? { title: s.trim(), url: "" }
@@ -104,7 +115,7 @@ async function build() {
       if (seen.has(f.tag)) fail(`${where}: tag ${f.tag} listed twice`);
       seen.add(f.tag);
     }
-    rec.facets.sort((a, b) => FACETS.indexOf(a.group) - FACETS.indexOf(b.group));
+    rec.facets.sort((a, b) => FACETS.indexOf(a.group) - FACETS.indexOf(b.group) || byValue(rec.lang)(a, b));
     const text = [rec.title, rec.dek, rec.imageAlt, rec.tip, rec.serveWith, rec.pairsWith, rec.credit, ...rec.tags, ...rec.facets.map((f) => f.label), ...rec.ingredients, ...rec.steps].join("\n");
     // Alcohol- and coffee-free things whose names hold a banned word are fine (EA 11/26: ginger ale, hot buttered rum mix, coffee cake).
     for (const w of words(text.replace(SOFT_DRINKS, " "))) if (BANNED.has(w)) fail(`${where}: "${w}" (no alcohol, coffee or tea on the site)`);
@@ -197,17 +208,17 @@ async function build() {
     }
   }
   const usedTags = (lang) => lists.filter((l) => l.lang === lang && l.tag && l.n === 1).map((l) => l.tag);
-  // Facet mode: every tag with its recipe count, grouped in FACETS order, values by label. A tag on only one recipe
+  // Facet mode: every tag with its recipe count, grouped in FACETS order, values by byValue (catalog sort). A tag on only one recipe
   // gets a tag page but no filter chip (chip: count >= 2); a value no recipe uses is never built.
-  const collator = { en: new Intl.Collator("en"), es: new Intl.Collator("es-419") };
   const facetGroups = (lang) => !facetMode ? [] : FACETS.map((group) => {
     const values = new Map();
     for (const r of byLang[lang]) for (const f of r.facets) if (f.group === group) {
-      const v = values.get(f.tag) || { tag: f.tag, key: f.key, label: f.label, slug: tagSlug(f.tag), url: `${BASE[lang]}tag/${tagSlug(f.tag)}/`, count: 0 };
+      const v = values.get(f.tag) || { group, tag: f.tag, key: f.key, label: f.label, sort: f.sort, slug: tagSlug(f.tag), url: `${BASE[lang]}tag/${tagSlug(f.tag)}/`, count: 0 };
       v.count++;
+      if (f.sort != null && (v.sort == null || f.sort < v.sort)) v.sort = f.sort;
       values.set(f.tag, v);
     }
-    return { group, values: [...values.values()].sort((a, b) => collator[lang].compare(a.label, b.label)) };
+    return { group, values: [...values.values()].sort(byValue(lang)) };
   }).filter((g) => g.values.length);
   return { recipes, byLang, lists, sample: !RECIPES_APPROVED, sampleData, from, facetMode, facetGroups,
     tagUrl: (lang, s) => `${BASE[lang]}tag/${s}/`, usedTags };
