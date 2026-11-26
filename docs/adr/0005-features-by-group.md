@@ -20,10 +20,17 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
 ## What a person gets
 
 - **Anyone** can still use the site without signing in. Nothing changes for them.
-- **Anyone who signs in** gets what 0004 gives: their own RVP results and the dashboard.
+- **Anyone who signs in** gets what 0004 gives: their own personality test results and the dashboard. If they
+  haven't taken the test, the dashboard leads with a prominent card to take it (Rod 11/26).
+- **Naming** (Rod and Philosopher 11/26): RVP is the system (Resources, Values, Processes). The 27 personality types
+  sit over it, and **the personality test** on rodmjay.com reads a person's type. Account screens say "personality
+  test" and "your personality test results", never "RVP". The types and the test itself don't change.
 - **Someone Rod knows** who signs in with an email Rod has linked to them also gets their group's commands, the same
   ones their text menu has (coffee, what's new, leave friends and so on), in the dashboard and the nav, with buttons
-  and cards in place of 1/2/3 texts. Someone in no group sees only their own results.
+  and cards in place of 1/2/3 texts.
+- **Someone new** whose email matches no contact becomes a contact in a new `leads` group (Rod 11/26: "if they come
+  from nowhere, and their email doesnt match any existing contact, they go into group, like leads"). Leads see their
+  own results and the public pages, never family or friend commands.
 - The nav shows only what the person may use. A feature they don't have isn't hidden behind a lock. It isn't there.
 
 ## Decisions
@@ -36,11 +43,22 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
   more than RVP. Its RVP actions (`save`, `me`, `export`, `delete`) keep their shape, and the database schema `rvp`
   stays as built; new objects go in schema `site`. The auth admin function becomes `site-auth-admin` (create user,
   delete user, and now **sign out user**).
-- **Invited sign-in.** A person Rod has linked (below) can sign in without taking the test first. `site-account`
-  `login` creates their auth user on first use. Everyone else still gets an account only through the RVP save flow.
-  The response is the same neutral `200` in every case, and it takes the same time: the mail is queued the same way
-  for linked, unlinked and unknown emails, so neither the body nor the timing reveals whether an email belongs to one
-  of Rod's contacts. Invited creations count against 0004's caps.
+- **Two ways in, one code step** (Rod 11/26: "make sure that the flow works from personality test to logged in, and
+  account created, and then if people havent taken their test, make that a prominent link on their dashboard"):
+  - **(a) Test first.** Take the test → the result page offers "Save my result" → email → code → the account exists,
+    the result is saved to it as a take, and the person stays on the result page, then goes to the dashboard. A
+    "Already saved a result? Sign in instead" link swaps the card to an email-only sign-in with the same code step;
+    the result is saved as a new take on that account.
+  - **(b) Sign in first.** `/signin/` → email → code → dashboard. With no saved result, the dashboard leads with one
+    filled "Take the personality test" card (or "Continue the test" when a partial test is in the browser). After
+    the test the result saves to the account automatically ("Saved to your dashboard") and the result card takes
+    the test card's place.
+  - Both paths use `site-account` `login` (or `start` from the result page) and `verify`; a new action, `attach
+    {fragment}`, saves the browser's result as a new take on the signed-in account, for new and existing accounts.
+  - Each path has an end-to-end test on staging (Playwright, against a test mailbox, `is_test` rows).
+- The response to `start` and `login` is the same neutral `200` in every case, and it takes the same time: the mail
+  is queued the same way for linked, unlinked and unknown emails, so neither the body nor the timing reveals whether
+  an email belongs to one of Rod's contacts. Every creation counts against 0004's caps.
 - **The order on first sign-in** (Designer's spec): code first, then a one-time "Before you start" screen with the
   consent below. Consent comes after the code so the sign-in reply stays neutral. Compliance agreed on 11/26, with
   these conditions:
@@ -51,20 +69,24 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
   - declining deletes the account and its events, not only the session. The only thing kept is an anonymous count,
     with no email and no contact link;
   - a minor sees the short parental-consent notice instead, and the parent's consent must already be on the link.
-- **Consent for invited people** is its own box (Compliance 11/26), unticked, recorded at the verified step by the
-  signed-in holder, with its wording hash on the allowlist. It never names a group. A minor sees a short notice
-  instead, and Rod's (or the other parent's) consent is recorded with the link.
+- **Consent for linked people** is its own box (Compliance 11/26, the wording for commands), unticked, recorded at
+  the verified step by the signed-in holder, loaded into `consent_wordings` as a new version with its hash. It never
+  names a group. A minor sees a short notice instead, and the parent's consent is recorded with the link.
   - EN: "I'm signing in with an email Rod Johnson linked to me. I understand the site keeps my sign-in email, the
-    times I sign in, and what I do in a feature, such as an RSVP or a wish-list line. Rod already has my contact
-    details. None of this is sold or used for ads, and it is never used to text or email me. I can delete my account
-    from my dashboard at any time, and that deletes this data."
+    times I sign in, and the requests I make, such as asking Rod for coffee. Rod's assistant tools help handle them,
+    and Rod decides. Rod already has my contact details. None of this is sold or used for ads. This site won't text
+    or email me, except that if I already text Rod's line and haven't opted out, the answer to a request may also
+    come by text. I can delete my account from my dashboard at any time, and that deletes this data."
   - ES: "Entro con un correo que Rod Johnson vinculó conmigo. Entiendo que el sitio guarda mi correo, las fechas y
-    horas en que inicio sesión y lo que hago en una función, como una confirmación de asistencia o una línea de mi
-    lista de deseos. Rod ya tiene mis datos de contacto. Nada de esto se vende ni se usa para publicidad, y nunca se
-    usa para enviarme mensajes ni correos. Puedo eliminar mi cuenta desde mi panel en cualquier momento, y así se
-    borran estos datos."
-  - The privacy and terms PR adds linked sign-in, these logs, and the AI tools Rod uses as recipients.
-  - Compliance re-words the examples ("an RSVP or a wish-list line") for commands, such as asking Rod for coffee.
+    horas en que inicio sesión y las solicitudes que hago, como pedirle un café a Rod. Las herramientas de asistente
+    de Rod ayudan a gestionarlas, y Rod decide. Rod ya tiene mis datos de contacto. Nada de esto se vende ni se usa
+    para publicidad. El sitio no me enviará mensajes ni correos, salvo que, si ya escribo a la línea de texto de Rod
+    y no me he dado de baja, la respuesta a una solicitud puede llegar también por mensaje. Puedo eliminar mi cuenta
+    desde mi panel en cualquier momento, y así se borran estos datos."
+  - **Leads** see 0004's consent box (it already says Rod keeps their email and results in his contacts). Compliance
+    confirms whether it must also say they're kept as a lead, and names the retention period.
+  - The privacy and terms PR adds linked sign-in, leads, the logs, request text, and the AI tools that handle
+    requests as recipients, in EN and ES. A sincere "is this an AI?" still gets a straight yes.
 
 ### Identity: a contact, only through an email Rod linked
 
@@ -96,8 +118,26 @@ inherited down the tree, read only through `contact_privileges()`, changed only 
   `minor`. Nothing about the group is stored in the token or the browser, so a move or a removal takes effect on the
   next request.
   - `opted_out` → no group features.
-  - Not linked, or in no group → a plain 0004 account.
+  - Not linked, or in no group, or a lead → their own results only.
   - The account never shows the group's name, the chain or who else is in it.
+
+### Leads: new people get a contact and the least-privileged group (Rod 11/26)
+
+- **`leads`** is a top-level contact group with no commands, no menu file and no conversation. Because it grants
+  nothing, `move_contact_group()` may place someone there without Rod's yes. Lead commands, if Text Concierge defines
+  any, are granted to the group by Rod's yes through `group_privileges`, never one person at a time.
+- **Creation** (`site.account_create_lead`, a definer function owned by the link owner) runs only when the proven
+  email matches no live `contact_methods` row and no `site_logins` link. It creates the contact with only the email,
+  any name they give, `text_tier = 'never'`, the tags `source/rodmjay.com` and `source/site-signin` (or `source/rvp`
+  from the test), the consent record, and the `leads` membership. The contact id is stored on the account so a
+  repeat sign-in finds it. 0004's test path joins `leads` too, in a new migration.
+- **An email that matches an existing contact is never auto-linked or moved.** That person gets their own results
+  only until Rod links the email (Identity, below).
+- **Quiet leads are removed** after the period Compliance sets: no sign-in or activity, nothing else on the contact,
+  no other group, no texts, calls or other tags. Soft delete, the same rule as 0004's RVP contact expiry. A lead Rod
+  moves to a real group leaves `leads` and is exempt.
+- The texting gate, Investigator, the gift routine and the Quo contact sync skip `leads` the way they skip
+  `source/rvp`.
 
 ### Features are the group's text commands (Rod 11/26)
 
@@ -114,23 +154,53 @@ One command list, two front ends. The site never has a command the person's text
   group's active commands, after the same filters the text flow applies (`opted_out` gives none, `minor` follows the
   text flow's rules). `help` isn't shown: the nav is the help. The mode `site_roles_on` = `off | staging | on` is
   audited and changed only through a function, like 0004's `rvp_set_mode`.
-- **The same backend runs the command** (Rod: "it needs to function in similar way").
-  - Today a text command is a row in `inbound_texts`. The listener on Rod's computer claims it through `inbox-claim`
-    and runs the guarded agent with `GUEST_PROMPT` and the group's menu file. Rod's approval still comes by his
-    1/2/3 text (`ask-rod`, `meetup_requests`).
-  - A site command is a row in a sibling queue, `site.command_requests`: the contact (from the token), the command
-    key, the step (start, a chosen option, or a short free-text answer), and `channel = 'web'`. The listener claims
-    it the same way, with the same caps, holds and daily guest-run budget. It runs the same prompt and menu file
-    with `channel: web`, which changes one thing: instead of texting the person, the run ends with a structured reply
-    that code checks and stores in `site.command_replies`.
-  - **The reply shape:** `message` (plain text, 600 characters or fewer), up to 3 `options` (key and label, such as
-    three coffee times with their places), `input` (whether a short free-text answer is expected, as in "ask me
-    anything") and `done`. Code rejects anything else, and the UI renders it as cards and buttons.
-  - The browser asks `site-data` for the reply (`poll`, every 2 seconds for up to 2 minutes) and shows "RodBot is on
-    it" meanwhile. A pick sends the next step to the same request.
-  - Rod's side doesn't change: his 1/2/3 approval text, the calendar event, the meetup row. When Rod confirms, the
-    dashboard shows it. The person gets a text only if they already use RodBot by text and haven't opted out
-    (Compliance to confirm).
+- **One implementation per command, two callers** (Text Concierge 11/26). Today each command is a prose spec the
+  listener model follows. They become shared functions that texting and the site both call, so slot and place
+  picking, who pays, the budget, the fun-money gate and Rod's 1/2/3 prompt live in one place, and the listener keeps
+  only the wording:
+  - `cmd.start(contact, key, channel, lang)` → a request and its first reply;
+  - `cmd.answer(contact, request, option_key | text)` → the next reply;
+  - `cmd.confirm(request, decision)` → called when Rod answers his 1/2/3 prompt.
+
+  DBA writes them from Text Concierge's specs (texting/menus/CATALOG.md), coffee first, then lunch. The listener
+  calls them for texts as soon as each one exists.
+- **Commands that still need judgment** (a concert pick, "ask me anything") stay with the listener model until they
+  can move. For those, `cmd.start` queues the request (`site.command_requests`, `handler = 'listener'`). The listener
+  claims it through `inbox-claim` (`claim_web`) with the same caps, holds and daily guest-run budget, runs the same
+  prompt and menu file with `channel: web`, and stores the reply with `finish_web`.
+- **Text Concierge's conditions:**
+  - the web run gets no Quo, send or create-contact tool; its only effects are the reply, the `meetup_requests` row
+    and Rod's `text_prompts` row, made with the same SQL the texting run uses;
+  - what the person types is data, never instructions, and the guest-run budget and daily per-person cap are shared
+    with texting, not duplicated;
+  - a contact with no group, a lead, `text_tier = 'never'` or an opt-out gets no commands;
+  - code refuses a reply over 600 characters, with more than 3 options, with an unknown key, or with a link that
+    isn't on the allowlist.
+- **The reply shape:** `message` (plain text, 600 characters or fewer), up to 3 `options` (key and label), `input`
+  (whether free text is expected, and its cap), `done` and `can_repeat`. It comes back in `contacts.language`. Until
+  Text Concierge writes the es-419 labels (`menu_commands.label_es`, `description_es`), the site falls back to the
+  English label.
+- **Security's conditions (11/26):**
+  - A. `command_submit` checks a chosen option against the option keys of the stored prior reply, and takes free
+    text only when that reply had `input = true` (280 characters, kept out of `audit_log`). The client never supplies
+    option text.
+  - B. Every web reply passes the same privacy guard and NEVER-SHARE check as a text before it's stored. A held reply
+    shows a neutral "Rod will get back to you."
+  - C. Caps in SQL: one open request per person at a time and 5 a day, and at most 3 `ask-rod` prompts to Rod a day
+    from any one contact.
+  - D. The listener and `cmd.*` re-resolve the link, consent, revoked state, `is_test` and the group from
+    `contact_privileges(contact_id)` at claim time and on every step. Nothing stored in the row is trusted.
+  - E. Polling has its own limit (`poll`: 40 a minute per user, outside the 120-an-hour call cap).
+  - F. A web action texts the person only where the rules below already allow it.
+  - Replies with links (the `links` command) are plain text, or anchors only to allow-listed domains with
+    `noopener nofollow`.
+- **When Rod confirms** (Compliance 11/26), the dashboard shows it. A text also goes out only to a number that
+  already texted the line or had a Rod-approved intake, hasn't opted out, and passes the normal send gate (consent
+  and STOP). Never a number that never texted us, never an email address or a new number on the account, and a minor
+  only if their text flow already texts them.
+- **Leaving** ("leave friends", "leave family") or STOP on the site has the same effect as the text opt-out, at once.
+- **Request text** is kept 6 months, like `feature_events`, and erased on account deletion or link revoke. What
+  Rod's own records keep on his contact timeline follows their existing rules.
 - **Dashboard status:** a curated view of the person's own open requests (`meetup_requests` for their contact: the
   kind, the status, the chosen time and place) with "needs you" when a reply waits on them.
 - **Mechanical first:** commands that need no judgment (`links`, `language`, `whatsnew`, leaving the group) can
@@ -245,10 +315,16 @@ or tracking (Legal 11/26), shareable-only family calendar, guest names only with
 
 ### The nav
 
-- `me` returns the person's features in a stable order: `key`, `name_en`, `name_es` and `needs_you` (a count of
-  steps waiting on that person, such as a coffee time to pick). The design system's nav draws exactly that list as a
-  second sticky tab row on `/dashboard/` and `/me/*`, with "Dashboard" always first and the red badge only when
-  `needs_you` is above zero. There are no group names and no locks anywhere.
+- **The nav** (Designer 11/26): with about a dozen commands, the second sticky row on `/dashboard/` and `/me/*` is
+  **Dashboard | Requests | Ask Rod**. Requests carries the red badge only when the person must pick something. Ask
+  Rod opens the commands as a menu (a bottom sheet under 840px), and the same commands fill a grid on the dashboard.
+  "Leave friends/family" is a row under Your data, behind a confirm dialog. There are no group names and no locks.
+- **`me` returns,** in a stable order:
+  - per command: `key`, `label_en`, `label_es`, `description`, `kind` (`ask | read | setting | leave`), `held`, and
+    the group's label for the leave row;
+  - per request: `id`, command key, a one-line summary, `status` (`waiting_you | waiting_rod | working | done |
+    failed`) and when it was made;
+  - whether a personality test result exists, and the latest one.
 - v1 calendars are agenda lists only, with no month view.
 - The nav keeps its size while `me` loads, so nothing jumps. It lives in the root layout, and every link is a Next
   `<Link>`.
@@ -275,7 +351,10 @@ or tracking (Legal 11/26), shareable-only family calendar, guest names only with
    - the `site` schema and `site_logins`, and a Spanish label and a key check on `menu_commands`;
    - `features_for`, `grant_login`, the revoke queue, `site.gate`;
    - `command_requests`, `command_replies`, `command_submit`, `command_poll`, `my_requests`, and the
-     `inbox-claim` actions the listener uses for them;
+     `inbox-claim` actions the listener uses for them (`claim_web`, `finish_web`);
+   - the `cmd.*` functions, coffee first, from Text Concierge's specs;
+   - the `leads` group, `account_create_lead`, 0004's test path joining `leads`, and the quiet-lead purge;
+   - the new consent wording version in `consent_wordings`;
    - the roles, the two event tables and their purge;
    - the erasure coverage, and the `site_roles_on` mode, set to `off`.
 3. Staging build behind `SITE_ROLES_ON`, after 0004's staging build, which it depends on. Only `is_test` links are
@@ -283,6 +362,11 @@ or tracking (Legal 11/26), shareable-only family calendar, guest names only with
 4. Passes: Security's probes, Compliance's go-live check, Designer's check, DBA's advisors.
 5. Rod's 11/26 pick is the "Publishes:" yes for the commands each group already has by text, so production follows
    the passes. A command or feature that isn't in a text menu needs its own yes through EA.
+
+**Review status (11/26, text commands):** Security PASS with conditions A to F (written in above); Compliance PASS
+with conditions (the new consent wording, texts on confirmation, leaving, request retention, the privacy page);
+Text Concierge agrees and makes the listener change; DBA writes the migration. The `leads` change (Rod, later
+11/26) needs a short Security and Compliance re-check, including the quiet-lead period.
 
 **Review status (11/26, before the switch to text commands):**
 - Compliance: a conditional PASS at 40607c2f, and a yes at 72f8f1a to the consent screen coming after the code. Its
