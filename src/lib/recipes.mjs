@@ -29,7 +29,8 @@ const BANNED = new Set(("wine wines beer beers ale lager rum vodka tequila mezca
   "champagne prosecco cocktail cocktails margarita margaritas sangria mimosa coffee espresso latte cappuccino mocha tea teas " +
   "matcha chai kombucha vino vinos cerveza cervezas ron licor licores aguardiente guaro café cafés té tés").split(" "));
 // Whole phrases taken out before the banned-word check: alcohol-free things named with a banned word.
-const SOFT_DRINKS = /\b(?:ginger\s+ale|hot\s+buttered\s+rum\s+(?:mix|batter))\b/gi;
+// coffee cake: a sweet cake with no coffee in it (EA 11/26), also hyphenated as in slugs, and "pastel de café" in Spanish.
+const SOFT_DRINKS = /(?<![\p{L}\p{N}])(?:ginger\s+ale|hot\s+buttered\s+rum\s+(?:mix|batter)|coffee[\s-]+cakes?|pastel(?:es)?\s+de\s+caf[eé])(?![\p{L}\p{N}])/giu;
 // The six facet groups, in the order the page shows them (Designer, Health Agent and SA 11/26).
 export const FACETS = ["course", "dish", "occasion", "season", "cuisine", "main", "diet"]; // dish: Rod 11/26 "more categories … casseroles"
 const PRIVATE = /\b(for rod|para rod)\b|\b(kcal|calories|calorías|protein target|meta de proteína)\b/i;
@@ -105,7 +106,7 @@ async function build() {
     }
     rec.facets.sort((a, b) => FACETS.indexOf(a.group) - FACETS.indexOf(b.group));
     const text = [rec.title, rec.dek, rec.imageAlt, rec.tip, rec.serveWith, rec.pairsWith, rec.credit, ...rec.tags, ...rec.facets.map((f) => f.label), ...rec.ingredients, ...rec.steps].join("\n");
-    // Alcohol-free things whose names hold a banned word are fine (EA 11/26: ginger ale, and the hot buttered rum mix).
+    // Alcohol- and coffee-free things whose names hold a banned word are fine (EA 11/26: ginger ale, hot buttered rum mix, coffee cake).
     for (const w of words(text.replace(SOFT_DRINKS, " "))) if (BANNED.has(w)) fail(`${where}: "${w}" (no alcohol, coffee or tea on the site)`);
     if (PRIVATE.test(text)) fail(`${where}: a private section or health number (dishes only)`);
     if (rec.lang === "es") checkUsted(text, where, fail);
