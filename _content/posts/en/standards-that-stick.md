@@ -11,7 +11,9 @@ A standards page on a wiki gets skipped on deadlines, and an AI agent never sees
 
 ## 1. Write the standard as text
 
-Keep each standard short and in the repo, next to the code: naming, logging, error format, how services call each other, how we write. Markdown files work well because people and agents can both read them.
+Keep each standard short and in markdown: naming, logging, error format, how services call each other, how we write. People and agents can both read it.
+
+Put the standards in their own repo, outside your monorepo. Every product and every agent then reads the same copy, and a change to a standard gets its own review and history instead of getting buried in a feature pull request. Each code repo pulls the standards in through a package, a git submodule or the MCP server described below.
 
 ## 2. Build it into the workflow
 
@@ -37,6 +39,6 @@ When someone finds a better way, change the standard in one place, then update t
 ## Start small
 
 1. Pick one standard your team argues about.
-2. Write it as a short markdown file in the repo.
+2. Write it as a short markdown file in a separate standards repo.
 3. Add one automated check for it.
 4. Point CLAUDE.md at it and add a hook that runs the check.

@@ -11,7 +11,9 @@ Una página de estándares en una wiki se pasa por alto cuando aprieta la fecha 
 
 ## 1. Escriba el estándar como texto
 
-Mantenga cada estándar breve y en el repositorio, junto al código: nombres, registro de eventos, formato de errores, cómo se comunican los servicios entre sí, cómo escribimos. Los archivos markdown funcionan bien porque tanto las personas como los agentes pueden leerlos.
+Mantenga cada estándar breve y en markdown: nombres, registro de eventos, formato de errores, cómo se comunican los servicios entre sí, cómo escribimos. Tanto las personas como los agentes pueden leerlo.
+
+Guarde los estándares en un repositorio propio, fuera de su monorepo. Así cada producto y cada agente lee la misma copia, y un cambio a un estándar tiene su propia revisión e historial en lugar de quedar escondido dentro de un pull request de una funcionalidad. Cada repositorio de código trae los estándares mediante un paquete, un submódulo de git o el servidor MCP que describo más abajo.
 
 ## 2. Intégrelo al flujo de trabajo
 
@@ -37,6 +39,6 @@ Cuando alguien encuentre una mejor forma, cambie el estándar en un solo lugar y
 ## Empiece en pequeño
 
 1. Elija un estándar sobre el que su equipo discute.
-2. Escríbalo como un archivo markdown breve en el repositorio.
+2. Escríbalo como un archivo markdown breve en un repositorio de estándares aparte.
 3. Agregue una verificación automática para él.
 4. Haga que CLAUDE.md apunte a él y agregue un hook que ejecute la verificación.
