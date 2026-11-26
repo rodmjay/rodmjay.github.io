@@ -14,6 +14,8 @@ export type Archetype = { n: number; slug: string; key: string; name: Text; role
 export const BANK = bankJson as unknown as Bank;
 // Every published bank version stays here so an old result link still reads (add the frozen file when the version moves).
 export const BANKS: Record<string, Bank> = { [BANK.version]: BANK };
+/** sessionStorage key: the finished test's #fragment, handed from RvpTake to RvpResult once (survives a mid-test deploy). */
+export const RESULT_HANDOFF = "rvp:result";
 const bad = Object.values(BANKS).flatMap(validateBank);
 if (bad.length) throw new Error(`RVP bank: ${bad.join("; ")}`);
 
