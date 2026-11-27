@@ -1,8 +1,11 @@
+import { existsSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 
 // Discover SLC (design/specs/rodmjay-events.md): the events block filters by date and category in the browser, keeps the
 // state in the URL (Back steps through it), groups by day with the weekly entries last, and links out in a new tab; the
 // playlist block is one outlined button. Event checks are skipped when the events feed is off (no event cards built).
+// Built only where DISCOVER_ON=1; with it off there's nothing to test (the URLs are the 404 page).
+test.skip(!existsSync("out/slc/index.html"), "Discover SLC isn't built (DISCOVER_ON off)");
 test.beforeEach(async ({ page }) => { await page.addInitScript(() => { try { localStorage.setItem("ds-lang", "en"); } catch {} }); });
 
 test("discover: blocks, filters, URL state", async ({ page }) => {
