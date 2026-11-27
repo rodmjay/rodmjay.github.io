@@ -101,11 +101,11 @@ for (const v of desc.variants) {
   const feather = 0.04 * H;
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
     const i = y * W + x, o = i * 4;
-    // R: open sky down to the ridge line, then away from the moon and its halo. The feather ends at the line itself
-    // (Designer 11/27): ending it short left a strip of the plate's darker painted sky between the procedural sky and the
-    // snow, which read as a halo outline along the peaks (and as the pink line on the right ridge).
+    // R: open sky down to the ridge line, then away from the moon and its halo. The feather straddles the snapped edge, one
+    // pixel each side (Designer 11/27): any wider and the painting's own pale, pink-lit sky shows through it as a halo
+    // outline along the peaks.
     const dm = Math.hypot(x - mxp, y - myp);
-    const sky = (1 - smooth(ridgeMin[x] - 3, ridgeMin[x], y)) * smooth(mr * 1.6, mr * 2.6, dm);
+    const sky = (1 - smooth(ridgeMin[x] - 1, ridgeMin[x] + 1, y)) * smooth(mr * 1.6, mr * 2.6, dm);
     out[o] = Math.round(255 * sky);
     // B: water, below the horizon except the shore polygon, so the grass and rocks never ripple.
     if (y > hz + 1) out[o + 2] = Math.round(255 * smooth(hz + 1, hz + 4, y) * (1 - land[i]));
@@ -115,7 +115,7 @@ for (const v of desc.variants) {
   let stars = 0;
   for (let y = 2; y < hz; y++) for (let x = 2; x < W - 2; x++) {
     const i = y * W + x;
-    if (out[i * 4] < 200 || L[i] < 120 || L[i] - Lb[i] < 35) continue;
+    if (out[i * 4] < 200 || L[i] < 120 || L[i] - Lb[i] < 35 || y > ridgeMin[x] - 4) continue; // never a snow tip at the ridge
     let peak = true;
     for (let dy = -2; dy <= 2 && peak; dy++) for (let dx = -2; dx <= 2; dx++) if ((dx || dy) && L[(y + dy) * W + x + dx] > L[i]) { peak = false; break; }
     if (!peak) continue;
