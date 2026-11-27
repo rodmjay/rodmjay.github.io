@@ -217,7 +217,7 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .discover-block > h2 { margin: 0 0 var(--space-2); }
 .discover-lede { margin: 0 0 var(--space-2); max-width: 40rem; }
 .discover-block .ds-banner { margin: var(--space-4) 0; }
-.ev-filters { display: grid; gap: var(--space-2); margin: var(--space-6) 0 var(--space-2); }
+.ev-filters { display: grid; gap: 0; margin: var(--space-6) 0 var(--space-2); }
 .ev-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); min-height: 48px; align-items: center; }
 .ev-summary { display: flex; align-items: center; gap: var(--space-2); min-height: 48px; margin: 0 0 var(--space-4); }
 .ev-count { margin: 0; flex: 1; }
@@ -239,3 +239,14 @@ html:not([data-js]) .ev-js { display: none; }
 .ev-empty { display: grid; gap: var(--space-2); justify-items: start; }
 .ev-empty p { margin: 0; }
 .discover-playlist .ds-btn { gap: var(--space-2); }
+/* Designer 11/27: h1 to the first block is --space-8 (h1's own margin plus this), not the site's section padding. */
+.discover-page > .discover-block:first-of-type { padding-top: var(--space-4); }
+/* 48px hit areas, the look unchanged (as Recipes, Designer 11/26): chips grow to 48px with a transparent 8px border top
+   and bottom, rows abut with no row gap; buttons get an invisible ::before 4px above and below. */
+.ds .discover-page .ds-chip:not(.status) { --look-r: var(--md-sys-shape-corner-small);
+  height: 48px; border: 0; border-block: 8px solid transparent; background-clip: padding-box;
+  border-radius: var(--look-r) / calc(var(--look-r) + 8px); }
+.ds .discover-page .ds-chip:not(.status)::after { border-radius: var(--look-r); }
+.ds .discover-page .ds-chip:not(.status):focus-visible { outline-offset: -6px; }
+.ds .discover-page .ds-btn::before { content: ""; position: absolute; inset: -4px 0; }
+.discover-page .ev-chips { row-gap: 0; }
