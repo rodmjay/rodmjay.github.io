@@ -4,7 +4,7 @@ import { expect, test, type Page } from "@playwright/test";
 // Content-Security-Policy. Locally tests/serve.mjs sends the headers from staticwebapp.config.json; with BASE_URL set
 // the same checks run against the Static Web App itself.
 const PAGES = ["/", "/es/", "/blog/", "/blog/ai-writes-the-code/", "/es/blog/tag/arquitectura/", "/privacy/", "/privacy/es/", 
-  "/recipes/", "/es/recipes/gallo-pinto/", "/recipes/tag/season-winter/", "/recipes/?tags=season:summer", "/no-such-page/"];
+  "/recipes/", "/recipes/all/", "/recipes/about/", "/es/recipes/gallo-pinto/", "/recipes/tag/season-winter/", "/recipes/all/?tags=season:summer&q=chicken", "/no-such-page/"];
 
 async function watch(page: Page) {
   const seen: string[] = [];

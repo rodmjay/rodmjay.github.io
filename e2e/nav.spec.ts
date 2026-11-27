@@ -2,13 +2,14 @@ import { expect, test, type Page } from "@playwright/test";
 
 // Moving around the site never reloads the page or re-mounts the header (Rod 11/20, "no jitter"): every in-app link is
 // a Next <Link>. A marker on window and on the header survives each click only if nothing reloaded or re-mounted.
-async function mark(page: Page) {
-  await page.evaluate(() => { (window as any).__stay = 1; document.querySelector("header.bar")!.setAttribute("data-stay", "1"); });
+// The personal site's header is header.bar; a product with its own chrome passes its own (the recipe book: header.rb-bar).
+async function mark(page: Page, header = "header.bar") {
+  await page.evaluate((h) => { (window as any).__stay = 1; document.querySelector(h)!.setAttribute("data-stay", "1"); }, header);
 }
-async function expectStayed(page: Page, url: RegExp) {
+async function expectStayed(page: Page, url: RegExp, header = "header.bar") {
   await expect(page).toHaveURL(url);
   expect(await page.evaluate(() => (window as any).__stay)).toBe(1);
-  await expect(page.locator("header.bar")).toHaveAttribute("data-stay", "1");
+  await expect(page.locator(header)).toHaveAttribute("data-stay", "1");
 }
 const box = (page: Page) => page.locator("header.bar .mark").boundingBox();
 
@@ -59,14 +60,14 @@ test("home: each project card is one link, the whole card", async ({ page }) => 
   }
 });
 
-test("recipes: index → recipe → tag, no reload", async ({ page }) => {
+test("recipes: home → recipe → tag, no reload", async ({ page }) => {
   await page.goto("/es/recipes/");
-  await mark(page);
-  await page.locator(".recipe-card").first().click();
-  await expectStayed(page, /\/es\/recipes\/[a-z-]+\/$/);
-  await expect(page.locator(".recipe-steps ol li").first()).toBeVisible();
-  await page.locator(".ds-post-head a.ds-chip").first().click();
-  await expectStayed(page, /\/es\/recipes\/tag\/[a-z-]+\/$/);
+  await mark(page, "header.rb-bar");
+  await page.locator(".rb-grid .rb-card-title a").first().click();
+  await expectStayed(page, /\/es\/recipes\/[a-z-]+\/$/, "header.rb-bar");
+  await expect(page.locator(".rb-steps li").first()).toBeVisible();
+  await page.locator(".rb-tags a.rb-chip").first().click();
+  await expectStayed(page, /\/es\/recipes\/tag\/[a-z-]+\/$/, "header.rb-bar");
 });
 
 test("the language menu goes to the twin page", async ({ page }) => {
@@ -79,7 +80,8 @@ test("the language menu goes to the twin page", async ({ page }) => {
   await page.locator("#lang").selectOption("en");
   await expect(page).toHaveURL(/\/blog\/ai-writes-the-code\/$/);
   await page.goto("/recipes/arroz-con-pollo/");
-  await page.locator("#lang").selectOption("es");
+  if (!(await page.locator(".rb-lang-bar select").isVisible())) await page.getByRole("button", { name: "Menu" }).click();
+  await page.locator(".rb-lang select:visible").selectOption("es");
   await expect(page).toHaveURL(/\/es\/recipes\/arroz-con-pollo\/$/);
 });
 
