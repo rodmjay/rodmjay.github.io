@@ -6,7 +6,7 @@ import { expect, test } from "@playwright/test";
 const built = existsSync("out/index.html") && readFileSync("out/index.html", "utf8").includes("living-hero");
 test.skip(!built, "the living hero isn't built (LIVING_HERO off)");
 const engineChunk = () => readdirSync("out/_next/static/chunks", { withFileTypes: true })
-  .find((f) => f.isFile() && f.name.endsWith(".js") && readFileSync(`out/_next/static/chunks/${f.name}`, "utf8").includes("uAur"))?.name;
+  .find((f) => f.isFile() && f.name.endsWith(".js") && readFileSync(`out/_next/static/chunks/${f.name}`, "utf8").includes("uCover"))?.name;
 
 test("reduced motion: no engine is fetched and the canvas never shows", async ({ browser }) => {
   const ctx = await browser.newContext({ reducedMotion: "reduce" });
