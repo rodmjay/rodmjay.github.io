@@ -5,7 +5,8 @@ import { expect, test } from "@playwright/test";
 // footer toggle is a live pause control. Skipped where it isn't built (LIVING_HERO off).
 const built = existsSync("out/index.html") && readFileSync("out/index.html", "utf8").includes("living-hero");
 test.skip(!built, "the living hero isn't built (LIVING_HERO off)");
-const engineChunk = () => readdirSync("out/_next/static/chunks").find((f) => readFileSync(`out/_next/static/chunks/${f}`, "utf8").includes("uDrift"));
+const engineChunk = () => readdirSync("out/_next/static/chunks", { withFileTypes: true })
+  .find((f) => f.isFile() && f.name.endsWith(".js") && readFileSync(`out/_next/static/chunks/${f.name}`, "utf8").includes("uAur"))?.name;
 
 test("reduced motion: no engine is fetched and the canvas never shows", async ({ browser }) => {
   const ctx = await browser.newContext({ reducedMotion: "reduce" });
@@ -15,7 +16,9 @@ test("reduced motion: no engine is fetched and the canvas never shows", async ({
   await page.goto("/");
   await page.waitForLoadState("load");
   await page.waitForTimeout(2500);
-  expect(fetched.some((u) => u.includes(engineChunk()!) || u.includes(".mask.png"))).toBe(false);
+  const chunk = engineChunk();
+  expect(chunk).toBeTruthy();
+  expect(fetched.some((u) => u.includes(chunk!) || u.includes(".mask.png"))).toBe(false);
   await expect(page.locator("canvas.living-hero")).not.toHaveClass(/\bon\b/);
   await expect(page.locator(".cover img")).toBeVisible();
   // Compliance 11/27: the toggle defaults to off under reduced motion, and nothing is stored until the visitor clicks.
@@ -54,4 +57,21 @@ test("privacy page lists the motion setting; the footer still says no tracking c
   await expect(page.locator("footer")).toContainText("No tracking cookies.");
   await page.goto("/privacy/es/");
   await expect(page.locator("main")).toContainText("un ajuste llamado 'motion'");
+});
+
+// A shader that fails to compile or link falls back to the static image silently, by design; this catches it in CI.
+test("the hero's shaders compile and link in a real WebGL context", async ({ page }) => {
+  const { VS, FS } = await import("../src/components/living-hero/engine");
+  await page.goto("/");
+  const r = await page.evaluate(([vsrc, fsrc]) => {
+    const gl = document.createElement("canvas").getContext("webgl");
+    if (!gl) return "no webgl";
+    const sh = (t: number, s: string): WebGLShader | string => { const x = gl.createShader(t)!; gl.shaderSource(x, s); gl.compileShader(x); return gl.getShaderParameter(x, gl.COMPILE_STATUS) ? x : String(gl.getShaderInfoLog(x)); };
+    const v = sh(gl.VERTEX_SHADER, vsrc), f = sh(gl.FRAGMENT_SHADER, fsrc);
+    if (typeof v === "string" || typeof f === "string") return `compile: ${v} ${f}`;
+    const p = gl.createProgram()!; gl.attachShader(p, v); gl.attachShader(p, f); gl.linkProgram(p);
+    return gl.getProgramParameter(p, gl.LINK_STATUS) ? "ok" : `link: ${gl.getProgramInfoLog(p)}`;
+  }, [VS, FS]);
+  test.skip(r === "no webgl", "no WebGL in this browser");
+  expect(r).toBe("ok");
 });

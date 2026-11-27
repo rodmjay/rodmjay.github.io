@@ -6,33 +6,59 @@
 // for the session, nothing allocated in the frame loop.
 import { pickVariant, shownImage, type Descriptor, type Variant } from "./descriptor";
 
-const VS = `attribute vec2 a; uniform vec2 uRes; varying vec2 vP;
+export const VS = `attribute vec2 a; uniform vec2 uRes; varying vec2 vP;
 void main(){ vP = vec2((a.x*0.5+0.5)*uRes.x, (0.5-a.y*0.5)*uRes.y); gl_Position = vec4(a,0.0,1.0); }`;
 
-// uA/uB map canvas CSS pixels to the picture's uv (the same cover-fit and object-position as the <img>).
-// uDrift: the sky's largest move in uv (6 px at 1280 w); uRip: half the water's largest move (peak 2 px); uK, uW: the
-// ripple's spatial and time frequency; uHz: the horizon; uSize: the texture size, for per-star cells.
-const FS = `precision mediump float;
-uniform sampler2D uImg, uMask; uniform vec2 uA, uB, uSize, uDrift, uTex; uniform float uT, uHz, uRip, uK, uW, uMin;
+// uA/uB map canvas CSS pixels to the picture's uv (the same cover-fit and object-position as the <img>); uRes is the
+// band in CSS pixels (highp: the vertex shader shares it). uL/uP: the cloud flow's span and phase period; uN: the wobble; uAur: the aurora sway; uRip, uK, uW:
+// the water ripple; uHz: the horizon; uSize: the plate size, for per-star cells; uTex/uMin: the downscale taps.
+export const FS = `precision mediump float;
+uniform sampler2D uImg, uMask; uniform highp vec2 uRes; uniform vec2 uA, uB, uSize, uTex, uN; uniform float uT, uHz, uRip, uK, uW, uMin, uL, uP, uAur;
 varying vec2 vP;
 float hash(vec2 p){ p = fract(p*vec2(123.34,456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }
 float noise(vec2 p){ vec2 i=floor(p), f=fract(p), u=f*f*(3.0-2.0*f);
   return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),u.x), mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),u.x), u.y); }
-vec2 flow(vec2 uv, float t){ vec2 p = uv*vec2(3.0,2.0);
-  float x = noise(p+vec2(t*0.011,t*0.007)) + 0.5*noise(p*2.1+vec2(-t*0.013,t*0.005));
-  float y = noise(p+vec2(17.3,-t*0.009)) + 0.5*noise(p*2.3+vec2(t*0.006,4.1));
-  return vec2(x,y)/1.5; }
+// Slow secondary noise: two incommensurate time phases (about 50 s and 71 s), so it never visibly repeats.
+vec2 wobble(vec2 uv, float t){ vec2 p = uv*vec2(3.0,2.0);
+  return vec2(noise(p+vec2(t*0.020,0.0)) + 0.5*noise(p*2.1+vec2(0.0,t*0.014)),
+              noise(p+vec2(17.3,t*0.014)) + 0.5*noise(p*2.3+vec2(t*0.020,4.1)))/1.5; }
+// The picture at q; when it's shown smaller than its file, 4 fixed taps match the browser's smooth downscale.
+vec3 tap(vec2 q){ q = clamp(q, 0.0, 1.0); vec3 c = texture2D(uImg, q).rgb;
+  if (uMin > 0.5) { vec2 o = uTex*0.25;
+    c = 0.25*(texture2D(uImg, q+vec2(-o.x,-o.y)).rgb + texture2D(uImg, q+vec2(o.x,-o.y)).rgb + texture2D(uImg, q+vec2(-o.x,o.y)).rgb + texture2D(uImg, q+vec2(o.x,o.y)).rgb); }
+  return c; }
 void main(){
   vec2 uv = vP*uA + uB;
   vec4 m = texture2D(uMask, uv);
-  vec2 d = m.r * (flow(uv,uT) - flow(uv,0.0)) * uDrift;
-  if (uv.y > uHz) { float k = (uv.y-uHz)/(1.0-uHz); float ph = uv.y*uK; d.x += m.b * uRip * k * (sin(ph+uT*uW) - sin(ph)); }
-  // When the picture is shown smaller than its file (uMin: over 1.25 file pixels per canvas pixel), average 4 taps
-  // so the canvas matches the browser's own smooth downscale instead of aliasing (fixed taps, no loop).
-  vec2 q = clamp(uv+d, 0.0, 1.0);
-  vec3 c = texture2D(uImg, q).rgb;
-  if (uMin > 0.5) { vec2 o = uTex*0.25;
-    c = 0.25*(texture2D(uImg, q+vec2(-o.x,-o.y)).rgb + texture2D(uImg, q+vec2(o.x,-o.y)).rgb + texture2D(uImg, q+vec2(-o.x,o.y)).rgb + texture2D(uImg, q+vec2(o.x,o.y)).rgb); }
+  // Where the sky moves: the sky mask, never on a star, fading to 0 within 24 px of the band's edges (no seam).
+  float edge = smoothstep(0.0, 24.0, min(min(vP.x, uRes.x-vP.x), min(vP.y, uRes.y-vP.y)));
+  float sky = m.r * (1.0 - m.g) * edge;
+  // Clouds go faster higher up: full in the top fifth, tapering to 0 toward the ridge.
+  float speed = sky * (1.0 - smoothstep(0.2, 0.6, uv.y));
+  // Aurora: the saturated hues inside the sky. It sways vertically, with the phase travelling along the ribbon.
+  // (Only computed where the sky moves: the rest of the picture skips this cost.)
+  vec2 d = vec2(0.0); float aur = 0.0;
+  if (sky > 0.002) {
+    vec3 s0 = texture2D(uImg, uv).rgb; float hi = max(s0.r, max(s0.g, s0.b)), lo = min(s0.r, min(s0.g, s0.b));
+    aur = smoothstep(0.35, 0.6, hi > 0.0 ? (hi-lo)/hi : 0.0) * sky;
+    float ph = uv.x*9.0;
+    d = (wobble(uv, uT) - wobble(uv, 0.0)) * uN * sky;
+    d.y += aur * uAur * (sin(6.2831853*uT/16.0 + ph) - sin(ph));
+  }
+  // Water: a horizontal ripple growing from 0 at the horizon, zero at t = 0.
+  if (uv.y > uHz) { float k = (uv.y-uHz)/(1.0-uHz); float wp = uv.y*uK; d.x += m.b * uRip * k * (sin(wp+uT*uW) - sin(wp)); }
+  // Clouds: a two-phase flow, left to right. Each sample's offset is centred on its phase, and the triangle crossfade
+  // gives sample A full weight exactly when its offset is 0, so t = 0 is the picture and there's no jump or visible loop.
+  float pa = fract(uT/uP + 0.5), pb = fract(uT/uP), wa = 1.0 - abs(2.0*pa - 1.0);
+  vec3 c;
+  if (speed > 0.002) {
+    vec2 qa = uv + d - vec2((pa - 0.5)*uL*speed, 0.0);
+    vec2 qb = uv + d - vec2((pb - 0.5)*uL*speed, 0.0);
+    c = mix(tap(qb), tap(qa), wa);
+  } else { c = tap(uv + d); }
+  // Aurora brightness: a travelling wave, within ±8 %, at about 23 s; never a colour shift.
+  c *= 1.0 + 0.08*aur*0.5*(sin(6.2831853*uT/23.0 + uv.x*6.0) - sin(uv.x*6.0));
+  // Stars twinkle in place, each on its own 4 to 9 s period.
   float T = 4.0 + 5.0*hash(floor(uv*uSize/16.0));
   c *= mix(1.0, 1.0 - 0.2*(1.0-cos(6.2831853*uT/T)), m.g);
   // Draw only where something moves (sky, stars, water); elsewhere the canvas is clear, so the mountains, city and moon
@@ -73,7 +99,7 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
   const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const aLoc = gl.getAttribLocation(prog, "a"); gl.enableVertexAttribArray(aLoc); gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
   const U = (n: string) => gl.getUniformLocation(prog, n);
-  const u = { min: U("uMin"), tex: U("uTex"), res: U("uRes"), a: U("uA"), b: U("uB"), size: U("uSize"), drift: U("uDrift"), t: U("uT"), hz: U("uHz"), rip: U("uRip"), k: U("uK"), w: U("uW"), img: U("uImg"), mask: U("uMask") };
+  const u = { min: U("uMin"), tex: U("uTex"), res: U("uRes"), a: U("uA"), b: U("uB"), size: U("uSize"), n: U("uN"), l: U("uL"), p: U("uP"), aur: U("uAur"), t: U("uT"), hz: U("uHz"), rip: U("uRip"), k: U("uK"), w: U("uW"), img: U("uImg"), mask: U("uMask") };
   gl.uniform1i(u.img, 0); gl.uniform1i(u.mask, 1);
   const texImg = gl.createTexture(), texMask = gl.createTexture();
   const upload = (tex: WebGLTexture | null, unit: number, im: HTMLImageElement, raw: boolean) => {
@@ -114,10 +140,13 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     gl.uniform2f(u.size, w, h); gl.uniform1f(u.hz, v!.horizon);
     gl.uniform2f(u.tex, 1 / (dw * dpr), 1 / (dh * dpr)); // one canvas pixel, in uv
     gl.uniform1f(u.min, texW / (dw * dpr) > 1.25 ? 1 : 0);
-    // Ceilings (Designer): sky 6 px and water 2 px peak when the picture shows 1280 px wide, a ripple wave of about 14 px.
-    // Expressed as fractions of the picture (plate pixels), so they look the same at every crop and width.
+    // Ceilings (Designer, living-hero.md "The clouds and aurora visibly drift"), in plate pixels at a 1280 px wide picture,
+    // so they look the same at every crop: clouds up to 40 px per 26 s phase (about 1.5 px/s), a secondary wobble up to
+    // 6 px, the aurora swaying 8 px top to bottom, the water 2 px at its peak. Combined, under 3 px/s.
     const ux = 1 / 1280, uy = (1 / 1280) * (w / h);
-    gl.uniform2f(u.drift, 6 * ux, 6 * uy);
+    gl.uniform1f(u.l, 40 * ux); gl.uniform1f(u.p, 26);
+    gl.uniform2f(u.n, 6 * ux, 6 * uy);
+    gl.uniform1f(u.aur, 4 * uy);
     gl.uniform1f(u.rip, 1 * ux); // sin(a) - sin(b) peaks at 2: 2 px
     gl.uniform1f(u.k, (2 * Math.PI) / (14 * uy)); gl.uniform1f(u.w, 1.1); // about 2.5 px/s of drift, under 8
   };
