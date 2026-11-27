@@ -68,6 +68,24 @@ vec2 clouds(vec2 uv){
   float dens = smoothstep(t0, t0 + 0.22, d);
   return vec2(dens, clamp(0.55 + (f - dl)*5.0, 0.0, 1.0));
 }
+// The low layer (Designer 11/27: depth): larger billowy masses across the sky's lower half down to the ridge, drifting
+// slower than the high wisps (they move 1.3x as fast), seeded for an even ~40 % cover of the sky between the moon's height and the peaks. Skipped above it.
+vec2 lowClouds(vec2 uv){
+  float band = smoothstep(uHz*0.16, uHz*0.28, uv.y);  // the sky ends at the ridge, about 0.31 to 0.45 of the plate (horizon 0.61)
+  if (band <= 0.0) return vec2(0.0);
+  vec2 p = px(uv)/1280.0*vec2(2.2, 5.0) + vec2(7.4, 6.9);
+  p.x += p.y*0.08;
+  p.x -= uT*uWind/1.3;
+  vec2 q = vec2(fbm3(p*0.5 + vec2(0.0, uT*0.004)), fbm3(p*0.5 + vec2(5.2, 1.3) - vec2(uT*0.004, 0.0)));
+  vec2 w = p + 0.35*q;
+  float f = fbm5(w);
+  float bl = 1.0 - abs(2.0*fbm3(w*1.3 + 3.1) - 1.0);
+  float big = fbm3(p*0.3 + vec2(2.0, 6.0));
+  float d = 0.45*f + 0.7*bl*f + (big - 0.5)*0.2;
+  float dl = fbm3(w + vec2(0.09, -0.12));
+  float dens = smoothstep(0.42, 0.64, d)*band;
+  return vec2(dens, clamp(0.5 + (fbm3(w) - dl)*9.0, 0.0, 1.0));  // a stronger lit edge: the bodies sit on a dark sky
+}
 // Aurora curtains (Designer 11/27: the plate's teal, green and violet are the scene's identity): ribbons along the
 // upper-middle sky, brightest near their lower edge, fine vertical rays, a gentle sway (about 17 s) and a ±8 % travelling
 // brightness wave. Drawn behind the clouds at low alpha. Designer 11/27: the rays stay soft (no column banding: features
@@ -117,6 +135,9 @@ void main(){
     float T = 4.0 + 5.0*hash(floor(uv*uSize/16.0));
     vec3 star = texture2D(uImg, uv).rgb * (1.0 - 0.2*(1.0 - cos(6.2831853*uT/T)));
     base = mix(base, max(base, star), m.g);
+    vec2 lc = lowClouds(uv);
+    vec3 lcc = cloudColor(lc, uv);
+    base = mix(base, lcc, lc.x*0.94);
     vec3 skyc = mix(base, cc, cl.x*0.92) + au.rgb*au.a*0.5*cl.x; // the aurora glows through thinner cloud
     // A moonlit veil over the moon, never a dark blot (density at most 0.5); the moon stays clear for the first 15 s.
     float ac = 0.5 * cl.x * overMoon * smoothstep(15.0, 20.0, uT);
