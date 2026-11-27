@@ -41,4 +41,5 @@ createServer(async (req, res) => {
     res.writeHead(404, headersFor(path, { "content-type": TYPES[".html"] }));
     res.end(await readFile(join(ROOT, "404.html")));
   }
-}).listen(port, () => console.log(`serving out/ on http://localhost:${port}`));
+// Loopback only: a test server never listens on the LAN (IT Guy 11/27).
+}).listen(port, "127.0.0.1", () => console.log(`serving out/ on http://127.0.0.1:${port}`));

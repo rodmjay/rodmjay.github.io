@@ -15,14 +15,13 @@
     "resume": "Resume",
     "blog": "Blog",
     "recipes": "Recipes",
-    "discover": "Discover SLC",
     "quotes": "Quotes",
     "menu": "Menu"
   },
   "hero": {
     "name": "Rod Johnson",
     "title": "Enterprise Application Architect",
-    "lede": "I design how software gets built: the architecture, the standards and now the AI tools behind it.",
+    "lede": "I design how software gets built: the architecture, the standards and the AI tools behind it. I'm based in Salt Lake City and work in English and Spanish.",
     "aiLine": "The cover and the portrait are AI-generated.",
     "photoAlt": "AI-generated portrait based on a photo of Rod Johnson",
     "ctaResume": "Get my resume",
@@ -170,7 +169,8 @@
         }
       ],
       "rights": "To see, correct or delete a lookup, or to object to it, email {email}. If you're in the EU or UK, you have the right to object to this lookup. If you'd rather not agree, you can't get the resume through this form, so email me and we can talk directly."
-    }
+    },
+    "motion": "If you use the Motion on/off switch in the footer, your browser remembers your choice (one setting called 'motion', on or off) on this device. It is never sent to us or anyone else, and it is not a cookie. To check whether to animate, the page looks at your device's basic abilities, such as reduced-motion, memory and graphics support, on your device only. Nothing about it is stored or sent."
   },
   "blog": {
     "title": "Blog",
@@ -604,5 +604,64 @@
     "shortDate": "{day} {month}",
     "am": "AM",
     "pm": "PM"
+  },
+  "slc": {
+    "name": "Discover SLC",
+    "home": "Discover SLC, all listings",
+    "label": "Sections",
+    "menu": "Menu",
+    "close": "Close menu",
+    "skip": "Skip to content",
+    "language": "Language",
+    "events": "Events",
+    "trails": "Trails",
+    "daytrips": "Day trips",
+    "destinations": "Destinations",
+    "dayplans": "Day plans",
+    "footer": "Listings come from public sources and are checked regularly.",
+    "updated": "Updated {date}.",
+    "privacy": "Privacy",
+    "eventsMetaTitle": "Events",
+    "eventsMetaDescription": "Concerts, festivals, markets and more around the Salt Lake valley, by day."
+  },
+  "home": {
+    "projectsHeading": "Projects",
+    "projectsLede": "Things I build. Each one has its own home.",
+    "resume": "Resume",
+    "contact": "Contact",
+    "quotes": "Quotes",
+    "privacy": "Privacy",
+    "projects": {
+      "slc": {
+        "name": "Discover SLC",
+        "line": "What's on in Salt Lake, tonight and beyond."
+      },
+      "recipes": {
+        "name": "Recipe Book",
+        "line": "Family recipes with photos, filters and notes."
+      },
+      "test": {
+        "name": "Personality test",
+        "line": "A short test about how you work."
+      },
+      "agencypro": {
+        "name": "AgencyPro",
+        "line": "Private beta. Your AI does the work, and real people fill the gaps."
+      },
+      "privacy": {
+        "name": "Privacy Squared",
+        "line": "Coming soon. See where your information is exposed."
+      },
+      "blog": {
+        "name": "Blog",
+        "line": "Notes on architecture and building with AI."
+      }
+    },
+    "newTab": "(opens in a new tab)",
+    "footerLabel": "Site links",
+    "motionOn": "Motion on",
+    "motionOff": "Motion off",
+    "motionNameOn": "Motion: on",
+    "motionNameOff": "Motion: off"
   }
 }

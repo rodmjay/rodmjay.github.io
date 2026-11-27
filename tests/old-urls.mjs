@@ -14,12 +14,13 @@ const missing = [...urls].filter((u) => !existsSync(join("out", u.endsWith("/") 
 if (missing.length) { console.error(`old URLs missing from out/:\n${missing.join("\n")}`); process.exit(1); }
 console.log(`old URLs: all ${urls.size} exist in out/`);
 
-// The personality test moved from /rvp/ to /personality-test/ and /es/test-de-personalidad/ (Rod 11/26). Every old path
+// The personality test moved from /rvp/ to /personality-test/ and /es/test-de-personalidad/ (Rod 11/26), then the Spanish
+// test took the English slug, /es/personality-test/ (PR Person and Designer 11/27, like /es/recipes/ and /es/slc/). Every old path
 // has its own 301 to the same page at the new address (Static Web Apps can't carry a wildcard's tail), and where the
 // test is built, each target exists.
 const swa = JSON.parse(readFileSync("out/staticwebapp.config.json", "utf8"));
 const archetypes = JSON.parse(readFileSync("src/rvp/archetypes.json", "utf8")).archetypes;
-const moves = { "/rvp/": "/personality-test/", "/es/rvp/": "/es/test-de-personalidad/" };
+const moves = { "/rvp/": "/personality-test/", "/es/rvp/": "/es/personality-test/", "/es/test-de-personalidad/": "/es/personality-test/" };
 const wrong = [];
 for (const [from, to] of Object.entries(moves)) {
   for (const tail of ["", "take/", "result/", ...archetypes.map((a) => `${a.slug}/`)]) {

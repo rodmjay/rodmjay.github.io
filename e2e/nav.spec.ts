@@ -14,7 +14,7 @@ const box = (page: Page) => page.locator("header.bar .mark").boundingBox();
 
 test.beforeEach(async ({ page }) => { await page.addInitScript(() => { try { localStorage.setItem("ds-lang", "en"); } catch {} }); });
 
-test("blog: index → post → tag → index → home, no reload, header still", async ({ page, isMobile }) => {
+test("blog: index → post → tag → index → home → blog, no reload, header still", async ({ page }) => {
   await page.goto("/blog/");
   await mark(page);
   const before = await box(page);
@@ -29,25 +29,34 @@ test("blog: index → post → tag → index → home, no reload, header still",
   await expectStayed(page, /\/$/);
   await expect(page.locator("#hero-name")).toBeVisible();
   expect(await box(page)).toEqual(before);
-  if (!isMobile) {
-    await page.locator("header.bar nav").getByRole("link", { name: "Blog" }).click();
-    await expectStayed(page, /\/blog\/$/);
-    await expect(page.locator("header.bar nav a[aria-current=page]")).toHaveText("Blog");
-  }
+  // Back to the blog from the home's project card (the header has no section links since 11/27).
+  await page.locator(".home-project-link", { hasText: "Blog" }).click();
+  await expectStayed(page, /\/blog\/$/);
 });
 
-test("home and about: section links and the privacy link stay in the page", async ({ page, isMobile }) => {
-  test.skip(isMobile, "the section links are hidden on phones");
+// The simplified home (design/specs/rodmjay-home.md 11/27): the header is the wordmark, the language menu and Sign in,
+// nothing else; Resume and Contact land on /about/; the footer's links stay in the page.
+test("home: header has no section links; Resume, Contact and the footer stay in the page", async ({ page }) => {
   await page.goto("/");
+  await expect(page.locator("header.bar nav, header.bar .bar-menu")).toHaveCount(0);
+  await expect(page.locator(".home-projects > li")).not.toHaveCount(0);
   await mark(page);
-  for (const id of ["projects", "contact"]) {
-    await page.locator(`header.bar nav a[href="/#${id}"]`).click();
-    await expectStayed(page, new RegExp(`/#${id}$`));
-  }
-  await page.locator('header.bar nav a[href="/about/"]').click();
-  await expectStayed(page, /\/about\/$/);
+  await page.locator(".hero-actions").getByRole("link", { name: "Contact" }).click();
+  await expectStayed(page, /\/about\/#contact$/);
+  await page.locator("footer").getByRole("link", { name: "Resume" }).click();
+  await expectStayed(page, /\/about\/#resume$/);
   await page.locator("#rform").getByRole("link", { name: "Privacy", exact: true }).click();
   await expectStayed(page, /\/privacy\/$/);
+});
+
+test("home: each project card is one link, the whole card", async ({ page }) => {
+  await page.goto("/");
+  for (const li of await page.locator(".home-projects > li").all()) {
+    await expect(li.locator("a")).toHaveCount(1);
+    const card = await li.boundingBox(), hit = await li.locator("a").evaluate((a) => { const r = a.getBoundingClientRect(); const s = getComputedStyle(a, "::after"); return { pos: s.position, w: r.width }; });
+    expect(hit.pos).toBe("absolute");
+    expect(card!.height).toBeGreaterThanOrEqual(96);
+  }
 });
 
 test("recipes: index → recipe → tag, no reload", async ({ page }) => {
@@ -117,38 +126,6 @@ test("resume form shows the rate limit message", async ({ page, baseURL }) => {
   await page.check("#rf-lookup");
   await page.locator("#rf-submit").click();
   await expect(page.locator("#rf-banner")).toContainText("12 minutes");
-});
-
-// Phones get a Menu button (Designer 11/24): it opens the same links over the content without moving the header;
-// Esc closes it and returns focus; following a link closes it.
-test("phone menu: open, Esc, follow a link", async ({ page, isMobile }) => {
-  test.skip(!isMobile, "phones only");
-  await page.goto("/blog/");
-  const header = await page.locator("header.bar").boundingBox();
-  const menu = page.getByRole("button", { name: "Menu" });
-  await expect(menu).toHaveAttribute("aria-expanded", "false");
-  await menu.click();
-  await expect(menu).toHaveAttribute("aria-expanded", "true");
-  const panel = page.locator("#phone-nav");
-  await expect(panel.getByRole("link", { name: "Blog" })).toHaveAttribute("aria-current", "page");
-  expect(await page.locator("header.bar").boundingBox()).toEqual(header);
-  await page.keyboard.press("Escape");
-  await expect(panel).toHaveCount(0);
-  await expect(menu).toBeFocused();
-  await menu.click();
-  await panel.getByRole("link", { name: "Blog" }).click();
-  await expect(panel).toHaveCount(0);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => window.innerWidth));
-});
-
-test("phone menu: without script the button is hidden and the links are listed", async ({ browser, isMobile }) => {
-  test.skip(!isMobile, "phones only");
-  const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 375, height: 812 } });
-  const page = await ctx.newPage();
-  await page.goto("/blog/");
-  await expect(page.locator(".bar-menu")).toBeHidden();
-  await expect(page.locator("nav.phone-nav.static").getByRole("link", { name: "Blog" })).toBeVisible();
-  await ctx.close();
 });
 
 test("resume form: a pending answer says Rod reviews each request and shows no download", async ({ page }) => {

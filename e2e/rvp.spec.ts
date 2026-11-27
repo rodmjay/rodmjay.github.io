@@ -63,7 +63,7 @@ test("rvp: index, an archetype page and Spanish", async ({ page }) => {
   await page.getByRole("link", { name: "The Strategist" }).click();
   await expect(page).toHaveURL(/\/personality-test\/strategist\/$/);
   await expect(page.locator("h1")).toHaveText("The Strategist");
-  await page.goto("/es/test-de-personalidad/strategist/");
+  await page.goto("/es/personality-test/strategist/");
   await expect(page.locator("h1")).toHaveText("Estratega");
   await expect(page.locator("html")).toHaveAttribute("lang", /^es/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => window.innerWidth));
@@ -105,7 +105,7 @@ test("rvp: a full result is useful: pattern, lean on, watch for, growth edge, fi
 });
 
 test("rvp: Spanish result shows English where the Spanish isn't written yet, marked lang=en", async ({ page }) => {
-  await built(page, `/es/test-de-personalidad/result/#${strategist}`);
+  await built(page, `/es/personality-test/result/#${strategist}`);
   await expect(page.locator(".rvp-card h2")).toHaveText("Estratega");
   await expect(page.getByRole("heading", { name: "Apóyese en esto" })).toBeVisible();
   const en = page.locator('.rvp-section [lang="en"]');
@@ -113,7 +113,7 @@ test("rvp: Spanish result shows English where the Spanish isn't written yet, mar
 });
 
 test("rvp: the Spanish test asks its questions in Spanish", async ({ page }) => {
-  await built(page, "/es/test-de-personalidad/take/");
+  await built(page, "/es/personality-test/take/");
   await expect(page.locator(".ds-qa-count")).toHaveText("Pregunta 1 de 27");
   await expect(page.locator(".rvp-qa legend")).toHaveText(bank.questions[0].prompt_es);
   await expect(page.locator(".rvp-qa")).not.toHaveAttribute("lang", "en");
@@ -125,7 +125,7 @@ test("rvp: the Spanish test asks its questions in Spanish", async ({ page }) => 
 test("rvp: old /rvp/ links 301 to the personality test, the result link keeps its answers", async ({ page, request }) => {
   await built(page, "/personality-test/");
   for (const [from, to] of [["/rvp/", "/personality-test/"], ["/rvp/take/", "/personality-test/take/"], ["/rvp/strategist/", "/personality-test/strategist/"],
-    ["/es/rvp/", "/es/test-de-personalidad/"], ["/es/rvp/result/", "/es/test-de-personalidad/result/"], ["/es/rvp/strategist/", "/es/test-de-personalidad/strategist/"]]) {
+    ["/es/rvp/", "/es/personality-test/"], ["/es/rvp/result/", "/es/personality-test/result/"], ["/es/rvp/strategist/", "/es/personality-test/strategist/"]]) {
     const r = await request.get(from, { maxRedirects: 0 });
     expect(r.status(), from).toBe(301);
     expect(new URL(r.headers()["location"], "http://x").pathname, from).toBe(to);

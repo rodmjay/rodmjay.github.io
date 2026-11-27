@@ -55,6 +55,9 @@ env:
   # Discover SLC (/slc/, /es/slc/; Local Guide's events feed and playlist): staging and pull-request checks;
   # production only once Designer, Security and Compliance pass it and the repo variable DISCOVER_LIVE=1 is set.
   DISCOVER_ON: ${{ (vars.DISCOVER_LIVE == '1' || github.ref != 'refs/heads/main') && '1' || '' }}
+  # The living hero (docs/adr/0004): staging and pull-request checks; production only once the privacy page lists the
+  # "motion" key, Security passes the code and Designer the motion, and the repo variable LIVING_HERO_LIVE=1 is set.
+  LIVING_HERO: ${{ (vars.LIVING_HERO_LIVE == '1' || github.ref != 'refs/heads/main') && '1' || '' }}
   # The privacy page's hosting line (src/lib/site.mjs): Microsoft (Azure Static Web Apps), dated the cutover day.
   # Compliance approved the exact words (EN and ES) 11/23.
   PRIVACY_HOSTING: azure
@@ -121,8 +124,20 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci --ignore-scripts --no-audit --no-fund
+      # Public product data in data/ (personal architecture/decisions/0005, Security 11/27): schema and text checks, before
+      # anything builds from it. The writer runs the same rules before it commits; this is the second layer.
+      - name: Check data/ (ADR 0005)
+        run: node scripts/check-data.mjs
+      # The home's name stays legible over the hero picture at every width (Rod 11/27): fails when a picture changed
+      # without a new measurement, or a width needs more than the scrim cap.
+      - name: Hero legibility
+        run: node scripts/hero-legibility.mjs src/components/living-hero/home.json
       - name: Build
         run: npm run build
+      # The parity week: recipes.json against the public-recipes function it replaces. A report in the job summary, never
+      # a failure; a week of 0 differences lets Database Administrator retire the function.
+      - name: Recipes parity (ADR 0005)
+        run: node scripts/recipes-parity.mjs
       # The Should page: rodmjay/should at the reviewed commit in the repo variable SHOULD_REF (Security 11/23: an
       # unreviewed push there would otherwise become a hashed, same-origin script next to the site), copied to out/should/
       # after postbuild (its no-inline-code guards are for the Next output only), with routes and a hash-based CSP written

@@ -89,7 +89,7 @@ npm run test:e2e     # Playwright: axe (WCAG 2.1 AA) at 1280 and 375 in EN and E
   use comes through `src/account/gate.ts`, which next.config swaps for nulls when off, so no account code ships.
 - Never an automatic save: a signed-in visitor taps "Save to my dashboard". `tests/consent-hashes.mjs` pins the sha256
   of every consent wording the page shows to the one the function records (`npm run test:consent`).
-- The test moved from `/rvp/` to `/personality-test/` and `/es/test-de-personalidad/` (Rod 11/26); every old path 301s.
+- The test moved from `/rvp/` to `/personality-test/` and `/es/test-de-personalidad/` (Rod 11/26), then to `/es/personality-test/` for Spanish (PR Person and Designer 11/27); every old path 301s.
 
 ## Design system
 

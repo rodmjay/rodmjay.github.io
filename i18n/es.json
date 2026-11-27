@@ -15,14 +15,13 @@
     "resume": "Currículum",
     "blog": "Blog",
     "recipes": "Recetas",
-    "discover": "Descubra SLC",
     "quotes": "Citas",
     "menu": "Menú"
   },
   "hero": {
     "name": "Rod Johnson",
     "title": "Arquitecto de aplicaciones empresariales",
-    "lede": "Diseño cómo se construye el software: la arquitectura, los estándares y ahora las herramientas de IA detrás.",
+    "lede": "Diseño cómo se construye el software: la arquitectura, los estándares y las herramientas de IA que lo respaldan. Vivo en Salt Lake City y trabajo en inglés y español.",
     "aiLine": "La portada y el retrato fueron generados con IA.",
     "photoAlt": "Retrato generado con IA a partir de una foto de Rod Johnson",
     "ctaResume": "Pedir mi currículum",
@@ -170,7 +169,8 @@
         }
       ],
       "rights": "Para ver, corregir o borrar una consulta, o para oponerse a ella, escriba a {email}. Si está en la UE o el Reino Unido, tiene derecho a oponerse a esta consulta. Si prefiere no aceptar, no podrá obtener el currículum con este formulario; escríbame y hablamos directamente."
-    }
+    },
+    "motion": "Si usa el interruptor Movimiento activado/desactivado del pie de página, su navegador recuerda su elección (un ajuste llamado 'motion', activado o desactivado) en este dispositivo. Nunca se nos envía ni se envía a nadie más, y no es una cookie. Para decidir si animar, la página consulta las capacidades básicas de su dispositivo, como el movimiento reducido, la memoria y la compatibilidad gráfica, solo en su dispositivo. Nada de eso se guarda ni se envía."
   },
   "blog": {
     "title": "Blog",
@@ -604,5 +604,64 @@
     "shortDate": "{day} de {month}",
     "am": "a. m.",
     "pm": "p. m."
+  },
+  "slc": {
+    "name": "Descubra SLC",
+    "home": "Descubra SLC, todos los listados",
+    "label": "Secciones",
+    "menu": "Menú",
+    "close": "Cerrar el menú",
+    "skip": "Ir al contenido",
+    "language": "Idioma",
+    "events": "Eventos",
+    "trails": "Senderos",
+    "daytrips": "Excursiones",
+    "destinations": "Destinos",
+    "dayplans": "Planes del día",
+    "footer": "Los listados provienen de fuentes públicas y se revisan con regularidad.",
+    "updated": "Actualizado el {date}.",
+    "privacy": "Privacidad",
+    "eventsMetaTitle": "Eventos",
+    "eventsMetaDescription": "Conciertos, festivales, mercados y más en el valle de Salt Lake, por día."
+  },
+  "home": {
+    "projectsHeading": "Proyectos",
+    "projectsLede": "Lo que construyo. Cada uno tiene su propio espacio.",
+    "resume": "Currículum",
+    "contact": "Contacto",
+    "quotes": "Citas",
+    "privacy": "Privacidad",
+    "projects": {
+      "slc": {
+        "name": "Descubra SLC",
+        "line": "Qué hay en Salt Lake, esta noche y más allá."
+      },
+      "recipes": {
+        "name": "Recetario familiar",
+        "line": "Recetas familiares con fotos, filtros y notas."
+      },
+      "test": {
+        "name": "Test de personalidad",
+        "line": "Una prueba breve sobre cómo trabaja usted."
+      },
+      "agencypro": {
+        "name": "AgencyPro",
+        "line": "Beta privada. Su IA trabaja y personas reales cubren lo que falta."
+      },
+      "privacy": {
+        "name": "Privacy Squared",
+        "line": "Próximamente. Vea dónde está expuesta su información."
+      },
+      "blog": {
+        "name": "Blog",
+        "line": "Notas sobre arquitectura y cómo construir con IA."
+      }
+    },
+    "newTab": "(se abre en una pestaña nueva)",
+    "footerLabel": "Enlaces del sitio",
+    "motionOn": "Movimiento activado",
+    "motionOff": "Movimiento desactivado",
+    "motionNameOn": "Movimiento: activado",
+    "motionNameOff": "Movimiento: desactivado"
   }
 }

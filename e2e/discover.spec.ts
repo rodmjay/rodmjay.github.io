@@ -1,8 +1,11 @@
+import { existsSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 
 // Discover SLC (design/specs/rodmjay-events.md): the events block filters by date and category in the browser, keeps the
 // state in the URL (Back steps through it), groups by day with the weekly entries last, and links out in a new tab; the
 // playlist block is one outlined button. Event checks are skipped when the events feed is off (no event cards built).
+// Built only where DISCOVER_ON=1; with it off there's nothing to test (the URLs are the 404 page).
+test.skip(!existsSync("out/slc/index.html"), "Discover SLC isn't built (DISCOVER_ON off)");
 test.beforeEach(async ({ page }) => { await page.addInitScript(() => { try { localStorage.setItem("ds-lang", "en"); } catch {} }); });
 
 test("discover: blocks, filters, URL state", async ({ page }) => {
@@ -58,4 +61,51 @@ test("discover: Spanish page, Spanish labels, same events", async ({ page }) => 
   await expect(page.locator(".ev-card")).toHaveCount(en);
   await expect(page.getByRole("button", { name: "Próximos 30 días" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator(".ev-when").first()).not.toContainText(/\b(AM|PM|Every|Concert|Through)\b/);
+});
+
+// Its own product (Rod 11/27: "not part of rod johnson, its its own brand, its own chrome, own theme"): no personal-site
+// shell, name, nav or links anywhere in the page, its own title, icons, manifest and theme.
+for (const path of ["/slc/", "/slc/events/", "/es/slc/", "/es/slc/events/"]) {
+  test(`slc chrome: ${path} stands alone`, async ({ page }) => {
+    await page.goto(path);
+    await expect(page.locator("html")).toHaveAttribute("data-brand", "slc");
+    expect(await page.title()).toMatch(/(Discover|Descubra) SLC$/);
+    expect(await page.content()).not.toContain("Rod Johnson");
+    await expect(page.locator("header.bar, nav.bar-links, footer.foot")).toHaveCount(0);
+    await expect(page.locator('link[rel="manifest"]')).toHaveAttribute("href", path.startsWith("/es/") ? "/es/slc/manifest.webmanifest" : "/slc/manifest.webmanifest");
+    await expect(page.locator('link[rel="icon"]').first()).toHaveAttribute("href", /^\/slc\/icons\//);
+    await expect(page.locator("h1")).toHaveCount(1);
+  });
+}
+
+test("slc chrome: phone menu opens the sections and switches language", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/slc/");
+  test.skip((await page.locator(".slc-menu").count()) === 0, "no sections (events feed off)");
+  await page.getByRole("button", { name: "Menu" }).click();
+  await expect(page.locator(".slc-sheet")).toBeVisible();
+  await page.locator(".slc-sheet").getByRole("link", { name: "Events" }).click();
+  await expect(page).toHaveURL(/\/slc\/events\/$/);
+  await expect(page.locator("h1")).toHaveText("Events");
+  await expect(page.locator(".slc-sheet")).not.toBeVisible();
+});
+
+test("the personal site no longer links Discover SLC in its nav", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator('header.bar a[href="/slc/"]')).toHaveCount(0);
+});
+
+test("slc chrome: the Menu sheet takes focus, closes on Esc, and gives focus back", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/slc/");
+  test.skip((await page.locator(".slc-menu").count()) === 0, "no sections (events feed off)");
+  const menu = page.getByRole("button", { name: "Menu" });
+  await menu.click();
+  await expect(page.getByRole("button", { name: "Close menu" })).toBeFocused();
+  const box = await page.getByRole("button", { name: "Close menu" }).boundingBox();
+  expect(Math.round(box!.height)).toBeGreaterThanOrEqual(48);
+  expect(Math.round(box!.width)).toBeGreaterThanOrEqual(48);
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".slc-sheet")).not.toBeVisible();
+  await expect(menu).toBeFocused();
 });

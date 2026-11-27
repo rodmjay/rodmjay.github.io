@@ -3,14 +3,13 @@
 // two root layouts, so `lang` is in the HTML itself. Switching language is a full load, as it was on Pages.
 import type { ReactNode } from "react";
 import Link from "next/link";
-const RVP_ON = process.env.RVP_ON === "1"; // the test is built only where RVP_ON=1 (production after Rod's yes)
-const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/test-de-personalidad/" : "/personality-test/");
-import { HTML_LANG, RECIPES_LIVE, REMOVE_LIVE, asset, dict } from "@/lib/site.mjs";
+import { HTML_LANG, REMOVE_LIVE, asset, dict } from "@/lib/site.mjs";
 import { LANG_SRC } from "@/lib/langscript.mjs";
 import { altMap } from "@/lib/routes.mjs";
 import { loadQuotes } from "@/lib/quotes.mjs";
-import { DISCOVER_ON } from "@/lib/events.mjs";
 import { Header } from "./Header";
+import { MotionToggle } from "@/components/living-hero/MotionToggle";
+const LIVING_HERO = process.env.LIVING_HERO === "1";
 import { Account } from "@/account/gate";
 // Accounts (ADR 0004/0005): the header's "Sign in" / "Dashboard" and its footer copy, only where ACCOUNTS_ON=1.
 const ACCOUNTS_ON = process.env.ACCOUNTS_ON === "1";
@@ -23,10 +22,7 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
   const d = dict(lang);
   const alt = await altMap();
   const hasQuotes = (await loadQuotes()).quotes.length > 0;
-  const nav = {
-    label: d.nav.label, menu: d.nav.menu, home: d.nav.home, about: d.nav.about, resume: d.nav.resume, building: d.nav.building,
-    contact: d.nav.contact, blog: d.nav.blog, recipes: d.nav.recipes, discover: d.nav.discover, quotes: d.nav.quotes, language: d.nav.language,
-  };
+  const nav = { home: d.nav.home, language: d.nav.language };
   const a = d.account, home = lang === "en" ? "/" : "/es/";
   const words = ACCOUNTS_ON && Account ? { signIn: a.signIn, dashboard: a.dashboard, signInHref: `${home}signin/`, dashHref: `${home}dashboard/` } : null;
   return (
@@ -44,9 +40,19 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
       </head>
       <body className="ds">
         <a className="skip" href="#main">{d.nav.skip}</a>
-        <Header lang={lang} nav={nav} showRecipes={RECIPES_LIVE} showDiscover={DISCOVER_ON} showQuotes={hasQuotes} alt={alt} account={words && Account ? <><link rel="stylesheet" href={asset("account.css")} precedence="default" /><Account.AccountLink w={words} where="header" /></> : undefined} />
+        <Header lang={lang} nav={nav} alt={alt} account={words && Account ? <><link rel="stylesheet" href={asset("account.css")} precedence="default" /><Account.AccountLink w={words} where="header" /></> : undefined} />
         {children}
-        <footer className="foot col"><p className="ds-body-small ds-variant">{d.footer.copy} · {d.footer.cookies}{RVP_ON && <> · <Link href={rvpUrl(lang, "")}>{d.account.testName}</Link></>}{words && Account ? <Account.AccountLink w={words} where="footer" /> : null}{REMOVE_LIVE && <> · <Link href={lang === "en" ? "/remove/" : "/es/remove/"}>{d.remove.footerLink}</Link></>}</p></footer>
+        {/* One line (design/specs/rodmjay-home.md 11/27): Resume · Contact · Quotes · Privacy, plus the removal-request link
+            where it's live. No product links: the products are on the home. */}
+        <footer className="foot col"><nav aria-label={d.home.footerLabel} className="foot-links ds-body-small">
+          <Link href={`${home}about/#resume`}>{d.home.resume}</Link>
+          <Link href={`${home}about/#contact`}>{d.home.contact}</Link>
+          {hasQuotes && <Link href={`${home}quotes/`}>{d.home.quotes}</Link>}
+          <Link href={lang === "en" ? "/privacy/" : "/privacy/es/"}>{d.home.privacy}</Link>
+          {REMOVE_LIVE && <Link href={lang === "en" ? "/remove/" : "/es/remove/"}>{d.remove.footerLink}</Link>}
+          <span className="foot-note">{d.footer.cookies}</span>
+          {LIVING_HERO && <MotionToggle w={{ on: d.home.motionOn, off: d.home.motionOff, nameOn: d.home.motionNameOn, nameOff: d.home.motionNameOff }} />}
+        </nav></footer>
       </body>
     </html>
   );

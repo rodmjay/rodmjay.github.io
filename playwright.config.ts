@@ -10,7 +10,7 @@ export default defineConfig({
   timeout: 30_000,
   fullyParallel: true,
   reporter: [["list"]],
-  use: { baseURL: BASE_URL || `http://localhost:${PORT}`, browserName: "chromium" },
+  use: { baseURL: BASE_URL || `http://127.0.0.1:${PORT}`, browserName: "chromium" },
   projects: [
     { name: "desktop", use: { viewport: { width: 1280, height: 800 } } },
     { name: "phone", use: { viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true } },
