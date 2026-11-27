@@ -9,6 +9,7 @@ import { HTML_LANG, RECIPES_LIVE, REMOVE_LIVE, asset, dict } from "@/lib/site.mj
 import { LANG_SRC } from "@/lib/langscript.mjs";
 import { altMap } from "@/lib/routes.mjs";
 import { loadQuotes } from "@/lib/quotes.mjs";
+import { DISCOVER_ON } from "@/lib/events.mjs";
 import { Header } from "./Header";
 import { Account } from "@/account/gate";
 // Accounts (ADR 0004/0005): the header's "Sign in" / "Dashboard" and its footer copy, only where ACCOUNTS_ON=1.
@@ -24,7 +25,7 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
   const hasQuotes = (await loadQuotes()).quotes.length > 0;
   const nav = {
     label: d.nav.label, menu: d.nav.menu, home: d.nav.home, about: d.nav.about, resume: d.nav.resume, building: d.nav.building,
-    contact: d.nav.contact, blog: d.nav.blog, recipes: d.nav.recipes, quotes: d.nav.quotes, language: d.nav.language,
+    contact: d.nav.contact, blog: d.nav.blog, recipes: d.nav.recipes, discover: d.nav.discover, quotes: d.nav.quotes, language: d.nav.language,
   };
   const a = d.account, home = lang === "en" ? "/" : "/es/";
   const words = ACCOUNTS_ON && Account ? { signIn: a.signIn, dashboard: a.dashboard, signInHref: `${home}signin/`, dashHref: `${home}dashboard/` } : null;
@@ -43,7 +44,7 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
       </head>
       <body className="ds">
         <a className="skip" href="#main">{d.nav.skip}</a>
-        <Header lang={lang} nav={nav} showRecipes={RECIPES_LIVE} showQuotes={hasQuotes} alt={alt} account={words && Account ? <><link rel="stylesheet" href={asset("account.css")} precedence="default" /><Account.AccountLink w={words} where="header" /></> : undefined} />
+        <Header lang={lang} nav={nav} showRecipes={RECIPES_LIVE} showDiscover={DISCOVER_ON} showQuotes={hasQuotes} alt={alt} account={words && Account ? <><link rel="stylesheet" href={asset("account.css")} precedence="default" /><Account.AccountLink w={words} where="header" /></> : undefined} />
         {children}
         <footer className="foot col"><p className="ds-body-small ds-variant">{d.footer.copy} · {d.footer.cookies}{RVP_ON && <> · <Link href={rvpUrl(lang, "")}>{d.account.testName}</Link></>}{words && Account ? <Account.AccountLink w={words} where="footer" /> : null}{REMOVE_LIVE && <> · <Link href={lang === "en" ? "/remove/" : "/es/remove/"}>{d.remove.footerLink}</Link></>}</p></footer>
       </body>
