@@ -3,9 +3,16 @@
 // chrome. Contact moved to /about/#contact. No script needed.
 // Same markup and copy as src/page.html on Pages; the copy is i18n/{en,es}.json.
 import Link from "next/link";
+import { LivingHero } from "@/components/living-hero/LivingHero";
+import { checkDescriptor } from "@/components/living-hero/descriptor";
+import homeHero from "@/components/living-hero/home.json";
 import { dict, SITE, RECIPES_LIVE } from "@/lib/site.mjs";
 import { DISCOVER_ON } from "@/lib/events.mjs";
 import { meta } from "@/lib/meta";
+// The living hero (docs/adr/0004): built where LIVING_HERO=1 (staging and checks; production once the privacy page lists
+// the "motion" key, Security passes the code and Designer the motion). The descriptor is checked at build here.
+const LIVING_HERO = process.env.LIVING_HERO === "1";
+const HERO = checkDescriptor(homeHero);
 const RVP_ON = process.env.RVP_ON === "1"; // the test is built only where RVP_ON=1 (production after Rod's yes)
 const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/personality-test/" : "/personality-test/");
 
@@ -51,6 +58,7 @@ export function Home({ lang }: { lang: Lang }) {
           <img src="/img/cover-1920.webp" srcSet="/img/cover-1280.webp 1280w, /img/cover-1920.webp 1920w, /img/cover-2560.webp 2560w" sizes="100vw"
             width={3168} height={1344} alt="" fetchPriority="high" loading="eager" decoding="async" />
         </picture>
+        {LIVING_HERO && <LivingHero descriptor={HERO} />}
       </div>
       <main id="main" className="col home">
         <section className="hero" aria-labelledby="hero-name">

@@ -55,6 +55,9 @@ env:
   # Discover SLC (/slc/, /es/slc/; Local Guide's events feed and playlist): staging and pull-request checks;
   # production only once Designer, Security and Compliance pass it and the repo variable DISCOVER_LIVE=1 is set.
   DISCOVER_ON: ${{ (vars.DISCOVER_LIVE == '1' || github.ref != 'refs/heads/main') && '1' || '' }}
+  # The living hero (docs/adr/0004): staging and pull-request checks; production only once the privacy page lists the
+  # "motion" key, Security passes the code and Designer the motion, and the repo variable LIVING_HERO_LIVE=1 is set.
+  LIVING_HERO: ${{ (vars.LIVING_HERO_LIVE == '1' || github.ref != 'refs/heads/main') && '1' || '' }}
   # The privacy page's hosting line (src/lib/site.mjs): Microsoft (Azure Static Web Apps), dated the cutover day.
   # Compliance approved the exact words (EN and ES) 11/23.
   PRIVACY_HOSTING: azure

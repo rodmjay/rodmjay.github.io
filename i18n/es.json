@@ -648,6 +648,10 @@
         "line": "Notas sobre arquitectura y cómo construir con IA."
       }
     },
-    "footerLabel": "Enlaces del sitio"
+    "footerLabel": "Enlaces del sitio",
+    "motionOn": "Movimiento activado",
+    "motionOff": "Movimiento desactivado",
+    "motionNameOn": "Movimiento: activado",
+    "motionNameOff": "Movimiento: desactivado"
   }
 }

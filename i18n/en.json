@@ -648,6 +648,10 @@
         "line": "Notes on architecture and building with AI."
       }
     },
-    "footerLabel": "Site links"
+    "footerLabel": "Site links",
+    "motionOn": "Motion on",
+    "motionOff": "Motion off",
+    "motionNameOn": "Motion: on",
+    "motionNameOff": "Motion: off"
   }
 }

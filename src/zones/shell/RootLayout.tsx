@@ -8,6 +8,8 @@ import { LANG_SRC } from "@/lib/langscript.mjs";
 import { altMap } from "@/lib/routes.mjs";
 import { loadQuotes } from "@/lib/quotes.mjs";
 import { Header } from "./Header";
+import { MotionToggle } from "@/components/living-hero/MotionToggle";
+const LIVING_HERO = process.env.LIVING_HERO === "1";
 import { Account } from "@/account/gate";
 // Accounts (ADR 0004/0005): the header's "Sign in" / "Dashboard" and its footer copy, only where ACCOUNTS_ON=1.
 const ACCOUNTS_ON = process.env.ACCOUNTS_ON === "1";
@@ -48,6 +50,7 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
           {hasQuotes && <Link href={`${home}quotes/`}>{d.home.quotes}</Link>}
           <Link href={lang === "en" ? "/privacy/" : "/privacy/es/"}>{d.home.privacy}</Link>
           {REMOVE_LIVE && <Link href={lang === "en" ? "/remove/" : "/es/remove/"}>{d.remove.footerLink}</Link>}
+          {LIVING_HERO && <MotionToggle w={{ on: d.home.motionOn, off: d.home.motionOff, nameOn: d.home.motionNameOn, nameOff: d.home.motionNameOff }} />}
         </nav></footer>
       </body>
     </html>
