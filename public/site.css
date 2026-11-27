@@ -207,7 +207,24 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .proj-icon img { display: block; width: 100%; height: 100%; }
 @media (max-width: 599.98px) { .proj-icon { width: 40px; height: 40px; } }
 /* Projects as rows: icon left, title and line right (Rod 11/25: projects are the focus) */
-#projects ul.plain > li { display: grid; grid-template-columns: 48px minmax(0, 1fr); column-gap: var(--space-4); align-items: start; }
-#projects ul.plain > li .proj-icon { grid-row: span 2; margin-bottom: 0; }
-#projects ul.plain > li > :not(.proj-icon) { grid-column: 2; }
-@media (max-width: 599.98px) { #projects ul.plain > li { grid-template-columns: 40px minmax(0, 1fr); } }
+
+/* Home, simplified (design/specs/rodmjay-home.md 11/27): the intro, then the projects as whole-card links (one tab stop
+   each: the title link's ::after covers the card), 1 column to 599px, 2 above, each product's mark in its own 48px tile. */
+.col.home { max-width: 44rem; }
+.home-projects { list-style: none; margin: var(--space-6) 0 0; padding: 0; display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 600px) { .home-projects { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.home-projects > .home-project { position: relative; display: flex; flex-direction: row; align-items: center; gap: var(--space-4); min-height: 96px; background: var(--md-sys-color-surface-container); }
+.home-project:has(.home-project-link:focus-visible) { outline: 3px solid var(--md-sys-color-primary); outline-offset: 2px; }
+.home-mark, .home-mark img, .home-tile { flex: none; width: 48px; height: 48px; border-radius: 12px; display: block; }
+.home-tile { display: grid; place-items: center; background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); overflow: hidden; }
+.home-project-text { display: grid; gap: var(--space-1); min-width: 0; flex: 1; }
+.home-project-link { color: var(--md-sys-color-on-surface); text-decoration: none; }
+.home-project-link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.home-project-link:focus-visible { outline: none; }
+.home-projects > .home-project:hover { background: var(--md-sys-color-surface-container-high); }
+.home-chevron { flex: none; color: var(--md-sys-color-on-surface-variant); }
+#projects > p { margin: var(--space-1) 0 0; }
+/* The footer: one line of links, 48px rows. */
+.foot-links { display: flex; flex-wrap: wrap; column-gap: var(--space-4); }
+.foot-links a { display: inline-flex; align-items: center; min-height: 48px; color: var(--md-sys-color-on-surface-variant); }
+@media (prefers-reduced-motion: no-preference) { .home-project { transition: background-color 150ms; } }

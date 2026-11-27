@@ -622,5 +622,32 @@
     "privacy": "Privacidad",
     "eventsMetaTitle": "Eventos",
     "eventsMetaDescription": "Conciertos, festivales, mercados y más en el valle de Salt Lake, por día."
+  },
+  "home": {
+    "projectsHeading": "Proyectos",
+    "projectsLede": "Lo que construyo. Cada uno tiene su propio espacio.",
+    "resume": "Currículum",
+    "contact": "Contacto",
+    "quotes": "Citas",
+    "privacy": "Privacidad",
+    "projects": {
+      "slc": {
+        "name": "Descubra SLC",
+        "line": "Qué hay en Salt Lake, esta noche y más allá."
+      },
+      "recipes": {
+        "name": "Recetario familiar",
+        "line": "Recetas familiares con fotos y filtros."
+      },
+      "test": {
+        "name": "Test de personalidad",
+        "line": "Una prueba breve sobre cómo trabaja usted."
+      },
+      "blog": {
+        "name": "Blog",
+        "line": "Notas sobre arquitectura y cómo construir con IA."
+      }
+    },
+    "footerLabel": "Enlaces del sitio"
   }
 }

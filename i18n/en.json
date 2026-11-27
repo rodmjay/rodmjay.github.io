@@ -622,5 +622,32 @@
     "privacy": "Privacy",
     "eventsMetaTitle": "Events",
     "eventsMetaDescription": "Concerts, festivals, markets and more around the Salt Lake valley, by day."
+  },
+  "home": {
+    "projectsHeading": "Projects",
+    "projectsLede": "Things I build. Each one has its own home.",
+    "resume": "Resume",
+    "contact": "Contact",
+    "quotes": "Quotes",
+    "privacy": "Privacy",
+    "projects": {
+      "slc": {
+        "name": "Discover SLC",
+        "line": "What's on in Salt Lake, tonight and beyond."
+      },
+      "recipes": {
+        "name": "Recipe Book",
+        "line": "Family recipes with photos, filters and notes."
+      },
+      "test": {
+        "name": "Personality test",
+        "line": "A short test about how you work."
+      },
+      "blog": {
+        "name": "Blog",
+        "line": "Notes on architecture and building with AI."
+      }
+    },
+    "footerLabel": "Site links"
   }
 }
