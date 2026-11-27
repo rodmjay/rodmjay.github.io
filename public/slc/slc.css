@@ -39,6 +39,7 @@ body.slc { margin: 0; background: var(--md-sys-color-surface); color: var(--md-s
   [data-js] .slc-bar > .slc-lang { display: none; }
 }
 .slc-sheet { width: 100%; max-width: 28rem; height: 100%; max-height: 100%; margin: 0 0 0 auto; padding: var(--space-4) 0; }
+.slc-close { min-width: 48px; min-height: 48px; }
 .slc-sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-4) var(--space-4); }
 .slc-sheet-links { display: flex; flex-direction: column; }
 .slc-sheet-links a { min-height: 56px; padding: 0 var(--space-6); border-bottom: 0; border-left: 3px solid transparent; }

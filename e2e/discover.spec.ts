@@ -91,3 +91,18 @@ test("the personal site no longer links Discover SLC in its nav", async ({ page 
   await page.goto("/");
   await expect(page.locator('header.bar a[href="/slc/"]')).toHaveCount(0);
 });
+
+test("slc chrome: the Menu sheet takes focus, closes on Esc, and gives focus back", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/slc/");
+  test.skip((await page.locator(".slc-menu").count()) === 0, "no sections (events feed off)");
+  const menu = page.getByRole("button", { name: "Menu" });
+  await menu.click();
+  await expect(page.getByRole("button", { name: "Close menu" })).toBeFocused();
+  const box = await page.getByRole("button", { name: "Close menu" }).boundingBox();
+  expect(Math.round(box!.height)).toBeGreaterThanOrEqual(48);
+  expect(Math.round(box!.width)).toBeGreaterThanOrEqual(48);
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".slc-sheet")).not.toBeVisible();
+  await expect(menu).toBeFocused();
+});
