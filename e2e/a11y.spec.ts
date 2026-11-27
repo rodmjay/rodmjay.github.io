@@ -5,8 +5,8 @@ import { expect, test } from "@playwright/test";
 // spec. axe checks what a machine can (contrast, names, roles, landmarks, labels); the rest (screen reader wording,
 // zoom, reduced motion) is Designer's staging check. Add a path here when a new kind of page ships.
 const PAGES = {
-  en: ["/", "/blog/", "/blog/ai-writes-the-code/", "/blog/tag/architecture/", "/privacy/", "/quotes/", "/remove/", "/recipes/", "/recipes/gallo-pinto/", "/recipes/tag/season-winter/", "/recipes/roast-turkey-breast/", "/recipes/?tags=season:summer", "/404.html"],
-  es: ["/es/", "/es/blog/", "/es/blog/ia-escribe-el-codigo/", "/es/blog/tag/arquitectura/", "/privacy/es/", "/es/quotes/", "/es/remove/", "/es/recipes/", "/es/recipes/gallo-pinto/", "/es/recipes/tag/season-winter/"],
+  en: ["/", "/blog/", "/blog/ai-writes-the-code/", "/blog/tag/architecture/", "/privacy/", "/quotes/", "/discover/", "/discover/?when=weekend", "/remove/", "/recipes/", "/recipes/gallo-pinto/", "/recipes/tag/season-winter/", "/recipes/roast-turkey-breast/", "/recipes/?tags=season:summer", "/404.html"],
+  es: ["/es/", "/es/blog/", "/es/blog/ia-escribe-el-codigo/", "/es/blog/tag/arquitectura/", "/privacy/es/", "/es/quotes/", "/es/descubra/", "/es/remove/", "/es/recipes/", "/es/recipes/gallo-pinto/", "/es/recipes/tag/season-winter/"],
 };
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
 

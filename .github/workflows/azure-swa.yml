@@ -52,6 +52,9 @@ env:
   # The browser code reads NEXT_PUBLIC_ACCOUNTS_ON (inlined at build); off, none of it ships.
   ACCOUNTS_ON: ${{ (vars.ACCOUNTS_LIVE == '1' || github.ref != 'refs/heads/main') && '1' || '' }}
   NEXT_PUBLIC_ACCOUNTS_ON: ${{ (vars.ACCOUNTS_LIVE == '1' || github.ref != 'refs/heads/main') && '1' || '' }}
+  # Discover SLC (/discover/, /es/descubra/; Local Guide's events feed and playlist): staging and pull-request checks;
+  # production only once Designer, Security and Compliance pass it and the repo variable DISCOVER_LIVE=1 is set.
+  DISCOVER_ON: ${{ (vars.DISCOVER_LIVE == '1' || github.ref != 'refs/heads/main') && '1' || '' }}
   # The privacy page's hosting line (src/lib/site.mjs): Microsoft (Azure Static Web Apps), dated the cutover day.
   # Compliance approved the exact words (EN and ES) 11/23.
   PRIVACY_HOSTING: azure
