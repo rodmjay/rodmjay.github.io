@@ -7,6 +7,7 @@
 // URL's filters (?when=week|weekend&cat=…), each change one history.pushState. Feed text only ever goes in as React text.
 import { useCallback, useEffect, useRef, useState } from "react";
 import { type Ev, type When, type Words, cols, denverToday, fmt, shortDate, time, view, weekendEnd } from "./logic";
+import { varyAdjacent } from "@/lib/slc-art.mjs";
 
 type Lang = "en" | "es";
 export type BrowserWords = Words & Record<
@@ -131,8 +132,17 @@ export function EventBrowser({ events, today0, lang, w, s }: { events: Ev[]; tod
   const wkEnd = weekendEnd(today);
   const soon = dated.filter((x) => x.day <= wkEnd), later = dated.filter((x) => x.day > wkEnd);
   const featIdx = soon.findIndex((x) => !x.e.soldOut);
-  const featured = featIdx >= 0 ? soon[featIdx] : null;
-  const soonRest = soon.filter((_, i) => i !== featIdx);
+  const featured = featIdx >= 0 ? { ...soon[featIdx] } : null;
+  let soonRest = soon.filter((_, i) => i !== featIdx);
+  // Page order: the featured card, the rest of this weekend, then coming up; no picture repeats its neighbour.
+  {
+    const order = [...(featured ? [featured] : []), ...soonRest, ...later];
+    const pics = varyAdjacent(order.map((x) => x.e.pic));
+    const fixed = new Map(order.map((x, i) => [x, { ...x, e: { ...x.e, pic: pics[i] } }]));
+    if (featured) Object.assign(featured, fixed.get(featured));
+    soonRest = soonRest.map((x) => fixed.get(x)!);
+    later.splice(0, later.length, ...later.map((x) => fixed.get(x)!));
+  }
   const n = dated.length;
   const evText = n === 1 ? w.countOne : fmt(w.count, { n });
   const count = weekly.length ? fmt(w.countWeekly, { events: evText, w: weekly.length }) : evText;
