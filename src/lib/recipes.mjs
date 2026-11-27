@@ -1,5 +1,8 @@
-// Recipes, read once at build time (never in the browser) from the public-recipes Edge Function (RECIPES_API, GET,
-// ?lang=en|es; Database Administrator 11/23). Locally, when it's unset or returns [], the build uses the sample set in
+// Recipes, read once at build time (never in the browser). Since ADR 0005 (personal architecture/decisions/0005, 11/27)
+// the source is data/recipes/recipes.json in this repo, written by Health Agent's public_rows.py (fail-closed guards,
+// one PR per change; scripts/check-data.mjs validates it in CI). Without the file, or with RECIPES_SOURCE=api, the
+// public-recipes Edge Function (RECIPES_API, GET ?lang=en|es; Database Administrator 11/23) as before, which stays until
+// the parity week ends (scripts/recipes-parity.mjs reports drift on every deploy). Locally, when it's unset or returns [], the build uses the sample set in
 // _content/recipes/sample.json; in CI an empty answer fails the build (no sample data in production). Designer's spec: ~/dev/personal/design/specs/rodmjay-recipes.md.
 //
 // Row: {slug, lang, title, dek, image, image_alt, servings, minutes|null, tags[], facets[], ingredients[], steps[],
@@ -20,9 +23,12 @@ import { imgDims } from "./blog.mjs";
 export const PER_PAGE = 12;
 export const BASE = { en: "/recipes/", es: "/es/recipes/" };
 const API = process.env.RECIPES_API || "";
+const FILE = join(ROOT, "data/recipes/recipes.json");
+const FROM_FILE = existsSync(FILE) && process.env.RECIPES_SOURCE !== "api";
 // public-recipes v1 counts every number in prep and cook ("1 hour at 350°F" reads as 410 min); v2 counts only numbers
 // with a time unit. Until v2 is live, no time is shown rather than a wrong one: set RECIPES_TRUST_MINUTES=1 after.
-const TRUST_MINUTES = process.env.RECIPES_TRUST_MINUTES === "1" || !API;
+// The file is written with the v2 rule (Health Agent 11/27).
+const TRUST_MINUTES = process.env.RECIPES_TRUST_MINUTES === "1" || !API || FROM_FILE;
 
 // Family is LDS: nothing with alcohol, coffee or tea in a recipe or tag (Designer's spec, Rod 11/20).
 const BANNED = new Set(("wine wines beer beers ale lager rum vodka tequila mezcal whiskey whisky bourbon brandy gin liqueur sake " +
@@ -46,6 +52,11 @@ export const FACETS = ["course", "dish", "occasion", "season", "cuisine", "main"
 const PRIVATE = /\b(for rod|para rod)\b|\b(kcal|calories|calorías|protein target|meta de proteína)\b/i;
 
 async function fetchRows() {
+  if (FROM_FILE) {
+    const body = JSON.parse(read("data/recipes/recipes.json"));
+    if (!body || body.version !== 1 || !Array.isArray(body.rows)) throw new Error("recipes: data/recipes/recipes.json isn't {version: 1, rows: []}");
+    return { rows: body.rows.filter((r) => r && LANGS.includes(r.lang)), from: "data/recipes/recipes.json" };
+  }
   if (!API) return { rows: [], from: "fixture (RECIPES_API unset)" };
   const rows = [];
   for (const lang of LANGS) {
@@ -80,7 +91,7 @@ async function build() {
   let { rows, from } = await fetchRows();
   // Production never shows sample data (Rod 11/23): a deploy build (CI) that reaches the API and gets nothing fails,
   // so a broken or empty function can't quietly put the fixture on the live site. Local builds still use the fixture.
-  if (API && rows.length === 0 && process.env.CI) throw new Error(`recipes: ${API} returned no published recipes; refusing to deploy the sample set`);
+  if ((API || FROM_FILE) && rows.length === 0 && process.env.CI) throw new Error(`recipes: ${from} has no published recipes; refusing to deploy the sample set`);
   const sampleData = rows.length === 0;
   const fixture = JSON.parse(read("_content/recipes/sample.json"));
   if (sampleData) { rows = fixture; from = API ? "fixture (RECIPES_API returned [])" : from; }

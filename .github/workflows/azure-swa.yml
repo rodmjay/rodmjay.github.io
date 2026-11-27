@@ -121,8 +121,16 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci --ignore-scripts --no-audit --no-fund
+      # Public product data in data/ (personal architecture/decisions/0005, Security 11/27): schema and text checks, before
+      # anything builds from it. The writer runs the same rules before it commits; this is the second layer.
+      - name: Check data/ (ADR 0005)
+        run: node scripts/check-data.mjs
       - name: Build
         run: npm run build
+      # The parity week: recipes.json against the public-recipes function it replaces. A report in the job summary, never
+      # a failure; a week of 0 differences lets Database Administrator retire the function.
+      - name: Recipes parity (ADR 0005)
+        run: node scripts/recipes-parity.mjs
       # The Should page: rodmjay/should at the reviewed commit in the repo variable SHOULD_REF (Security 11/23: an
       # unreviewed push there would otherwise become a hashed, same-origin script next to the site), copied to out/should/
       # after postbuild (its no-inline-code guards are for the Next output only), with routes and a hash-based CSP written
