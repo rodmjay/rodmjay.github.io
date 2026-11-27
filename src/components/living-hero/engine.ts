@@ -70,24 +70,29 @@ vec2 clouds(vec2 uv){
 }
 // Aurora curtains (Designer 11/27: the plate's teal, green and violet are the scene's identity): ribbons along the
 // upper-middle sky, brightest near their lower edge, fine vertical rays, a gentle sway (about 17 s) and a ±8 % travelling
-// brightness wave. Drawn behind the clouds at low alpha.
+// brightness wave. Drawn behind the clouds at low alpha. Designer 11/27: the rays stay soft (no column banding: features
+// at least ~60 px across at 1280), the curtains sit in the upper-middle sky and fade to nothing within 60 px of the edges.
 vec4 aurora(vec2 uv){
   float x = uv.x*5.0 + 0.25*sin(6.2831853*uT/17.0 + uv.x*3.0);
-  float band = smoothstep(0.28, 0.62, fbm3(vec2(x*0.8, 3.7)));
+  float band = smoothstep(0.28, 0.62, fbm3(vec2(x*0.8, 3.7)))*(0.35 + 0.65*(1.0 - smoothstep(0.15, 0.5, abs(uv.x - 0.5))));
+  band *= smoothstep(0.0, 60.0, vP.x)*smoothstep(0.0, 60.0, uRes.x - vP.x);
   float base = 0.30 + 0.06*(noise(vec2(x*1.3, 9.1)) - 0.5), top = base - 0.26;
   float vy = smoothstep(top, base, uv.y)*(1.0 - smoothstep(base, base + 0.03, uv.y));
-  float rays = 0.55 + 0.45*noise(vec2(x*25.0, uv.y*1.5));
+  float rays = 0.7 + 0.3*noise(vec2(x*4.0, uv.y*1.5));
   vec3 col = mix(vec3(0.184,0.718,0.627), vec3(0.184,0.820,0.541), noise(vec2(x*2.0, 1.0)));  // teal #2fb7a0 to green #2fd18a
   col = mix(col, vec3(0.416,0.247,0.710), 0.8*smoothstep(base - 0.12, top, uv.y));          // violet #6a3fb5 toward the top
   float a = 0.45*band*vy*rays*(1.0 + 0.08*sin(6.2831853*uT/23.0 + uv.x*6.0));
   return vec4(col, a);
 }
 vec3 cloudColor(vec2 cl, vec2 uv){
-  vec3 body = mix(vec3(0.051,0.180,0.412), vec3(0.247,0.412,0.647), cl.y);       // #0d2e69 to #3f69a5
-  body = mix(body, vec3(0.200,0.184,0.467), 0.22*(1.0 - cl.y));                  // violet shadow #332f77
-  body = mix(body, vec3(0.459,0.596,0.765), 0.85*cl.y*cl.y);                     // pale rim #7598c3
+  // Deep indigo bodies with violet shadow (Designer 11/27: form and contrast, not milky); the pale rims only on the
+  // upper-right edges that face the moon (cl.y: the lit side), brightest near it.
+  float lit = smoothstep(0.55, 0.95, cl.y);
+  vec3 body = mix(vec3(0.051,0.180,0.412), vec3(0.200,0.184,0.467), 0.45*(1.0 - cl.y));  // #0d2e69, violet shadow #332f77
+  body = mix(body, vec3(0.247,0.412,0.647), 0.45*smoothstep(0.45, 0.8, cl.y));           // mid #3f69a5
+  body = mix(body, vec3(0.459,0.596,0.765), 0.8*lit*lit);                                 // rim #7598c3
   float nearMoon = exp(-length(px(uv) - px(uMoon))/(7.0*uMr*1280.0));
-  return mix(body, vec3(0.749,0.882,0.976), 0.6*nearMoon*cl.y);                   // brightest rims near the moon #bfe1f9
+  return mix(body, vec3(0.749,0.882,0.976), 0.6*nearMoon*lit);                            // brightest rims near the moon #bfe1f9
 }
 void main(){
   vec2 uv = vP*uA + uB;
@@ -112,7 +117,7 @@ void main(){
     float T = 4.0 + 5.0*hash(floor(uv*uSize/16.0));
     vec3 star = texture2D(uImg, uv).rgb * (1.0 - 0.2*(1.0 - cos(6.2831853*uT/T)));
     base = mix(base, max(base, star), m.g);
-    vec3 skyc = mix(base, cc, cl.x*0.92) + au.rgb*au.a*0.4*cl.x; // the aurora glows through thinner cloud
+    vec3 skyc = mix(base, cc, cl.x*0.92) + au.rgb*au.a*0.5*cl.x; // the aurora glows through thinner cloud
     // A moonlit veil over the moon, never a dark blot (density at most 0.5); the moon stays clear for the first 15 s.
     float ac = 0.5 * cl.x * overMoon * smoothstep(15.0, 20.0, uT);
     gl_FragColor = vec4(skyc*m.r + cc*ac, m.r + ac);
