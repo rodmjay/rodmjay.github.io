@@ -8,7 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-type Nav = Record<"label" | "menu" | "home" | "about" | "resume" | "building" | "contact" | "blog" | "recipes" | "quotes" | "language", string>;
+type Nav = Record<"label" | "menu" | "home" | "about" | "resume" | "building" | "contact" | "blog" | "recipes" | "discover" | "quotes" | "language", string>;
 const NAMES = { en: "English", es: "Español" } as const;
 const HTML_LANG = { en: "en", es: "es-419" } as const;
 
@@ -23,10 +23,10 @@ function otherPath(path: string, lang: "en" | "es", alt: Record<string, string>)
 }
 
 // `account` is the "Sign in" / "Dashboard" slot at the right end, next to the language menu (only where accounts are on).
-export function Header({ lang, nav, showRecipes, showQuotes, alt, account }: { lang: "en" | "es"; nav: Nav; showRecipes: boolean; showQuotes: boolean; alt: Record<string, string>; account?: ReactNode }) {
+export function Header({ lang, nav, showRecipes, showDiscover, showQuotes, alt, account }: { lang: "en" | "es"; nav: Nav; showRecipes: boolean; showDiscover: boolean; showQuotes: boolean; alt: Record<string, string>; account?: ReactNode }) {
   const path = usePathname() || "/";
   const home = lang === "en" ? "/" : "/es/";
-  const blog = `${home}blog/`, recipes = `${home}recipes/`, quotes = `${home}quotes/`;
+  const blog = `${home}blog/`, recipes = `${home}recipes/`, quotes = `${home}quotes/`, discover = `${home}slc/`;
   const current = (base: string) => (path.startsWith(base) ? "page" : undefined);
   const [open, setOpen] = useState(false);
   const button = useRef<HTMLButtonElement>(null);
@@ -44,6 +44,7 @@ export function Header({ lang, nav, showRecipes, showQuotes, alt, account }: { l
     <Link key="contact" href={`${home}#contact`} onClick={close}>{nav.contact}</Link>,
     <Link key="blog" href={blog} aria-current={current(blog)} onClick={close}>{nav.blog}</Link>,
     showRecipes && <Link key="recipes" href={recipes} aria-current={current(recipes)} onClick={close}>{nav.recipes}</Link>,
+    showDiscover && <Link key="discover" href={discover} aria-current={current(discover)} onClick={close}>{nav.discover}</Link>,
     showQuotes && <Link key="quotes" href={quotes} aria-current={current(quotes)} onClick={close}>{nav.quotes}</Link>,
   ];
   const onLang = (e: React.ChangeEvent<HTMLSelectElement>) => {

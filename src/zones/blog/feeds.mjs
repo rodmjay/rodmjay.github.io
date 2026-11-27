@@ -5,6 +5,7 @@ import { loadBlog, BASE } from "../../lib/blog.mjs";
 import { loadRecipes } from "../../lib/recipes.mjs";
 import { REMOVE_LIVE } from "../../lib/site.mjs";
 import { loadQuotes } from "../../lib/quotes.mjs";
+import { DISCOVER_ON } from "../../lib/events.mjs";
 
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const xml = (s) => esc(s).replace(/'/g, "&apos;");
@@ -53,6 +54,7 @@ export async function sitemap() {
     if (r.facetMode) for (const l of r.lists) if (l.lang === "en" && l.tag && l.n === 1 && l.items.length) urls.push(pair(l.path, l.otherPath));
   }
   if (REMOVE_LIVE) urls.push(pair("/remove/", "/es/remove/"));
+  if (DISCOVER_ON) urls.push(pair("/slc/", "/es/slc/"));
   if (process.env.RVP_ON === "1") urls.push(pair("/personality-test/", "/es/test-de-personalidad/")); // the test's start page; take, result and archetype pages are noindex
   for (const x of q.quotes) urls.push(pair(`/quotes/${x.slug}/`, `/es/quotes/${x.slug}/`));
   const body = `<?xml version="1.0" encoding="utf-8"?>
