@@ -70,6 +70,10 @@ body.rb { margin: 0; background: var(--rb-paper); color: var(--rb-ink); font: 40
 .rb .rb-chip:hover { border-color: var(--rb-red); color: var(--rb-red); }
 .rb .rb-chip[aria-current], .rb .rb-chip[aria-pressed="true"] { background: var(--rb-red); border-color: var(--rb-red); color: #fff; }
 .rb-chip[aria-disabled="true"] { opacity: 0.5; cursor: default; }
+/* 48px hit areas on the 40px chips and the 32px breadcrumb links (Designer 11/27): the look stays, the tap target grows. */
+.rb-chip, .rb .rb-crumbs a { position: relative; }
+.rb-chip::before { content: ""; position: absolute; inset: -4px 0; }
+.rb .rb-crumbs a::before { content: ""; position: absolute; inset: -8px -4px; }
 .rb-courses, .rb-chips, .rb-selected-list { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 
 /* Cards */
@@ -176,6 +180,7 @@ html[data-js] .rb-nojs, html:not([data-js]) .rb-js { display: none; }
   .rb-logo img { width: 30px; height: 30px; }
   .rb-grid { grid-template-columns: 1fr; }
   .rb-recipe { padding: 20px; }
+  .rb-intro { font-size: 19px; line-height: 1.55; margin: 18px 0; } /* not a wall of text above the recipe card on phones */
   .rb-bar-meta div { min-width: 50%; border-right: 0; border-bottom: 1px solid var(--rb-line); }
   .rb-bar-meta div:nth-child(odd) { border-right: 1px solid var(--rb-line); }
   .rb-bar-meta div:nth-last-child(-n + 2) { border-bottom: 0; }
