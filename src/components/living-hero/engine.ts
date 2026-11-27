@@ -65,13 +65,16 @@ vec2 clouds(vec2 uv){
   float d = 0.65*f + 0.56*bl*f + (big - 0.5)*0.15;
   float dl = fbm5(w + vec2(0.06, -0.08));
   float t0 = 0.52 + 0.4*(0.6 - uCover);
-  float dens = smoothstep(t0, t0 + 0.22, d);
+  // Clear sky above the mountains (Rod 11/27: no band sitting on the ridge): the clouds thin out above the highest peak
+  // (0.31 of the plate; horizon 0.61) and are gone before it, so the peaks meet clean sky.
+  float dens = smoothstep(t0, t0 + 0.22, d)*(1.0 - smoothstep(uHz*0.40, uHz*0.48, uv.y));
   return vec2(dens, clamp(0.55 + (f - dl)*5.0, 0.0, 1.0));
 }
-// The low layer (Designer 11/27: depth): larger billowy masses across the sky's lower half down to the ridge, drifting
+// The low layer (Designer 11/27: depth): larger billowy masses across the lower sky, kept off the ridge, drifting
 // slower than the high wisps (they move 1.3x as fast), seeded for an even ~40 % cover of the sky between the moon's height and the peaks. Skipped above it.
 vec2 lowClouds(vec2 uv){
-  float band = smoothstep(uHz*0.16, uHz*0.28, uv.y);  // the sky ends at the ridge, about 0.31 to 0.45 of the plate (horizon 0.61)
+  // Between the moon's height and a little above the highest peak, never on the ridge (Rod 11/27).
+  float band = smoothstep(uHz*0.12, uHz*0.22, uv.y)*(1.0 - smoothstep(uHz*0.34, uHz*0.45, uv.y));
   if (band <= 0.0) return vec2(0.0);
   vec2 p = px(uv)/1280.0*vec2(2.2, 5.0) + vec2(7.4, 6.9);
   p.x += p.y*0.08;
