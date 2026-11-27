@@ -179,6 +179,7 @@ export function BookAbout({ lang }: { lang: Lang }) {
       <h1>{R.aboutTitle}</h1>
       {R.aboutBody.map((p: string) => <p key={p}>{p}</p>)}
       <p className="rb-soft">{R.aiPhotos}</p>
+      <p>{R.operator} <a href={lang === "en" ? "/about/#contact" : "/es/about/#contact"}>{R.contactLink}</a></p>
       <p className="rb-acts"><Link className="rb-btn" href={ALL[lang]}>{R.browseAll}</Link></p>
     </main>
   );
@@ -197,15 +198,17 @@ export async function recipeMeta(lang: Lang, slug: string) {
   return bookMeta({ lang, title: x.title, description: x.dek, path: x.url, alt: x.twinUrl, noindex: r.sample, type: "article", image: x.photo?.jpg, imageAlt: x.imageAlt });
 }
 
-// Recipe structured data (schema.org/Recipe, Google's required and recommended fields). A data block, not a script;
-// "<" escaped so no text can close the tag.
+// Recipe structured data (schema.org/Recipe, Google's required and recommended fields). A data block, not a script, built
+// only from the checked data file (Security 11/27): "<" and the U+2028/U+2029 line separators escaped, own-origin image
+// URLs, nothing from the URL or storage, no ratings, reviews or nutrition.
 function jsonLd(x: Recipe, lang: Lang) {
   const R = dict(lang).recipes;
   const abs = (u: string) => new URL(u, SITE).href;
   const big = x.photo ? x.photo.srcset.split(", ").map((s: string) => s.split(" ")[0]).pop() : null;
   const data: Record<string, unknown> = {
     "@context": "https://schema.org", "@type": "Recipe", name: x.title, description: x.dek, url: `${SITE}${x.url}`, inLanguage: HTML_LANG[lang],
-    ...(x.photo ? { image: [abs(big || x.photo.jpg), abs(x.photo.jpg)] } : {}),
+    // Our own AI-generated photo, said so (Compliance 11/27): an ImageObject with the same credit as the page's label.
+    ...(x.photo ? { image: [big || x.photo.jpg, x.photo.jpg].map((u: string) => ({ "@type": "ImageObject", url: abs(u), creditText: R.photoCredit })) } : {}),
     author: { "@type": "Organization", name: R.name, url: `${SITE}${BASE[lang]}` },
     datePublished: x.updatedAt.slice(0, 10), dateModified: x.updatedAt,
     ...(x.servings ? { recipeYield: String(x.servings) } : {}),
@@ -216,7 +219,7 @@ function jsonLd(x: Recipe, lang: Lang) {
     recipeIngredient: x.ingredients.filter((l: string) => !l.startsWith("## ")),
     recipeInstructions: x.steps.map((s: string, i: number) => ({ "@type": "HowToStep", position: i + 1, text: s })),
   };
-  return JSON.stringify(data).replace(/</g, "\\u003c");
+  return JSON.stringify(data).replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029");
 }
 
 // "Serve it with" text with the book's own recipes linked where their titles appear.

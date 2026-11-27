@@ -19,6 +19,8 @@ export function Privacy({ lang }: { lang: Lang }) {
   const paras: string[] = azure ? pv.p.map((t: string, i: number) => (i === 2 ? pv.azure.hosting : t)) : [...pv.p];
   // The living hero's "motion" setting (Compliance 11/27), after the storage paragraph, wherever the hero is built.
   if (process.env.LIVING_HERO === "1") paras.splice(6, 0, pv.motion);
+  // The Recipe Book's Save list (Compliance 11/27), next to "motion", wherever Save is on.
+  if (process.env.RECIPES_SAVE === "1") paras.splice(process.env.LIVING_HERO === "1" ? 7 : 6, 0, pv.saved);
   const updated = azure
     ? pv.azure.updated.replace("{date}", new Date(`${PRIVACY_UPDATED}T12:00:00Z`).toLocaleDateString(HTML_LANG[lang], { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }))
     : pv.updated;

@@ -63,6 +63,7 @@ export function RecipeLayout({ lang, children }: { lang: Lang; children: ReactNo
         <footer className="rb-foot">
           <div className="rb-wrap">
             <span>© {R.name} · {R.footer}</span>
+            <span>{dict(lang).footer.cookies}</span>
             <a href={ALL[lang]}>{R.allRecipes}</a>
             <a href={ABOUT[lang]}>{R.about}</a>
             <a href={privacy}>{R.privacy}</a>

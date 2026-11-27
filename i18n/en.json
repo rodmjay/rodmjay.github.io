@@ -170,7 +170,8 @@
       ],
       "rights": "To see, correct or delete a lookup, or to object to it, email {email}. If you're in the EU or UK, you have the right to object to this lookup. If you'd rather not agree, you can't get the resume through this form, so email me and we can talk directly."
     },
-    "motion": "If you use the Motion on/off switch in the footer, your browser remembers your choice (one setting called 'motion', on or off) on this device. It is never sent to us or anyone else, and it is not a cookie. To check whether to animate, the page looks at your device's basic abilities, such as reduced-motion, memory and graphics support, on your device only. Nothing about it is stored or sent."
+    "motion": "If you use the Motion on/off switch in the footer, your browser remembers your choice (one setting called 'motion', on or off) on this device. It is never sent to us or anyone else, and it is not a cookie. To check whether to animate, the page looks at your device's basic abilities, such as reduced-motion, memory and graphics support, on your device only. Nothing about it is stored or sent.",
+    "saved": "If you use Save on a recipe in the Family Recipe Book, your browser keeps the list of saved recipes (one setting called 'recipes-saved', a list of recipe names) on this device. It is never sent to us or anyone else, and it is not a cookie. Removing a recipe from Save, or clearing your browser's site data, deletes it."
   },
   "blog": {
     "title": "Blog",
@@ -296,7 +297,9 @@
       "course:snack": "Snacks",
       "course:drink": "Drinks",
       "course:appetizer": "Appetizers and spreads"
-    }
+    },
+    "operator": "This book is kept by Rod Johnson, a home cook in Salt Lake City.",
+    "contactLink": "Get in touch"
   },
   "project": {
     "metaTitle": "Indiana Department of Education CMS Platform",

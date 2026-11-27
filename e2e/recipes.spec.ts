@@ -36,8 +36,15 @@ for (const path of ["/recipes/", "/recipes/all/", "/recipes/tag/course-main/", "
     expect(await page.locator("body").innerText()).not.toMatch(/Rod Johnson|rodmjay\.com/);
     await expect(page.locator('link[rel="icon"]').first()).toHaveAttribute("href", /^\/recipes\/icons\//);
     await expect(page.locator("h1")).toHaveCount(1);
+    await expect(page.locator(".rb-foot")).toContainText(/No tracking cookies\.|Sin cookies de rastreo\./);
   });
 }
+
+test("About names who keeps the book and how to reach them (Compliance)", async ({ page }) => {
+  await page.goto("/recipes/about/");
+  await expect(page.locator("main")).toContainText("Rod Johnson");
+  await expect(page.getByRole("link", { name: "Get in touch" })).toHaveAttribute("href", "/about/#contact");
+});
 
 test("search from the header: title and ingredient matches, then clear", async ({ page, isMobile }) => {
   await page.goto("/recipes/");
@@ -119,7 +126,11 @@ test("Recipe structured data on three recipes", async ({ page }) => {
     const d = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent())!);
     expect(d["@type"]).toBe("Recipe");
     expect(d.name).toBeTruthy();
-    expect(Array.isArray(d.image) && d.image.every((u: string) => /^https:\/\//.test(u))).toBe(true);
+    // Own-origin images, said to be AI-generated (Security and Compliance 11/27).
+    expect(d.image.length).toBeGreaterThan(0);
+    for (const i of d.image) { expect(i["@type"]).toBe("ImageObject"); expect(i.url).toMatch(/^https:\/\/rodmjay\.com\/recipes\/images\//); expect(i.creditText).toBe("AI-generated image"); }
+    expect(d).not.toHaveProperty("nutrition");
+    expect(d).not.toHaveProperty("aggregateRating");
     expect(d.recipeIngredient.length).toBeGreaterThan(0);
     expect(d.recipeIngredient.some((i: string) => i.startsWith("## "))).toBe(false);
     expect(d.recipeInstructions[0]["@type"]).toBe("HowToStep");
@@ -188,4 +199,20 @@ test.describe("without script", () => {
     await page.goto("/recipes/chicken-piccata/");
     await expect(page.locator(".rb-steps li").first()).toBeVisible();
   });
+});
+
+// Save (RECIPES_SAVE=1, after Security's pass, 11/27): only slugs are stored; a bad stored value is dropped silently.
+test("Save keeps a validated list of slugs", async ({ page }) => {
+  test.skip(process.env.RECIPES_SAVE !== "1", "Save is off in this build");
+  await page.addInitScript(() => { try { if (!sessionStorage.getItem("seeded")) { localStorage.setItem("recipes-saved", JSON.stringify(["<img src=x>", "gallo-pinto", "gallo-pinto", 7])); sessionStorage.setItem("seeded", "1"); } } catch {} });
+  await page.goto("/recipes/chicken-piccata/");
+  const btn = page.getByRole("button", { name: /Save/ });
+  await expect(btn).toHaveAttribute("aria-pressed", "false");
+  await btn.click();
+  await expect(btn).toHaveAttribute("aria-pressed", "true");
+  expect(JSON.parse((await page.evaluate(() => localStorage.getItem("recipes-saved")))!)).toEqual(["chicken-piccata", "gallo-pinto"]);
+  await page.reload();
+  await expect(page.getByRole("button", { name: /Saved/ })).toHaveAttribute("aria-pressed", "true");
+  await page.goto("/privacy/");
+  await expect(page.locator("main")).toContainText("recipes-saved");
 });
