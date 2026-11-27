@@ -128,6 +128,10 @@ jobs:
       # anything builds from it. The writer runs the same rules before it commits; this is the second layer.
       - name: Check data/ (ADR 0005)
         run: node scripts/check-data.mjs
+      # The home's name stays legible over the hero picture at every width (Rod 11/27): fails when a picture changed
+      # without a new measurement, or a width needs more than the scrim cap.
+      - name: Hero legibility
+        run: node scripts/hero-legibility.mjs src/components/living-hero/home.json
       - name: Build
         run: npm run build
       # The parity week: recipes.json against the public-recipes function it replaces. A report in the job summary, never

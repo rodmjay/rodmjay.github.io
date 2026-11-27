@@ -6,7 +6,7 @@ import Link from "next/link";
 import { LivingHero } from "@/components/living-hero/LivingHero";
 import { checkDescriptor } from "@/components/living-hero/descriptor";
 import homeHero from "@/components/living-hero/home.json";
-import { dict, SITE, RECIPES_LIVE } from "@/lib/site.mjs";
+import { dict, SITE, RECIPES_LIVE, asset } from "@/lib/site.mjs";
 import { DISCOVER_ON } from "@/lib/events.mjs";
 import { meta } from "@/lib/meta";
 // The living hero (docs/adr/0004): built where LIVING_HERO=1 (staging and checks; production once the privacy page lists
@@ -52,9 +52,10 @@ export function Home({ lang }: { lang: Lang }) {
   ].filter(Boolean).map((x) => ({ ...(x as { key: "slc" | "recipes" | "test" | "agencypro" | "privacy" | "blog"; href: string; external?: boolean; mark: React.ReactNode }), ...h.projects[(x as { key: string }).key] }));
   return (
     <>
-      {/* The stage (Rod 11/27, via Designer; design/specs/rodmjay-home.md): the cover's lowest part fades into the page, with
-          no strip or edge; the avatar straddles the cover's bottom and the name and title run across the fade, above the
-          living hero. The h1 is inside <main>, so the stage is too. */}
+      {/* The stage (Rod 11/27; design/specs/rodmjay-home.md): the cover, the avatar straddling its bottom edge, and the name
+          and title across it. A scrim appears behind the text only where the measured picture needs one (hero-legibility.css).
+          The h1 is inside <main>, so the stage is too. */}
+      <link rel="stylesheet" href={asset("hero-legibility.css")} precedence="default" />
       <main id="main" className="home-page">
         <div className="stage">
           <div className="cover">

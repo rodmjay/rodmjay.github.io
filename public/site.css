@@ -243,32 +243,27 @@ body:has(main.home-page) .foot.col { max-width: 44rem; }
 .motion-toggle:focus-visible { outline: 3px solid var(--md-sys-color-primary); outline-offset: 2px; }
 .foot-note { display: inline-flex; align-items: center; min-height: 48px; color: var(--md-sys-color-on-surface-variant); }
 
-/* The stage (Rod 11/27 via Designer, design/specs/rodmjay-home.md latest): no strip. The cover's lowest 45% fades into
-   the page surface (eased, many stops so there's no banding), above the living-hero canvas and below the text; the avatar
-   straddles the cover's bottom edge and the name and title run across it. Dark scheme: white text with a dark shadow.
-   Light scheme (provisional, Designer asking Rod): dark on-surface text with a light shadow over the fade to cream. */
+/* The home (Rod 11/27, design/specs/rodmjay-home.md): always dark ("Dark always", DECISIONS); other pages follow the
+   system. The cover runs straight into the page with no band, strip or fade; the avatar straddles its bottom edge and
+   the name and title run across it, in white with a two-layer shadow, above the living hero. Legibility is computed, not
+   designed: scripts/hero-legibility.mjs measures the picture behind the text at each width and writes
+   public/hero-legibility.css, which sets --scrim only where white text would fall under 4.5:1 ("the only point is to
+   make the name visible no matter the background"). */
+:root:has(main.home-page) { color-scheme: dark; }
 .stage { position: relative; }
-.stage .cover::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: linear-gradient(to bottom,
-    transparent 0%, transparent 55%,
-    color-mix(in srgb, var(--md-sys-color-surface) 6%, transparent) 60%,
-    color-mix(in srgb, var(--md-sys-color-surface) 18%, transparent) 65%,
-    color-mix(in srgb, var(--md-sys-color-surface) 35%, transparent) 70%,
-    color-mix(in srgb, var(--md-sys-color-surface) 52%, transparent) 76%,
-    color-mix(in srgb, var(--md-sys-color-surface) 66%, transparent) 82%,
-    color-mix(in srgb, var(--md-sys-color-surface) 75%, transparent) 88%,
-    color-mix(in srgb, var(--md-sys-color-surface) 88%, transparent) 94%,
-    var(--md-sys-color-surface) 100%); }
 .stage-id { position: absolute; left: 0; right: 0; bottom: 0; transform: translateY(50%); z-index: 2;
   display: flex; align-items: center; gap: 16px; }
 .stage-id .hero-photo { width: 128px; height: 128px; border-radius: 50%; object-fit: cover; display: block; flex: none;
   box-shadow: 0 0 0 4px var(--md-sys-color-surface), 0 2px 10px rgb(0 0 0 / .4); }
 @media (max-width: 399.98px) { .stage-id .hero-photo { width: 96px; height: 96px; } }
-.stage-text { min-width: 0; }
-.stage-text h1, .stage-text .hero-title { margin: 0;
-  text-shadow: light-dark(0 1px 2px rgb(255 255 255 / .8), 0 1px 2px rgb(0 0 0 / .65)), light-dark(0 0 0 transparent, 0 2px 10px rgb(0 0 0 / .5)); }
-.stage-text h1 { color: light-dark(var(--md-sys-color-on-surface), #fff); }
-.stage-text .hero-title { color: light-dark(var(--md-sys-color-on-surface), rgb(255 255 255 / .92)); margin-top: var(--space-2); }
+.stage-text { position: relative; isolation: isolate; min-width: 0; } /* --scrim comes from hero-legibility.css */
+/* The scrim: the text block plus 12px at the top and sides and 8px below, a rounded rectangle feathered 16px, in the
+   page black; invisible where --scrim is 0. */
+.stage-text::before { content: ""; position: absolute; inset: -12px -12px -8px -12px; z-index: -1; border-radius: 16px;
+  background: rgb(18 20 21 / var(--scrim, 0)); filter: blur(8px); pointer-events: none; }
+.stage-text h1, .stage-text .hero-title { margin: 0; text-shadow: 0 1px 2px rgb(0 0 0 / .65), 0 2px 10px rgb(0 0 0 / .5); }
+.stage-text h1 { color: #fff; }
+.stage-text .hero-title { color: rgb(255 255 255 / .92); margin-top: var(--space-2); }
 /* The lede starts 24px under the avatar's bottom (half the avatar hangs below the cover). */
 .home-page .hero { padding-top: calc(64px + 24px); }
 @media (max-width: 399.98px) { .home-page .hero { padding-top: calc(48px + 24px); } }
