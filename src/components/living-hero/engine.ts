@@ -13,7 +13,7 @@ void main(){ vP = vec2((a.x*0.5+0.5)*uRes.x, (0.5-a.y*0.5)*uRes.y); gl_Position 
 // band in CSS pixels (highp: the vertex shader shares it). uL/uP: the cloud flow's span and phase period; uN: the wobble; uAur: the aurora sway; uRip, uK, uW:
 // the water ripple; uHz: the horizon; uSize: the plate size, for per-star cells; uTex/uMin: the downscale taps.
 export const FS = `precision mediump float;
-uniform sampler2D uImg, uMask; uniform highp vec2 uRes; uniform vec2 uA, uB, uSize, uTex, uN; uniform float uT, uHz, uRip, uK, uW, uMin, uL, uP, uAur;
+uniform sampler2D uImg, uMask; uniform highp vec2 uRes; uniform vec2 uA, uB, uSize, uTex, uN; uniform float uT, uHz, uRip, uK, uW, uMin, uL, uP, uAur; uniform vec2 uRipple;
 varying vec2 vP;
 float hash(vec2 p){ p = fract(p*vec2(123.34,456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }
 float noise(vec2 p){ vec2 i=floor(p), f=fract(p), u=f*f*(3.0-2.0*f);
@@ -45,8 +45,23 @@ void main(){
     d = (wobble(uv, uT) - wobble(uv, 0.0)) * uN * sky;
     d.y += aur * uAur * (sin(6.2831853*uT/16.0 + ph) - sin(ph));
   }
-  // Water: a horizontal ripple growing from 0 at the horizon, zero at t = 0.
-  if (uv.y > uHz) { float k = (uv.y-uHz)/(1.0-uHz); float wp = uv.y*uK; d.x += m.b * uRip * k * (sin(wp+uT*uW) - sin(wp)); }
+  // Water: a long horizontal shimmer, plus ripples (Rod 11/27: "make ripples in water"). The ripples are a few
+  // directional waves seen in perspective (tighter toward the horizon, larger near the viewer), moving toward the
+  // viewer; their slope bends the reflection both ways and adds a faint glint. Each term is its value at t minus its value
+  // at 0, so t = 0 is the picture. Only computed on water.
+  float glint = 0.0;
+  if (uv.y > uHz && m.b > 0.002) {
+    float k = (uv.y-uHz)/(1.0-uHz); float wp = uv.y*uK;
+    d.x += m.b * uRip * k * (sin(wp+uT*uW) - sin(wp));
+    vec2 p = vec2((uv.x - 0.5)*uSize.x/uSize.y / (k + 0.08), 1.0/(k + 0.08)) * 6.0;
+    vec2 g = vec2(0.0);
+    vec2 k1 = vec2(0.31, 1.0), k2 = vec2(-0.47, 0.83), k3 = vec2(0.12, 1.37);
+    g += k1 * (cos(dot(k1,p) + uT*1.30 + 0.7) - cos(dot(k1,p) + 0.7));
+    g += 0.6 * k2 * (cos(dot(k2,p)*1.7 + uT*1.90 + 2.1) - cos(dot(k2,p)*1.7 + 2.1));
+    g += 0.4 * k3 * (cos(dot(k3,p)*2.9 + uT*2.70 + 4.3) - cos(dot(k3,p)*2.9 + 4.3));
+    d += m.b * g * k * uRipple;
+    glint = m.b * k * (g.y * 0.5);
+  }
   // Clouds: a two-phase flow, left to right. Each sample's offset is centred on its phase, and the triangle crossfade
   // gives sample A full weight exactly when its offset is 0, so t = 0 is the picture and there's no jump or visible loop.
   float pa = fract(uT/uP + 0.5), pb = fract(uT/uP), wa = 1.0 - abs(2.0*pa - 1.0);
@@ -56,6 +71,9 @@ void main(){
     vec2 qb = uv + d - vec2((pb - 0.5)*uL*speed, 0.0);
     c = mix(tap(qb), tap(qa), wa);
   } else { c = tap(uv + d); }
+  // The reflected light (moon column, window streaks) brightens and darkens with the wave phase, within ±10 %;
+  // this only scales light already in the picture, never adds a new bright point.
+  c *= 1.0 + 0.10*clamp(glint, -1.0, 1.0);
   // Aurora brightness: a travelling wave, within ±8 %, at about 23 s; never a colour shift.
   c *= 1.0 + 0.08*aur*0.5*(sin(6.2831853*uT/23.0 + uv.x*6.0) - sin(uv.x*6.0));
   // Stars twinkle in place, each on its own 4 to 9 s period.
@@ -99,7 +117,7 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
   const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const aLoc = gl.getAttribLocation(prog, "a"); gl.enableVertexAttribArray(aLoc); gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
   const U = (n: string) => gl.getUniformLocation(prog, n);
-  const u = { min: U("uMin"), tex: U("uTex"), res: U("uRes"), a: U("uA"), b: U("uB"), size: U("uSize"), n: U("uN"), l: U("uL"), p: U("uP"), aur: U("uAur"), t: U("uT"), hz: U("uHz"), rip: U("uRip"), k: U("uK"), w: U("uW"), img: U("uImg"), mask: U("uMask") };
+  const u = { ripple: U("uRipple"), min: U("uMin"), tex: U("uTex"), res: U("uRes"), a: U("uA"), b: U("uB"), size: U("uSize"), n: U("uN"), l: U("uL"), p: U("uP"), aur: U("uAur"), t: U("uT"), hz: U("uHz"), rip: U("uRip"), k: U("uK"), w: U("uW"), img: U("uImg"), mask: U("uMask") };
   gl.uniform1i(u.img, 0); gl.uniform1i(u.mask, 1);
   const texImg = gl.createTexture(), texMask = gl.createTexture();
   const upload = (tex: WebGLTexture | null, unit: number, im: HTMLImageElement, raw: boolean) => {
@@ -148,6 +166,9 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     gl.uniform2f(u.n, 6 * ux, 6 * uy);
     gl.uniform1f(u.aur, 4 * uy);
     gl.uniform1f(u.rip, 1 * ux); // sin(a) - sin(b) peaks at 2: 2 px
+    // Ripples (Designer, "visible water ripples"): up to about 4 px sideways and 1.5 px vertically at the bottom of
+    // the picture (the wave slope sums to about 1.3 across and 4.1 along), fading to 0 at the horizon.
+    gl.uniform2f(u.ripple, 3.0 * ux, 0.35 * uy);
     gl.uniform1f(u.k, (2 * Math.PI) / (14 * uy)); gl.uniform1f(u.w, 1.1); // about 2.5 px/s of drift, under 8
   };
 
