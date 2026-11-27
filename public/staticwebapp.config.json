@@ -7,6 +7,16 @@
   },
   "routes": [
     {
+      "route": "/work/indiana-cms/",
+      "redirect": "/",
+      "statusCode": 301
+    },
+    {
+      "route": "/es/work/indiana-cms/",
+      "redirect": "/es/",
+      "statusCode": 301
+    },
+    {
       "route": "/remove/confirm/*",
       "headers": {
         "Cache-Control": "no-store",
