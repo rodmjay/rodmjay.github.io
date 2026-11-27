@@ -194,8 +194,10 @@ jobs:
 
   deploy:
     needs: build
-    # Pushes, the schedule and manual runs deploy; pull requests only build and test.
-    if: github.event_name != 'pull_request' && vars.AZURE_CLIENT_ID != ''
+    # Pushes, the schedule and manual runs deploy; pull requests only build and test. `!cancelled()` and the explicit build
+    # result: without them a skipped sync-cms (next, the schedule) skips this job too, since GitHub's default success()
+    # counts every job upstream (11/27: staging and the daily refresh stopped deploying after #128).
+    if: ${{ !cancelled() && needs.build.result == 'success' && github.event_name != 'pull_request' && vars.AZURE_CLIENT_ID != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
