@@ -24,7 +24,8 @@ precision mediump float;
 #endif
 uniform sampler2D uImg, uMask, uSky; uniform highp vec2 uRes; uniform vec2 uA, uB, uSize, uTex; uniform float uT, uHz, uRip, uK, uW, uMin, uMr, uAsp, uOcc, uWind, uCover; uniform vec2 uRipple, uMoon, uRing, uRingR;
 varying vec2 vP;
-float hash(vec2 p){ p = fract(p*vec2(123.34,456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }
+// Dave Hoskins' hash12 ("hash without sine"): uniform and free of the x-bias and patterning the old one had.
+float hash(vec2 p){ vec3 p3 = fract(vec3(p.xyx)*0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y)*p3.z); }
 float noise(vec2 p){ vec2 i=floor(p), f=fract(p), u=f*f*f*(f*(f*6.0-15.0)+10.0);
   return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),u.x), mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),u.x), u.y); }
 // Fractal noise, fixed octave counts (bounded cost per pixel).
@@ -51,13 +52,35 @@ vec2 ring(vec2 uv){
 // drifting with the wind and slowly changing shape, so they never tile or repeat. Returns density (0..1) and how lit it
 // is from the upper right, where the moon is (Designer's palette and light, living-hero-assets/README.md).
 vec2 clouds(vec2 uv){
-  vec2 p = px(uv)/1280.0*vec2(2.2, 5.6) - vec2(uT*uWind, 0.0);
-  vec2 q = vec2(fbm3(p + vec2(0.0, uT*0.010)), fbm3(p + vec2(5.2, 1.3) - vec2(uT*0.008, 0.0)));
-  vec2 w = p + 1.4*q;
-  float d = fbm5(w);
+  // Seeded so the first view is balanced across the width (calibrated: about 60 % of the sky covered, left and right).
+  vec2 p = px(uv)/1280.0*vec2(3.8, 9.9) + vec2(42.3, 9.8);
+  p.x += p.y*0.15;                           // a little wind shear at the top
+  p.x -= uT*uWind;
+  // A light warp (strong warps curl into smoke), a billow term for rounded masses, and a large-scale variation.
+  vec2 q = vec2(fbm3(p*0.6 + vec2(0.0, uT*0.006)), fbm3(p*0.6 + vec2(5.2, 1.3) - vec2(uT*0.005, 0.0)));
+  vec2 w = p + 0.45*q;
+  float f = fbm5(w);
+  float bl = 1.0 - abs(2.0*fbm3(w*1.7 + 3.1) - 1.0);
+  float big = fbm3(p*0.35 + vec2(7.0, 2.0));
+  float d = 0.65*f + 0.56*bl*f + (big - 0.5)*0.15;
   float dl = fbm5(w + vec2(0.06, -0.08));
-  float dens = smoothstep(0.58 - 0.24*uCover, 0.80 - 0.24*uCover, d);
-  return vec2(dens, clamp(0.55 + (d - dl)*5.0, 0.0, 1.0));
+  float t0 = 0.52 + 0.4*(0.6 - uCover);
+  float dens = smoothstep(t0, t0 + 0.22, d);
+  return vec2(dens, clamp(0.55 + (f - dl)*5.0, 0.0, 1.0));
+}
+// Aurora curtains (Designer 11/27: the plate's teal, green and violet are the scene's identity): ribbons along the
+// upper-middle sky, brightest near their lower edge, fine vertical rays, a gentle sway (about 17 s) and a ±8 % travelling
+// brightness wave. Drawn behind the clouds at low alpha.
+vec4 aurora(vec2 uv){
+  float x = uv.x*5.0 + 0.25*sin(6.2831853*uT/17.0 + uv.x*3.0);
+  float band = smoothstep(0.28, 0.62, fbm3(vec2(x*0.8, 3.7)));
+  float base = 0.30 + 0.06*(noise(vec2(x*1.3, 9.1)) - 0.5), top = base - 0.26;
+  float vy = smoothstep(top, base, uv.y)*(1.0 - smoothstep(base, base + 0.03, uv.y));
+  float rays = 0.55 + 0.45*noise(vec2(x*25.0, uv.y*1.5));
+  vec3 col = mix(vec3(0.184,0.718,0.627), vec3(0.184,0.820,0.541), noise(vec2(x*2.0, 1.0)));  // teal #2fb7a0 to green #2fd18a
+  col = mix(col, vec3(0.416,0.247,0.710), 0.8*smoothstep(base - 0.12, top, uv.y));          // violet #6a3fb5 toward the top
+  float a = 0.45*band*vy*rays*(1.0 + 0.08*sin(6.2831853*uT/23.0 + uv.x*6.0));
+  return vec4(col, a);
 }
 vec3 cloudColor(vec2 cl, vec2 uv){
   vec3 body = mix(vec3(0.051,0.180,0.412), vec3(0.247,0.412,0.647), cl.y);       // #0d2e69 to #3f69a5
@@ -78,16 +101,20 @@ void main(){
     vec2 cl = clouds(uv);
     vec3 cc = cloudColor(cl, uv);
     vec3 base = texture2D(uSky, uv).rgb;
-    // Aurora glow (saturated hues in the clear sky): a travelling brightness wave, within ±8 %, never a colour shift.
-    float hi = max(base.r, max(base.g, base.b)), lo = min(base.r, min(base.g, base.b));
-    float aur = smoothstep(0.35, 0.6, hi > 0.0 ? (hi-lo)/hi : 0.0);
-    base *= 1.0 + 0.08*aur*0.5*(sin(6.2831853*uT/23.0 + uv.x*6.0) - sin(uv.x*6.0));
+    // The mauve twilight band along the ridge (Rod rejected it in the lighting pass): where red climbs to green's level
+    // (the night sky's blue has red well under green), tint toward the sky's own blue at the same brightness.
+    float pink = smoothstep(0.72, 0.92, base.r/max(base.g, 0.004));
+    float lum = dot(base, vec3(0.2126, 0.7152, 0.0722));
+    base = mix(base, vec3(0.55, 0.75, 1.25)*lum, 0.85*pink);
+    vec4 au = aurora(uv);
+    base = mix(base, au.rgb, au.a);
     // Stars: the plate's own star pixels, each twinkling on its own 4 to 9 s period.
     float T = 4.0 + 5.0*hash(floor(uv*uSize/16.0));
     vec3 star = texture2D(uImg, uv).rgb * (1.0 - 0.2*(1.0 - cos(6.2831853*uT/T)));
     base = mix(base, max(base, star), m.g);
-    vec3 skyc = mix(base, cc, cl.x*0.92);
-    float ac = 0.5 * cl.x * overMoon; // a moonlit veil over the moon, never a dark blot (density at most 0.5)
+    vec3 skyc = mix(base, cc, cl.x*0.92) + au.rgb*au.a*0.4*cl.x; // the aurora glows through thinner cloud
+    // A moonlit veil over the moon, never a dark blot (density at most 0.5); the moon stays clear for the first 15 s.
+    float ac = 0.5 * cl.x * overMoon * smoothstep(15.0, 20.0, uT);
     gl_FragColor = vec4(skyc*m.r + cc*ac, m.r + ac);
     return;
   }
@@ -122,8 +149,8 @@ export type Stop = () => void;
 // The shader's hash and noise, mirrored on the CPU (same constants), for the few per-frame values every pixel would
 // otherwise recompute: the ring's position and the cloud cover over the moon.
 const fract = (x: number) => x - Math.floor(x);
-function hash(x: number, y: number) { let px = fract(x * 123.34), py = fract(y * 456.21);
-  const d = px * (px + 45.32) + py * (py + 45.32); px += d; py += d; return fract(px * py); }
+function hash(x: number, y: number) { let a = fract(x * 0.1031), b = fract(y * 0.1031), c = fract(x * 0.1031);
+  const d = a * (b + 33.33) + b * (c + 33.33) + c * (a + 33.33); a += d; b += d; c += d; return fract((a + b) * c); }
 function noise(x: number, y: number) {
   const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy;
   const ux = fx * fx * fx * (fx * (fx * 6 - 15) + 10), uy = fy * fy * fy * (fy * (fy * 6 - 15) + 10);
@@ -146,14 +173,17 @@ function ringAt(t: number): [number, number, number, number] {
 }
 // Cloud density over the moon's centre (clouds() in the shader, at uMoon): it dims the moon's reflection and, next, the
 // moonlit highlights. Lagged like a real cloud shadow (Designer): about 2.5 s to dim, 4 s to recover.
-const WIND = 0.0035, COVER = 0.8;
+const WIND = 0.0035, COVER = 0.6;
 function cloudAtMoon(t: number) {
+  if (t < 15) return 0; // the moon stays clear for the first 15 s
   const px = moonU.x * 1280, py = (moonU.y * 1280) / asp;
-  const x = (px / 1280) * 2.2 - t * WIND, y = (py / 1280) * 5.6;
-  const qx = fbm(x, y + t * 0.010, 3, 1.7, 9.2, 2.02), qy = fbm(x + 5.2 - t * 0.008, y + 1.3, 3, 1.7, 9.2, 2.02);
-  const d = fbm(x + 1.4 * qx, y + 1.4 * qy, 5, 5.1, 1.3, 2.03);
-  const lo = 0.58 - 0.24 * COVER, hi = 0.80 - 0.24 * COVER, k = Math.min(1, Math.max(0, (d - lo) / (hi - lo)));
-  return 0.5 * k * k * (3 - 2 * k);
+  let x = (px / 1280) * 3.8 + 42.3, y = (py / 1280) * 9.9 + 9.8; x += y * 0.15; x -= t * WIND;
+  const qx = fbm(x * 0.6, y * 0.6 + t * 0.006, 3, 1.7, 9.2, 2.02), qy = fbm(x * 0.6 + 5.2 - t * 0.005, y * 0.6 + 1.3, 3, 1.7, 9.2, 2.02);
+  const wx = x + 0.45 * qx, wy = y + 0.45 * qy;
+  const f = fbm(wx, wy, 5, 5.1, 1.3, 2.03), bl = 1 - Math.abs(2 * fbm(wx * 1.7 + 3.1, wy * 1.7 + 3.1, 3, 1.7, 9.2, 2.02) - 1);
+  const big = fbm(x * 0.35 + 7.0, y * 0.35 + 2.0, 3, 1.7, 9.2, 2.02);
+  const d = 0.65 * f + 0.56 * bl * f + (big - 0.5) * 0.15, lo = 0.52 + 0.4 * (0.6 - COVER), k = Math.min(1, Math.max(0, (d - lo) / 0.22));
+  return 0.5 * k * k * (3 - 2 * k) * Math.min(1, Math.max(0, (t - 15) / 5));
 }
 let occ = 0, occT = 0;
 function occlusion(t: number) {
