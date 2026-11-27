@@ -19,7 +19,7 @@ Este es el modelo completo:
 
 Las personas no escriben la especificación ni trabajan el taller. Cuidan los requisitos. Todo lo demás se deriva.
 
-![Sumideros tipados de requisitos (producto, estándares, seguridad) componen una especificación versionada; un agente construye el diff entre versiones, y cualquier fuente se vuelve un sumidero al hablar un contrato MCP pequeño: listar, obtener una versión, comparar dos versiones.](/blog/media/dark-factory-diagram.svg "El ciclo: requisitos adentro, especificación y diff afuera.")
+![Sumideros tipados de requisitos (producto, estándares, seguridad) componen una especificación versionada; un agente construye el diff entre versiones, y cualquier fuente se vuelve un sumidero al hablar un contrato MCP pequeño: listar, obtener una versión, comparar dos versiones.](/blog/media/dark-factory-diagram.png "El ciclo: requisitos adentro, especificación y diff afuera.")
 
 ## Derive la especificación, no la mantenga
 

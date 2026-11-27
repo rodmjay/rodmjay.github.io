@@ -19,7 +19,7 @@ Here is the whole model:
 
 People don't write the spec and they don't work the floor. They tend the requirements. Everything else is derived.
 
-![Typed requirement sinks (product, standards, security) compose into a versioned specification; an agent builds the diff between versions, and any source becomes a sink by speaking a small MCP contract: list, get a version, diff two versions.](/blog/media/dark-factory-diagram.svg "The loop: requirements in, spec and diff out.")
+![Typed requirement sinks (product, standards, security) compose into a versioned specification; an agent builds the diff between versions, and any source becomes a sink by speaking a small MCP contract: list, get a version, diff two versions.](/blog/media/dark-factory-diagram.png "The loop: requirements in, spec and diff out.")
 
 ## Derive the spec, don't maintain it
 
