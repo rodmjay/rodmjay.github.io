@@ -164,3 +164,93 @@ Each effect is a displacement field `d(x, t)` or a brightness factor `b(x, t)`, 
   descriptor's textures. That needs Rod's go via EA for the credits.
 - Every ceiling in the contract is reachable with this model; none needs an exception.
 - Turning it off is a flag per phase, or the visitor's toggle; the static page is always complete without it.
+
+## Addendum, 11/27: a simulation framework, not a fixed shader
+
+Rod (via EA, 11/27): "we are going to be adding more simulated features in as we go … this is the framework we need to
+build on this graphic." He wants procedural clouds, a parametric scene state with seamless transitions (the calm moonlit
+night can turn into a storm or a tornado "with click of button"), and runtime control. Designer's language for it:
+design/specs/living-hero.md "scene states and transitions".
+
+This addendum is the target architecture. Phase 1 (what's on staging) ships as it is and becomes the framework's first
+modules. Each later stage is reviewed by eye before the next.
+
+### The pieces
+
+1. **The loop and the gates (unchanged).** One rAF loop per hero, with the gates above: reduced motion, save-data, no
+   WebGL, low-end, hidden or off screen, the toggle, slow frames, GL errors. Every effect runs behind the same gates,
+   whatever it is.
+2. **The state vector.** One named set of numbers, the only input every effect reads:
+   cloudCover, cloudDark, wind, moonVisibility, auroraStrength, starVisibility, precipType, precipDensity, lightning,
+   waterRoughness, fog, funnel.
+   - A **state** is a named point in it (Calm night, Breezy, Overcast, Snowfall, Storm, Tornado), kept in one JSON
+     catalog next to the descriptors.
+   - Calm night is the phase 1 look.
+3. **Transitions.** A transition animates each parameter from its current value to the target state's, eased
+   (smoothstep or slower, no overshoot), never by cross-fading images.
+   - Each parameter has its own delay and duration, so the order follows Designer's spec (wind first, then cover, light,
+     precipitation, water and fog, lightning last; reversed on the way back).
+   - Pacing comes from the spec: 20 s for Breezy up to 60–90 s for the tornado build-up.
+   - Because every parameter always moves from where it is now, a transition can be interrupted or reversed at any point
+     with no jump. "Back to calm" starts within one frame.
+4. **Signals.** Values derived once per frame on the CPU from the state and time, and shared by every effect. Examples:
+   - moonOcclusion: how much cloud covers the moon disc, from the veils and the procedural cover;
+   - moonlight: moonOcclusion with Designer's lag (2.5 s down, 4 s up);
+   - flash: lightning;
+   - windVector.
+   This keeps the world coherent: the dynamic moonlight, the moon's water column and the window streaks all read the same
+   signal. It also keeps per-pixel work low, as the veil showed.
+5. **Effect modules.** Each effect is one file declaring:
+   - the state parameters and signals it reads;
+   - its uniforms;
+   - GLSL for one or more fixed stages (displacement, colour, overlay);
+   - the masks or textures it needs;
+   - a cost class (light or heavy).
+   The engine assembles the fragment shader from the active modules. It recompiles only when the set of modules changes,
+   which is rare; state changes are uniforms only. Adding a feature means adding a module and a catalog entry. Today's
+   effects become the first modules: cloud flow, aurora, stars, water shimmer, ripples, ring, moon veil, and next,
+   dynamic moonlight.
+6. **Procedural clouds.**
+   - A cloud layer of domain-warped fractal noise, lit from the moon's direction (the descriptor's moon), coloured from a
+     small palette sampled from the plate's own sky so it matches the painted look.
+   - Rendered at half resolution into an offscreen buffer and composited.
+   - At Calm (cloudCover 0) the layer is empty and the painted clouds keep their flow, so the calm frame stays the
+     picture. Coverage, density and darkness come from the state vector.
+   - First prototype needs from Designer: a reference crop of the painted clouds, a 4–6 colour palette, and the light
+     direction. Designer reviews it before anything uses it.
+7. **The control layer.** A small controller API on the hero: `setState(name, { duration })`, `backToCalm()`, `state()`,
+   and change events. Every trigger goes through it:
+   - the future footer "Scene" button (Designer's spec: default Calm on every visit, nothing saved, hidden when Motion is
+     off or not possible);
+   - `?scene=` and a debug panel, behind a build flag and never in production;
+   - later interactive triggers.
+   Nothing changes state on its own.
+8. **Masks per plate,** from the same script:
+   - the motion mask (R sky, G stars, B water, A opaque);
+   - a second light mask (R moonlit highlights, G window lights, B fixed lights such as the Temple floodlight that never
+     dim or flicker, A opaque).
+   Designer checks each by eye.
+
+### Budgets and safety for heavy states
+
+- Heavy modules (precipitation, lightning, funnel, dense procedural cloud) load only when a heavy state is asked for. They
+  never load on low-end devices, with save-data, or after the frame budget has failed; there the hero stays on Calm
+  silently (Designer 6).
+- Lightning follows Designer's flash limits (at most 1 per 8 s on average, 25 % in-cloud and 10 % on land, at most 3 per
+  second) and is off under reduced motion or "Reduce flashing".
+- The fixed elements never move in any state: skyline, ridge, Temple, windows, moon position, reflection geometry. The
+  canvas stays transparent wherever no module draws, so those are always the page's own pixels.
+- Security's seven checks apply to every module. Nothing a module does may fetch, log or send anything.
+
+### Order of work
+
+1. Restructure phase 1 into the module and signal shape, with no visible change. The CI shader test covers every
+   module set.
+2. Add dynamic moonlight (the first signal consumer, with the light mask).
+3. Build the procedural cloud prototype, with Designer's review.
+4. Add the state vector and transition engine with Calm, Breezy and Overcast.
+5. Add precipitation and water roughness.
+6. Add lightning and the funnel.
+7. Add the Scene control.
+
+Each step is its own commit to `next` and its own staging check.
