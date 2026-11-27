@@ -4,7 +4,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 const RVP_ON = process.env.RVP_ON === "1"; // the test is built only where RVP_ON=1 (production after Rod's yes)
-const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/test-de-personalidad/" : "/personality-test/");
+const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/personality-test/" : "/personality-test/");
 import { HTML_LANG, RECIPES_LIVE, REMOVE_LIVE, asset, dict } from "@/lib/site.mjs";
 import { LANG_SRC } from "@/lib/langscript.mjs";
 import { altMap } from "@/lib/routes.mjs";

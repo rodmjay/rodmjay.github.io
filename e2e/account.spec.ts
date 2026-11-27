@@ -17,7 +17,7 @@ const dict = (l: "en" | "es") => JSON.parse(readFileSync(`i18n/${l}.json`, "utf8
 const bank = JSON.parse(readFileSync("src/rvp/bank.json", "utf8"));
 const LANGS = [
   { lang: "en" as const, home: "/", test: "/personality-test/", a: dict("en").account, r: dict("en").rvp },
-  { lang: "es" as const, home: "/es/", test: "/es/test-de-personalidad/", a: dict("es").account, r: dict("es").rvp },
+  { lang: "es" as const, home: "/es/", test: "/es/personality-test/", a: dict("es").account, r: dict("es").rvp },
 ];
 const strategist = (() => {
   const t: Record<string, string> = { R: "R.Intellectual", V: "V.Pragmatic", P: "P.Creative" };
@@ -344,7 +344,7 @@ test("account: no accessibility violations on sign in, the save card, the code s
   const api = await fn(page, { covers: true, consentAt: "2026-11-26T15:00:00Z", results: [{ id: "r1", taken_at: "2026-11-26T15:00:00Z", bank_version: bank.version, is_draft: true, code: "x", secondary: null, answers: strategist.split("a=")[1] }] });
   await built(page, "/es/signin/");
   expect(await axe()).toEqual([]);
-  await page.goto(`/es/test-de-personalidad/result/#${strategist}`);
+  await page.goto(`/es/personality-test/result/#${strategist}`);
   await expect(page.locator(".acct-save h2")).toHaveText(a.saveTitle);
   expect(await axe()).toEqual([]);
   await page.fill("#acct-email", "ana@example.test");

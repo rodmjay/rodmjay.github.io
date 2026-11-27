@@ -44,7 +44,7 @@ rmSync(join(OUT, "404"), { recursive: true, force: true });
 // Discover SLC ships only where DISCOVER_ON=1 (staging and checks; production once the reviews pass and DISCOVER_LIVE=1).
 if (process.env.DISCOVER_ON !== "1") for (const d of ["slc", "es/slc"]) rmSync(join(OUT, d), { recursive: true, force: true });
 // The RVP test ships only where RVP_ON=1 (staging and checks; production after Rod's yes): otherwise it isn't served.
-if (process.env.RVP_ON !== "1") for (const d of ["personality-test", "es/test-de-personalidad"]) rmSync(join(OUT, d), { recursive: true, force: true });
+if (process.env.RVP_ON !== "1") for (const d of ["personality-test", "es/personality-test"]) rmSync(join(OUT, d), { recursive: true, force: true });
 // Accounts the same way (ACCOUNTS_ON, ADR 0004): off, no /signin/ or /dashboard/ page and none of their header rules.
 const ACCOUNT_PAGES = ["signin", "es/signin", "dashboard", "es/dashboard"];
 if (process.env.ACCOUNTS_ON !== "1") {

@@ -3,7 +3,7 @@
 import { dict, SITE } from "@/lib/site.mjs";
 import { meta } from "@/lib/meta";
 const RVP_ON = process.env.RVP_ON === "1"; // the test is built only where RVP_ON=1 (production after Rod's yes)
-const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/test-de-personalidad/" : "/personality-test/");
+const rvpUrl = (lang: string, _p: string) => (lang === "es" ? "/es/personality-test/" : "/personality-test/");
 
 type Lang = "en" | "es";
 type Item = { title: string; body: string; url?: string };
