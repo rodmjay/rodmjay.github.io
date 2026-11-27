@@ -61,12 +61,57 @@ env:
   PRIVACY_UPDATED: "2026-11-24"
   # The blog's source (docs/adr/0003, psh ADR 0058): unset, the markdown in _content/; CMS_SOURCE=payload with CMS_API
   # (https://<cms host>) reads the published posts from the CMS before the build. Repo variables, set at cutover.
-  # Publishing in the CMS starts this workflow on main (workflow_dispatch); the daily schedule catches anything missed.
+  # With CMS_SYNC=1 the job sync-cms first imports main into the CMS (psh ADR 0063): a merge to main publishes.
   CMS_SOURCE: ${{ vars.CMS_SOURCE }}
   CMS_API: ${{ vars.CMS_API }}
 
 jobs:
+  # Git is the one home of the blog's posts; the CMS mirrors it (psh ADR 0063, EA 11/27). On a push to main or a manual
+  # run on main, this asks the CMS to import main (POST /api/sync) before the build reads the CMS. The only credential is
+  # this run's GitHub OIDC token (audience rodmjay-cms-sync), which the CMS accepts only from this workflow on main for a
+  # push or a dispatch. A fresh token for every try: each is single use. It fails, so nothing deploys, when the sync
+  # fails or is refused (over 10 changed posts, unsafe content), or when the CMS imported a different commit from this
+  # run's (main moved mid-run: the run for the newer commit takes it). Pull requests, `next` and the schedule skip it.
+  # Off until the repo variable CMS_SYNC=1.
+  sync-cms:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && vars.CMS_SOURCE == 'payload' && vars.CMS_SYNC == '1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      id-token: write # the OIDC token for the CMS, nothing else
+    steps:
+      - name: Import main into the CMS
+        env:
+          CMS_API: ${{ vars.CMS_API }}
+        run: |
+          set -uo pipefail
+          [[ "$CMS_API" =~ ^https://[a-z0-9.-]+$ ]] || { echo "::error::CMS_API must be https://<host>"; exit 1; }
+          for try in 1 2 3 4 5 6; do
+            tok="$(curl -sSf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+              "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=rodmjay-cms-sync" | jq -r .value)"
+            [[ -n "$tok" && "$tok" != null ]] || { echo "::error::no OIDC token"; exit 1; }
+            echo "::add-mask::$tok"
+            code="$(curl -sS -o sync.json -w '%{http_code}' --max-time 300 -X POST -H "Authorization: Bearer $tok" \
+              "$CMS_API/api/sync")" || true
+            [[ "$code" =~ ^[0-9]{3}$ ]] || code=000
+            unset tok
+            # 000/502/503/504: the CMS waking from zero; 409: another sync running; 429: over the rate. Try again.
+            case "$code" in 000|409|429|502|503|504) echo "try $try: $code; waiting"; sleep $((try * 20)); continue ;; esac
+            break
+          done
+          if [[ "$code" != 200 ]]; then
+            echo "::error::CMS sync answered $code: $(jq -r '[.error, .reason] | map(select(.)) | join(": ")' sync.json 2>/dev/null)"
+            exit 1
+          fi
+          sha="$(jq -r .sha sync.json)"
+          line="$(jq -r '"posts \(.posts.created) created, \(.posts.updated) updated, \(.posts.unchanged) unchanged; media \(.media.created) created, \(.media.updated) updated, \(.media.unchanged) unchanged; tags \(.tags.created) created, \(.tags.updated) updated, \(.tags.unchanged) unchanged"' sync.json)"
+          echo "CMS sync of \`${sha:0:12}\`: $line" | tee -a "$GITHUB_STEP_SUMMARY"
+          [[ "$sha" == "$GITHUB_SHA" ]] || { echo "::error::the CMS imported ${sha:0:12}, this run is ${GITHUB_SHA:0:12}: main moved; the newer run publishes it"; exit 1; }
+
   build:
+    needs: sync-cms
+    # Runs when the sync passed or was skipped (pull requests, next, the schedule, CMS_SYNC off); never after a failed sync.
+    if: ${{ !cancelled() && (needs.sync-cms.result == 'success' || needs.sync-cms.result == 'skipped') }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
