@@ -8,7 +8,7 @@ export type Variant = {
 export type Descriptor = { id: string; phases: number[]; variants: Variant[] };
 
 const PATH = /^\/[A-Za-z0-9._/-]+\.(webp|png|avif|jpg)$/;
-const okPath = (p: unknown) => typeof p === "string" && PATH.test(p) && !p.includes("//") && !p.includes("..");
+export const okPath = (p: unknown) => typeof p === "string" && PATH.test(p) && !p.includes("//") && !p.includes("..");
 const frac = (n: unknown) => typeof n === "number" && Number.isFinite(n) && n >= 0 && n <= 1;
 const FOCUS = /^\d{1,3}(\.\d+)?% \d{1,3}(\.\d+)?%$/;
 
@@ -26,6 +26,16 @@ export function checkDescriptor(d: unknown): Descriptor {
     if (typeof v.focus !== "string" || !FOCUS.test(v.focus)) throw new Error("living-hero: bad focus");
   }
   return x;
+}
+
+// The file the page's <img> is showing right now, as a site path, if it is one of ours: the canvas samples the same
+// pixels, so its first frame matches the picture exactly (the <img> picks 1280, 1920 or 2560 by width and density).
+export function shownImage(img: HTMLImageElement | null): string | null {
+  try {
+    if (!img?.currentSrc) return null;
+    const u = new URL(img.currentSrc, location.href);
+    return u.origin === location.origin && okPath(u.pathname) ? u.pathname : null;
+  } catch { return null; }
 }
 
 // The variant for the current width: the first whose media query matches (the same breakpoints as the page's <picture>).

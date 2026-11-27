@@ -4,7 +4,7 @@
 // Security 11/27: same-origin textures only, no network of its own, nothing logged or sent, no renderer string read,
 // the mask uploaded raw (no premultiply, no colorspace conversion), fixed loop bounds, context loss and slow frames end it
 // for the session, nothing allocated in the frame loop.
-import { pickVariant, type Descriptor, type Variant } from "./descriptor";
+import { pickVariant, shownImage, type Descriptor, type Variant } from "./descriptor";
 
 const VS = `attribute vec2 a; uniform vec2 uRes; varying vec2 vP;
 void main(){ vP = vec2((a.x*0.5+0.5)*uRes.x, (0.5-a.y*0.5)*uRes.y); gl_Position = vec4(a,0.0,1.0); }`;
@@ -13,7 +13,7 @@ void main(){ vP = vec2((a.x*0.5+0.5)*uRes.x, (0.5-a.y*0.5)*uRes.y); gl_Position 
 // uDrift: the sky's largest move in uv (6 px at 1280 w); uRip: half the water's largest move (peak 2 px); uK, uW: the
 // ripple's spatial and time frequency; uHz: the horizon; uSize: the texture size, for per-star cells.
 const FS = `precision mediump float;
-uniform sampler2D uImg, uMask; uniform vec2 uA, uB, uSize, uDrift; uniform float uT, uHz, uRip, uK, uW;
+uniform sampler2D uImg, uMask; uniform vec2 uA, uB, uSize, uDrift, uTex; uniform float uT, uHz, uRip, uK, uW, uMin;
 varying vec2 vP;
 float hash(vec2 p){ p = fract(p*vec2(123.34,456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }
 float noise(vec2 p){ vec2 i=floor(p), f=fract(p), u=f*f*(3.0-2.0*f);
@@ -27,10 +27,18 @@ void main(){
   vec4 m = texture2D(uMask, uv);
   vec2 d = m.r * (flow(uv,uT) - flow(uv,0.0)) * uDrift;
   if (uv.y > uHz) { float k = (uv.y-uHz)/(1.0-uHz); float ph = uv.y*uK; d.x += m.b * uRip * k * (sin(ph+uT*uW) - sin(ph)); }
-  vec3 c = texture2D(uImg, clamp(uv+d, 0.0, 1.0)).rgb;
+  // When the picture is shown smaller than its file (uMin: over 1.25 file pixels per canvas pixel), average 4 taps
+  // so the canvas matches the browser's own smooth downscale instead of aliasing (fixed taps, no loop).
+  vec2 q = clamp(uv+d, 0.0, 1.0);
+  vec3 c = texture2D(uImg, q).rgb;
+  if (uMin > 0.5) { vec2 o = uTex*0.25;
+    c = 0.25*(texture2D(uImg, q+vec2(-o.x,-o.y)).rgb + texture2D(uImg, q+vec2(o.x,-o.y)).rgb + texture2D(uImg, q+vec2(-o.x,o.y)).rgb + texture2D(uImg, q+vec2(o.x,o.y)).rgb); }
   float T = 4.0 + 5.0*hash(floor(uv*uSize/16.0));
   c *= mix(1.0, 1.0 - 0.2*(1.0-cos(6.2831853*uT/T)), m.g);
-  gl_FragColor = vec4(c, 1.0);
+  // Draw only where something moves (sky, stars, water); elsewhere the canvas is clear, so the mountains, city and moon
+  // are always the page's own <img> at full sharpness, whatever the canvas resolution (premultiplied alpha).
+  float a = clamp(max(max(m.r, m.b), m.g), 0.0, 1.0);
+  gl_FragColor = vec4(c*a, a);
 }`;
 
 export type Stop = () => void;
@@ -42,7 +50,7 @@ function load(src: string): Promise<HTMLImageElement> {
 // Starts the hero on `canvas` (inside the cover box) and returns a stop function. `onReady` fires after the first frame is
 // drawn (the caller fades the canvas in); `onFail` fires once on any failure, and the static image simply stays.
 export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => void, onFail: () => void): Stop {
-  const gl = canvas.getContext("webgl", { alpha: false, antialias: false, depth: false, stencil: false, premultipliedAlpha: false, preserveDrawingBuffer: false, powerPreference: "low-power" });
+  const gl = canvas.getContext("webgl", { alpha: true, antialias: false, depth: false, stencil: false, premultipliedAlpha: true, preserveDrawingBuffer: false, powerPreference: "low-power" });
   if (!gl) { onFail(); return () => {}; }
   let dead = false, raf = 0, visible = true, onScreen = true, t0 = 0, last = 0, ready = false, failed = false, t0Pause = 0;
   // Slow frames: the device's own frame interval is measured over 30 frames before anything is drawn (a display or a
@@ -65,7 +73,7 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
   const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const aLoc = gl.getAttribLocation(prog, "a"); gl.enableVertexAttribArray(aLoc); gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
   const U = (n: string) => gl.getUniformLocation(prog, n);
-  const u = { res: U("uRes"), a: U("uA"), b: U("uB"), size: U("uSize"), drift: U("uDrift"), t: U("uT"), hz: U("uHz"), rip: U("uRip"), k: U("uK"), w: U("uW"), img: U("uImg"), mask: U("uMask") };
+  const u = { min: U("uMin"), tex: U("uTex"), res: U("uRes"), a: U("uA"), b: U("uB"), size: U("uSize"), drift: U("uDrift"), t: U("uT"), hz: U("uHz"), rip: U("uRip"), k: U("uK"), w: U("uW"), img: U("uImg"), mask: U("uMask") };
   gl.uniform1i(u.img, 0); gl.uniform1i(u.mask, 1);
   const texImg = gl.createTexture(), texMask = gl.createTexture();
   const upload = (tex: WebGLTexture | null, unit: number, im: HTMLImageElement, raw: boolean) => {
@@ -78,7 +86,8 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   };
 
-  let v: Variant | null = null, loading = 0;
+  let v: Variant | null = null, vSrc = "", loading = 0, texW = 0;
+  const picture = canvas.parentElement?.querySelector("img") ?? null;
   // Sizes the canvas to its box (DPR capped at 1.5) and recomputes the cover-fit mapping; loads the variant's textures
   // when the breakpoint changes.
   const layout = async () => {
@@ -88,13 +97,14 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     gl.viewport(0, 0, canvas.width, canvas.height);
     const next = pickVariant(d);
     if (!next) return fail();
-    if (next !== v) {
+    const src = shownImage(picture) ?? next.image;
+    if (next !== v || src !== vSrc) {
       const id = ++loading;
       try {
-        const [im, mk] = await Promise.all([load(next.image), load(next.mask)]);
+        const [im, mk] = await Promise.all([load(src), next === v ? Promise.resolve(null) : load(next.mask)]);
         if (dead || id !== loading) return;
-        upload(texImg, 0, im, false); upload(texMask, 1, mk, true);
-        v = next;
+        upload(texImg, 0, im, false); texW = im.naturalWidth; if (mk) upload(texMask, 1, mk, true);
+        v = next; vSrc = src;
       } catch { return fail(); }
     }
     const [w, h] = v!.size, s = Math.max(cw / w, ch / h), dw = w * s, dh = h * s;
@@ -102,6 +112,8 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     const ox = (cw - dw) * fx, oy = (ch - dh) * fy;
     gl.uniform2f(u.res, cw, ch); gl.uniform2f(u.a, 1 / dw, 1 / dh); gl.uniform2f(u.b, -ox / dw, -oy / dh);
     gl.uniform2f(u.size, w, h); gl.uniform1f(u.hz, v!.horizon);
+    gl.uniform2f(u.tex, 1 / (dw * dpr), 1 / (dh * dpr)); // one canvas pixel, in uv
+    gl.uniform1f(u.min, texW / (dw * dpr) > 1.25 ? 1 : 0);
     // Ceilings (Designer): sky 6 px and water 2 px peak when the picture shows 1280 px wide, a ripple wave of about 14 px.
     // Expressed as fractions of the picture (plate pixels), so they look the same at every crop and width.
     const ux = 1 / 1280, uy = (1 / 1280) * (w / h);
@@ -124,6 +136,7 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     if (t0Pause) { t0 += now - t0Pause; t0Pause = 0; } // resume where it paused, no jump
     last = now;
     gl.uniform1f(u.t, (now - t0) / 1000);
+    gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     if (!ready) { ready = true; onReady(); }
   };

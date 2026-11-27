@@ -145,6 +145,17 @@ Each effect is a displacement field `d(x, t)` or a brightness factor `b(x, t)`, 
      to the images folder.
 - In debug builds only, the hero logs the descriptor's `id`, so a wrong plate is easy to spot (Designer).
 
+### Measured on the built page (11/27, headless Chromium, 1280×720 and 375×812 at 1× and 3×)
+
+- The canvas draws only where something moves (alpha = the larger of the sky, star and water weights, premultiplied).
+  Everywhere else it is clear, so the mountains, city and moon are always the page's own `<img>`, pixel for pixel,
+  whatever the canvas density. Measured difference over the mountains: 0.00 to 0.01 levels.
+- It samples the file the `<img>` is actually showing (`currentSrc`, validated same-origin), not a fixed size, so both
+  decode the same pixels. When that file is shown smaller than its size, it averages 4 taps, the way the browser smooths
+  a downscale.
+- Over 30 s the mountains and city change by 0.00. The sky moves by a mean of about 0.5 levels and the water by about
+  1.2: quiet, as the contract asks.
+
 ## Consequences
 
 - Phase 1 needs no new art and no credits: the home plate plus a generated mask. /slc needs four masks (one per season).
