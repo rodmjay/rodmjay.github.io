@@ -49,9 +49,9 @@ export function Home({ lang }: { lang: Lang }) {
   ].filter(Boolean).map((x) => ({ ...(x as { key: "slc" | "recipes" | "test" | "blog"; href: string; mark: React.ReactNode }), ...h.projects[(x as { key: string }).key] }));
   return (
     <>
-      {/* The stage (Designer 11/27, "name and title straddle the cover edge"): the cover, then a fixed night-blue strip;
-          the avatar, name and title sit on the seam between them, in white with a shadow, above the living hero. The stage
-          is the same in light and dark. The h1 is inside <main>, so the stage is too. */}
+      {/* The stage (Rod 11/27, via Designer; design/specs/rodmjay-home.md): the cover's lowest part fades into the page, with
+          no strip or edge; the avatar straddles the cover's bottom and the name and title run across the fade, above the
+          living hero. The h1 is inside <main>, so the stage is too. */}
       <main id="main" className="home-page">
         <div className="stage">
           <div className="cover">
@@ -64,7 +64,6 @@ export function Home({ lang }: { lang: Lang }) {
             </picture>
             {LIVING_HERO && <LivingHero descriptor={HERO} />}
           </div>
-          <div className="stage-strip" />
           <div className="stage-id col home">
             <img className="hero-photo" src="/img/rod-256.webp" srcSet="/img/rod-256.webp 256w, /img/rod-384.webp 384w" sizes="(min-width: 400px) 128px, 96px"
               width={128} height={128} alt={d.hero.photoAlt} fetchPriority="high" decoding="async" />
