@@ -169,7 +169,8 @@
         }
       ],
       "rights": "To see, correct or delete a lookup, or to object to it, email {email}. If you're in the EU or UK, you have the right to object to this lookup. If you'd rather not agree, you can't get the resume through this form, so email me and we can talk directly."
-    }
+    },
+    "motion": "If you use the Motion on/off switch in the footer, your browser remembers your choice (one setting called 'motion', on or off) on this device. It is never sent to us or anyone else, and it is not a cookie. To check whether to animate, the page looks at your device's basic abilities, such as reduced-motion, memory and graphics support, on your device only. Nothing about it is stored or sent."
   },
   "blog": {
     "title": "Blog",

@@ -14,7 +14,9 @@ export function MotionToggle({ w }: { w: MotionWords }) {
     sync();
     window.addEventListener(MOTION_EVENT, sync);
     window.addEventListener("storage", sync);
-    return () => { window.removeEventListener(MOTION_EVENT, sync); window.removeEventListener("storage", sync); };
+    const rm = window.matchMedia("(prefers-reduced-motion: reduce)");
+    rm.addEventListener("change", sync);
+    return () => { window.removeEventListener(MOTION_EVENT, sync); window.removeEventListener("storage", sync); rm.removeEventListener("change", sync); };
   }, []);
   return (
     <button type="button" className="motion-toggle" aria-pressed={on ?? true} aria-label={on === false ? w.nameOff : w.nameOn}

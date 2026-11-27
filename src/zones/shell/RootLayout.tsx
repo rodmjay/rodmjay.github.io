@@ -50,6 +50,7 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
           {hasQuotes && <Link href={`${home}quotes/`}>{d.home.quotes}</Link>}
           <Link href={lang === "en" ? "/privacy/" : "/privacy/es/"}>{d.home.privacy}</Link>
           {REMOVE_LIVE && <Link href={lang === "en" ? "/remove/" : "/es/remove/"}>{d.remove.footerLink}</Link>}
+          <span className="foot-note">{d.footer.cookies}</span>
           {LIVING_HERO && <MotionToggle w={{ on: d.home.motionOn, off: d.home.motionOff, nameOn: d.home.motionNameOn, nameOff: d.home.motionNameOff }} />}
         </nav></footer>
       </body>

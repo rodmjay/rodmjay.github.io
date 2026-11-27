@@ -1,7 +1,8 @@
 "use client";
 // The living hero (docs/adr/0004; design/specs/living-hero.md): a decorative canvas over the page's own hero picture. The
 // <img> stays the page, the LCP and the no-script view; this only adds motion where everything allows it, loaded on idle
-// after the page has loaded. Off (the image stays, nothing more loads) for: reduced motion, save-data, no WebGL, a
+// after the page has loaded. Off (the image stays, nothing more loads) for: reduced motion (unless the visitor turned
+// Motion on themselves), save-data, no WebGL, a
 // low-end device, the visitor's "Motion off", a hidden tab or the band off screen (paused), and slow frames, a GL error
 // or context loss (for the session). Reacts live to the toggle and to a reduced-motion change. Nothing is logged or sent.
 import { useEffect, useRef } from "react";
@@ -12,7 +13,6 @@ declare global { interface Navigator { deviceMemory?: number; connection?: { sav
 
 function allowed(): boolean {
   try {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
     if (navigator.connection?.saveData) return false;
     if ((navigator.deviceMemory ?? 8) <= 2 && (navigator.hardwareConcurrency ?? 8) <= 2) return false;
     if (!motionOn()) return false;

@@ -241,3 +241,4 @@ body:has(main.home) .foot.col { max-width: 44rem; }
 .motion-toggle { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 48px; padding: 0; border: 0; background: none;
   color: var(--md-sys-color-on-surface-variant); font: inherit; text-decoration: underline; cursor: pointer; }
 .motion-toggle:focus-visible { outline: 3px solid var(--md-sys-color-primary); outline-offset: 2px; }
+.foot-note { display: inline-flex; align-items: center; min-height: 48px; color: var(--md-sys-color-on-surface-variant); }
