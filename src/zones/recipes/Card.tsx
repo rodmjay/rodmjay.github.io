@@ -1,31 +1,30 @@
-// One recipe card and its photo, shared by the server-rendered lists (tag pages, section mode) and the client filter
-// on the index (RecipeBrowser). No build-time imports here: everything a card shows comes in as data.
+// One recipe card and its photo (Designer's homey spec): the photo, the title under it, and "50 min · serves 4" small.
+// The whole card is one link, one tab stop. Shared by the server-rendered lists (home, tag pages, related) and the client
+// browser on All recipes. No build-time imports here: everything a card shows comes in as data.
 import Link from "next/link";
 
 export type PhotoData = { srcset: string; jpg: string; width: number; height: number } | null;
-export type CardData = { url: string; title: string; dek: string; facts: string[]; photo: PhotoData; imageAlt: string; tags: string[] };
+export type CardData = { slug: string; url: string; title: string; meta: string; photo: PhotoData; imageAlt: string; tags: string[]; search: string };
 
-export function Photo({ photo, alt, sizes, eager }: { photo: PhotoData; alt: string; sizes: string; eager?: boolean }) {
+export function Photo({ photo, alt, sizes, eager, className }: { photo: PhotoData; alt: string; sizes: string; eager?: boolean; className?: string }) {
   if (!photo) return null;
   return (
-    <picture>
+    <picture className={className}>
       <source type="image/webp" srcSet={photo.srcset} sizes={sizes} />
-      <img src={photo.jpg} alt={alt} width={photo.width} height={photo.height} loading={eager ? "eager" : "lazy"} decoding="async" />
+      <img src={photo.jpg} alt={alt} width={photo.width} height={photo.height} loading={eager ? "eager" : "lazy"} decoding="async" fetchPriority={eager ? "high" : undefined} />
     </picture>
   );
 }
 
-// The whole card is one link, one tab stop; no tag chips on the card (Designer, 11/26).
-export function RecipeCard({ x, eager, sampleLabel }: { x: CardData; eager?: boolean; sampleLabel?: string }) {
+export function RecipeCard({ x, eager, heading: H = "h3" }: { x: CardData; eager?: boolean; heading?: "h2" | "h3" }) {
   return (
-    <Link className={`ds-card outlined recipe-card${x.photo ? "" : " flat"}`} href={x.url}>
-      {x.photo ? <Photo photo={x.photo} alt={x.imageAlt} sizes="(min-width: 1024px) 22rem, (min-width: 600px) 45vw, 100vw" eager={eager} /> : <span className="flat-title" aria-hidden="true">{x.title}</span>}
-      <span className="recipe-card-body">
-        {sampleLabel && <span className="ds-chip sample-chip">{sampleLabel}</span>}
-        <span className="ds-title-medium recipe-card-title">{x.title}</span>
-        <span className="ds-body-medium ds-variant recipe-card-dek">{x.dek}</span>
-        {x.facts.length > 0 && <span className="ds-overline recipe-card-facts">{x.facts.join(" · ")}</span>}
-      </span>
-    </Link>
+    <article className={`rb-card${x.photo ? "" : " flat"}`}>
+      {x.photo ? <Photo photo={x.photo} alt={x.imageAlt} sizes="(min-width: 1040px) 330px, (min-width: 560px) 45vw, 100vw" eager={eager} />
+        : <span className="rb-card-flat" aria-hidden="true">{x.title}</span>}
+      <div className="rb-card-body">
+        <H className="rb-card-title"><Link href={x.url}>{x.title}</Link></H>
+        {x.meta && <span className="rb-card-meta">{x.meta}</span>}
+      </div>
+    </article>
   );
 }

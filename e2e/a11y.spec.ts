@@ -6,8 +6,8 @@ import { expect, test } from "@playwright/test";
 // spec. axe checks what a machine can (contrast, names, roles, landmarks, labels); the rest (screen reader wording,
 // zoom, reduced motion) is Designer's staging check. Add a path here when a new kind of page ships.
 const PAGES = {
-  en: ["/", "/blog/", "/blog/ai-writes-the-code/", "/blog/tag/architecture/", "/privacy/", "/quotes/", "/remove/", "/recipes/", "/recipes/gallo-pinto/", "/recipes/tag/season-winter/", "/recipes/roast-turkey-breast/", "/recipes/?tags=season:summer", "/404.html"],
-  es: ["/es/", "/es/blog/", "/es/blog/ia-escribe-el-codigo/", "/es/blog/tag/arquitectura/", "/privacy/es/", "/es/quotes/", "/es/remove/", "/es/recipes/", "/es/recipes/gallo-pinto/", "/es/recipes/tag/season-winter/"],
+  en: ["/", "/blog/", "/blog/ai-writes-the-code/", "/blog/tag/architecture/", "/privacy/", "/quotes/", "/remove/", "/recipes/", "/recipes/all/", "/recipes/about/", "/recipes/gallo-pinto/", "/recipes/tag/course-main/", "/recipes/easy-oven-fried-chicken/", "/recipes/all/?tags=season:summer&q=chicken", "/404.html"],
+  es: ["/es/", "/es/blog/", "/es/blog/ia-escribe-el-codigo/", "/es/blog/tag/arquitectura/", "/privacy/es/", "/es/quotes/", "/es/remove/", "/es/recipes/", "/es/recipes/all/", "/es/recipes/about/", "/es/recipes/gallo-pinto/", "/es/recipes/tag/season-winter/"],
 };
 // Discover SLC is built only where DISCOVER_ON=1 (staging, checks, and production once DISCOVER_LIVE=1): test it where it
 // exists, so a build with it off doesn't test the 404 page under its URL.

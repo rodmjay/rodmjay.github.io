@@ -1,9 +1,9 @@
 // Route factories, so each app/ page file is a few lines: the same page in either language, with its static params.
 // Every dynamic route is fully static (dynamicParams = false in the page file): unknown paths are the 404.
 import { loadBlog, BASE as BLOG } from "@/lib/blog.mjs";
-import { loadRecipes, BASE as RECIPES } from "@/lib/recipes.mjs";
+import { loadRecipes, BASE as RECIPES, ALL as RECIPES_ALL } from "@/lib/recipes.mjs";
 import { BlogList, PostPage, listMeta as blogListMeta, postMeta } from "./blog/Blog";
-import { RecipeList, RecipePage, listMeta as recipeListMeta, recipeMeta } from "./recipes/Recipes";
+import { BookAbout, BookHome, RecipeList, RecipePage, aboutMeta as recipeAboutMeta, homeMeta as recipeHomeMeta, listMeta as recipeListMeta, recipeMeta } from "./recipes/Recipes";
 
 type Lang = "en" | "es";
 type P<T> = { params: Promise<T> };
@@ -46,11 +46,18 @@ export function blogPost(lang: Lang) {
   };
 }
 
+// The Family Recipe Book (Designer's homey spec 11/27): the home, All recipes (and its pages), About.
+export function recipeHome(lang: Lang) {
+  return { Page: () => <BookHome lang={lang} />, metadata: () => recipeHomeMeta(lang) };
+}
+export function recipeAbout(lang: Lang) {
+  return { Page: () => <BookAbout lang={lang} />, metadata: () => recipeAboutMeta(lang) };
+}
 export function recipeIndex(lang: Lang) {
-  return { Page: () => <RecipeList path={RECIPES[lang]} />, metadata: () => recipeListMeta(RECIPES[lang]) };
+  return { Page: () => <RecipeList path={RECIPES_ALL[lang]} />, metadata: () => recipeListMeta(RECIPES_ALL[lang]) };
 }
 export function recipePaged(lang: Lang) {
-  const path = (n: string) => `${RECIPES[lang]}page/${n}/`;
+  const path = (n: string) => `${RECIPES_ALL[lang]}page/${n}/`;
   return {
     params: async () => orNone((await loadRecipes()).lists.filter((l: any) => l.lang === lang && !l.tag && l.n > 1).map((l: any) => ({ n: String(l.n) })), { n: "0" }),
     metadata: async ({ params }: P<{ n: string }>) => recipeListMeta(path((await params).n)),

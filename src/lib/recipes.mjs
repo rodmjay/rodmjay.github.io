@@ -20,8 +20,23 @@ import { ROOT, LANGS, read, RECIPES_APPROVED } from "./site.mjs";
 import { checkUsted, slugify, words } from "./usted.mjs";
 import { imgDims } from "./blog.mjs";
 
-export const PER_PAGE = 12;
+export const PER_PAGE = 24; // a food blog's list page: eight rows of three
 export const BASE = { en: "/recipes/", es: "/es/recipes/" };
+// The Family Recipe Book's pages (Designer's homey spec, design/specs/recipe-book-homey.md, 11/27): the home at BASE, the
+// whole book with search and filters at ALL, About at ABOUT. Recipe pages and tag (course) pages stay at BASE<slug>/ and
+// BASE tag/<group>-<key>/, so no slug may take one of these names.
+export const ALL = { en: "/recipes/all/", es: "/es/recipes/all/" };
+export const ABOUT = { en: "/recipes/about/", es: "/es/recipes/about/" };
+const RESERVED = new Set(["all", "about", "tag", "page"]);
+// "Browse by course": these tags in this order (by count, Salads after Sides; Health Agent and Designer 11/27). The plural
+// labels live in i18n (recipes.courses), keyed by tag; the data's own labels stay singular.
+export const COURSES = ["course:main", "course:breakfast", "course:side", "dish:salad", "course:dessert", "course:snack", "course:drink", "course:appetizer"];
+// The header's course links (Designer 11/27): Main dishes, Breakfast, Desserts.
+export const NAV_COURSES = ["course:main", "course:breakfast", "course:dessert"];
+// The home's featured recipes, first one the welcome photo (nutrition/recipe-book/SITE-COPY.md, Health Agent; no field in the data).
+export const FEATURED = ["chicken-piccata", "almond-streusel-cake", "baja-shrimp-tacos", "apple-pancakes", "arroz-con-pollo", "bacon-and-double-cheese-quiche"];
+// Search text: lower case, no accents, so "jalapeno" finds "jalapeño".
+export const fold = (s) => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 const API = process.env.RECIPES_API || "";
 const FILE = join(ROOT, "data/recipes/recipes.json");
 const FROM_FILE = existsSync(FILE) && process.env.RECIPES_SOURCE !== "api";
@@ -113,6 +128,7 @@ async function build() {
     };
     if (!LANGS.includes(rec.lang)) { fail(`${where}: lang must be en or es`); continue; }
     if (!rec.slug || rec.slug !== slugify(rec.slug)) fail(`${where}: the slug must be a plain slug (a-z, 0-9, -)`);
+    if (RESERVED.has(rec.slug)) fail(`${where}: "${rec.slug}" is a page name in the book (${[...RESERVED].join(", ")})`);
     for (const k of ["title", "dek"]) if (!rec[k]) fail(`${where}: needs a ${k}`);
     if (!rec.ingredients.length) fail(`${where}: needs ingredients`);
     if (!rec.steps.length) fail(`${where}: needs steps`);
@@ -193,6 +209,18 @@ async function build() {
 
   const newest = (a, b) => b.updatedAt.localeCompare(a.updatedAt) || a.title.localeCompare(b.title);
   const byLang = Object.fromEntries(LANGS.map((l) => [l, recipes.filter((r) => r.lang === l).sort(newest)]));
+  // What the homey pages read: the course and cuisine (meta bar, breadcrumb), the search text (title and ingredients),
+  // and three related recipes (same course first, then the most shared tags, then the newest).
+  for (const r of recipes) {
+    r.course = r.facets.find((f) => f.group === "course") || null;
+    r.cuisine = r.facets.find((f) => f.group === "cuisine") || null;
+    r.search = fold([r.title, ...r.ingredients.filter((x) => !x.startsWith("## "))].join(" "));
+  }
+  for (const lang of LANGS) for (const r of byLang[lang]) {
+    const mine = new Set(r.facets.map((f) => f.tag));
+    const score = (x) => (r.course && x.course?.tag === r.course.tag ? 100 : 0) + x.facets.filter((f) => mine.has(f.tag)).length;
+    r.related = byLang[lang].filter((x) => x.slug !== r.slug).map((x, i) => ({ x, s: score(x), i })).sort((a, b) => b.s - a.s || a.i - b.i).slice(0, 3).map((o) => o.x.slug);
+  }
 
   // List pages: the index and each tag, 12 to a page. Tag pages link across languages by position in the twin's tags.
   const tagName = (lang, slug) => byLang[lang].flatMap((r) => r.tagNames.map((t, i) => [r.tagSlugs[i], t])).find(([s]) => s === slug)?.[1];
@@ -205,7 +233,7 @@ async function build() {
       for (let n = 1; n <= total; n++) lists.push({ lang, n, total, tag, base, items: items.slice((n - 1) * PER_PAGE, n * PER_PAGE),
         path: n === 1 ? base : `${base}page/${n}/`, otherPath: n === 1 ? otherBase : `${otherBase}page/${n}/` });
     };
-    add(byLang[lang], BASE[lang], BASE[other], null);
+    add(byLang[lang], ALL[lang], ALL[other], null);
     const slugs = [...new Set(byLang[lang].flatMap((r) => r.tagSlugs))].sort((a, b) => tagName(lang, a).localeCompare(tagName(lang, b), lang === "es" ? "es-419" : "en"));
     for (const s of slugs) {
       const items = byLang[lang].filter((r) => r.tagSlugs.includes(s));
@@ -231,7 +259,9 @@ async function build() {
     }
     return { group, values: [...values.values()].sort(byValue(lang)) };
   }).filter((g) => g.values.length);
-  return { recipes, byLang, lists, sample: !RECIPES_APPROVED, sampleData, from, facetMode, facetGroups,
+  const courseCounts = (lang) => COURSES.map((tag) => ({ tag, slug: tagSlug(tag), url: `${BASE[lang]}tag/${tagSlug(tag)}/`,
+    count: byLang[lang].filter((r) => r.facets.some((f) => f.tag === tag)).length })).filter((c) => c.count > 0);
+  return { recipes, byLang, lists, sample: !RECIPES_APPROVED, sampleData, from, facetMode, facetGroups, courseCounts,
     tagUrl: (lang, s) => `${BASE[lang]}tag/${s}/`, usedTags };
 }
 
