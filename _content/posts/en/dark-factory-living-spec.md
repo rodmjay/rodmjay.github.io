@@ -41,12 +41,34 @@ Repos are where you start, not where this ends. A requirements source has to ans
 
 This is the leverage. Your requirements already live in a dozen systems. MCP lets you compose them where they are instead of copying them into a document that drifts the day after you write it. The contract is small on purpose: list, get a version, diff two versions. Keep it that small and everything plugs in.
 
+## Follow the id
+
+Every requirement gets one id when it is born. The id never changes and is never reused. It is the join key for everything that happens next.
+
+Put it where each tool can search it:
+
+- Branch: `req/PROD-142-export-csv`, so the id exists before the first commit.
+- Issue and pull request: the id in the title, plus a `req:PROD-142` label.
+- Commit: a trailer, `Requirement: PROD-142`, the same way you add a sign-off.
+- Test: tag it with the id it verifies.
+
+Now one search returns the whole trail. `git log --grep "Requirement: PROD-142"` lists every change. The label lists every issue and pull request. The test tag lists what proves it.
+
+It works in both directions. Start from a requirement and you find the code. Start from a line of code, blame it to a commit, read the trailer, and you land on the requirement and the reason it exists. Coverage becomes a question about requirements: which ids in this release have a merged change and a passing test?
+
+CI keeps it honest, because nobody should have to remember. Every pull request carries a real id from the pinned spec, or says `Maintenance:` with a reason. Every requirement in the diff needs a merged change and a tagged test before the version counts as done. Otherwise the build fails.
+
+A few cases need a rule. A split gives the children new ids and marks the parent superseded. A merge keeps one id and points the others at it. A pull request that touches several requirements lists them all, and if the list gets long, the pull request is too big. Old code has no ids, and that is fine: start at the current version and tag what you touch.
+
+Never keep the trace in a table. Compute it from the trailers, labels and test reports, the same way you compute the spec.
+
 ## Start this week
 
 1. Pick one product and three sinks with different owners: the product, a shared standard, and security.
 2. Put each in a repo and pin a version in the workspace.
 3. Compose the spec at build time. Never hand-edit the output.
 4. On the next change, generate the diff and give an agent only that, with each requirement's id and reason attached.
-5. When a second system holds requirements you keep copying by hand, put the MCP contract in front of it and make it a sink too.
+5. Give every requirement a permanent id and put it in the branch, the pull request title, the commit trailer and the test tag. Add a CI check: every pull request carries one, and every requirement in the diff has a merged change and a tagged test.
+6. When a second system holds requirements you keep copying by hand, put the MCP contract in front of it and make it a sink too.
 
 Use the fewest sinks that have different approvers. Make the approval the merge your team already does. The spec stays current because nobody is keeping it current.

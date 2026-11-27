@@ -41,12 +41,34 @@ Los repositorios son por donde se empieza, no donde esto termina. Una fuente de 
 
 Aquí está la palanca. Sus requisitos ya viven en una docena de sistemas. MCP le permite componerlos donde están en vez de copiarlos a un documento que se desvía al día siguiente de escribirlo. El contrato es pequeño a propósito: listar, obtener una versión, comparar dos versiones. Manténgalo así de pequeño y todo se conecta.
 
+## Siga el identificador
+
+Cada requisito recibe un identificador cuando nace. El identificador no cambia y nunca se reutiliza. Es la llave que une todo lo que sucede después.
+
+Póngalo donde cada herramienta pueda buscarlo:
+
+- Rama: `req/PROD-142-exportar-csv`, para que el identificador exista antes del primer commit.
+- Issue y pull request: el identificador en el título, más una etiqueta `req:PROD-142`.
+- Commit: un trailer, `Requirement: PROD-142`, igual que se agrega un sign-off.
+- Prueba: etiquétela con el identificador que verifica.
+
+Así una sola búsqueda devuelve todo el rastro. `git log --grep "Requirement: PROD-142"` lista cada cambio. La etiqueta lista cada issue y pull request. La etiqueta de la prueba lista lo que lo demuestra.
+
+Funciona en ambos sentidos. Si parte de un requisito, llega al código. Si parte de una línea de código, la rastrea con blame hasta un commit, lee el trailer y llega al requisito y a la razón por la que existe. La cobertura pasa a ser una pregunta sobre requisitos: ¿qué identificadores de esta versión tienen un cambio integrado y una prueba que pasa?
+
+CI lo mantiene honesto, porque nadie debería tener que acordarse. Cada pull request lleva un identificador real de la especificación fijada, o dice `Maintenance:` con una razón. Cada requisito del diff necesita un cambio integrado y una prueba etiquetada antes de que la versión cuente como terminada. Si no, la compilación falla.
+
+Algunos casos necesitan una regla. Una división da identificadores nuevos a los hijos y marca al padre como reemplazado. Una fusión conserva un identificador y apunta los demás hacia él. Un pull request que toca varios requisitos los lista todos, y si la lista se alarga, el pull request es demasiado grande. El código antiguo no tiene identificadores, y no hay problema: empiece en la versión actual y etiquete lo que toque.
+
+Nunca guarde el rastro en una tabla. Calcúlelo a partir de los trailers, las etiquetas y los reportes de pruebas, igual que calcula la especificación.
+
 ## Empiece esta semana
 
 1. Elija un producto y tres sumideros con dueños distintos: el producto, un estándar compartido y la seguridad.
 2. Ponga cada uno en un repositorio y fije una versión en el espacio de trabajo.
 3. Componga la especificación en el build. Nunca edite la salida a mano.
 4. En el próximo cambio, genere el diff y déle al agente solo eso, con el identificador y la razón de cada requisito.
-5. Cuando un segundo sistema tenga requisitos que sigue copiando a mano, póngale enfrente el contrato MCP y conviértalo también en un sumidero.
+5. Dé a cada requisito un identificador permanente y póngalo en la rama, el título del pull request, el trailer del commit y la etiqueta de la prueba. Agregue una verificación de CI: cada pull request lleva uno, y cada requisito del diff tiene un cambio integrado y una prueba etiquetada.
+6. Cuando un segundo sistema tenga requisitos que sigue copiando a mano, póngale enfrente el contrato MCP y conviértalo también en un sumidero.
 
 Use los menos sumideros que tengan aprobadores distintos. Haga que la aprobación sea el merge que su equipo ya hace. La especificación se mantiene al día porque nadie la está manteniendo al día.
