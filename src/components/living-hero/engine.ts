@@ -13,7 +13,15 @@ void main(){ vP = vec2((a.x*0.5+0.5)*uRes.x, (0.5-a.y*0.5)*uRes.y); gl_Position 
 // band in CSS pixels (highp: the vertex shader shares it). uSky: the clear sky; uWind, uCover: the procedural clouds' drift and
 // coverage; uOcc: cloud over the moon (CPU, lagged); uRip, uK, uW:
 // the water ripple; uHz: the horizon; uSize: the plate size, for per-star cells; uTex/uMin: the downscale taps.
-export const FS = `precision mediump float;
+// High precision where the device has it (every current phone and desktop does). At mediump, phones compute in 16-bit
+// floats: the noise hash (fract of a coordinate times ~123) degrades into a short repeating sequence, which shows as tiled
+// and mirrored cloud motifs (Rod's screenshot, 11/27), and the ripple phases shimmer. Desktop GPUs silently upgrade, so it
+// only showed on phones.
+export const FS = `#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
 uniform sampler2D uImg, uMask, uSky; uniform highp vec2 uRes; uniform vec2 uA, uB, uSize, uTex; uniform float uT, uHz, uRip, uK, uW, uMin, uMr, uAsp, uOcc, uWind, uCover; uniform vec2 uRipple, uMoon, uRing, uRingR;
 varying vec2 vP;
 float hash(vec2 p){ p = fract(p*vec2(123.34,456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }

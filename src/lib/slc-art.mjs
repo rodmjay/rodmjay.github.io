@@ -11,14 +11,14 @@ const SUBJECTS = {
 // FNV-1a, so the choice is the same on every build.
 function hash(s) { let h = 0x811c9dc5; for (const c of String(s)) { h ^= c.charCodeAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h; }
 
-// { subject, n, key } for an entry, or null (the card then shows the flat category-icon tile).
+// { subject, n, count, key } for an entry, or null (the card then shows the flat category-icon tile).
 export function pictureFor(kind, id) {
   const s = SUBJECTS[kind];
   if (!s) return null;
   const n = (hash(id) % s[1]) + 1;
   // Trails, day trips and destinations have an alt per variant; the rest share one per subject.
   const key = ["trails", "daytrips", "destinations"].includes(s[0]) ? `${s[0]}-${n}` : s[0];
-  return { subject: s[0], n, key };
+  return { subject: s[0], n, count: s[1], key };
 }
 export const cardSrc = (p, w, ext) => `${ART_BASE}/cards/${p.subject}-${p.n}-${w}.${ext}`;
 
@@ -31,3 +31,19 @@ export function season(key) {
   return "fall";
 }
 export const heroSrc = (s, w, ext) => `${ART_BASE}/hero/slc-hero-${s}-${w}.${ext}`;
+
+// The same picture never sits next to itself (Designer 11/27): walking the cards in page order, a card whose picture equals
+// the one before it takes the next variant of its subject.
+export function varyAdjacent(pics) {
+  let prev = null;
+  return pics.map((p) => {
+    if (!p) { prev = null; return p; }
+    let q = p;
+    if (prev && prev.subject === p.subject && prev.n === p.n && p.count > 1) {
+      const n = (p.n % p.count) + 1;
+      q = { ...p, n, key: p.key.replace(/-\d+$/, `-${n}`) };
+    }
+    prev = q;
+    return q;
+  });
+}

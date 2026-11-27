@@ -5,7 +5,7 @@ export type Ev = {
   start: number; startKey: string; wd: number; h: number; min: number; endKey: string | null;
   age: "allAges" | "over21" | null; price: { kind: "free" | "from" | "amount"; amount?: string } | null;
   url: string; soldOut: boolean; recurring: boolean; sched: { en: string; es: string } | null;
-  pic: { subject: string; n: number; key: string } | null;
+  pic: { subject: string; n: number; count: number; key: string } | null;
 };
 export type When = "week" | "weekend" | "month";
 export type Words = {
