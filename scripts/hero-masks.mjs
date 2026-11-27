@@ -78,16 +78,34 @@ for (const v of desc.variants) {
   const tracedAt = (x) => { for (let k = 0; k + 1 < traced.length; k++) { const [x0, y0] = traced[k], [x1, y1] = traced[k + 1];
     if (x >= x0 && x <= x1) return y0 + ((y1 - y0) * (x - x0)) / Math.max(1e-6, x1 - x0); } return traced[x < traced[0][0] ? 0 : traced.length - 1][1]; };
   const line = (x) => (traced ? tracedAt(x) : found[x] ? ridge[x] : ridgeMin[x]); // no snow found in a column: the conservative line
-  for (let x = 0; x < W; x++) { let s = 0, n = 0; for (let k = -2; k <= 2; k++) { s += line(Math.min(W - 1, Math.max(0, x + k))); n++; } tight[x] = s / n; }
+  // Snap each column down to the mountain's own edge: the traced polyline's straight segments cut corners above concave
+  // slopes and valleys, leaving strips of painted sky that read as a halo along the peaks (Designer 11/27). Below the line,
+  // find the first pixel whose colour leaves the sky's (measured just above the line) by a clear margin, within 24 px,
+  // passing over the pink glow;
+  // then a median across 9 columns removes single-column teeth where dark rock meets the sky.
+  const px3 = (x, y) => { const i = (y * W + x) * 3; return [data[i], data[i + 1], data[i + 2]]; };
+  const snapped = (x) => {
+    const y0 = Math.round(line(x)), ref = px3(x, Math.max(0, y0 - 4));
+    for (let y = y0 - 2; y <= Math.min(hz - 1, y0 + 24); y++) { const c = px3(x, y);
+      if (c[0] > c[1] * 1.06) continue; // the twilight's pink glow is sky (Rod rejected it); snow is neutral or blue
+      if (Math.hypot(c[0] - ref[0], c[1] - ref[1], c[2] - ref[2]) > 38) return y; }
+    return y0;
+  };
+  const snap = Array.from({ length: W }, (_, x) => snapped(x));
+  const med = new Float32Array(W);
+  for (let x = 0; x < W; x++) { const w = []; for (let k = -4; k <= 4; k++) w.push(snap[Math.min(W - 1, Math.max(0, x + k))]); w.sort((p, q) => p - q); med[x] = w[4]; }
+  for (let x = 0; x < W; x++) { let t = 0; for (let k = -2; k <= 2; k++) t += med[Math.min(W - 1, Math.max(0, x + k))]; tight[x] = t / 5; } // round the median's steps
   ridgeMin.set(tight);
 
   const out = Buffer.alloc(N * 4);
   const feather = 0.04 * H;
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
     const i = y * W + x, o = i * 4;
-    // R: open sky, fading to 0 a little above the ridge, and away from the moon and its halo.
+    // R: open sky down to the ridge line, then away from the moon and its halo. The feather ends at the line itself
+    // (Designer 11/27): ending it short left a strip of the plate's darker painted sky between the procedural sky and the
+    // snow, which read as a halo outline along the peaks (and as the pink line on the right ridge).
     const dm = Math.hypot(x - mxp, y - myp);
-    const sky = (1 - smooth(ridgeMin[x] - 6, ridgeMin[x] - 1, y)) * smooth(mr * 1.6, mr * 2.6, dm);
+    const sky = (1 - smooth(ridgeMin[x] - 3, ridgeMin[x], y)) * smooth(mr * 1.6, mr * 2.6, dm);
     out[o] = Math.round(255 * sky);
     // B: water, below the horizon except the shore polygon, so the grass and rocks never ripple.
     if (y > hz + 1) out[o + 2] = Math.round(255 * smooth(hz + 1, hz + 4, y) * (1 - land[i]));
