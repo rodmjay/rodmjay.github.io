@@ -228,3 +228,7 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 .foot-links { display: flex; flex-wrap: wrap; column-gap: var(--space-4); }
 .foot-links a { display: inline-flex; align-items: center; min-height: 48px; color: var(--md-sys-color-on-surface-variant); }
 @media (prefers-reduced-motion: no-preference) { .home-project { transition: background-color 150ms; } }
+/* Header (Designer 11/27): the wordmark at the left, the language menu and Sign in together at the right end. */
+.bar .mark { margin-right: auto; }
+/* The footer shares the home's 44rem column, so its links start at the same left edge as the content. */
+body:has(main.home) .foot.col { max-width: 44rem; }

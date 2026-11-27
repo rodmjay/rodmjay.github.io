@@ -38,10 +38,11 @@
 .acct-banner p { margin: 0; }
 /* The header slot: a fixed width so "Sign in" / "Dashboard" (and the Spanish) fill in after load without moving anything. */
 .acct-slot { display: inline-flex; justify-content: flex-end; align-items: center; min-width: 7.5rem; min-height: 48px; }
-.acct-slot a { color: var(--md-sys-color-on-surface-variant); text-decoration: none; font-weight: 500; }
+.acct-slot a { display: inline-flex; align-items: center; min-height: 48px; color: var(--md-sys-color-on-surface-variant); text-decoration: none; font-weight: 500; }
 .acct-slot a:hover { color: var(--md-sys-color-on-surface); }
 /* Phones: the header row has no room, so the link moves into the Menu panel (and stays in the footer). */
-@media (max-width: 600px) { .bar .acct-slot { display: none; } .phone-nav .acct-slot { justify-content: flex-start; min-width: 0; } }
+/* Phones: no Menu any more (11/27), so Sign in stays in the bar, compact. */
+@media (max-width: 600px) { .bar .acct-slot { min-width: 0; } }
 /* The dashboard. The lead block keeps one minimum height for the skeleton, the test card and the result card. */
 .acct-dash { display: grid; gap: var(--space-6); }
 /* site.css pads every <main> section by --space-12 for the long pages; the dashboard spaces its blocks with the grid gap only
