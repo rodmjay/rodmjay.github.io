@@ -26,7 +26,7 @@ function otherPath(path: string, lang: "en" | "es", alt: Record<string, string>)
 export function Header({ lang, nav, showRecipes, showDiscover, showQuotes, alt, account }: { lang: "en" | "es"; nav: Nav; showRecipes: boolean; showDiscover: boolean; showQuotes: boolean; alt: Record<string, string>; account?: ReactNode }) {
   const path = usePathname() || "/";
   const home = lang === "en" ? "/" : "/es/";
-  const blog = `${home}blog/`, recipes = `${home}recipes/`, quotes = `${home}quotes/`, discover = lang === "en" ? "/discover/" : "/es/descubra/";
+  const blog = `${home}blog/`, recipes = `${home}recipes/`, quotes = `${home}quotes/`, discover = `${home}slc/`;
   const current = (base: string) => (path.startsWith(base) ? "page" : undefined);
   const [open, setOpen] = useState(false);
   const button = useRef<HTMLButtonElement>(null);

@@ -212,7 +212,7 @@ h3 a { color: inherit; text-underline-offset: 3px; }
 #projects ul.plain > li > :not(.proj-icon) { grid-column: 2; }
 @media (max-width: 599.98px) { #projects ul.plain > li { grid-template-columns: 40px minmax(0, 1fr); } }
 
-/* Discover SLC (/discover/, /es/descubra/; design/specs/rodmjay-events.md). Cards one column on phones, two from 840px. */
+/* Discover SLC (/slc/, /es/slc/; design/specs/rodmjay-events.md). Cards one column on phones, two from 840px. */
 .discover-block + .discover-block { margin-top: var(--space-8); padding-top: var(--space-8); border-top: 1px solid var(--md-sys-color-outline-variant); }
 .discover-block > h2 { margin: 0 0 var(--space-2); }
 .discover-lede { margin: 0 0 var(--space-2); max-width: 40rem; }

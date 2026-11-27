@@ -1,4 +1,4 @@
-// Discover SLC, /discover/ and /es/descubra/ (Designer's spec, design/specs/rodmjay-events.md): h1 the section name,
+// Discover SLC, /slc/ and /es/slc/ (Designer's spec, design/specs/rodmjay-events.md): h1 the section name,
 // block 1 "Upcoming events" (filters, count, day groups, "Every week"), block 2 "Playing SLC Soon" (one outlined
 // button to the public playlist, no embed). A block with no data is left out; the events come from src/lib/events.mjs.
 import { dict } from "@/lib/site.mjs";

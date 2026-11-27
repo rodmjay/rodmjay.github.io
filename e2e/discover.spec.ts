@@ -6,7 +6,7 @@ import { expect, test } from "@playwright/test";
 test.beforeEach(async ({ page }) => { await page.addInitScript(() => { try { localStorage.setItem("ds-lang", "en"); } catch {} }); });
 
 test("discover: blocks, filters, URL state", async ({ page }) => {
-  await page.goto("/discover/");
+  await page.goto("/slc/");
   await expect(page.locator("h1")).toHaveText("Discover SLC");
   await expect(page.getByRole("link", { name: /Open in Spotify \(opens in a new tab\)/ })).toHaveAttribute("href", /^https:\/\/open\.spotify\.com\/playlist\//);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => window.innerWidth));
@@ -31,14 +31,14 @@ test("discover: blocks, filters, URL state", async ({ page }) => {
   await expect(page.locator('meta[name="robots"][data-filtered]')).toHaveCount(1);
   await expect(page.getByRole("button", { name: "This weekend" })).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Clear filters" }).first().click();
-  await expect(page).toHaveURL(/\/discover\/$/);
+  await expect(page).toHaveURL(/\/slc\/$/);
   await expect(page.locator(".ev-card")).toHaveCount(all);
   await page.goBack();
   await expect(page.getByRole("button", { name: "This weekend" })).toHaveAttribute("aria-pressed", "true");
   // Category chips (when there are two or more categories): OR within the group.
   const chips = page.getByRole("group", { name: "Category" }).getByRole("button");
   if ((await chips.count()) > 1) {
-    await page.goto("/discover/");
+    await page.goto("/slc/");
     await chips.first().click();
     await expect(page).toHaveURL(/\?cat=[a-z]+$/);
     expect(await page.locator(".ev-card").count()).toBeLessThanOrEqual(all);
@@ -48,9 +48,9 @@ test("discover: blocks, filters, URL state", async ({ page }) => {
 });
 
 test("discover: Spanish page, Spanish labels, same events", async ({ page }) => {
-  await page.goto("/discover/");
+  await page.goto("/slc/");
   const en = await page.locator(".ev-card").count();
-  await page.goto("/es/descubra/");
+  await page.goto("/es/slc/");
   await expect(page.locator("html")).toHaveAttribute("lang", "es-419");
   await expect(page.locator("h1")).toHaveText("Descubra SLC");
   await expect(page.getByRole("link", { name: /Abrir en Spotify/ })).toHaveCount(1);

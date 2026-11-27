@@ -6,7 +6,7 @@
 // A filtered recipe index (/recipes/?tags=…, also /es/ and /page/N/) is the same static file as the plain index, so it
 // gets its own robots noindex tag here, before anything renders (Designer 11/26; a separate tag, never Next's own); its canonical stays /recipes/. RecipeBrowser
 // removes the tag (data-filtered) when the visitor leaves the index, so later pages in the same visit don't carry it.
-// The same goes for a filtered Discover SLC page (/discover/?when=…&cat=…, /es/descubra/; EventBrowser removes it).
+// The same goes for a filtered Discover SLC page (/slc/?when=…&cat=…, /es/slc/; EventBrowser removes it).
 // Before anything else it sets the deploy safety net (Rod 11/25, DECISIONS: don't kick people offline when we update):
 // if a /_next/static file fails to load, or a chunk-load error reaches the page, it reloads the same URL once. The URL
 // keeps the hash (where RVP results live) and the test keeps its answers in sessionStorage, so a reload resumes. At most
@@ -24,7 +24,7 @@ function isChunk(x){return !!x&&E.test(String(x.name)+" "+String(x.message))}
 addEventListener("error",function(e){var s=e.target,u=s&&(s.src||s.href);if(s&&s!==window&&typeof u==="string"&&u.indexOf("/_next/static/")>=0)again();else if(isChunk(e.error))again()},true);
 addEventListener("unhandledrejection",function(e){if(isChunk(e.reason))again()});})();
 `;
-export const LANG_JS = `${GUARD}document.documentElement.setAttribute("data-js","");(function(){var p=location.pathname,s=location.search;if(!(/[?&]tags=/.test(s)&&new RegExp("^/(es/)?recipes/(page/[0-9]+/)?$").test(p))&&!(/[?&](when|cat)=/.test(s)&&new RegExp("^/(discover|es/descubra)/$").test(p)))return;var m=document.createElement("meta");m.setAttribute("name","robots");m.setAttribute("content","noindex");m.setAttribute("data-filtered","");document.head.appendChild(m)})();(function(){var p=location.pathname;if(p!=="/"&&p!=="/es/")return;${kit}
+export const LANG_JS = `${GUARD}document.documentElement.setAttribute("data-js","");(function(){var p=location.pathname,s=location.search;if(!(/[?&]tags=/.test(s)&&new RegExp("^/(es/)?recipes/(page/[0-9]+/)?$").test(p))&&!(/[?&](when|cat)=/.test(s)&&new RegExp("^/(es/)?slc/$").test(p)))return;var m=document.createElement("meta");m.setAttribute("name","robots");m.setAttribute("content","noindex");m.setAttribute("data-filtered","");document.head.appendChild(m)})();(function(){var p=location.pathname;if(p!=="/"&&p!=="/es/")return;${kit}
 var here=p==="/es/"?"es":"en",want=pickLang();
 try{var u=new URL(location.href),q=u.searchParams.get("lang");if(q==="en"||q==="es"){want=q;localStorage.setItem("ds-lang",q);u.searchParams.delete("lang");history.replaceState(null,"",u)}}catch(e){}if(want!==here)location.replace((want==="es"?"/es/":"/")+location.search+location.hash);})();
 `;

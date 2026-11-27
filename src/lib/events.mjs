@@ -1,6 +1,6 @@
 // Discover SLC: upcoming events in the Salt Lake valley, read once at build time from the public-life feed "events"
 // (getFeed, src/lib/feeds.mjs; Database Administrator 0263, Security passed 11/27). Local Guide curates the rows;
-// Designer's spec is design/specs/rodmjay-events.md (personal repo). The page is /discover/ and /es/descubra/.
+// Designer's spec is design/specs/rodmjay-events.md (personal repo). The page is /slc/ and /es/slc/ (Rod 11/27: Discover SLC is a product at rodmjay.com/slc).
 // Row: {id, title, category, venue_name, city, starts_at, ends_at, age_limit, recurring, recurrence_text,
 // recurrence_text_es?, price_text, ticket_url, sold_out, feed_updated_at}. Free text (title, venue, city, the schedule
 // line) is only ever rendered as text (Security 11/27). Built only where DISCOVER_ON=1 (staging and checks; production
@@ -16,7 +16,7 @@
 import { getFeed } from "./feeds.mjs";
 
 export const DISCOVER_ON = process.env.DISCOVER_ON === "1";
-export const BASE = { en: "/discover/", es: "/es/descubra/" };
+export const BASE = { en: "/slc/", es: "/es/slc/" };
 // Block 2, "Playing SLC Soon": Local Guide's public Spotify playlist (Rod's yes 11/27, DECISIONS). One fixed link, no
 // embed (Designer), so the page loads nothing from Spotify.
 export const PLAYLIST_URL = "https://open.spotify.com/playlist/3N39Ob2httZezAYqRk1WW1";
