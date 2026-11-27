@@ -173,6 +173,14 @@ test("phone: the Menu sheet has the links and the language menu; no sideways scr
   await expect(sheet.locator("select")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(sheet).not.toBeVisible();
+  // The course chips and breadcrumb links have 48px hit areas (a ::before around the smaller look, Designer 11/27).
+  await page.goto("/recipes/all/");
+  for (const el of await page.locator(".rb-courses a, .rb-crumbs a").all()) {
+    const h = await el.evaluate((a) => { const r = a.getBoundingClientRect(), s = getComputedStyle(a, "::before"); return r.height - parseFloat(s.top) - parseFloat(s.bottom); });
+    expect(Math.round(h)).toBeGreaterThanOrEqual(48);
+  }
+  await page.goto("/es/recipes/chicken-piccata/");
+  expect(await page.locator(".rb-intro").evaluate((e) => parseFloat(getComputedStyle(e).fontSize))).toBeLessThanOrEqual(20);
   // Every control in the bar has a 48px hit area.
   for (const el of await page.locator(".rb-bar a, .rb-bar button, .rb-bar input").all()) {
     if (!(await el.isVisible())) continue;
