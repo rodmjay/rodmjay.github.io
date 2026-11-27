@@ -59,3 +59,35 @@ test("discover: Spanish page, Spanish labels, same events", async ({ page }) => 
   await expect(page.getByRole("button", { name: "Próximos 30 días" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator(".ev-when").first()).not.toContainText(/\b(AM|PM|Every|Concert|Through)\b/);
 });
+
+// Its own product (Rod 11/27: "not part of rod johnson, its its own brand, its own chrome, own theme"): no personal-site
+// shell, name, nav or links anywhere in the page, its own title, icons, manifest and theme.
+for (const path of ["/slc/", "/slc/events/", "/es/slc/", "/es/slc/events/"]) {
+  test(`slc chrome: ${path} stands alone`, async ({ page }) => {
+    await page.goto(path);
+    await expect(page.locator("html")).toHaveAttribute("data-brand", "slc");
+    expect(await page.title()).toMatch(/(Discover|Descubra) SLC$/);
+    expect(await page.content()).not.toContain("Rod Johnson");
+    await expect(page.locator("header.bar, nav.bar-links, footer.foot")).toHaveCount(0);
+    await expect(page.locator('link[rel="manifest"]')).toHaveAttribute("href", path.startsWith("/es/") ? "/es/slc/manifest.webmanifest" : "/slc/manifest.webmanifest");
+    await expect(page.locator('link[rel="icon"]').first()).toHaveAttribute("href", /^\/slc\/icons\//);
+    await expect(page.locator("h1")).toHaveCount(1);
+  });
+}
+
+test("slc chrome: phone menu opens the sections and switches language", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/slc/");
+  test.skip((await page.locator(".slc-menu").count()) === 0, "no sections (events feed off)");
+  await page.getByRole("button", { name: "Menu" }).click();
+  await expect(page.locator(".slc-sheet")).toBeVisible();
+  await page.locator(".slc-sheet").getByRole("link", { name: "Events" }).click();
+  await expect(page).toHaveURL(/\/slc\/events\/$/);
+  await expect(page.locator("h1")).toHaveText("Events");
+  await expect(page.locator(".slc-sheet")).not.toBeVisible();
+});
+
+test("the personal site no longer links Discover SLC in its nav", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator('header.bar a[href="/slc/"]')).toHaveCount(0);
+});

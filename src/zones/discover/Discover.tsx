@@ -2,30 +2,43 @@
 // block 1 "Upcoming events" (filters, count, day groups, "Every week"), block 2 "Playing SLC Soon" (one outlined
 // button to the public playlist, no embed). A block with no data is left out; the events come from src/lib/events.mjs.
 import { dict } from "@/lib/site.mjs";
-import { meta } from "@/lib/meta";
+import { slcMeta } from "@/zones/slc/SlcLayout";
 import { BASE, PLAYLIST_URL, loadEvents } from "@/lib/events.mjs";
 import { EventBrowser, type BrowserWords } from "./EventBrowser";
-import { shortDate, type Words } from "./logic";
 
 type Lang = "en" | "es";
 
-export async function discoverMeta(lang: Lang) {
-  const d = dict(lang).discover;
-  return meta({ lang, title: d.metaTitle, description: d.metaDescription, path: BASE[lang], alt: BASE[lang === "en" ? "es" : "en"] });
+type View = "all" | "events";
+const other = (lang: Lang) => (lang === "en" ? "es" : "en");
+const path = (lang: Lang, view: View) => (view === "all" ? BASE[lang] : `${BASE[lang]}events/`);
+
+export async function discoverMeta(lang: Lang, view: View = "all") {
+  const d = dict(lang).discover, s = dict(lang).slc;
+  return slcMeta({ lang, title: view === "all" ? undefined : s.eventsMetaTitle, description: view === "all" ? d.metaDescription : s.eventsMetaDescription,
+    path: path(lang, view), alt: path(other(lang), view) });
 }
 
-export async function Discover({ lang }: { lang: Lang }) {
+// The mixed view (/slc/: events, then the playlist) or one section (/slc/events/: its own h1). The "Updated" date lives in
+// the product's footer (SlcLayout).
+export async function Discover({ lang, view = "all" }: { lang: Lang; view?: View }) {
   const d = dict(lang).discover as BrowserWords & Record<string, string>;
-  const { events, updated, stale, today } = await loadEvents();
-  const updatedKey = updated ? new Intl.DateTimeFormat("en-CA", { timeZone: "America/Denver" }).format(new Date(updated)) : "";
+  const s = dict(lang).slc;
+  const { events, stale, today } = await loadEvents();
+  if (view === "events") return (
+    <main id="main" className="slc-col discover-page">
+      <h1 className="ds-headline-medium project-title">{s.events}</h1>
+      <p className="ds-body-large discover-lede">{d.lede}</p>
+      {stale && <div className="ds-banner" role="status"><strong>{d.stale}</strong></div>}
+      {events.length ? <EventBrowser events={events} today0={today} lang={lang} w={d} /> : <div className="ds-card outlined"><p className="ds-body-large">{d.none}</p></div>}
+    </main>
+  );
   return (
-    <main id="main" className="wide-col discover-page">
+    <main id="main" className="slc-col discover-page">
       <h1 className="ds-headline-medium project-title">{d.title}</h1>
       {events.length > 0 && (
         <section className="discover-block" aria-labelledby="ev-h">
           <h2 id="ev-h" className="ds-headline-small">{d.eventsTitle}</h2>
           <p className="ds-body-large discover-lede">{d.lede}</p>
-          {updatedKey && <p className="ds-label-large ds-variant">{d.updated.replace("{date}", shortDate(updatedKey, d as Words))}</p>}
           {stale && <div className="ds-banner" role="status"><strong>{d.stale}</strong></div>}
           <EventBrowser events={events} today0={today} lang={lang} w={d} />
         </section>

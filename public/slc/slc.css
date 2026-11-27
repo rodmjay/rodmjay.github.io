@@ -1,0 +1,92 @@
+/* Discover SLC's own stylesheet (design/specs/discover-slc.md; Rod 11/27: "its own brand, its own chrome, own theme").
+   Linked only by its own root layout (src/zones/slc/SlcLayout.tsx); the personal site's site.css never loads here.
+   The brand tokens are a local prototype until the design system's `slc` brand ships (Designer folds these in). */
+[data-brand="slc"] {
+  --md-sys-color-primary: light-dark(#2b3f8f, #9db4ff);
+  --md-sys-color-surface-tint: light-dark(#2b3f8f, #9db4ff);
+  --md-sys-color-on-primary: light-dark(#ffffff, #10183f);
+  --md-sys-color-primary-container: light-dark(#dde1ff, #1f2f6e);
+  --md-sys-color-on-primary-container: light-dark(#10183f, #dde1ff);
+  --md-sys-color-background: light-dark(#f8f9fc, #101216);
+  --md-sys-color-surface: light-dark(#f8f9fc, #101216);
+  --slc-amber: #f0a24a;
+  --gutter: 16px;
+}
+@media (min-width: 600px) { [data-brand="slc"] { --gutter: 24px; } }
+body.slc { margin: 0; background: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface); }
+.slc-skip { position: absolute; left: -9999px; }
+.slc-skip:focus { left: var(--space-4); top: var(--space-4); z-index: 10; }
+.slc-col { max-width: 72rem; margin: 0 auto; padding: var(--space-8) var(--gutter) 0; }
+.slc main a { color: var(--md-sys-color-primary); text-underline-offset: 3px; }
+.slc main section { padding: var(--space-12) 0 0; }
+.project-title { margin: 0 0 var(--space-4); }
+
+/* Header: 64px, mark + wordmark, section links from 840px, Menu below it, the language menu at the right. */
+.slc-bar { position: relative; display: flex; align-items: center; gap: var(--space-6); min-height: 64px; padding: 0 var(--gutter);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface); }
+.slc-brand { display: inline-flex; align-items: center; gap: var(--space-3); min-height: 48px; margin-right: auto; text-decoration: none;
+  color: var(--md-sys-color-on-surface); font: 700 var(--md-sys-typescale-title-large-size, 1.375rem)/1 var(--md-ref-typeface-brand); }
+.slc-brand img { width: 32px; height: 32px; border-radius: 8px; flex: none; }
+.slc-links { display: none; gap: var(--space-2); }
+.slc-links a, .slc-sheet-links a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-3); text-decoration: none;
+  color: var(--md-sys-color-on-surface-variant); font-weight: 500; border-bottom: 3px solid transparent; }
+.slc-links a:hover { color: var(--md-sys-color-on-surface); }
+.slc-links a[aria-current="page"] { color: var(--md-sys-color-on-surface); border-bottom-color: var(--slc-amber); }
+.slc-menu { display: none; gap: var(--space-2); min-height: 48px; }
+@media (min-width: 840px) { .slc-links { display: flex; } }
+@media (max-width: 839.98px) {
+  [data-js] .slc-menu { display: inline-flex; }
+  [data-js] .slc-bar > .slc-lang { display: none; }
+}
+.slc-sheet { width: 100%; max-width: 28rem; height: 100%; max-height: 100%; margin: 0 0 0 auto; padding: var(--space-4) 0; }
+.slc-sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-4) var(--space-4); }
+.slc-sheet-links { display: flex; flex-direction: column; }
+.slc-sheet-links a { min-height: 56px; padding: 0 var(--space-6); border-bottom: 0; border-left: 3px solid transparent; }
+.slc-sheet-links a[aria-current="page"] { border-left-color: var(--slc-amber); color: var(--md-sys-color-on-surface); }
+.slc-sheet .slc-lang { padding: var(--space-6); }
+
+/* Footer: one block, the mark and name, the freshness line, Privacy. No personal-site links. */
+.slc-foot { max-width: 72rem; margin: var(--space-16) auto 0; padding: var(--space-8) var(--gutter); border-top: 1px solid var(--md-sys-color-outline-variant); }
+.slc-foot p { margin: 0 0 var(--space-2); }
+.slc-foot-brand { display: flex; align-items: center; gap: var(--space-2); }
+.slc-foot-brand img { border-radius: 6px; }
+.slc-foot a { display: inline-flex; align-items: center; min-height: 48px; color: var(--md-sys-color-primary); }
+
+/* Discover SLC (/slc/, /es/slc/; design/specs/rodmjay-events.md). Cards one column on phones, two from 840px. */
+.discover-block + .discover-block { margin-top: var(--space-8); padding-top: var(--space-8); border-top: 1px solid var(--md-sys-color-outline-variant); }
+.discover-block > h2 { margin: 0 0 var(--space-2); }
+.discover-lede { margin: 0 0 var(--space-2); max-width: 40rem; }
+.discover-block .ds-banner { margin: var(--space-4) 0; }
+.ev-filters { display: grid; gap: 0; margin: var(--space-6) 0 var(--space-2); }
+.ev-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); min-height: 48px; align-items: center; }
+.ev-summary { display: flex; align-items: center; gap: var(--space-2); min-height: 48px; margin: 0 0 var(--space-4); }
+.ev-count { margin: 0; flex: 1; }
+.ev-count:focus { outline: none; }
+.ev-clear { flex: none; }
+.ev-clear.is-idle { visibility: hidden; }
+html:not([data-js]) .ev-js { display: none; }
+.ev-day { padding-top: var(--space-4); margin-top: var(--space-4); border-top: 1px solid var(--md-sys-color-outline-variant); }
+.ev-day-h { margin: 0 0 var(--space-4); }
+.ev-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 840px) { .ev-grid { grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); } }
+.ev-card { display: grid; gap: var(--space-1); height: 100%; }
+.ev-card p, .ev-card h3 { margin: 0; overflow-wrap: anywhere; }
+.ev-title a { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 48px; color: var(--md-sys-color-on-surface); }
+.ev-title .ev-ext { flex: none; }
+.ev-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-1); }
+.ev-age { background: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface-variant); }
+.ev-sold { gap: var(--space-1); }
+.ev-empty { display: grid; gap: var(--space-2); justify-items: start; }
+.ev-empty p { margin: 0; }
+.discover-playlist .ds-btn { gap: var(--space-2); }
+/* Designer 11/27: h1 to the first block is --space-8 (h1's own margin plus this), not the site's section padding. */
+.discover-page > .discover-block:first-of-type { padding-top: var(--space-4); }
+/* 48px hit areas, the look unchanged (as Recipes, Designer 11/26): chips grow to 48px with a transparent 8px border top
+   and bottom, rows abut with no row gap; buttons get an invisible ::before 4px above and below. */
+.ds .discover-page .ds-chip:not(.status) { --look-r: var(--md-sys-shape-corner-small);
+  height: 48px; border: 0; border-block: 8px solid transparent; background-clip: padding-box;
+  border-radius: var(--look-r) / calc(var(--look-r) + 8px); }
+.ds .discover-page .ds-chip:not(.status)::after { border-radius: var(--look-r); }
+.ds .discover-page .ds-chip:not(.status):focus-visible { outline-offset: -6px; }
+.ds .discover-page .ds-btn::before { content: ""; position: absolute; inset: -4px 0; }
+.discover-page .ev-chips { row-gap: 0; }

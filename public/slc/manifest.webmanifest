@@ -1,0 +1,13 @@
+{
+  "name": "Discover SLC",
+  "short_name": "Discover SLC",
+  "start_url": "/slc/",
+  "scope": "/slc/",
+  "display": "browser",
+  "background_color": "#121415",
+  "theme_color": "#2b3f8f",
+  "icons": [
+    { "src": "/slc/icons/icon-dark.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/slc/icons/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

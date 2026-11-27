@@ -15,7 +15,6 @@
     "resume": "Currículum",
     "blog": "Blog",
     "recipes": "Recetas",
-    "discover": "Descubra SLC",
     "quotes": "Citas",
     "menu": "Menú"
   },
@@ -604,5 +603,24 @@
     "shortDate": "{day} de {month}",
     "am": "a. m.",
     "pm": "p. m."
+  },
+  "slc": {
+    "name": "Descubra SLC",
+    "home": "Descubra SLC, todos los listados",
+    "label": "Secciones",
+    "menu": "Menú",
+    "close": "Cerrar el menú",
+    "skip": "Ir al contenido",
+    "language": "Idioma",
+    "events": "Eventos",
+    "trails": "Senderos",
+    "daytrips": "Excursiones",
+    "destinations": "Destinos",
+    "dayplans": "Planes del día",
+    "footer": "Los listados provienen de fuentes públicas y se revisan con regularidad.",
+    "updated": "Actualizado el {date}.",
+    "privacy": "Privacidad",
+    "eventsMetaTitle": "Eventos",
+    "eventsMetaDescription": "Conciertos, festivales, mercados y más en el valle de Salt Lake, por día."
   }
 }

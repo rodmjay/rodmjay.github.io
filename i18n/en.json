@@ -15,7 +15,6 @@
     "resume": "Resume",
     "blog": "Blog",
     "recipes": "Recipes",
-    "discover": "Discover SLC",
     "quotes": "Quotes",
     "menu": "Menu"
   },
@@ -604,5 +603,24 @@
     "shortDate": "{day} {month}",
     "am": "AM",
     "pm": "PM"
+  },
+  "slc": {
+    "name": "Discover SLC",
+    "home": "Discover SLC, all listings",
+    "label": "Sections",
+    "menu": "Menu",
+    "close": "Close menu",
+    "skip": "Skip to content",
+    "language": "Language",
+    "events": "Events",
+    "trails": "Trails",
+    "daytrips": "Day trips",
+    "destinations": "Destinations",
+    "dayplans": "Day plans",
+    "footer": "Listings come from public sources and are checked regularly.",
+    "updated": "Updated {date}.",
+    "privacy": "Privacy",
+    "eventsMetaTitle": "Events",
+    "eventsMetaDescription": "Concerts, festivals, markets and more around the Salt Lake valley, by day."
   }
 }
