@@ -14,6 +14,7 @@
 // Dates and times are computed here in America/Denver as plain numbers, and named from the dictionaries, so the server
 // and every browser print the same words ("8:00 PM", "8:00 p. m.").
 import { getFeed } from "./feeds.mjs";
+import { pictureFor } from "./slc-art.mjs";
 
 export const DISCOVER_ON = process.env.DISCOVER_ON === "1";
 export const BASE = { en: "/slc/", es: "/es/slc/" };
@@ -76,6 +77,7 @@ export function loadEvents(now = Date.now()) {
         endKey: Number.isFinite(end) ? denver(end).key : null,
         age: AGES[str(r.age_limit)] || null, price: price(r.price_text), url: safeLink(r.ticket_url), soldOut: r.sold_out === true,
         recurring, sched,
+        pic: pictureFor(category, str(r.id) || title),
       });
     }
     if (dropped.length) console.warn(`events: left out ${dropped.length}:\n  ${dropped.join("\n  ")}`);

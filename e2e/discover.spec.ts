@@ -1,50 +1,54 @@
 import { existsSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 
-// Discover SLC (design/specs/rodmjay-events.md): the events block filters by date and category in the browser, keeps the
-// state in the URL (Back steps through it), groups by day with the weekly entries last, and links out in a new tab; the
-// playlist block is one outlined button. Event checks are skipped when the events feed is off (no event cards built).
+// Discover SLC (design/specs/discover-slc.md, the design-elevation prototype): filters by date and category in the browser,
+// keeps the state in the URL (Back steps through it), every card has a picture or the category tile, titles link out in
+// a new tab; the playlist block is one outlined button. Event checks are skipped when the events feed is off (no event cards built).
 // Built only where DISCOVER_ON=1; with it off there's nothing to test (the URLs are the 404 page).
 test.skip(!existsSync("out/slc/index.html"), "Discover SLC isn't built (DISCOVER_ON off)");
 test.beforeEach(async ({ page }) => { await page.addInitScript(() => { try { localStorage.setItem("ds-lang", "en"); } catch {} }); });
 
-test("discover: blocks, filters, URL state", async ({ page }) => {
+test("discover: blocks, filters, URL state", async ({ page, isMobile }) => {
   await page.goto("/slc/");
   await expect(page.locator("h1")).toHaveText("Discover SLC");
   await expect(page.getByRole("link", { name: /Open in Spotify \(opens in a new tab\)/ })).toHaveAttribute("href", /^https:\/\/open\.spotify\.com\/playlist\//);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => window.innerWidth));
-  test.skip((await page.locator(".ev-card").count()) === 0, "events feed is off");
-  await expect(page.locator(".ev-summary[data-ready]")).toHaveCount(1);
-  await expect(page.getByRole("button", { name: "Next 30 days" })).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator(".ev-clear")).toHaveClass(/is-idle/);
+  test.skip((await page.locator(".slc-card").count()) === 0, "events feed is off");
+  await expect(page.locator(".slc-count[data-ready]")).toHaveCount(1);
+  // Every card has its picture or the flat category tile, never nothing (Designer).
+  for (const c of await page.locator(".slc-card").all()) await expect(c.locator(".slc-art")).toHaveCount(1);
+  // Phones get one "Filters" button that opens a sheet with the same chips (tested below); the bar's chips are desktop.
+  test.skip(isMobile, "the chip interactions are tested in the phone sheet test");
+  await expect(page.locator(".slc-bar-chips .slc-chip", { hasText: "Next 30 days" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".slc-clear")).toHaveClass(/is-idle/);
   // Every outbound title link opens a new tab, says so, and is https.
-  for (const a of await page.locator(".ev-title a").all()) {
+  for (const a of await page.locator(".slc-title a").all()) {
     await expect(a).toHaveAttribute("target", "_blank");
     await expect(a).toHaveAttribute("rel", /noopener/);
     await expect(a).toHaveAttribute("href", /^https:\/\//);
     await expect(a).toContainText("(opens in a new tab)");
   }
-  const all = await page.locator(".ev-card").count();
-  await page.getByRole("button", { name: "This weekend" }).click();
+  const all = await page.locator(".slc-card").count();
+  await page.locator(".slc-bar-chips .slc-chip", { hasText: "This weekend" }).click();
   await expect(page).toHaveURL(/\?when=weekend$/);
-  await expect(page.getByRole("button", { name: "This weekend" })).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator(".ev-clear")).not.toHaveClass(/is-idle/);
+  await expect(page.locator(".slc-bar-chips .slc-chip", { hasText: "This weekend" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".slc-clear")).not.toHaveClass(/is-idle/);
   // A filtered URL is noindex.
   await page.reload();
   await expect(page.locator('meta[name="robots"][data-filtered]')).toHaveCount(1);
-  await expect(page.getByRole("button", { name: "This weekend" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".slc-bar-chips .slc-chip", { hasText: "This weekend" })).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Clear filters" }).first().click();
   await expect(page).toHaveURL(/\/slc\/$/);
-  await expect(page.locator(".ev-card")).toHaveCount(all);
+  await expect(page.locator(".slc-card")).toHaveCount(all);
   await page.goBack();
-  await expect(page.getByRole("button", { name: "This weekend" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".slc-bar-chips .slc-chip", { hasText: "This weekend" })).toHaveAttribute("aria-pressed", "true");
   // Category chips (when there are two or more categories): OR within the group.
   const chips = page.getByRole("group", { name: "Category" }).getByRole("button");
   if ((await chips.count()) > 1) {
     await page.goto("/slc/");
     await chips.first().click();
     await expect(page).toHaveURL(/\?cat=[a-z]+$/);
-    expect(await page.locator(".ev-card").count()).toBeLessThanOrEqual(all);
+    expect(await page.locator(".slc-card").count()).toBeLessThanOrEqual(all);
   }
   await expect(page.locator("body")).not.toContainText("null");
   await expect(page.locator("body")).not.toContainText("undefined");
@@ -52,15 +56,32 @@ test("discover: blocks, filters, URL state", async ({ page }) => {
 
 test("discover: Spanish page, Spanish labels, same events", async ({ page }) => {
   await page.goto("/slc/");
-  const en = await page.locator(".ev-card").count();
+  const en = await page.locator(".slc-card").count();
   await page.goto("/es/slc/");
   await expect(page.locator("html")).toHaveAttribute("lang", "es-419");
   await expect(page.locator("h1")).toHaveText("Descubra SLC");
   await expect(page.getByRole("link", { name: /Abrir en Spotify/ })).toHaveCount(1);
   test.skip(en === 0, "events feed is off");
-  await expect(page.locator(".ev-card")).toHaveCount(en);
-  await expect(page.getByRole("button", { name: "Próximos 30 días" })).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator(".ev-when").first()).not.toContainText(/\b(AM|PM|Every|Concert|Through)\b/);
+  await expect(page.locator(".slc-card")).toHaveCount(en);
+  await expect(page.locator(".slc-filterbar .slc-chip", { hasText: /^Próximos 30 días$/ })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".slc-label").first()).not.toContainText(/\b(AM|PM|Every|Concert|Through)\b/);
+});
+
+test("discover: on phones, one Filters button opens a sheet with the same chips", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "phones only");
+  await page.goto("/slc/");
+  test.skip((await page.locator(".slc-card").count()) === 0, "events feed is off");
+  await expect(page.locator(".slc-filterbar .slc-bar-chips")).toBeHidden();
+  await page.locator(".slc-filters-btn").click();
+  const sheet = page.locator(".slc-filter-sheet");
+  await expect(sheet).toBeVisible();
+  await sheet.locator(".slc-chip", { hasText: "This weekend" }).click();
+  await expect(page).toHaveURL(/\?when=weekend$/);
+  await expect(sheet.locator(".slc-chip", { hasText: "This weekend" })).toHaveAttribute("aria-pressed", "true");
+  await sheet.getByRole("button", { name: /^Show results/ }).click();
+  await expect(sheet).toBeHidden();
+  await expect(page.locator(".slc-filters-btn")).toContainText("This weekend");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => window.innerWidth));
 });
 
 // Its own product (Rod 11/27: "not part of rod johnson, its its own brand, its own chrome, own theme"): no personal-site

@@ -5,6 +5,7 @@ export type Ev = {
   start: number; startKey: string; wd: number; h: number; min: number; endKey: string | null;
   age: "allAges" | "over21" | null; price: { kind: "free" | "from" | "amount"; amount?: string } | null;
   url: string; soldOut: boolean; recurring: boolean; sched: { en: string; es: string } | null;
+  pic: { subject: string; n: number; key: string } | null;
 };
 export type When = "week" | "weekend" | "month";
 export type Words = {
@@ -75,3 +76,8 @@ export function shortDate(key: string, w: Words) {
 export function time(h: number, min: number, w: Words) {
   return `${h % 12 || 12}:${String(min).padStart(2, "0")} ${h < 12 ? w.am : w.pm}`;
 }
+
+// The end of "this weekend" (the coming Sunday, or today on a Sunday): dated items up to it lead the page.
+export function weekendEnd(today: string) { const wd = weekday(today); return addDays(today, wd === 0 ? 0 : 7 - wd); }
+// Grid columns that leave no orphan on the last row (Designer): 4 → 2, 3 or 6 → 3, 5 → 3 (last row centred), else 3.
+export function cols(n: number) { return n === 1 ? 1 : n === 2 || n === 4 ? 2 : 3; }

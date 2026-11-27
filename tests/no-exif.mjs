@@ -1,15 +1,15 @@
 // No photo on the site carries EXIF or XMP metadata (Security 11/26): a phone photo's GPS would be Rod's home. Checks every
-// image under public/recipes/images: JPEG APP1 "Exif\0\0" segments, WebP "EXIF"/"XMP " chunks, and the XMP namespace
+// image under public/recipes/images and public/slc/art (the Discover SLC illustrations, Security 11/27): JPEG APP1 "Exif\0\0" segments, WebP "EXIF"/"XMP " chunks, and the XMP namespace
 // (ns.adobe.com/xap) anywhere in the file. scripts/recipe-images.py re-encodes without metadata, so this only fails when
 // something bypassed it.
 import { readdirSync, readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
-const DIR = "public/recipes/images";
+const DIRS = ["public/recipes/images", "public/slc/art/hero", "public/slc/art/cards"];
 const bad = [];
 let n = 0;
-if (existsSync(DIR)) for (const f of readdirSync(DIR)) {
-  if (!/\.(jpe?g|webp)$/i.test(f)) continue;
+for (const DIR of DIRS) if (existsSync(DIR)) for (const f of readdirSync(DIR)) {
+  if (!/\.(jpe?g|webp|avif)$/i.test(f)) continue;
   n++;
   const b = readFileSync(join(DIR, f));
   const why = [];
@@ -22,6 +22,9 @@ if (existsSync(DIR)) for (const f of readdirSync(DIR)) {
       if (marker === 0xe1 && b.subarray(i + 4, i + 10).equals(Buffer.from("Exif\0\0", "binary"))) why.push("EXIF");
       i += 2 + len;
     }
+  } else if (/\.avif$/i.test(f)) {
+    // AVIF (ISOBMFF): an "Exif" item type in the metadata box means EXIF; XMP is caught by its namespace above.
+    if (b.subarray(0, 4096).includes(Buffer.from("Exif"))) why.push("EXIF");
   } else if (b.subarray(0, 4).toString() === "RIFF" && b.subarray(8, 12).toString() === "WEBP") {
     for (let i = 12; i + 8 <= b.length;) {
       const id = b.subarray(i, i + 4).toString(), size = b.readUInt32LE(i + 4);

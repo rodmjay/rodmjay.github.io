@@ -53,41 +53,115 @@ body.slc { margin: 0; background: var(--md-sys-color-surface); color: var(--md-s
 .slc-foot-brand img { border-radius: 6px; }
 .slc-foot a { display: inline-flex; align-items: center; min-height: 48px; color: var(--md-sys-color-primary); }
 
-/* Discover SLC (/slc/, /es/slc/; design/specs/rodmjay-events.md). Cards one column on phones, two from 840px. */
-.discover-block + .discover-block { margin-top: var(--space-8); padding-top: var(--space-8); border-top: 1px solid var(--md-sys-color-outline-variant); }
-.discover-block > h2 { margin: 0 0 var(--space-2); }
-.discover-lede { margin: 0 0 var(--space-2); max-width: 40rem; }
-.discover-block .ds-banner { margin: var(--space-4) 0; }
-.ev-filters { display: grid; gap: 0; margin: var(--space-6) 0 var(--space-2); }
-.ev-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); min-height: 48px; align-items: center; }
-.ev-summary { display: flex; align-items: center; gap: var(--space-2); min-height: 48px; margin: 0 0 var(--space-4); }
-.ev-count { margin: 0; flex: 1; }
-.ev-count:focus { outline: none; }
-.ev-clear { flex: none; }
-.ev-clear.is-idle { visibility: hidden; }
+/* The page (design/specs/discover-slc.md "image-forward and fun"; prototype design/specs/slc-prototype/): the season's
+   plate full-bleed, then the AI label, title and lede on the surface; a quiet filter bar; image-led cards. */
+.slc-wrap { box-sizing: border-box; max-width: 70rem; margin: 0 auto; padding: 0 var(--gutter); }
+.slc-hero { height: clamp(240px, 42vw, 460px); overflow: hidden; }
+.slc-hero img { width: 100%; height: 100%; object-fit: cover; object-position: 58% 50%; display: block; }
+.slc-top { padding: var(--space-6) 0 var(--space-4); }
+.slc-ai { margin: 0 0 var(--space-4); font-size: 14px; line-height: 1.43; color: var(--md-sys-color-on-surface-variant); }
+.slc-h1 { margin: 0 0 var(--space-3); font: 700 clamp(2.25rem, 6vw, 4rem)/1.02 var(--md-ref-typeface-brand); letter-spacing: -0.02em; }
+.slc-lede { margin: 0; font-size: 1.25rem; line-height: 1.5; color: var(--md-sys-color-on-surface-variant); max-width: 34rem; }
+
+/* The filter bar: no card, one row between hairlines; on phones one "Filters" button and the count. */
+.slc-filterbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); padding: var(--space-3) 0;
+  border-top: 1px solid var(--md-sys-color-outline-variant); border-bottom: 1px solid var(--md-sys-color-outline-variant); margin: var(--space-4) 0 var(--space-8); }
+.slc-bar-chips { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+.slc-chips { display: flex; flex-wrap: wrap; gap: 0 var(--space-2); }
+.slc-sep { width: 1px; height: 24px; background: var(--md-sys-color-outline-variant); }
+.slc-count { margin: 0 0 0 auto; color: var(--md-sys-color-on-surface-variant); font-size: 14px; }
+.slc-count:focus { outline: none; }
+.slc-clear.is-idle { visibility: hidden; }
+.slc-filters-btn { display: none; }
+@media (max-width: 699.98px) {
+  .slc-bar-chips { display: none; }
+  [data-js] .slc-filters-btn { display: inline-flex; }
+}
 html:not([data-js]) .ev-js { display: none; }
-.ev-day { padding-top: var(--space-4); margin-top: var(--space-4); border-top: 1px solid var(--md-sys-color-outline-variant); }
-.ev-day-h { margin: 0 0 var(--space-4); }
-.ev-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 840px) { .ev-grid { grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); } }
-.ev-card { display: grid; gap: var(--space-1); height: 100%; }
-.ev-card p, .ev-card h3 { margin: 0; overflow-wrap: anywhere; }
-.ev-title a { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 48px; color: var(--md-sys-color-on-surface); }
-.ev-title .ev-ext { flex: none; }
-.ev-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-1); }
-.ev-age { background: var(--md-sys-color-surface-container-high); color: var(--md-sys-color-on-surface-variant); }
-.ev-sold { gap: var(--space-1); }
-.ev-empty { display: grid; gap: var(--space-2); justify-items: start; }
-.ev-empty p { margin: 0; }
-.discover-playlist .ds-btn { gap: var(--space-2); }
-/* Designer 11/27: h1 to the first block is --space-8 (h1's own margin plus this), not the site's section padding. */
-.discover-page > .discover-block:first-of-type { padding-top: var(--space-4); }
-/* 48px hit areas, the look unchanged (as Recipes, Designer 11/26): chips grow to 48px with a transparent 8px border top
-   and bottom, rows abut with no row gap; buttons get an invisible ::before 4px above and below. */
+.slc-filter-sheet { width: 100%; max-width: 32rem; margin: auto auto 0; padding: var(--space-6); display: grid; gap: var(--space-4); }
+.slc-filter-sheet:not([open]) { display: none; }
+.slc-filter-sheet h2 { margin: 0; }
+.slc-sheet-chips { display: grid; gap: var(--space-3); }
+.slc-sheet-chips .slc-sep { display: none; }
+.slc-sheet-actions { display: flex; justify-content: space-between; gap: var(--space-3); }
+
+/* Chips: the system's filter chip with a 48px hit area (look unchanged). */
 .ds .discover-page .ds-chip:not(.status) { --look-r: var(--md-sys-shape-corner-small);
   height: 48px; border: 0; border-block: 8px solid transparent; background-clip: padding-box;
   border-radius: var(--look-r) / calc(var(--look-r) + 8px); }
 .ds .discover-page .ds-chip:not(.status)::after { border-radius: var(--look-r); }
 .ds .discover-page .ds-chip:not(.status):focus-visible { outline-offset: -6px; }
 .ds .discover-page .ds-btn::before { content: ""; position: absolute; inset: -4px 0; }
-.discover-page .ev-chips { row-gap: 0; }
+
+/* Groups and headings: bigger, with one small amber icon. */
+.slc-group { margin: 0 0 var(--space-12); }
+.slc-h2 { display: flex; align-items: center; gap: var(--space-3); margin: 0 0 var(--space-4); font: 700 clamp(1.5rem, 3vw, 2rem)/1.15 var(--md-ref-typeface-brand); }
+.slc-h2-icon { width: 28px; height: 28px; fill: var(--slc-amber); flex: none; }
+
+/* Cards: picture first (4:3), the date tile over its lower-left corner, then label, title (the only link), place, tags. */
+.slc-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-6); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 600px) { .slc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) {
+  .slc-grid.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .slc-grid.c3.center-last { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .slc-grid.c3.center-last > li { grid-column: span 2; }
+  .slc-grid.c3.center-last > li:nth-last-child(2) { grid-column: 2 / span 2; }
+}
+.slc-grid > li, .slc-weekly-list > li { display: flex; min-width: 0; }
+.slc-card { position: relative; display: flex; flex-direction: column; width: 100%; background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant); border-radius: 16px; }
+.slc-art { aspect-ratio: 4 / 3; border-radius: 16px 16px 0 0; overflow: hidden; background: var(--md-sys-color-surface-container-high); }
+.slc-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.slc-art-tile { display: grid; place-items: center; color: var(--md-sys-color-on-surface-variant); font: 700 3rem/1 var(--md-ref-typeface-brand); }
+.slc-date { position: relative; z-index: 1; width: 60px; margin: -30px 0 0 var(--space-4); padding: 6px 0 8px; text-align: center;
+  background: var(--md-sys-color-surface-container); border: 1px solid var(--md-sys-color-outline-variant); border-radius: 12px;
+  box-shadow: 0 2px 10px rgb(0 0 0 / .35); }
+.slc-date.today { border-color: var(--slc-amber); }
+.slc-date b { display: block; font: 700 1.5rem/1.05 var(--md-ref-typeface-brand); }
+.slc-date span { font: 600 11px/1 var(--md-ref-typeface-plain); letter-spacing: .08em; text-transform: uppercase; color: var(--md-sys-color-on-surface-variant); }
+.slc-body { display: flex; flex-direction: column; gap: 6px; padding: var(--space-2) var(--space-4) var(--space-4); }
+.slc-label { margin: 0; font: 600 12px/1.4 var(--md-ref-typeface-plain); letter-spacing: .06em; text-transform: uppercase; color: var(--md-sys-color-on-surface-variant); }
+.slc-label.now { color: var(--slc-amber); }
+.slc-title { margin: 0; font: 600 1.25rem/1.2 var(--md-ref-typeface-brand); overflow-wrap: anywhere; }
+.slc .slc-title a { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 48px; color: var(--md-sys-color-on-surface); text-decoration: none; }
+.slc-title a::after { content: ""; position: absolute; inset: 0; border-radius: 16px; }
+.slc-title a:focus-visible { outline: none; }
+.slc-card:has(.slc-title a:focus-visible) { outline: 3px solid var(--md-sys-color-primary); outline-offset: 2px; }
+.slc-place { margin: 0; font-size: 15px; }
+.slc-tags { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-1); font-size: 14px; color: var(--md-sys-color-on-surface-variant); }
+.slc-pill { border: 1px solid var(--md-sys-color-outline-variant); border-radius: 999px; padding: 4px 10px; font-size: 13px; }
+.slc-pill.sold { border-color: var(--md-sys-color-error); color: var(--md-sys-color-error); }
+@media (prefers-reduced-motion: no-preference) {
+  .slc-card { transition: transform 150ms, box-shadow 150ms; }
+  .slc-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgb(0 0 0 / .35); }
+}
+
+/* The featured card: wide, picture left, a big date and title, one "See details" button (the title stays the link). */
+.slc-feature { display: grid; grid-template-columns: 1.25fr 1fr; border-radius: 20px; margin-bottom: var(--space-6); overflow: hidden; }
+.slc-feature .slc-art { aspect-ratio: auto; min-height: 320px; border-radius: 0; }
+.slc-feature .slc-body { padding: var(--space-8); justify-content: center; gap: var(--space-3); }
+.slc-feature .slc-date { margin: 0; display: inline-block; width: auto; padding: 8px 14px; text-align: left; align-self: flex-start; box-shadow: none; }
+.slc-feature .slc-title { font-size: clamp(1.75rem, 3.4vw, 2.5rem); line-height: 1.08; }
+.slc-btn { align-self: flex-start; margin-top: var(--space-2); pointer-events: none; }
+@media (max-width: 839.98px) {
+  .slc-feature { grid-template-columns: 1fr; }
+  .slc-feature .slc-art { min-height: 0; aspect-ratio: 3 / 2; }
+  .slc-feature .slc-body { padding: var(--space-6); }
+}
+
+/* Every week: horizontal on desktop (picture left 42%), stacked on phones. */
+.slc-weekly-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-6); grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); }
+@media (min-width: 840px) {
+  .slc-weekly { flex-direction: row; overflow: hidden; }
+  .slc-weekly .slc-art { aspect-ratio: auto; width: 42%; min-height: 170px; border-radius: 0; flex: none; }
+  .slc-weekly .slc-body { justify-content: center; padding: var(--space-4); }
+  .slc-weekly .slc-title { font-size: 1.125rem; }
+}
+
+/* Playing SLC Soon. */
+.slc-play { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-6); padding: var(--space-6); border-radius: 20px;
+  background: var(--md-sys-color-surface-container); border: 1px solid var(--md-sys-color-outline-variant); }
+.slc-play p { margin: 0; max-width: 36rem; color: var(--md-sys-color-on-surface-variant); }
+.slc-play-btn { margin-left: auto; gap: var(--space-2); }
+.slc-empty { display: grid; gap: var(--space-2); justify-items: start; padding: var(--space-6) 0; }
+.ds-banner { margin: var(--space-4) 0; }
