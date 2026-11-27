@@ -644,11 +644,20 @@
         "name": "Personality test",
         "line": "A short test about how you work."
       },
+      "agencypro": {
+        "name": "AgencyPro",
+        "line": "Coming soon. Your AI does the work, and real people fill the gaps."
+      },
+      "privacy": {
+        "name": "Privacy Squared",
+        "line": "Coming soon. See where your information is exposed."
+      },
       "blog": {
         "name": "Blog",
         "line": "Notes on architecture and building with AI."
       }
     },
+    "newTab": "(opens in a new tab)",
     "footerLabel": "Site links",
     "motionOn": "Motion on",
     "motionOff": "Motion off",

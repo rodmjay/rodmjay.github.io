@@ -644,11 +644,20 @@
         "name": "Test de personalidad",
         "line": "Una prueba breve sobre cómo trabaja usted."
       },
+      "agencypro": {
+        "name": "AgencyPro",
+        "line": "Próximamente. Su IA trabaja y personas reales cubren lo que falta."
+      },
+      "privacy": {
+        "name": "Privacy Squared",
+        "line": "Próximamente. Vea dónde está expuesta su información."
+      },
       "blog": {
         "name": "Blog",
         "line": "Notas sobre arquitectura y cómo construir con IA."
       }
     },
+    "newTab": "(se abre en una pestaña nueva)",
     "footerLabel": "Enlaces del sitio",
     "motionOn": "Movimiento activado",
     "motionOff": "Movimiento desactivado",
