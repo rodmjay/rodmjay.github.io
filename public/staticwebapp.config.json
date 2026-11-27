@@ -55,6 +55,22 @@
       }
     },
     {
+      "route": "/console/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    },
+    {
+      "route": "/es/console/*",
+      "headers": {
+        "Cache-Control": "no-store",
+        "Referrer-Policy": "no-referrer",
+        "X-Robots-Tag": "noindex"
+      }
+    },
+    {
       "route": "/rvp/",
       "redirect": "/personality-test/",
       "statusCode": 301

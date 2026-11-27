@@ -73,3 +73,18 @@
 .acct-fresh { display: grid; gap: var(--space-3); }
 .acct-fresh-hold { min-height: 12rem; }
 @media (min-width: 600.02px) and (max-width: 54rem) { .bar .acct-slot { margin-left: auto; } .bar .acct-slot + .ds-lang { margin-left: 0; } }
+
+/* Command console (should-core ADR 0001; Designer check pending): tokens only. */
+.kit-console { display: grid; gap: var(--space-6); }
+.kit-console-form { display: grid; gap: var(--space-3); }
+.kit-console-form textarea { width: 100%; min-height: 3.5rem; resize: vertical; font: inherit; }
+.kit-console-err { color: var(--md-sys-color-error); }
+.kit-console-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+.kit-console-item { display: grid; gap: var(--space-2); padding: var(--space-4); box-shadow: none; background: var(--md-sys-color-surface-container); }
+.kit-console-body { margin: 0; overflow-wrap: anywhere; }
+.kit-console-status { margin: 0; color: var(--md-sys-color-on-surface-variant); }
+.kit-console-status.ok { color: var(--md-sys-color-primary); }
+.kit-console-status.err { color: var(--md-sys-color-error); }
+.kit-console-reply { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.kit-console-cmds ul { list-style: none; padding: 0; display: grid; gap: var(--space-1); }
+.kit-console-cmds li { display: flex; gap: var(--space-2); align-items: baseline; flex-wrap: wrap; }

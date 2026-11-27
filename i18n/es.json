@@ -506,5 +506,27 @@
     "signOut": "Cerrar sesión",
     "loadErr": "No pude cargar esto. Inténtelo de nuevo.",
     "tryAgain": "Intentar de nuevo"
+  },
+  "console": {
+    "metaTitle": "Consola",
+    "metaDescription": "Usa tus comandos de texto desde aquí.",
+    "title": "Consola",
+    "lede": "Los mismos comandos que envías por texto, y funcionan igual. Las respuestas aparecen aquí; las aprobaciones siguen llegando por texto.",
+    "placeholder": "Escribe un comando o una pregunta, como /today",
+    "run": "Enviar",
+    "commands": "Comandos",
+    "recent": "Recientes",
+    "none": "Nada todavía.",
+    "queued": "Esperando",
+    "running": "En curso",
+    "done": "Listo",
+    "failed": "No terminó. Intenta de nuevo o envíalo por texto.",
+    "expired": "Se agotó el tiempo. Puede que la computadora esté apagada.",
+    "forbidden": "Esta página no está disponible para tu cuenta.",
+    "signin": "Iniciar sesión",
+    "limit": "Son muchos a la vez. Intenta de nuevo en unos minutos.",
+    "network": "No se puede conectar con la consola ahora.",
+    "outward": "actúa afuera",
+    "link": "Consola"
   }
 }

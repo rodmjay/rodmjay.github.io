@@ -506,5 +506,27 @@
     "signOut": "Sign out",
     "loadErr": "I couldn't load this. Try again.",
     "tryAgain": "Try again"
+  },
+  "console": {
+    "metaTitle": "Console",
+    "metaDescription": "Run your text commands from here.",
+    "title": "Console",
+    "lede": "The same commands you text, run the same way. Replies show here; approvals still come by text.",
+    "placeholder": "Type a command or a question, like /today",
+    "run": "Run",
+    "commands": "Commands",
+    "recent": "Recent",
+    "none": "Nothing yet.",
+    "queued": "Waiting to start",
+    "running": "Running",
+    "done": "Done",
+    "failed": "Didn't finish. Try again or text it.",
+    "expired": "Timed out. The computer may be off.",
+    "forbidden": "This page isn't available for your account.",
+    "signin": "Sign in",
+    "limit": "That's a lot at once. Try again in a few minutes.",
+    "network": "Can't reach the console right now.",
+    "outward": "acts outside",
+    "link": "Console"
   }
 }

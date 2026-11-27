@@ -76,7 +76,7 @@ export async function verify(lang: Lang, email: string, code: string): Promise<"
 }
 
 let refreshing: Promise<boolean> | null = null;
-async function refresh(): Promise<boolean> {
+export async function refresh(): Promise<boolean> {
   const s = getSession();
   if (!s) return false;
   refreshing ||= post({ action: "refresh", refresh_token: s.refresh_token }).then(({ json }) => {
@@ -140,3 +140,10 @@ export async function signOut(lang: Lang, everywhere = false) {
 
 export const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
 export const emailOk = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+/** The session as kit modules use it (should-core ADR 0001): a token getter, one refresh, sign-out. */
+export const kitAuth = {
+  token: () => getSession()?.access_token ?? null,
+  refresh,
+  signedOut: () => setSession(null),
+};
