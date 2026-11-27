@@ -49,27 +49,33 @@ export function Home({ lang }: { lang: Lang }) {
   ].filter(Boolean).map((x) => ({ ...(x as { key: "slc" | "recipes" | "test" | "blog"; href: string; mark: React.ReactNode }), ...h.projects[(x as { key: string }).key] }));
   return (
     <>
-      {/* A profile-header cover (Designer, rodmjay-professional.md 11/25, Rod: same as his LinkedIn banner): decorative, no text over it. */}
-      <div className="cover">
-        <picture>
-          <source media="(max-width: 599px)" type="image/avif" srcSet="/img/cover-m-750.avif 750w, /img/cover-m-1125.avif 1125w" sizes="100vw" />
-          <source media="(max-width: 599px)" type="image/webp" srcSet="/img/cover-m-750.webp 750w, /img/cover-m-1125.webp 1125w" sizes="100vw" />
-          <source type="image/avif" srcSet="/img/cover-1280.avif 1280w, /img/cover-1920.avif 1920w, /img/cover-2560.avif 2560w" sizes="100vw" />
-          <img src="/img/cover-1920.webp" srcSet="/img/cover-1280.webp 1280w, /img/cover-1920.webp 1920w, /img/cover-2560.webp 2560w" sizes="100vw"
-            width={3168} height={1344} alt="" fetchPriority="high" loading="eager" decoding="async" />
-        </picture>
-        {LIVING_HERO && <LivingHero descriptor={HERO} />}
-      </div>
-      <main id="main" className="col home">
-        <section className="hero" aria-labelledby="hero-name">
-          <div className="hero-top">
-            <img className="hero-photo" src="/img/rod-256.webp" srcSet="/img/rod-256.webp 256w, /img/rod-384.webp 384w" sizes="(min-width: 840px) 128px, 96px"
+      {/* The stage (Designer 11/27, "name and title straddle the cover edge"): the cover, then a fixed night-blue strip;
+          the avatar, name and title sit on the seam between them, in white with a shadow, above the living hero. The stage
+          is the same in light and dark. The h1 is inside <main>, so the stage is too. */}
+      <main id="main" className="home-page">
+        <div className="stage">
+          <div className="cover">
+            <picture>
+              <source media="(max-width: 599px)" type="image/avif" srcSet="/img/cover-m-750.avif 750w, /img/cover-m-1125.avif 1125w" sizes="100vw" />
+              <source media="(max-width: 599px)" type="image/webp" srcSet="/img/cover-m-750.webp 750w, /img/cover-m-1125.webp 1125w" sizes="100vw" />
+              <source type="image/avif" srcSet="/img/cover-1280.avif 1280w, /img/cover-1920.avif 1920w, /img/cover-2560.avif 2560w" sizes="100vw" />
+              <img src="/img/cover-1920.webp" srcSet="/img/cover-1280.webp 1280w, /img/cover-1920.webp 1920w, /img/cover-2560.webp 2560w" sizes="100vw"
+                width={3168} height={1344} alt="" fetchPriority="high" loading="eager" decoding="async" />
+            </picture>
+            {LIVING_HERO && <LivingHero descriptor={HERO} />}
+          </div>
+          <div className="stage-strip" />
+          <div className="stage-id col home">
+            <img className="hero-photo" src="/img/rod-256.webp" srcSet="/img/rod-256.webp 256w, /img/rod-384.webp 384w" sizes="(min-width: 400px) 128px, 96px"
               width={128} height={128} alt={d.hero.photoAlt} fetchPriority="high" decoding="async" />
-            <div>
+            <div className="stage-text">
               <h1 className="ds-headline-medium" id="hero-name">{d.hero.name}</h1>
               <p className="ds-title-large hero-title">{d.hero.title}</p>
             </div>
           </div>
+        </div>
+        <div className="col home">
+        <section className="hero" aria-labelledby="hero-name">
           <p className="ds-body-large hero-lede">{d.hero.lede}</p>
           <div className="hero-actions">
             <Link className="ds-btn" href={`${about}#resume`}>{h.resume}</Link>
@@ -96,6 +102,7 @@ export function Home({ lang }: { lang: Lang }) {
           </section>
         )}
         <p className="ds-body-small ds-variant home-ai">{d.hero.aiLine}</p>
+        </div>
       </main>
     </>
   );
