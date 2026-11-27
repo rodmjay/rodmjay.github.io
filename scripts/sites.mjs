@@ -180,8 +180,9 @@ export function addSite(name, src) {
   const swa = JSON.parse(readFileSync(CONFIG, "utf8"));
   swa.routes = [...(swa.routes || []).filter((r) => r.route !== `/${name}` && !r.route.startsWith(`/${name}/`)), ...routes];
   swa.mimeTypes = { ...swa.mimeTypes, ...mimeTypes };
-  const json = `${JSON.stringify(swa, null, 2)}\n`;
-  // Static Web Apps refuses a configuration file over 20 KB.
+  // Static Web Apps refuses a configuration file over 20 KB, so the deployed copy is written compact (no indentation:
+  // about a fifth smaller, 11/27); public/staticwebapp.config.json, the one people edit, stays readable.
+  const json = `${JSON.stringify(swa)}\n`;
   if (Buffer.byteLength(json) > 20_000) bad.push(`staticwebapp.config.json is ${Buffer.byteLength(json)} bytes (limit 20 KB)`);
   if (/unsafe-/.test(CSP.match(/script-src([^;]*)/)[1])) bad.push(`the /${name}/ CSP allows inline or eval scripts`);
   if (!site.allow && /unsafe-/.test(CSP)) bad.push(`the /${name}/ CSP allows inline or eval code`);
