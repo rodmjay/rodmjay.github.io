@@ -60,8 +60,9 @@ Each effect is a displacement field `d(x, t)` or a brightness factor `b(x, t)`, 
   RGBA PNG at half the texture width:
   - R: sky weight (above the horizon, by luminance and edge distance, feathered 8 px, with the moon disc cut out);
   - G: stars (small local maxima in the sky above a threshold);
-  - B: lights (warm hue, high luminance, in the skyline band);
-  - A: a per-light seed.
+  - B: water weight (below the horizon, minus the descriptor's hand-traced `land` polygon for the shore);
+  - A: always 255. Fully transparent pixels can lose their RGB when a browser decodes the PNG (Safari: Security 11/27).
+    Phase 2's city lights get their own texture, with each light's seed hashed from its position in the shader.
 - It is reproducible, so a new season's plate is one command. PR Person and Designer check the mask output before a
   phase ships; PR Person can hand-paint corrections over it (same format).
 - Textures: the same crops as the cover, 1920 w (desktop) and 1280 w (phone); masks at 960 and 640.

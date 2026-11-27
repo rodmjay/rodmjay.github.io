@@ -11,13 +11,25 @@ import { motionOn, MOTION_EVENT } from "./motion";
 
 declare global { interface Navigator { deviceMemory?: number; connection?: { saveData?: boolean } } }
 
+// WebGL support, probed once per page and the probe context released at once (browsers cap live contexts; a leaked
+// probe could cost the real canvas its context: Security 11/27).
+let webgl: boolean | null = null;
+function hasWebGL(): boolean {
+  if (webgl !== null) return webgl;
+  try {
+    const gl = document.createElement("canvas").getContext("webgl");
+    webgl = !!gl;
+    gl?.getExtension("WEBGL_lose_context")?.loseContext();
+  } catch { webgl = false; }
+  return webgl;
+}
+
 function allowed(): boolean {
   try {
     if (navigator.connection?.saveData) return false;
     if ((navigator.deviceMemory ?? 8) <= 2 && (navigator.hardwareConcurrency ?? 8) <= 2) return false;
     if (!motionOn()) return false;
-    const probe = document.createElement("canvas");
-    return !!probe.getContext("webgl");
+    return hasWebGL();
   } catch { return false; }
 }
 

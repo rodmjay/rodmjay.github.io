@@ -4,7 +4,8 @@
 //   R  sky weight: 1 in open sky, feathered to 0 above the ridge line (per column) and around the moon
 //   G  stars: small bright points in the sky, as soft dots
 //   B  water weight: below the horizon except the descriptor's `land` polygon, so the foreground never ripples
-//   A  city lights (phase 2): warm, bright points in the skyline band; empty until Designer passes it
+//   A  always 255. Fully transparent pixels can lose their RGB when a browser decodes the PNG (Safari, even with
+//      premultiply off: Security 11/27), so the mask stays opaque. The city lights (phase 2) get their own texture.
 // Usage: node scripts/hero-masks.mjs <descriptor.json>   (writes each variant's `mask` path, at half the texture width)
 import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
@@ -82,8 +83,7 @@ for (const v of desc.variants) {
     out[o] = Math.round(255 * sky);
     // B: water, below the horizon except the shore polygon, so the grass and rocks never ripple.
     if (y > hz + 1) out[o + 2] = Math.round(255 * smooth(hz + 1, hz + 4, y) * (1 - land[i]));
-    // A: city lights (phase 2), warm bright points between the ridge and the horizon.
-    if (y < hz && y > ridgeMin[x] - feather && warm[i]) out[o + 3] = 255;
+    out[o + 3] = 255;
   }
   // G: stars, small local maxima in open sky that stand out from their surroundings, drawn as 2 px soft dots.
   let stars = 0;

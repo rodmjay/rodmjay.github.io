@@ -55,8 +55,11 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
   const sh = (type: number, src: string) => { const s = gl.createShader(type)!; gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error("shader"); return s; };
   let prog: WebGLProgram;
   try {
-    prog = gl.createProgram()!; gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(prog);
+    prog = gl.createProgram()!;
+    const vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
     if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error("link");
+    gl.deleteShader(vs); gl.deleteShader(fs); // flagged; freed with the program
   } catch { onFail(); return () => {}; }
   gl.useProgram(prog);
   const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
@@ -139,6 +142,8 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     if (dead) return; dead = true; pause();
     document.removeEventListener("visibilitychange", onVis); canvas.removeEventListener("webglcontextlost", onLost);
     io.disconnect(); ro.disconnect();
+    // Free what this run created, so turning Motion off and on doesn't grow GPU memory (Security 11/27).
+    gl!.deleteTexture(texImg); gl!.deleteTexture(texMask); gl!.deleteBuffer(buf); gl!.deleteProgram(prog);
   }
   layout().then(() => { if (!dead) { onVis(); run(); } });
   return stop;
