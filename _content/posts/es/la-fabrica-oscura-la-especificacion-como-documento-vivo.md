@@ -1,7 +1,7 @@
 ---
 id: dark-factory-living-spec
 title: "La fábrica oscura: la especificación como documento vivo"
-dek: Usted edita los requisitos, la especificación se escribe sola y los agentes construyen la diferencia entre una versión y la siguiente.
+dek: Deje de escribir especificaciones. Ponga los requisitos en sumideros versionados, componga la especificación y déle al agente solo el diff.
 date: 2026-11-27
 tags: [architecture, ai]
 cover: /blog/media/dark-factory-living-spec.jpg
@@ -9,51 +9,44 @@ cover_alt: Una fábrica estilizada que brilla en un valle de montaña de noche, 
 toc: false
 draft: false
 ---
-Una fábrica oscura funciona con las luces apagadas. Las máquinas hacen la construcción y nadie está en el taller.
+Una fábrica oscura trabaja con las luces apagadas. Las máquinas construyen, nadie está en el taller. El programa de control es la especificación, y eso solo funciona si la especificación está viva.
 
-Creo que el software puede funcionar así. El programa de control es la especificación, y tiene que mantenerse viva.
+Este es el modelo completo:
 
-## La idea
+- Los requisitos viven en sumideros.
+- Aprobar un cambio recompone la especificación en una versión nueva.
+- Los agentes construyen el diff entre versiones.
 
-Usted edita los requisitos. La especificación se escribe sola. La fábrica construye la diferencia.
+Las personas no escriben la especificación ni trabajan el taller. Cuidan los requisitos. Todo lo demás se deriva.
 
-1. Los requisitos viven en sumideros.
-2. Al aprobar un cambio, la especificación se recompone en una versión nueva.
-3. Los agentes construyen el diff entre versiones.
-4. Usted trabaja los requisitos, y la fábrica trabaja el taller.
+![Sumideros tipados de requisitos (producto, estándares, seguridad) componen una especificación versionada; un agente construye el diff entre versiones, y cualquier fuente se vuelve un sumidero al hablar un contrato MCP pequeño: listar, obtener una versión, comparar dos versiones.](/blog/media/dark-factory-diagram.svg "El ciclo: requisitos adentro, especificación y diff afuera.")
 
-En esta imagen las personas no escriben la especificación, ni trabajan el taller. Cuidan los requisitos.
+## Derive la especificación, no la mantenga
 
-## Por qué la especificación tiene que ser derivada
-
-Todo equipo tiene una especificación que fue cierta alguna vez. Alguien la escribió con cuidado, el producto avanzó y la página se quedó quieta. Nadie decidió dejarla pudrir. Mantenerla al día nunca fue la tarea de nadie en un día de entrega.
-
-Tengo una regla para mí mismo: cuando un dato se puede calcular desde su fuente, se calcula. Un valor que hay que seguir actualizando se desvía, y uno derivado no. Una especificación es un valor derivado que hemos tratado como un documento. Así que deje de escribirla, y compóngala.
+Todo equipo tiene una especificación que fue cierta alguna vez. Se pudre porque mantenerla al día nunca fue la tarea de nadie en un día de entrega. Así que deje de tratar la especificación como un documento que se mantiene. Un dato que se puede calcular desde su fuente debe calcularse, y una especificación es algo que se calcula: la composición de los requisitos que son ciertos ahora. Escriba los requisitos. Genere la especificación.
 
 ## Sumideros
 
-Un sumidero es un lugar donde viven los requisitos, de una sola clase cada uno. Un sumidero de producto guarda lo que el producto debe hacer. Otros guardan estándares técnicos, estándares de diseño, seguridad, velocidad, disponibilidad y costo. Cada uno tiene un dueño que conoce esa clase de cosa, así que nadie discute dónde va un requisito.
+Un sumidero es una fuente tipada de requisitos, de una sola clase cada uno, con un solo dueño. El producto en uno, la seguridad en otro, luego diseño, rendimiento, costo. El dueño aprueba los cambios de su sumidero, así que nadie discute dónde va un requisito.
 
-Un sumidero es un repositorio, o una carpeta dentro de uno. Los estándares compartidos tienen su propio repositorio y alimentan muchos espacios de trabajo, como un sistema de diseño con sus estándares de diseño al lado. Los requisitos de un producto se quedan con el producto. Un espacio de trabajo elige qué sumideros compone y qué versión de cada uno.
+Hoy un sumidero es un repositorio, o una carpeta dentro de uno. Los estándares compartidos tienen su propio repositorio y alimentan muchos espacios de trabajo, versionados y fijados igual que una biblioteca compartida. Un espacio de trabajo declara los sumideros que compone y la versión de cada uno. Subir una versión es una decisión que le muestra el diff antes de tomarla.
 
-Si ha compartido una biblioteca de código entre productos, este es el mismo movimiento. Lo que se comparte, se versiona y se fija es un estándar en vez de código, y pasar a una versión nueva es una decisión que le muestra exactamente qué cambió.
+## Los agentes construyen el diff
 
-## La aprobación hace una versión
+Apruebe un cambio y la especificación se recompone: versión 2, versión 3, y las anteriores se guardan. Ahora "qué cambió" tiene una respuesta exacta. Si le da a un agente la especificación entera, relee todo y rehace trabajo terminado. Si le da el diff, la tarea es pequeña y precisa: agregue estos tres requisitos, cambie este, quite aquel. Cada uno lleva su identificador y su razón, así que el agente sabe qué prueba escribir. El costo sigue el tamaño del cambio, no el del sistema.
 
-Un cambio a un sumidero espera hasta que la persona correcta lo apruebe. Los cambios de producto van al dueño del producto. Una regla de seguridad va a seguridad. Cuando pasa, la especificación se recompone y recibe una versión nueva. Versión uno, versión dos, versión tres, y las anteriores se quedan.
+## MCP convierte cualquier cosa en un sumidero
 
-Ahora "¿qué cambió?" tiene una respuesta precisa. Ponga dos versiones lado a lado y obtiene el diff: este requisito se agregó, aquel se reformuló, este se quitó.
+Los repositorios son por donde se empieza, no donde esto termina. Una fuente de requisitos tiene que responder tres preguntas: cuáles son sus requisitos, en qué versión, y qué cambió entre dos versiones. Defina eso como un contrato pequeño y sírvalo sobre MCP, y la fuente deja de importar. Un repositorio, una tabla de Postgres, un sistema de tickets, una herramienta de diseño, un registro de cumplimiento: cada uno se vuelve un sumidero en cuanto habla el contrato. Endpoints bien conocidos, un solo esquema compartido, versiones y diffs en una forma fija. El espacio de trabajo los compone y nunca le importa qué hay detrás de cada uno.
 
-## Construir la diferencia
+Aquí está la palanca. Sus requisitos ya viven en una docena de sistemas. MCP le permite componerlos donde están en vez de copiarlos a un documento que se desvía al día siguiente de escribirlo. El contrato es pequeño a propósito: listar, obtener una versión, comparar dos versiones. Manténgalo así de pequeño y todo se conecta.
 
-Un agente que recibe una especificación entera tiene que adivinar qué es nuevo. Relee todo y a veces rehace trabajo ya terminado. Un agente que recibe el diff tiene una tarea pequeña y exacta: implemente estos tres, cambie este, quite aquel. El trabajo y el costo siguen el tamaño del cambio. Cada requisito en el diff lleva su razón y su identificador, así que el agente sabe qué prueba escribir o actualizar.
+## Empiece esta semana
 
-## Una idea para explorar
+1. Elija un producto y tres sumideros con dueños distintos: el producto, un estándar compartido y la seguridad.
+2. Ponga cada uno en un repositorio y fije una versión en el espacio de trabajo.
+3. Componga la especificación en el build. Nunca edite la salida a mano.
+4. En el próximo cambio, genere el diff y déle al agente solo eso, con el identificador y la razón de cada requisito.
+5. Cuando un segundo sistema tenga requisitos que sigue copiando a mano, póngale enfrente el contrato MCP y conviértalo también en un sumidero.
 
-Si un repositorio puede ser un sumidero, también lo puede ser cualquier cosa que hable una interfaz estándar. Defina qué debe responder una fuente de requisitos, déle endpoints bien conocidos y una forma compartida, y un repositorio, una base de datos o un servicio pueden conectarse, con MCP como el portador probable. No diseñaría ese contrato primero. Construiría con repositorios, vería qué tienen en común dos o tres sumideros reales, y escribiría la interfaz a partir de eso.
-
-## Qué vigilar
-
-Demasiados sumideros traen de vuelta el problema del wiki, así que empiece con los menos que tengan aprobadores distintos. Dos sumideros pueden contradecirse, así que componer necesita una revisión de conflictos que se detenga y nombre quién decide. Un diff esconde el contexto, así que cada requisito cambiado debería llevar su razón. Y nada de esto debería agregar una reunión. La aprobación puede ser el merge que su equipo ya hace.
-
-Empiece en pequeño: un producto, tres sumideros, un agente que trabaja desde el diff. Si el ciclo se sostiene, amplíelo. Espero volver a esto, porque hay más que decir sobre las revisiones en la puerta de aprobación y sobre las pruebas que informan qué requisitos cubren.
+Use los menos sumideros que tengan aprobadores distintos. Haga que la aprobación sea el merge que su equipo ya hace. La especificación se mantiene al día porque nadie la está manteniendo al día.
