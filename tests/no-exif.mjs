@@ -9,6 +9,9 @@ const DIRS = ["public/recipes/images", "public/slc/art/hero", "public/slc/art/ca
 const bad = [];
 let n = 0;
 for (const DIR of DIRS) if (existsSync(DIR)) for (const f of readdirSync(DIR)) {
+  // The SLC art folders hold image files only: a README or working file there could carry generation records (job ids,
+  // the account, prompts) into the public repo (Security 11/27).
+  if (DIR.startsWith("public/slc/art") && !/\.(webp|avif)$/i.test(f)) { bad.push(`${DIR}/${f}: not an image file (only .webp and .avif belong here)`); continue; }
   if (!/\.(jpe?g|webp|avif)$/i.test(f)) continue;
   n++;
   const b = readFileSync(join(DIR, f));
