@@ -1,150 +1,202 @@
-/* Recipes: the card grid and the recipe page (Designer spec, design/specs/rodmjay-recipes.md). Layout only; colors,
-   type and components come from the design system (rod brand). */
-.wide-col { max-width: 72rem; margin: 0 auto; padding: 0 var(--gutter); }
-.page-head .sample-chip { margin-top: var(--space-3); width: fit-content; }
-.sample-chip { pointer-events: none; }
+/* The Family Recipe Book (Designer's homey spec, design/specs/recipe-book-homey.md, 11/27): a warm, plain food blog.
+   Light only at launch. Colors are the `recipes` brand: red leads (links, buttons, step numbers), evergreen only for the
+   recipe card's top line and small labels, oak only for the tip rule. 12px radius, 1px lines, no shadows, no gradients
+   (the plaid line is the one pattern). Headings Young Serif, body Source Serif 4 at 18px/1.65, UI Inter. 48px targets. */
+:root {
+  --rb-paper: #fbf5ea; --rb-card: #fffdf8; --rb-ink: #2a211c; --rb-soft: #6b5b4f; --rb-line: #e6dccb;
+  --rb-red: #a8322d; --rb-red-d: #8a2622; --rb-green: #2f5d47; --rb-oak: #8a5a2b; --rb-note: #f6ecd9; --rb-r: 12px;
+  --rb-serif: "Source Serif 4", Georgia, serif; --rb-head: "Young Serif", Georgia, serif; --rb-ui: "Inter Variable", Inter, system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body.rb { margin: 0; background: var(--rb-paper); color: var(--rb-ink); font: 400 18px/1.65 var(--rb-serif); }
+.rb a { color: var(--rb-red); text-underline-offset: 0.15em; }
+.rb a:hover { color: var(--rb-red-d); }
+.rb :focus-visible { outline: 3px solid var(--rb-red); outline-offset: 2px; border-radius: 4px; }
+.rb h1, .rb h2, .rb h3 { font-family: var(--rb-head); font-weight: 400; color: var(--rb-ink); }
+.rb-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.rb-skip { position: absolute; left: 12px; top: -60px; z-index: 10; background: var(--rb-red); color: #fff !important; font: 600 15px var(--rb-ui); padding: 12px 18px; border-radius: 999px; }
+.rb-skip:focus { top: 12px; }
+.rb-wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+.rb-plaid { height: 8px; background: repeating-linear-gradient(90deg, var(--rb-red) 0 12px, var(--rb-paper) 12px 14px, var(--rb-red) 14px 26px, var(--rb-paper) 26px 40px); }
 
-/* Index: 3 columns at 1280, 2 at 768, 1 on phones. The whole card is one link; focus is the system ring. */
-.recipe-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-6); grid-template-columns: repeat(3, minmax(0, 1fr)); }
-@media (max-width: 1023.98px) { .recipe-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 599.98px) { .recipe-grid { grid-template-columns: 1fr; } }
-.ds a.recipe-card { display: flex; flex-direction: column; height: 100%; padding: 0; overflow: hidden; color: inherit; text-decoration: none;
-  box-shadow: inset 0 0 0 2px var(--md-sys-color-outline-variant); border-color: transparent; }
-.ds a.recipe-card:hover { box-shadow: inset 0 0 0 2px var(--md-sys-color-primary); }
-.recipe-card picture, .recipe-card .flat-title { display: block; aspect-ratio: 4 / 3; }
-.recipe-card img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.recipe-card .flat-title { display: grid; place-items: center; padding: var(--space-6); text-align: center; background: var(--md-sys-color-surface-container);
-  font: 700 1.5rem/1.1 var(--md-ref-typeface-brand); text-transform: uppercase; letter-spacing: 0.04em; }
-.recipe-card-body { display: grid; gap: var(--space-2); padding: var(--space-4); align-content: start; }
-.recipe-card-body .sample-chip { width: fit-content; }
-.recipe-card-dek { display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.recipe-card-facts { margin-top: var(--space-1); }
+/* Header */
+.rb-bar { background: var(--rb-card); border-bottom: 1px solid var(--rb-line); }
+.rb-bar-row { display: flex; align-items: center; gap: 12px; min-height: 72px; }
+.rb-bar .rb-wrap { max-width: 1180px; }
+.rb .rb-logo { display: flex; align-items: center; gap: 10px; min-height: 48px; font: 400 24px/1 var(--rb-head); color: var(--rb-red); text-decoration: none; white-space: nowrap; }
+.rb-logo img { border-radius: 9px; flex: none; }
+.rb-nav { display: flex; margin-left: 4px; }
+.rb .rb-nav a { display: flex; align-items: center; min-height: 48px; padding: 0 9px; color: var(--rb-ink); text-decoration: none; font: 500 15px var(--rb-ui); white-space: nowrap; }
+.rb .rb-nav a:hover, .rb .rb-nav a[aria-current] { color: var(--rb-red); }
+.rb .rb-nav a[aria-current] { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px; }
+.rb-search { margin-left: auto; display: flex; min-width: 0; flex: 0 1 280px; }
+.rb-search input { min-height: 48px; flex: 1 1 140px; width: 0; min-width: 0; border: 1px solid var(--rb-line); border-right: 0; border-radius: 999px 0 0 999px; padding: 0 16px; background: #fff; color: var(--rb-ink); font: 15px var(--rb-ui); }
+.rb-search button { min-height: 48px; border: 0; border-radius: 0 999px 999px 0; padding: 0 18px; background: var(--rb-red); color: #fff; font: 600 15px var(--rb-ui); cursor: pointer; }
+.rb-search button:hover { background: var(--rb-red-d); }
+.rb-lang select { min-height: 48px; border: 1px solid var(--rb-line); border-radius: 999px; padding: 0 12px; background: transparent; color: var(--rb-ink); font: 14px var(--rb-ui); cursor: pointer; }
+.rb-menu { display: none; align-items: center; gap: 6px; min-height: 48px; padding: 0 12px; border: 1px solid var(--rb-line); border-radius: 999px; background: transparent; color: var(--rb-ink); font: 500 15px var(--rb-ui); cursor: pointer; }
+.rb-sheet { margin: 0 0 0 auto; height: 100%; max-height: none; width: min(360px, 90vw); border: 0; padding: 20px; background: var(--rb-card); color: var(--rb-ink); }
+.rb-sheet::backdrop { background: rgb(42 33 28 / 0.4); }
+.rb-sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.rb-sheet-title { font: 400 22px var(--rb-head); color: var(--rb-red); }
+.rb-close { width: 48px; height: 48px; border: 0; background: transparent; color: var(--rb-ink); border-radius: 999px; cursor: pointer; }
+.rb-sheet-links { display: flex; flex-direction: column; margin-bottom: 16px; }
+.rb .rb-sheet-links a { display: flex; align-items: center; min-height: 48px; color: var(--rb-ink); text-decoration: none; font: 500 17px var(--rb-ui); border-bottom: 1px solid var(--rb-line); }
+.rb .rb-sheet-links a[aria-current] { color: var(--rb-red); }
+
+/* Shared pieces */
+.rb-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 2px solid var(--rb-red);
+  background: var(--rb-red); color: #fff; font: 600 15px var(--rb-ui); text-decoration: none; cursor: pointer; }
+.rb a.rb-btn { color: #fff; }
+.rb .rb-btn:hover { background: var(--rb-red-d); border-color: var(--rb-red-d); color: #fff; }
+.rb .rb-btn.o, .rb a.rb-btn.o { background: transparent; color: var(--rb-red); }
+.rb .rb-btn.o:hover { background: var(--rb-red); color: #fff; }
+.rb-save[aria-pressed="true"] { background: var(--rb-note); }
+.rb-acts { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0 28px; }
+.rb-crumbs { padding: 18px 0 4px; font: 14px var(--rb-ui); color: var(--rb-soft); }
+.rb-crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; }
+.rb-crumbs li { display: inline-flex; align-items: center; min-height: 32px; }
+.rb-crumbs li:not(:last-child)::after { content: "›"; margin: 0 8px; }
+.rb .rb-crumbs a { color: var(--rb-soft); display: inline-flex; min-height: 32px; align-items: center; }
+.rb-sec { font-size: 30px; line-height: 1.2; margin: 44px 0 6px; padding-bottom: 8px; border-bottom: 2px solid var(--rb-line); }
+.rb-lede { color: var(--rb-soft); margin: 0 0 8px; }
+.rb-soft { color: var(--rb-soft); }
+.rb-center { text-align: center; margin-top: 30px; }
+.rb-chip { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border: 1px solid var(--rb-line); border-radius: 999px; background: var(--rb-card);
+  color: var(--rb-ink); font: 14px var(--rb-ui); text-decoration: none; cursor: pointer; }
+.rb a.rb-chip { color: var(--rb-ink); }
+.rb .rb-chip:hover { border-color: var(--rb-red); color: var(--rb-red); }
+.rb .rb-chip[aria-current], .rb .rb-chip[aria-pressed="true"] { background: var(--rb-red); border-color: var(--rb-red); color: #fff; }
+.rb-chip[aria-disabled="true"] { opacity: 0.5; cursor: default; }
+.rb-courses, .rb-chips, .rb-selected-list { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Cards */
+.rb-grid { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+.rb-card { position: relative; height: 100%; background: var(--rb-card); border: 1px solid var(--rb-line); border-radius: var(--rb-r); overflow: hidden; }
+.rb-card picture, .rb-card img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; height: auto; }
+.rb-card-flat { display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 2; padding: 16px; background: var(--rb-note); font: 400 22px var(--rb-head); color: var(--rb-red); text-align: center; }
+.rb-card-body { padding: 14px 16px 18px; }
+.rb .rb-card-title { font-size: 21px; line-height: 1.25; margin: 0 0 6px; }
+.rb .rb-card-title a { color: var(--rb-ink); text-decoration: none; }
+.rb-card-title a::after { content: ""; position: absolute; inset: 0; }
+.rb .rb-card:hover .rb-card-title a { color: var(--rb-red); }
+.rb-card:focus-within { outline: 3px solid var(--rb-red); outline-offset: 2px; }
+.rb-card-title a:focus-visible { outline: none; }
+.rb-card-meta { font: 14px var(--rb-ui); color: var(--rb-soft); }
+
+/* Home */
+.rb-welcome { display: grid; grid-template-columns: 1.15fr 1fr; gap: 32px; align-items: center; padding: 36px 0 8px; }
+.rb-welcome-photo img { display: block; width: 100%; aspect-ratio: 3 / 2; height: auto; object-fit: cover; border-radius: var(--rb-r); }
+.rb-kicker { margin: 0 0 6px; font: 600 14px var(--rb-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--rb-green); }
+.rb .rb-welcome h1 { font-size: clamp(34px, 5vw, 50px); line-height: 1.08; margin: 0 0 14px; }
+.rb-welcome-body { margin: 0 0 8px; color: var(--rb-soft); }
+.rb-cats { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.rb .rb-cat { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 76px; padding: 12px 8px; background: var(--rb-card);
+  border: 1px solid var(--rb-line); border-radius: var(--rb-r); text-align: center; text-decoration: none; color: var(--rb-ink); }
+.rb .rb-cat:hover { border-color: var(--rb-red); }
+.rb-cat b { font: 400 19px/1.2 var(--rb-head); }
+.rb-cat span { font: 14px var(--rb-ui); color: var(--rb-soft); }
+
+/* Lists */
+.rb-list h1, .rb-about h1 { font-size: clamp(34px, 5vw, 44px); line-height: 1.1; margin: 8px 0 6px; }
+.rb-more { margin: 18px 0 0; border: 1px solid var(--rb-line); border-radius: var(--rb-r); background: var(--rb-card); }
+.rb-more summary { display: flex; align-items: center; min-height: 48px; padding: 0 16px; font: 600 15px var(--rb-ui); cursor: pointer; color: var(--rb-ink); }
+.rb-groups { padding: 0 16px 16px; display: grid; gap: 12px; }
+.rb .rb-facet h3 { font: 600 13px var(--rb-ui); text-transform: uppercase; letter-spacing: 0.06em; color: var(--rb-green); margin: 8px 0 0; }
+.rb-facet .rb-chips { margin-top: 8px; }
+html[data-js] .rb-nojs, html:not([data-js]) .rb-js { display: none; }
+.rb-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; min-height: 48px; margin-top: 16px; }
+.rb-count { margin: 0; font: 600 15px var(--rb-ui); color: var(--rb-soft); }
+.rb-summary .rb-selected-list { margin: 0; }
+.rb-textbtn { min-height: 48px; border: 0; background: transparent; color: var(--rb-red); font: 600 15px var(--rb-ui); cursor: pointer; text-decoration: underline; padding: 0 4px; }
+.rb-empty { margin: 18px 0; padding: 28px; background: var(--rb-card); border: 1px solid var(--rb-line); border-radius: var(--rb-r); text-align: center; }
+.rb-pager { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 30px 0 0; font: 15px var(--rb-ui); color: var(--rb-soft); }
+
+/* About */
+.rb-about { max-width: 720px; }
 
 /* Recipe page */
-.ds main.recipe section { padding: 0; }
-.recipe-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); margin: var(--space-2) 0 0; }
-.recipe-actions .ds-btn { margin-left: calc(-1 * var(--space-3)); }
-.recipe-actions .ds-post-lang + .ds-btn { margin-left: 0; }
-.recipe .ds-post-head .ds-post-tags { margin-top: var(--space-4); }
-.ds .recipe-photo img { display: block; width: 100%; height: auto; aspect-ratio: auto; } /* as shot, never cropped */
-.recipe-body { display: grid; gap: var(--space-10); margin-top: var(--space-10); }
-@media (min-width: 900px) {
-  .recipe.col { max-width: 60rem; }
-  .recipe-body { grid-template-columns: minmax(14rem, 1fr) 2fr; align-items: start; }
-  .recipe-ingredients { position: sticky; top: var(--space-6); }
-}
-.recipe h2 { margin: 0 0 var(--space-4); font: 700 1.25rem/1.3 var(--md-ref-typeface-brand); letter-spacing: 0.14em; text-transform: uppercase; }
-.recipe h2::after { content: ""; display: block; width: 2.5rem; height: 2px; margin-top: var(--space-2); background: var(--md-sys-color-primary); }
-.recipe-ingredients ul { margin: 0 0 var(--space-6); padding-left: 1.1em; display: grid; gap: var(--space-2); }
-.recipe-ingredients li::marker { color: var(--md-sys-color-tertiary); }
-.recipe-ingredients h3 { margin: var(--space-4) 0 var(--space-2); }
-.recipe-steps ol { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: var(--space-6); }
-.recipe-steps li { counter-increment: step; display: grid; grid-template-columns: 2.5rem 1fr; gap: var(--space-4); line-height: 1.6; }
-.recipe-steps li::before { content: counter(step); font: 700 2rem/1 var(--md-ref-typeface-brand); color: var(--md-sys-color-primary); }
-.recipe-notes { margin: var(--space-10) 0 0; display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-6); }
-.recipe-notes dt { font-weight: 700; }
-.recipe-notes dd { margin: 0; }
-.recipe-credit { margin-top: var(--space-8); }
+.rb-post article { max-width: 1000px; }
+.rb .rb-post h1 { font-size: clamp(34px, 5vw, 52px); line-height: 1.08; margin: 10px 0 8px; }
+.rb-by { font: 15px var(--rb-ui); color: var(--rb-soft); margin: 0 0 20px; }
+.rb-hero { margin: 0; }
+.rb-hero img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--rb-r); }
+.rb-hero figcaption { margin-top: 6px; font: 13px var(--rb-ui); color: var(--rb-soft); }
+.rb-intro { font-size: 20px; margin: 22px 0; }
+.rb-bar-meta { display: flex; flex-wrap: wrap; margin: 18px 0; border: 1px solid var(--rb-line); border-radius: var(--rb-r); background: var(--rb-card); }
+.rb-bar-meta div { flex: 1; min-width: 130px; padding: 12px 16px; border-right: 1px solid var(--rb-line); }
+.rb-bar-meta div:last-child { border-right: 0; }
+.rb-bar-meta dt { font: 13px var(--rb-ui); text-transform: uppercase; letter-spacing: 0.06em; color: var(--rb-soft); }
+.rb-bar-meta dd { margin: 2px 0 0; font: 600 18px/1.3 var(--rb-ui); color: var(--rb-ink); }
+.rb-recipe { background: var(--rb-card); border: 1px solid var(--rb-line); border-top: 6px solid var(--rb-green); border-radius: var(--rb-r); padding: 28px; margin: 12px 0 30px; scroll-margin-top: 16px; }
+.rb .rb-recipe-title { font-size: 30px; margin: 0 0 18px; }
+.rb-cols { display: grid; grid-template-columns: 1fr 1.5fr; gap: 36px; }
+.rb .rb-col-h { font-size: 24px; margin: 0 0 12px; }
+.rb-ing { list-style: none; margin: 0; padding: 0; }
+.rb-ing li { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 1px dotted var(--rb-line); }
+.rb-ing input { flex: none; width: 22px; height: 22px; margin: 4px 0 0; accent-color: var(--rb-red); cursor: pointer; }
+.rb-ing label { cursor: pointer; }
+.rb-ing input:checked + label { text-decoration: line-through; color: var(--rb-soft); }
+.rb .rb-ing-h { margin: 16px 0 2px; padding-top: 12px; border-top: 1px solid var(--rb-line); font: 600 15px var(--rb-ui); text-transform: uppercase; letter-spacing: 0.05em; color: var(--rb-ink); }
+.rb-ing-block:first-child .rb-ing-h { margin-top: 0; border-top: 0; padding-top: 0; }
+.rb-steps { list-style: none; counter-reset: s; margin: 0; padding: 0; }
+.rb-steps li { counter-increment: s; position: relative; padding: 4px 0 18px 52px; }
+.rb-steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--rb-red); color: #fff;
+  font: 600 16px/36px var(--rb-ui); text-align: center; }
+.rb-tip { background: var(--rb-note); border-left: 4px solid var(--rb-oak); padding: 14px 18px; border-radius: 0 var(--rb-r) var(--rb-r) 0; margin: 8px 0 0; }
+.rb-serve { margin: 18px 0 0; }
+.rb-serve dt { font: 600 13px var(--rb-ui); text-transform: uppercase; letter-spacing: 0.06em; color: var(--rb-green); }
+.rb-serve dd { margin: 2px 0 10px; }
+.rb-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }
 
-/* Print: plain black on white, no scene, no header or nav. */
+/* Footer */
+.rb-foot { margin-top: 60px; background: var(--rb-card); border-top: 1px solid var(--rb-line); padding: 18px 0 32px; font: 14px var(--rb-ui); color: var(--rb-soft); }
+.rb-foot .rb-wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
+.rb .rb-foot a { display: inline-flex; align-items: center; min-height: 48px; color: var(--rb-soft); }
+
+/* Tablet and phone */
+@media (max-width: 1139px) { .rb-nav { display: none; } .rb-menu { display: inline-flex; } }
+.rb-sheet .rb-lang select { width: 100%; }
+@media (max-width: 860px) {
+  .rb-bar-row { flex-wrap: wrap; padding-top: 8px; padding-bottom: 10px; gap: 8px; }
+  .rb-search { order: 5; flex: 1 0 100%; margin-left: 0; }
+  .rb-lang-bar { margin-left: auto; }
+  .rb-welcome { grid-template-columns: 1fr; gap: 20px; }
+  .rb-cats { grid-template-columns: repeat(2, 1fr); }
+  .rb-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .rb-cols { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 560px) {
+  body.rb { font-size: 17px; }
+  .rb-lang-bar { display: none; }
+  .rb-menu { margin-left: auto; }
+  .rb .rb-logo { font-size: 20px; }
+  .rb-logo img { width: 30px; height: 30px; }
+  .rb-grid { grid-template-columns: 1fr; }
+  .rb-recipe { padding: 20px; }
+  .rb-bar-meta div { min-width: 50%; border-right: 0; border-bottom: 1px solid var(--rb-line); }
+  .rb-bar-meta div:nth-child(odd) { border-right: 1px solid var(--rb-line); }
+  .rb-bar-meta div:nth-last-child(-n + 2) { border-bottom: 0; }
+}
+@media (max-width: 380px) { .rb-lang select { padding: 0 6px; } .rb-menu { padding: 0 10px; } }
+
+/* Print: the recipe only, black on white, photo at most 180px tall, ingredients and steps in two columns. */
 @media print {
-  .bar, .skip, .page-head, .foot, .recipe-print, .ds-post-lang, .ds-post-tags, .sample-chip, .recipe-photo { display: none !important; }
-  body, .ds { background: #fff !important; color: #000 !important; }
-  .recipe * { color: #000 !important; }
-  .recipe-body { grid-template-columns: 1fr 2fr; }
-  .recipe-ingredients { position: static; }
+  .rb-plaid, .rb-bar, .rb-foot, .rb-noprint, .rb-crumbs, .rb-skip, .rb-related, .rb-tags, .rb-hero figcaption { display: none !important; }
+  body.rb { background: #fff; color: #000; font-size: 11pt; line-height: 1.45; }
+  .rb-wrap { max-width: none; padding: 0; }
+  .rb .rb-post h1 { font-size: 22pt; margin: 0 0 4pt; }
+  .rb-hero img { max-height: 180px; width: auto; aspect-ratio: auto; border-radius: 0; }
+  .rb-intro { font-size: 11pt; margin: 8pt 0; }
+  .rb-bar-meta { border: 0; background: none; margin: 6pt 0; }
+  .rb-bar-meta div { border: 0; padding: 0 12pt 0 0; min-width: 0; }
+  .rb-recipe { border: 0; padding: 0; margin: 0; background: none; }
+  .rb .rb-recipe-title { display: none; }
+  .rb-cols { grid-template-columns: 1fr 1.6fr; gap: 18pt; }
+  .rb-steps li::before { background: none; color: #000; border: 1px solid #000; }
+  .rb-ing input { display: none; }
+  .rb-tip { background: none; border-left: 2px solid #000; }
+  .rb a { color: #000; text-decoration: none; }
 }
-
-/* "AI-generated image" under the recipe photo (Compliance 11/23). Same type as the design system's figure captions
-   in .ds-prose (body-small, on-surface-variant); Designer to fold into the system as a plain figure caption. */
-.recipe-photo-credit { margin-top: var(--space-2); font: 400 var(--md-sys-typescale-body-small-size)/1.5 var(--md-ref-typeface-plain); color: var(--md-sys-color-on-surface-variant); }
-
-/* Tag filters on the index (Designer's spec, "Update 2026-11-26: tags and filters"). Layout and states only; chips,
-   cards, buttons and the dialog are the design system's. */
-/* Course and Dish lead (a row of two groups, 56px chips); the rest under "More filters", in two columns on desktop. */
-.recipe-filters, .recipe-filters-nojs { display: block; margin: 0 0 var(--space-4); padding: var(--space-4) var(--space-6); }
-.recipe-filters-nojs { columns: 2; column-gap: var(--space-8); }
-.recipe-lead { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-8); }
-.recipe-sheet .recipe-lead { grid-template-columns: 1fr; }
-.recipe-more { margin-top: var(--space-2); border-top: 1px solid var(--md-sys-color-outline-variant); }
-.recipe-more-summary { display: flex; align-items: center; gap: var(--space-2); min-height: 48px; width: fit-content; margin-bottom: var(--space-1); cursor: pointer; list-style: none;
-  color: var(--md-sys-color-on-surface); }
-.recipe-more-summary::-webkit-details-marker { display: none; }
-.recipe-more-summary .ds-icon { transition: transform var(--md-sys-motion-duration-short4, 150ms) var(--md-sys-motion-easing-standard, ease); }
-.recipe-more[open] > .recipe-more-summary .ds-icon { transform: rotate(180deg); }
-.recipe-more-groups { columns: 2; column-gap: var(--space-8); }
-.recipe-sheet .recipe-more-groups { columns: 1; }
-.recipe-facet { break-inside: avoid; padding-bottom: var(--space-2); }
-.recipe-facet h3 { margin: 0; padding-top: var(--space-2); }
-.recipe-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; column-gap: var(--space-2); }
-.recipe-chips > li { display: flex; align-items: center; min-height: 48px; } /* 48px rows: hit areas abut, never overlap */
-.recipe-lead .recipe-chips { row-gap: var(--space-2); }
-
-/* 48px hit areas everywhere in Recipes (Designer 11/26), the look unchanged. Chips (32px look): a transparent 8px border
-   top and bottom grows the box to 48px; the background, outline and state layer stay inside it, and the focus ring is
-   pulled back to the 32px chip. Buttons (40px look): an invisible ::before reaches 4px above and below (all round for
-   icon buttons). Rows of chips sit 48px apart with no row gap, so targets touch but never overlap. */
-.ds .recipes .ds-chip:not(.sample-chip, .status) { --look-r: var(--md-sys-shape-corner-small);
-  height: 48px; border: 0; border-block: 8px solid transparent; background-clip: padding-box;
-  border-radius: var(--look-r) / calc(var(--look-r) + 8px); }
-.ds .recipes .ds-chip:not(.sample-chip, .status)::after { border-radius: var(--look-r); }
-.ds .recipes .ds-chip:not(.sample-chip, .status):focus-visible { outline-offset: -6px; }
-.ds .recipes .ds-btn::before { content: ""; position: absolute; inset: -4px 0; }
-.ds .recipes .ds-btn.icon::before { inset: -4px; }
-.recipe-siblings .filters, .recipe-tags, .recipe-selected-list { row-gap: 0; }
-/* The lead block's chips are 56px to the eye, so they need no extension. */
-.ds .recipes :is(.recipe-lead, .recipe-lead-facet) .ds-chip:not(.sample-chip, .status) { height: 56px; padding-inline: var(--space-5); border: 0;
-  border-radius: var(--md-sys-shape-corner-small); }
-.ds .recipes :is(.recipe-lead, .recipe-lead-facet) .ds-chip:not(.sample-chip, .status):focus-visible { outline-offset: 2px; }
-/* A value with no recipes under the current choice: dimmed, not hidden (no shift), still focusable. Text keeps the
-   chip's on-surface-variant (4.5:1); only the outline fades and the state layer goes. */
-.ds-chip[aria-disabled="true"] { box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant); cursor: default; }
-.ds-chip[aria-disabled="true"]::after { display: none; }
-.recipe-filter-open { margin: 0 0 var(--space-2); }
-/* Desktop shows the card, phones the Filter button; without script (no html[data-js]) only the tag-page links show. */
-@media (min-width: 840px) { .recipe-filter-open { display: none; } }
-@media (max-width: 839.98px) { .recipe-filters { display: none; } .recipe-filters-nojs { columns: 1; } }
-html:not([data-js]) .recipe-filter-js { display: none; }
-html[data-js] .recipe-filters-nojs { display: none; }
-
-/* The selected summary: one reserved row (count, removable chips, Clear all), never wraps or changes height. */
-.recipe-summary { display: flex; align-items: center; gap: var(--space-2); min-height: 48px; margin: 0 0 var(--space-4); overflow-x: auto; scrollbar-width: none; }
-.recipe-count { flex: none; margin: 0 var(--space-2) 0 0; }
-.recipe-count:focus { outline: none; }
-.recipe-count:focus-visible { outline: 2px solid var(--md-sys-color-secondary); outline-offset: 2px; }
-.recipe-selected-list { display: flex; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
-.recipe-selected-list .ds-chip { flex: none; gap: var(--space-1); padding-right: var(--space-2); }
-.recipe-clear { flex: none; }
-.recipe-clear.is-idle { visibility: hidden; }
-html:not([data-js]) .recipe-summary { display: none; }
-
-.recipe-results { display: block; }
-@media (prefers-reduced-motion: no-preference) {
-  .recipe-results.is-live .recipe-grid > li { animation: recipe-in 150ms var(--md-sys-motion-easing-standard, ease) both; }
-}
-@keyframes recipe-in { from { opacity: 0; } to { opacity: 1; } }
-.recipe-empty { display: grid; justify-items: start; gap: var(--space-3); padding: var(--space-6); }
-.recipe-empty h2, .recipe-empty p { margin: 0; }
-.recipe-pager { min-height: 2.5rem; }
-
-/* The phone sheet: the system's dialog at full height, the groups scrolling, a sticky bar at the bottom. */
-.ds-dialog.sheet.recipe-sheet { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; border-radius: 0; }
-.recipe-sheet[open] { display: flex; flex-direction: column; }
-.recipe-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-4) var(--space-4) var(--space-2) var(--space-6); }
-.recipe-sheet-head h2 { margin: 0; text-align: left; }
-.recipe-sheet-groups { flex: 1; overflow-y: auto; padding: 0 var(--space-6) var(--space-4); }
-.recipe-sheet-bar { position: sticky; bottom: 0; display: flex; justify-content: space-between; align-items: center; gap: var(--space-2);
-  padding: var(--space-3) var(--space-6); background: var(--md-sys-color-surface-container-high); box-shadow: inset 0 1px 0 var(--md-sys-color-outline-variant); }
-
-/* Tag pages: the group's values as links, then "Combine filters". */
-.recipe-siblings { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); margin: 0 0 var(--space-8); }
-.recipe-siblings .filters { margin: 0; }
-.recipe-combine { margin-left: calc(-1 * var(--space-3)); }
-
-/* Recipe page tags: a "Tags" label, chip links, the rest behind "Show all tags". */
-.recipe-tags { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
-.recipe-tags-label { margin-right: var(--space-2); }
-.recipe-more-tags { display: contents; }
-.recipe-more-tags > summary { list-style: none; }
-.recipe-more-tags > summary::-webkit-details-marker { display: none; }
-.recipe-more-tags[open] > summary { display: none; }

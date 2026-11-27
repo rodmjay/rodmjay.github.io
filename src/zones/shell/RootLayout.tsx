@@ -36,7 +36,6 @@ export async function RootLayout({ lang, children }: { lang: Lang; children: Rea
         <link rel="stylesheet" href={asset("ds/design-system.css")} />
         <link rel="stylesheet" href={asset("site.css")} />
         <link rel="stylesheet" href={asset("blog/blog.css")} />
-        <link rel="stylesheet" href={asset("recipes/recipes.css")} />
       </head>
       <body className="ds">
         <a className="skip" href="#main">{d.nav.skip}</a>
