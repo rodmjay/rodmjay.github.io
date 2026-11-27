@@ -261,3 +261,8 @@ body:has(main.home-page) .foot.col { max-width: 44rem; }
 .stage-text .hero-title { color: rgb(255 255 255 / .92); margin-top: var(--space-2); }
 .home-page .hero { padding-top: 24px; }
 .home-page .hero .hero-lede { margin-top: 0; }
+/* Phones under 400px (Designer 11/27): name 24px, title at title-medium (16px), so the Spanish title takes two lines. */
+@media (max-width: 399.98px) {
+  .stage-text h1 { font-size: 1.5rem; line-height: 1.33; }
+  .stage-text .hero-title { font: var(--md-sys-typescale-title-medium-weight) var(--md-sys-typescale-title-medium-size)/var(--md-sys-typescale-title-medium-line-height) var(--md-ref-typeface-plain); margin-top: var(--space-1); }
+}
