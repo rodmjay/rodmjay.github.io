@@ -2,7 +2,7 @@
 // again at runtime before any texture loads (Security 11/27, check 1): paths are site-relative only, and nothing in it
 // ever becomes markup.
 export type Variant = {
-  media: string; image: string; mask: string; size: [number, number]; horizon: number;
+  media: string; image: string; mask: string; skyTex: string; size: [number, number]; horizon: number;
   moon: { x: number; y: number; r: number }; focus: string; land?: [number, number][];
 };
 export type Descriptor = { id: string; phases: number[]; variants: Variant[] };
@@ -19,7 +19,7 @@ export function checkDescriptor(d: unknown): Descriptor {
   if (!Array.isArray(x.phases) || !x.phases.every((p) => p === 1 || p === 2 || p === 3)) throw new Error("living-hero: bad phases");
   if (!Array.isArray(x.variants) || !x.variants.length || x.variants.length > 6) throw new Error("living-hero: bad variants");
   for (const v of x.variants) {
-    if (typeof v.media !== "string" || v.media.length > 120 || !okPath(v.image) || !okPath(v.mask)) throw new Error("living-hero: bad variant paths");
+    if (typeof v.media !== "string" || v.media.length > 120 || !okPath(v.image) || !okPath(v.mask) || !okPath(v.skyTex)) throw new Error("living-hero: bad variant paths");
     if (!Array.isArray(v.size) || v.size.length !== 2 || !v.size.every((n) => Number.isInteger(n) && n > 0 && n <= 4096)) throw new Error("living-hero: bad size");
     if (!(typeof v.horizon === "number" && v.horizon >= 0.5 && v.horizon <= 0.7)) throw new Error("living-hero: horizon outside 0.5 to 0.7");
     if (!v.moon || !frac(v.moon.x) || !frac(v.moon.y) || !frac(v.moon.r)) throw new Error("living-hero: bad moon");

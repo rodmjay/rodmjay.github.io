@@ -62,16 +62,24 @@ for (const v of desc.variants) {
 
   // Ridge line per column: the topmost snowy point (bright, unsaturated) between 25% and the horizon, then a running
   // minimum over ±3% of the width so gaps between peaks don't let the sky reach down into the haze.
-  const ridge = new Float32Array(W).fill(Math.round(0.45 * H));
+  const ridge = new Float32Array(W).fill(Math.round(0.45 * H)), found = new Uint8Array(W);
   for (let x = 0; x < W; x++) for (let y = Math.round(0.25 * H); y < hz; y++) {
     const i = y * W + x;
-    if (L[i] > 150 && S[i] < 0.28 && Math.hypot(x - mxp, y - myp) > mr * 2.5) { ridge[x] = y; break; }
+    if (L[i] > 150 && S[i] < 0.28 && Math.hypot(x - mxp, y - myp) > mr * 2.5) { ridge[x] = y; found[x] = 1; break; }
   }
   const span = Math.round(0.03 * W), ridgeMin = new Float32Array(W);
   for (let x = 0; x < W; x++) { let m = hz; for (let k = -span; k <= span; k++) m = Math.min(m, ridge[Math.min(W - 1, Math.max(0, x + k))]); ridgeMin[x] = m; }
-  const soft = new Float32Array(W);
-  for (let x = 0; x < W; x++) { let s = 0, n = 0; for (let k = -span; k <= span; k++) { s += ridgeMin[Math.min(W - 1, Math.max(0, x + k))]; n++; } soft[x] = Math.min(ridgeMin[x], s / n); }
-  ridgeMin.set(soft);
+  // The sky now meets the ridge itself (procedural clouds replace the painted sky down to the mountains, Rod 11/27):
+  // the topmost snowy point per column, lightly smoothed.
+  const tight = new Float32Array(W);
+  // A hand-traced ridge polyline in the descriptor (`ridge`: [x, y] fractions, left to right) wins where there is one:
+  // on night plates the snow is as blue as the sky, so no colour rule finds the skyline reliably.
+  const traced = Array.isArray(v.ridge) && v.ridge.length >= 2 ? v.ridge.map(([a, b]) => [a * W, b * H]) : null;
+  const tracedAt = (x) => { for (let k = 0; k + 1 < traced.length; k++) { const [x0, y0] = traced[k], [x1, y1] = traced[k + 1];
+    if (x >= x0 && x <= x1) return y0 + ((y1 - y0) * (x - x0)) / Math.max(1e-6, x1 - x0); } return traced[x < traced[0][0] ? 0 : traced.length - 1][1]; };
+  const line = (x) => (traced ? tracedAt(x) : found[x] ? ridge[x] : ridgeMin[x]); // no snow found in a column: the conservative line
+  for (let x = 0; x < W; x++) { let s = 0, n = 0; for (let k = -2; k <= 2; k++) { s += line(Math.min(W - 1, Math.max(0, x + k))); n++; } tight[x] = s / n; }
+  ridgeMin.set(tight);
 
   const out = Buffer.alloc(N * 4);
   const feather = 0.04 * H;
@@ -79,7 +87,7 @@ for (const v of desc.variants) {
     const i = y * W + x, o = i * 4;
     // R: open sky, fading to 0 a little above the ridge, and away from the moon and its halo.
     const dm = Math.hypot(x - mxp, y - myp);
-    const sky = (1 - smooth(ridgeMin[x] - 2 * feather, ridgeMin[x] - feather / 2, y)) * smooth(mr * 1.6, mr * 2.6, dm);
+    const sky = (1 - smooth(ridgeMin[x] - 6, ridgeMin[x] - 1, y)) * smooth(mr * 1.6, mr * 2.6, dm);
     out[o] = Math.round(255 * sky);
     // B: water, below the horizon except the shore polygon, so the grass and rocks never ripple.
     if (y > hz + 1) out[o + 2] = Math.round(255 * smooth(hz + 1, hz + 4, y) * (1 - land[i]));
@@ -100,5 +108,37 @@ for (const v of desc.variants) {
     }
   }
   await sharp(out, { raw: { width: W, height: H, channels: 4 } }).png({ compressionLevel: 9 }).toFile(local(v.mask));
+  // The clear sky (procedural clouds, Rod 11/27: "i want purely procedural clouds"): the plate's own sky with its painted
+  // clouds blurred away: a blur that only takes sky pixels (normalised convolution at 1/4 of this size), so the ridge,
+  // city and moon never bleed into it. It keeps the gradient and the aurora's glow; the shader draws the clouds over it.
+  if (v.skyTex) {
+    const q = 4, w4 = Math.ceil(W / q), h4 = Math.ceil(H / q);
+    const num = new Float32Array(w4 * h4 * 3), den = new Float32Array(w4 * h4);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = y * W + x, wt = out[i * 4] / 255; if (!wt) continue;
+      const j = Math.floor(y / q) * w4 + Math.floor(x / q);
+      den[j] += wt; num[j * 3] += wt * data[i * 3]; num[j * 3 + 1] += wt * data[i * 3 + 1]; num[j * 3 + 2] += wt * data[i * 3 + 2];
+    }
+    const boxBlur = (arr, ch, r) => {
+      const tmp = new Float32Array(arr.length), res = new Float32Array(arr.length);
+      for (let y = 0; y < h4; y++) for (let x = 0; x < w4; x++) for (let c = 0; c < ch; c++) {
+        let t = 0; for (let k = -r; k <= r; k++) t += arr[(y * w4 + Math.min(w4 - 1, Math.max(0, x + k))) * ch + c]; tmp[(y * w4 + x) * ch + c] = t; }
+      for (let y = 0; y < h4; y++) for (let x = 0; x < w4; x++) for (let c = 0; c < ch; c++) {
+        let t = 0; for (let k = -r; k <= r; k++) t += tmp[(Math.min(h4 - 1, Math.max(0, y + k)) * w4 + x) * ch + c]; res[(y * w4 + x) * ch + c] = t; }
+      return res;
+    };
+    // Two blur radii, blended by how much sky the near one saw (no hard step between them), then one soft pass.
+    const [n0, d0, n1, d1] = [boxBlur(num, 3, 10), boxBlur(den, 1, 10), boxBlur(num, 3, 40), boxBlur(den, 1, 40)];
+    const mixed = new Float32Array(w4 * h4 * 3);
+    for (let j = 0; j < w4 * h4; j++) {
+      const k = smooth(5, 60, d0[j]);
+      for (let c = 0; c < 3; c++) mixed[j * 3 + c] = k * (n0[j * 3 + c] / Math.max(1e-3, d0[j])) + (1 - k) * (n1[j * 3 + c] / Math.max(1e-3, d1[j]));
+    }
+    const soft = boxBlur(mixed, 3, 3), area = 49;
+    const sky = Buffer.alloc(w4 * h4 * 3);
+    for (let j = 0; j < w4 * h4 * 3; j++) sky[j] = Math.round(Math.min(255, soft[j] / area));
+    await sharp(sky, { raw: { width: w4, height: h4, channels: 3 } }).png({ compressionLevel: 9 }).toFile(local(v.skyTex));
+    console.log(`hero-masks: ${v.skyTex} ${w4}x${h4} (clear sky)`);
+  }
   console.log(`hero-masks: ${v.mask} ${W}x${H}, horizon ${hz}px, ${stars} stars`);
 }

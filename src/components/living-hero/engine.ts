@@ -10,18 +10,18 @@ export const VS = `attribute vec2 a; uniform vec2 uRes; varying vec2 vP;
 void main(){ vP = vec2((a.x*0.5+0.5)*uRes.x, (0.5-a.y*0.5)*uRes.y); gl_Position = vec4(a,0.0,1.0); }`;
 
 // uA/uB map canvas CSS pixels to the picture's uv (the same cover-fit and object-position as the <img>); uRes is the
-// band in CSS pixels (highp: the vertex shader shares it). uL/uP: the cloud flow's span and phase period; uN: the wobble; uAur: the aurora sway; uRip, uK, uW:
+// band in CSS pixels (highp: the vertex shader shares it). uSky: the clear sky; uWind, uCover: the procedural clouds' drift and
+// coverage; uOcc: cloud over the moon (CPU, lagged); uRip, uK, uW:
 // the water ripple; uHz: the horizon; uSize: the plate size, for per-star cells; uTex/uMin: the downscale taps.
 export const FS = `precision mediump float;
-uniform sampler2D uImg, uMask; uniform highp vec2 uRes; uniform vec2 uA, uB, uSize, uTex, uN; uniform float uT, uHz, uRip, uK, uW, uMin, uL, uP, uAur, uMr, uAsp, uVm; uniform vec2 uRipple, uMoon, uRing, uRingR;
+uniform sampler2D uImg, uMask, uSky; uniform highp vec2 uRes; uniform vec2 uA, uB, uSize, uTex; uniform float uT, uHz, uRip, uK, uW, uMin, uMr, uAsp, uOcc, uWind, uCover; uniform vec2 uRipple, uMoon, uRing, uRingR;
 varying vec2 vP;
 float hash(vec2 p){ p = fract(p*vec2(123.34,456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }
-float noise(vec2 p){ vec2 i=floor(p), f=fract(p), u=f*f*(3.0-2.0*f);
+float noise(vec2 p){ vec2 i=floor(p), f=fract(p), u=f*f*f*(f*(f*6.0-15.0)+10.0);
   return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),u.x), mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),u.x), u.y); }
-// Slow secondary noise: two incommensurate time phases (about 50 s and 71 s), so it never visibly repeats.
-vec2 wobble(vec2 uv, float t){ vec2 p = uv*vec2(3.0,2.0);
-  return vec2(noise(p+vec2(t*0.020,0.0)) + 0.5*noise(p*2.1+vec2(0.0,t*0.014)),
-              noise(p+vec2(17.3,t*0.014)) + 0.5*noise(p*2.3+vec2(t*0.020,4.1)))/1.5; }
+// Fractal noise, fixed octave counts (bounded cost per pixel).
+float fbm3(vec2 p){ float s = 0.0, a = 0.5; for (int i = 0; i < 3; i++) { s += a*noise(p); p = p*2.02 + vec2(1.7, 9.2); a *= 0.5; } return s/0.875; }
+float fbm5(vec2 p){ float s = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { s += a*noise(p); p = p*2.03 + vec2(5.1, 1.3); a *= 0.5; } return s/0.96875; }
 // The picture at q; when it's shown smaller than its file, 4 fixed taps match the browser's smooth downscale.
 vec3 tap(vec2 q){ q = clamp(q, 0.0, 1.0); vec3 c = texture2D(uImg, q).rgb;
   if (uMin > 0.5) { vec2 o = uTex*0.25;
@@ -29,62 +29,65 @@ vec3 tap(vec2 q){ q = clamp(q, 0.0, 1.0); vec3 c = texture2D(uImg, q).rgb;
   return c; }
 // Positions in "plate pixels at a 1280 px wide picture", the unit every ceiling uses.
 vec2 px(vec2 uv){ return vec2(uv.x*1280.0, uv.y*1280.0/uAsp); }
-// The ring ripple (Designer, "visible water ripples"): one at a time, a new one every 14 s, none in the first 8 s, at a
-// random point on open water (not the left 30 %, not near the shore). It grows to about 140 px over 7 s as a 1:4 ellipse
-// with a 10 px ring and only displaces the reflection (up to 3 px), never adds light. Its centre, radius and strength
-// come from the CPU once per frame (uRing: centre in uv; uRingR: radius px, strength); pixels away from the ring skip it.
+// The ring ripple: centre, radius and strength come from the CPU once per frame; pixels away from the ring skip it.
 vec2 ring(vec2 uv){
   if (uRingR.y <= 0.0) return vec2(0.0);
   vec2 q = px(uv) - px(uRing); q.y *= 4.0;
   float dist = length(q);
   if (abs(dist - uRingR.x) > 16.0) return vec2(0.0);
   float x = (dist - uRingR.x)/5.0;
-  float band = exp(-x*x) * uRingR.y;
   vec2 dir = q/max(dist, 0.001); dir.y /= 4.0;
-  return vec2(dir.x/1280.0, dir.y*uAsp/1280.0) * 3.0 * band;
+  return vec2(dir.x/1280.0, dir.y*uAsp/1280.0) * 3.0 * exp(-x*x) * uRingR.y;
 }
-// Clouds over the moon (Designer, "clouds drift over the moon"): a thin veil crosses the moon's neighbourhood left to
-// right at the cloud speed (2 px/s), one at a time: the first after 15 s, then one every 80 s. Density up to 0.5,
-// wisp-shaped (stretched 3:1), feathered. Returns the density at uv; 0 outside the neighbourhood and between veils.
-float veil(vec2 uv){
-  if (uT < 15.0) return 0.0;
-  float rp = uMr*1280.0;                        // moon radius in plate px
-  if (length(px(uv) - px(uMoon)) > 3.0*rp) return 0.0; // cheap early out: only the moon's neighbourhood pays
-  float span = 8.0*rp, cyc = max(span/2.0 + 10.0, 80.0);
-  float e = floor((uT - 15.0)/cyc), age = uT - 15.0 - e*cyc;
-  if (age > span/2.0) return 0.0;
-  vec2 q = px(uv) - px(uMoon);
-  float vx = -4.0*rp + age*2.0;                 // the veil's centre, moving right at 2 px/s
-  float vmax = 0.3 + 0.2*hash(vec2(e, 1.9));
-  float body = 1.0 - smoothstep(0.0, 1.0, length(vec2((q.x - vx)/(2.6*rp), q.y/(1.3*rp))));
-  float wisp = noise(vec2((q.x - vx)/(1.6*rp), q.y/(0.55*rp)) + vec2(e*3.7, 0.0));
-  float near = 1.0 - smoothstep(2.4*rp, 3.0*rp, length(q));
-  return vmax * body * mix(0.4, 1.0, wisp) * near;
+// Procedural clouds (Rod 11/27: "i want purely procedural clouds"): domain-warped fractal noise, stretched about 2.6:1,
+// drifting with the wind and slowly changing shape, so they never tile or repeat. Returns density (0..1) and how lit it
+// is from the upper right, where the moon is (Designer's palette and light, living-hero-assets/README.md).
+vec2 clouds(vec2 uv){
+  vec2 p = px(uv)/1280.0*vec2(2.2, 5.6) - vec2(uT*uWind, 0.0);
+  vec2 q = vec2(fbm3(p + vec2(0.0, uT*0.010)), fbm3(p + vec2(5.2, 1.3) - vec2(uT*0.008, 0.0)));
+  vec2 w = p + 1.4*q;
+  float d = fbm5(w);
+  float dl = fbm5(w + vec2(0.06, -0.08));
+  float dens = smoothstep(0.58 - 0.24*uCover, 0.80 - 0.24*uCover, d);
+  return vec2(dens, clamp(0.55 + (d - dl)*5.0, 0.0, 1.0));
+}
+vec3 cloudColor(vec2 cl, vec2 uv){
+  vec3 body = mix(vec3(0.051,0.180,0.412), vec3(0.247,0.412,0.647), cl.y);       // #0d2e69 to #3f69a5
+  body = mix(body, vec3(0.200,0.184,0.467), 0.22*(1.0 - cl.y));                  // violet shadow #332f77
+  body = mix(body, vec3(0.459,0.596,0.765), 0.85*cl.y*cl.y);                     // pale rim #7598c3
+  float nearMoon = exp(-length(px(uv) - px(uMoon))/(7.0*uMr*1280.0));
+  return mix(body, vec3(0.749,0.882,0.976), 0.6*nearMoon*cl.y);                   // brightest rims near the moon #bfe1f9
 }
 void main(){
   vec2 uv = vP*uA + uB;
   vec4 m = texture2D(uMask, uv);
-  // Where the sky moves: the sky mask, never on a star, fading to 0 within 24 px of the band's edges (no seam).
-  float edge = smoothstep(0.0, 24.0, min(min(vP.x, uRes.x-vP.x), min(vP.y, uRes.y-vP.y)));
-  float sky = m.r * (1.0 - m.g) * edge;
-  // Clouds go faster higher up: full in the top fifth, tapering to 0 toward the ridge.
-  float speed = sky * (1.0 - smoothstep(0.2, 0.6, uv.y));
-  // Aurora: the saturated hues inside the sky. It sways vertically, with the phase travelling along the ribbon.
-  // (Only computed where the sky moves: the rest of the picture skips this cost.)
-  vec2 d = vec2(0.0); float aur = 0.0;
-  if (sky > 0.002) {
-    vec3 s0 = texture2D(uImg, uv).rgb; float hi = max(s0.r, max(s0.g, s0.b)), lo = min(s0.r, min(s0.g, s0.b));
-    aur = smoothstep(0.35, 0.6, hi > 0.0 ? (hi-lo)/hi : 0.0) * sky;
-    float ph = uv.x*9.0;
-    d = (wobble(uv, uT) - wobble(uv, 0.0)) * uN * sky;
-    d.y += aur * uAur * (sin(6.2831853*uT/16.0 + ph) - sin(ph));
+  // Sky (above the horizon): the clear sky, the plate's own stars twinkling in place, procedural clouds over them. The
+  // sky mask fades this to the picture at the ridge; over the moon the clouds alone are drawn, with their own alpha.
+  if (uv.y <= uHz) {
+    float rp = uMr*1280.0, dm = length(px(uv) - px(uMoon));
+    float overMoon = (1.0 - m.r) * (1.0 - smoothstep(2.4*rp, 3.0*rp, dm));
+    if (m.r < 0.002 && overMoon < 0.002) { gl_FragColor = vec4(0.0); return; }
+    vec2 cl = clouds(uv);
+    vec3 cc = cloudColor(cl, uv);
+    vec3 base = texture2D(uSky, uv).rgb;
+    // Aurora glow (saturated hues in the clear sky): a travelling brightness wave, within ±8 %, never a colour shift.
+    float hi = max(base.r, max(base.g, base.b)), lo = min(base.r, min(base.g, base.b));
+    float aur = smoothstep(0.35, 0.6, hi > 0.0 ? (hi-lo)/hi : 0.0);
+    base *= 1.0 + 0.08*aur*0.5*(sin(6.2831853*uT/23.0 + uv.x*6.0) - sin(uv.x*6.0));
+    // Stars: the plate's own star pixels, each twinkling on its own 4 to 9 s period.
+    float T = 4.0 + 5.0*hash(floor(uv*uSize/16.0));
+    vec3 star = texture2D(uImg, uv).rgb * (1.0 - 0.2*(1.0 - cos(6.2831853*uT/T)));
+    base = mix(base, max(base, star), m.g);
+    vec3 skyc = mix(base, cc, cl.x*0.92);
+    float ac = 0.5 * cl.x * overMoon; // a moonlit veil over the moon, never a dark blot (density at most 0.5)
+    gl_FragColor = vec4(skyc*m.r + cc*ac, m.r + ac);
+    return;
   }
-  // Water: a long horizontal shimmer, plus ripples (Rod 11/27: "make ripples in water"). The ripples are a few
-  // directional waves seen in perspective (tighter toward the horizon, larger near the viewer), moving toward the
-  // viewer; their slope bends the reflection both ways and adds a faint glint. Each term is its value at t minus its value
-  // at 0, so t = 0 is the picture. Only computed on water.
+  // Water: a long horizontal shimmer, plus ripples (Rod 11/27: "make ripples in water"), a few directional waves in
+  // perspective moving toward the viewer, and the ring ripple. Each term is zero at t = 0. Only computed on water.
+  vec2 d = vec2(0.0);
   float glint = 0.0;
-  if (uv.y > uHz && m.b > 0.002) {
+  if (m.b > 0.002) {
     float k = (uv.y-uHz)/(1.0-uHz); float wp = uv.y*uK;
     d.x += m.b * uRip * k * (sin(wp+uT*uW) - sin(wp));
     vec2 p = vec2((uv.x - 0.5)*uSize.x/uSize.y / (k + 0.08), 1.0/(k + 0.08)) * 6.0;
@@ -97,50 +100,34 @@ void main(){
     if (uv.x > 0.3) d += m.b * ring(uv);
     glint = m.b * k * (g.y * 0.5);
   }
-  // Clouds: a two-phase flow, left to right. Each sample's offset is centred on its phase, and the triangle crossfade
-  // gives sample A full weight exactly when its offset is 0, so t = 0 is the picture and there's no jump or visible loop.
-  float pa = fract(uT/uP + 0.5), pb = fract(uT/uP), wa = 1.0 - abs(2.0*pa - 1.0);
-  vec3 c;
-  if (speed > 0.002) {
-    vec2 qa = uv + d - vec2((pa - 0.5)*uL*speed, 0.0);
-    vec2 qb = uv + d - vec2((pb - 0.5)*uL*speed, 0.0);
-    c = mix(tap(qb), tap(qa), wa);
-  } else { c = tap(uv + d); }
-  // The reflected light (moon column, window streaks) brightens and darkens with the wave phase, within ±10 %;
-  // this only scales light already in the picture, never adds a new bright point.
+  vec3 c = tap(uv + d);
+  // The reflected light scales ±10 % with the wave phase (never a new bright point).
   c *= 1.0 + 0.10*clamp(glint, -1.0, 1.0);
-  // Aurora brightness: a travelling wave, within ±8 %, at about 23 s; never a colour shift.
-  c *= 1.0 + 0.08*aur*0.5*(sin(6.2831853*uT/23.0 + uv.x*6.0) - sin(uv.x*6.0));
-  // Stars twinkle in place, each on its own 4 to 9 s period.
-  float T = 4.0 + 5.0*hash(floor(uv*uSize/16.0));
-  c *= mix(1.0, 1.0 - 0.2*(1.0-cos(6.2831853*uT/T)), m.g);
-  // Draw only where something moves (sky, stars, water); elsewhere the canvas is clear, so the mountains, city and moon
-  // are always the page's own <img> at full sharpness, whatever the canvas resolution (premultiplied alpha).
-  float a = clamp(max(max(m.r, m.b), m.g), 0.0, 1.0);
-  // The moon's reflection column dims while a veil crosses the moon (× (1 − 0.6·v), the ripple still applied).
-  float vm = uVm; // the veil's density at the moon's centre, once per frame (computed on the CPU)
-  if (vm > 0.0) c *= 1.0 - 0.6*vm*m.b*exp(-pow((uv.x - uMoon.x)*1280.0/(2.0*uMr*1280.0), 2.0));
-  // The veil over the moon: the sky's own colour from just outside the halo, its edges up to 8 % paler and cooler. Where
-  // it is 0 the canvas stays clear over the moon, so the moon itself is always the page's pixels.
-  float v = veil(uv);
-  if (v > 0.0) {
-    vec3 sky = 0.25*(texture2D(uImg, uMoon + vec2(-3.2*uMr, 0.0)).rgb + texture2D(uImg, uMoon + vec2(3.2*uMr, 0.0)).rgb
-                   + texture2D(uImg, uMoon + vec2(0.0, -3.2*uMr*uAsp)).rgb + texture2D(uImg, uMoon + vec2(0.0, 3.2*uMr*uAsp)).rgb);
-    vec3 vc = mix(sky, vec3(0.80, 0.86, 1.0), 0.08*(1.0 - smoothstep(0.1, 0.45, v)));
-    gl_FragColor = vec4(c*a*(1.0 - v) + vc*v, a*(1.0 - v) + v);
-  } else {
-    gl_FragColor = vec4(c*a, a);
-  }
+  // The moon's reflection column dims as clouds cover the moon (uOcc, once per frame on the CPU).
+  c *= 1.0 - 0.6*uOcc*m.b*exp(-pow((uv.x - uMoon.x)/(2.0*uMr), 2.0));
+  // Draw only on water; elsewhere the canvas is clear, so the mountains, city and shore stay the page's own <img>.
+  gl_FragColor = vec4(c*m.b, m.b);
 }`;
 
 export type Stop = () => void;
 
-// The veil's density at the moon's centre (mirrors veil() in the shader, with the wisp at its mean): it dims the moon's
-// reflection column, and computing it here once per frame keeps it out of every pixel.
-let veilR = 0;
-function hash(x: number, y: number) { let px = (x * 123.34) % 1, py = (y * 456.21) % 1; if (px < 0) px += 1; if (py < 0) py += 1;
-  const d = px * (px + 45.32) + py * (py + 45.32); px += d; py += d; return (px * py) % 1; }
-let ringHz = 0.6;
+// The shader's hash and noise, mirrored on the CPU (same constants), for the few per-frame values every pixel would
+// otherwise recompute: the ring's position and the cloud cover over the moon.
+const fract = (x: number) => x - Math.floor(x);
+function hash(x: number, y: number) { let px = fract(x * 123.34), py = fract(y * 456.21);
+  const d = px * (px + 45.32) + py * (py + 45.32); px += d; py += d; return fract(px * py); }
+function noise(x: number, y: number) {
+  const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy;
+  const ux = fx * fx * fx * (fx * (fx * 6 - 15) + 10), uy = fy * fy * fy * (fy * (fy * 6 - 15) + 10);
+  const a = hash(ix, iy), b = hash(ix + 1, iy), c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1);
+  return (a + (b - a) * ux) + ((c + (d - c) * ux) - (a + (b - a) * ux)) * uy;
+}
+function fbm(x: number, y: number, oct: number, ox: number, oy: number, k: number) {
+  let s = 0, a = 0.5, n = 0;
+  for (let i = 0; i < oct; i++) { s += a * noise(x, y); n += a; x = x * k + ox; y = y * k + oy; a *= 0.5; }
+  return s / n;
+}
+let ringHz = 0.6, moonU = { x: 0.8, y: 0.2 }, asp = 2.35;
 // The ring ripple's centre (uv), radius (px at 1280 w) and strength for this frame; strength 0 when none is showing.
 function ringAt(t: number): [number, number, number, number] {
   if (t < 8) return [0, 0, 0, 0];
@@ -149,14 +136,22 @@ function ringAt(t: number): [number, number, number, number] {
   const cx = 0.35 + 0.6 * hash(e, 3.1), cy = ringHz + 0.12 * (1 - ringHz) + 0.8 * (1 - ringHz) * hash(e, 7.7);
   return [cx, cy, (140 * age) / 7, Math.sin((Math.min(1, age / 7)) * Math.PI)];
 }
-function veilAtMoon(t: number) {
-  if (t < 15 || !veilR) return 0;
-  const rp = veilR * 1280, span = 8 * rp, cyc = Math.max(span / 2 + 10, 80);
-  const e = Math.floor((t - 15) / cyc), age = t - 15 - e * cyc;
-  if (age > span / 2) return 0;
-  const vx = -4 * rp + age * 2, vmax = 0.3 + 0.2 * hash(e, 1.9);
-  const l = Math.abs(vx) / (2.6 * rp), body = 1 - Math.min(1, l * l * (3 - 2 * l) * (l < 1 ? 1 : 0) + (l >= 1 ? 1 : 0));
-  return vmax * body * 0.7;
+// Cloud density over the moon's centre (clouds() in the shader, at uMoon): it dims the moon's reflection and, next, the
+// moonlit highlights. Lagged like a real cloud shadow (Designer): about 2.5 s to dim, 4 s to recover.
+const WIND = 0.0035, COVER = 0.8;
+function cloudAtMoon(t: number) {
+  const px = moonU.x * 1280, py = (moonU.y * 1280) / asp;
+  const x = (px / 1280) * 2.2 - t * WIND, y = (py / 1280) * 5.6;
+  const qx = fbm(x, y + t * 0.010, 3, 1.7, 9.2, 2.02), qy = fbm(x + 5.2 - t * 0.008, y + 1.3, 3, 1.7, 9.2, 2.02);
+  const d = fbm(x + 1.4 * qx, y + 1.4 * qy, 5, 5.1, 1.3, 2.03);
+  const lo = 0.58 - 0.24 * COVER, hi = 0.80 - 0.24 * COVER, k = Math.min(1, Math.max(0, (d - lo) / (hi - lo)));
+  return 0.5 * k * k * (3 - 2 * k);
+}
+let occ = 0, occT = 0;
+function occlusion(t: number) {
+  const target = cloudAtMoon(t), dt = Math.max(0, Math.min(0.5, t - occT)); occT = t;
+  occ += (target - occ) * (1 - Math.exp(-dt / (target > occ ? 2.5 : 4)));
+  return occ;
 }
 
 function load(src: string): Promise<HTMLImageElement> {
@@ -189,9 +184,9 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
   const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const aLoc = gl.getAttribLocation(prog, "a"); gl.enableVertexAttribArray(aLoc); gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
   const U = (n: string) => gl.getUniformLocation(prog, n);
-  const u = { ring: U("uRing"), ringR: U("uRingR"), vm: U("uVm"), moon: U("uMoon"), mr: U("uMr"), asp: U("uAsp"), ripple: U("uRipple"), min: U("uMin"), tex: U("uTex"), res: U("uRes"), a: U("uA"), b: U("uB"), size: U("uSize"), n: U("uN"), l: U("uL"), p: U("uP"), aur: U("uAur"), t: U("uT"), hz: U("uHz"), rip: U("uRip"), k: U("uK"), w: U("uW"), img: U("uImg"), mask: U("uMask") };
-  gl.uniform1i(u.img, 0); gl.uniform1i(u.mask, 1);
-  const texImg = gl.createTexture(), texMask = gl.createTexture();
+  const u = { ring: U("uRing"), ringR: U("uRingR"), occ: U("uOcc"), wind: U("uWind"), cover: U("uCover"), sky: U("uSky"), moon: U("uMoon"), mr: U("uMr"), asp: U("uAsp"), ripple: U("uRipple"), min: U("uMin"), tex: U("uTex"), res: U("uRes"), a: U("uA"), b: U("uB"), size: U("uSize"), t: U("uT"), hz: U("uHz"), rip: U("uRip"), k: U("uK"), w: U("uW"), img: U("uImg"), mask: U("uMask") };
+  gl.uniform1i(u.img, 0); gl.uniform1i(u.mask, 1); gl.uniform1i(u.sky, 2);
+  const texImg = gl.createTexture(), texMask = gl.createTexture(), texSky = gl.createTexture();
   const upload = (tex: WebGLTexture | null, unit: number, im: HTMLImageElement, raw: boolean) => {
     gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, tex);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
@@ -217,9 +212,9 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     if (next !== v || src !== vSrc) {
       const id = ++loading;
       try {
-        const [im, mk] = await Promise.all([load(src), next === v ? Promise.resolve(null) : load(next.mask)]);
+        const [im, mk, sk] = await Promise.all([load(src), next === v ? Promise.resolve(null) : load(next.mask), next === v ? Promise.resolve(null) : load(next.skyTex)]);
         if (dead || id !== loading) return;
-        upload(texImg, 0, im, false); texW = im.naturalWidth; if (mk) upload(texMask, 1, mk, true);
+        upload(texImg, 0, im, false); texW = im.naturalWidth; if (mk) upload(texMask, 1, mk, true); if (sk) upload(texSky, 2, sk, false);
         v = next; vSrc = src;
       } catch { return fail(); }
     }
@@ -228,16 +223,14 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     const ox = (cw - dw) * fx, oy = (ch - dh) * fy;
     gl.uniform2f(u.res, cw, ch); gl.uniform2f(u.a, 1 / dw, 1 / dh); gl.uniform2f(u.b, -ox / dw, -oy / dh);
     gl.uniform2f(u.size, w, h); gl.uniform1f(u.hz, v!.horizon);
-    gl.uniform2f(u.moon, v!.moon.x, v!.moon.y); gl.uniform1f(u.mr, v!.moon.r); gl.uniform1f(u.asp, w / h); veilR = v!.moon.r; ringHz = v!.horizon;
+    gl.uniform2f(u.moon, v!.moon.x, v!.moon.y); gl.uniform1f(u.mr, v!.moon.r); gl.uniform1f(u.asp, w / h); ringHz = v!.horizon; moonU = { x: v!.moon.x, y: v!.moon.y }; asp = w / h;
     gl.uniform2f(u.tex, 1 / (dw * dpr), 1 / (dh * dpr)); // one canvas pixel, in uv
     gl.uniform1f(u.min, texW / (dw * dpr) > 1.25 ? 1 : 0);
     // Ceilings (Designer, living-hero.md "The clouds and aurora visibly drift"), in plate pixels at a 1280 px wide picture,
     // so they look the same at every crop: clouds up to 40 px per 26 s phase (about 1.5 px/s), a secondary wobble up to
     // 6 px, the aurora swaying 8 px top to bottom, the water 2 px at its peak. Combined, under 3 px/s.
     const ux = 1 / 1280, uy = (1 / 1280) * (w / h);
-    gl.uniform1f(u.l, 40 * ux); gl.uniform1f(u.p, 26);
-    gl.uniform2f(u.n, 6 * ux, 6 * uy);
-    gl.uniform1f(u.aur, 4 * uy);
+    gl.uniform1f(u.wind, WIND); gl.uniform1f(u.cover, COVER);
     gl.uniform1f(u.rip, 1 * ux); // sin(a) - sin(b) peaks at 2: 2 px
     // Ripples (Designer, "visible water ripples"): up to about 4 px sideways and 1.5 px vertically at the bottom of
     // the picture (the wave slope sums to about 1.3 across and 4.1 along), fading to 0 at the horizon.
@@ -260,7 +253,7 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     last = now;
     const t = (now - t0) / 1000;
     gl.uniform1f(u.t, t);
-    gl.uniform1f(u.vm, veilAtMoon(t));
+    gl.uniform1f(u.occ, occlusion(t));
     const r = ringAt(t);
     gl.uniform2f(u.ring, r[0], r[1]); gl.uniform2f(u.ringR, r[2], r[3]);
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
@@ -283,7 +276,7 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     document.removeEventListener("visibilitychange", onVis); canvas.removeEventListener("webglcontextlost", onLost);
     io.disconnect(); ro.disconnect();
     // Free what this run created, so turning Motion off and on doesn't grow GPU memory (Security 11/27).
-    gl!.deleteTexture(texImg); gl!.deleteTexture(texMask); gl!.deleteBuffer(buf); gl!.deleteProgram(prog);
+    gl!.deleteTexture(texImg); gl!.deleteTexture(texMask); gl!.deleteTexture(texSky); gl!.deleteBuffer(buf); gl!.deleteProgram(prog);
   }
   layout().then(() => { if (!dead) { onVis(); run(); } });
   return stop;

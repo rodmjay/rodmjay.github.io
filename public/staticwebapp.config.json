@@ -542,6 +542,7 @@
     ".xml": "application/xml",
     ".webp": "image/webp",
     ".woff2": "font/woff2",
-    ".webmanifest": "application/manifest+json"
+    ".webmanifest": "application/manifest+json",
+    ".avif": "image/avif"
   }
 }
