@@ -13,7 +13,7 @@ void main(){ vP = vec2((a.x*0.5+0.5)*uRes.x, (0.5-a.y*0.5)*uRes.y); gl_Position 
 // band in CSS pixels (highp: the vertex shader shares it). uL/uP: the cloud flow's span and phase period; uN: the wobble; uAur: the aurora sway; uRip, uK, uW:
 // the water ripple; uHz: the horizon; uSize: the plate size, for per-star cells; uTex/uMin: the downscale taps.
 export const FS = `precision mediump float;
-uniform sampler2D uImg, uMask; uniform highp vec2 uRes; uniform vec2 uA, uB, uSize, uTex, uN; uniform float uT, uHz, uRip, uK, uW, uMin, uL, uP, uAur; uniform vec2 uRipple;
+uniform sampler2D uImg, uMask; uniform highp vec2 uRes; uniform vec2 uA, uB, uSize, uTex, uN; uniform float uT, uHz, uRip, uK, uW, uMin, uL, uP, uAur, uMr, uAsp, uVm; uniform vec2 uRipple, uMoon, uRing, uRingR;
 varying vec2 vP;
 float hash(vec2 p){ p = fract(p*vec2(123.34,456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }
 float noise(vec2 p){ vec2 i=floor(p), f=fract(p), u=f*f*(3.0-2.0*f);
@@ -27,6 +27,40 @@ vec3 tap(vec2 q){ q = clamp(q, 0.0, 1.0); vec3 c = texture2D(uImg, q).rgb;
   if (uMin > 0.5) { vec2 o = uTex*0.25;
     c = 0.25*(texture2D(uImg, q+vec2(-o.x,-o.y)).rgb + texture2D(uImg, q+vec2(o.x,-o.y)).rgb + texture2D(uImg, q+vec2(-o.x,o.y)).rgb + texture2D(uImg, q+vec2(o.x,o.y)).rgb); }
   return c; }
+// Positions in "plate pixels at a 1280 px wide picture", the unit every ceiling uses.
+vec2 px(vec2 uv){ return vec2(uv.x*1280.0, uv.y*1280.0/uAsp); }
+// The ring ripple (Designer, "visible water ripples"): one at a time, a new one every 14 s, none in the first 8 s, at a
+// random point on open water (not the left 30 %, not near the shore). It grows to about 140 px over 7 s as a 1:4 ellipse
+// with a 10 px ring and only displaces the reflection (up to 3 px), never adds light. Its centre, radius and strength
+// come from the CPU once per frame (uRing: centre in uv; uRingR: radius px, strength); pixels away from the ring skip it.
+vec2 ring(vec2 uv){
+  if (uRingR.y <= 0.0) return vec2(0.0);
+  vec2 q = px(uv) - px(uRing); q.y *= 4.0;
+  float dist = length(q);
+  if (abs(dist - uRingR.x) > 16.0) return vec2(0.0);
+  float x = (dist - uRingR.x)/5.0;
+  float band = exp(-x*x) * uRingR.y;
+  vec2 dir = q/max(dist, 0.001); dir.y /= 4.0;
+  return vec2(dir.x/1280.0, dir.y*uAsp/1280.0) * 3.0 * band;
+}
+// Clouds over the moon (Designer, "clouds drift over the moon"): a thin veil crosses the moon's neighbourhood left to
+// right at the cloud speed (2 px/s), one at a time: the first after 15 s, then one every 80 s. Density up to 0.5,
+// wisp-shaped (stretched 3:1), feathered. Returns the density at uv; 0 outside the neighbourhood and between veils.
+float veil(vec2 uv){
+  if (uT < 15.0) return 0.0;
+  float rp = uMr*1280.0;                        // moon radius in plate px
+  if (length(px(uv) - px(uMoon)) > 3.0*rp) return 0.0; // cheap early out: only the moon's neighbourhood pays
+  float span = 8.0*rp, cyc = max(span/2.0 + 10.0, 80.0);
+  float e = floor((uT - 15.0)/cyc), age = uT - 15.0 - e*cyc;
+  if (age > span/2.0) return 0.0;
+  vec2 q = px(uv) - px(uMoon);
+  float vx = -4.0*rp + age*2.0;                 // the veil's centre, moving right at 2 px/s
+  float vmax = 0.3 + 0.2*hash(vec2(e, 1.9));
+  float body = 1.0 - smoothstep(0.0, 1.0, length(vec2((q.x - vx)/(2.6*rp), q.y/(1.3*rp))));
+  float wisp = noise(vec2((q.x - vx)/(1.6*rp), q.y/(0.55*rp)) + vec2(e*3.7, 0.0));
+  float near = 1.0 - smoothstep(2.4*rp, 3.0*rp, length(q));
+  return vmax * body * mix(0.4, 1.0, wisp) * near;
+}
 void main(){
   vec2 uv = vP*uA + uB;
   vec4 m = texture2D(uMask, uv);
@@ -60,6 +94,7 @@ void main(){
     g += 0.6 * k2 * (cos(dot(k2,p)*1.7 + uT*1.90 + 2.1) - cos(dot(k2,p)*1.7 + 2.1));
     g += 0.4 * k3 * (cos(dot(k3,p)*2.9 + uT*2.70 + 4.3) - cos(dot(k3,p)*2.9 + 4.3));
     d += m.b * g * k * uRipple;
+    if (uv.x > 0.3) d += m.b * ring(uv);
     glint = m.b * k * (g.y * 0.5);
   }
   // Clouds: a two-phase flow, left to right. Each sample's offset is centred on its phase, and the triangle crossfade
@@ -82,10 +117,47 @@ void main(){
   // Draw only where something moves (sky, stars, water); elsewhere the canvas is clear, so the mountains, city and moon
   // are always the page's own <img> at full sharpness, whatever the canvas resolution (premultiplied alpha).
   float a = clamp(max(max(m.r, m.b), m.g), 0.0, 1.0);
-  gl_FragColor = vec4(c*a, a);
+  // The moon's reflection column dims while a veil crosses the moon (× (1 − 0.6·v), the ripple still applied).
+  float vm = uVm; // the veil's density at the moon's centre, once per frame (computed on the CPU)
+  if (vm > 0.0) c *= 1.0 - 0.6*vm*m.b*exp(-pow((uv.x - uMoon.x)*1280.0/(2.0*uMr*1280.0), 2.0));
+  // The veil over the moon: the sky's own colour from just outside the halo, its edges up to 8 % paler and cooler. Where
+  // it is 0 the canvas stays clear over the moon, so the moon itself is always the page's pixels.
+  float v = veil(uv);
+  if (v > 0.0) {
+    vec3 sky = 0.25*(texture2D(uImg, uMoon + vec2(-3.2*uMr, 0.0)).rgb + texture2D(uImg, uMoon + vec2(3.2*uMr, 0.0)).rgb
+                   + texture2D(uImg, uMoon + vec2(0.0, -3.2*uMr*uAsp)).rgb + texture2D(uImg, uMoon + vec2(0.0, 3.2*uMr*uAsp)).rgb);
+    vec3 vc = mix(sky, vec3(0.80, 0.86, 1.0), 0.08*(1.0 - smoothstep(0.1, 0.45, v)));
+    gl_FragColor = vec4(c*a*(1.0 - v) + vc*v, a*(1.0 - v) + v);
+  } else {
+    gl_FragColor = vec4(c*a, a);
+  }
 }`;
 
 export type Stop = () => void;
+
+// The veil's density at the moon's centre (mirrors veil() in the shader, with the wisp at its mean): it dims the moon's
+// reflection column, and computing it here once per frame keeps it out of every pixel.
+let veilR = 0;
+function hash(x: number, y: number) { let px = (x * 123.34) % 1, py = (y * 456.21) % 1; if (px < 0) px += 1; if (py < 0) py += 1;
+  const d = px * (px + 45.32) + py * (py + 45.32); px += d; py += d; return (px * py) % 1; }
+let ringHz = 0.6;
+// The ring ripple's centre (uv), radius (px at 1280 w) and strength for this frame; strength 0 when none is showing.
+function ringAt(t: number): [number, number, number, number] {
+  if (t < 8) return [0, 0, 0, 0];
+  const e = Math.floor((t - 8) / 14), age = t - 8 - e * 14;
+  if (age > 7) return [0, 0, 0, 0];
+  const cx = 0.35 + 0.6 * hash(e, 3.1), cy = ringHz + 0.12 * (1 - ringHz) + 0.8 * (1 - ringHz) * hash(e, 7.7);
+  return [cx, cy, (140 * age) / 7, Math.sin((Math.min(1, age / 7)) * Math.PI)];
+}
+function veilAtMoon(t: number) {
+  if (t < 15 || !veilR) return 0;
+  const rp = veilR * 1280, span = 8 * rp, cyc = Math.max(span / 2 + 10, 80);
+  const e = Math.floor((t - 15) / cyc), age = t - 15 - e * cyc;
+  if (age > span / 2) return 0;
+  const vx = -4 * rp + age * 2, vmax = 0.3 + 0.2 * hash(e, 1.9);
+  const l = Math.abs(vx) / (2.6 * rp), body = 1 - Math.min(1, l * l * (3 - 2 * l) * (l < 1 ? 1 : 0) + (l >= 1 ? 1 : 0));
+  return vmax * body * 0.7;
+}
 
 function load(src: string): Promise<HTMLImageElement> {
   return new Promise((ok, no) => { const im = new Image(); im.decoding = "async"; im.onload = () => ok(im); im.onerror = () => no(new Error("texture")); im.src = src; });
@@ -117,7 +189,7 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
   const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
   const aLoc = gl.getAttribLocation(prog, "a"); gl.enableVertexAttribArray(aLoc); gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
   const U = (n: string) => gl.getUniformLocation(prog, n);
-  const u = { ripple: U("uRipple"), min: U("uMin"), tex: U("uTex"), res: U("uRes"), a: U("uA"), b: U("uB"), size: U("uSize"), n: U("uN"), l: U("uL"), p: U("uP"), aur: U("uAur"), t: U("uT"), hz: U("uHz"), rip: U("uRip"), k: U("uK"), w: U("uW"), img: U("uImg"), mask: U("uMask") };
+  const u = { ring: U("uRing"), ringR: U("uRingR"), vm: U("uVm"), moon: U("uMoon"), mr: U("uMr"), asp: U("uAsp"), ripple: U("uRipple"), min: U("uMin"), tex: U("uTex"), res: U("uRes"), a: U("uA"), b: U("uB"), size: U("uSize"), n: U("uN"), l: U("uL"), p: U("uP"), aur: U("uAur"), t: U("uT"), hz: U("uHz"), rip: U("uRip"), k: U("uK"), w: U("uW"), img: U("uImg"), mask: U("uMask") };
   gl.uniform1i(u.img, 0); gl.uniform1i(u.mask, 1);
   const texImg = gl.createTexture(), texMask = gl.createTexture();
   const upload = (tex: WebGLTexture | null, unit: number, im: HTMLImageElement, raw: boolean) => {
@@ -156,6 +228,7 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     const ox = (cw - dw) * fx, oy = (ch - dh) * fy;
     gl.uniform2f(u.res, cw, ch); gl.uniform2f(u.a, 1 / dw, 1 / dh); gl.uniform2f(u.b, -ox / dw, -oy / dh);
     gl.uniform2f(u.size, w, h); gl.uniform1f(u.hz, v!.horizon);
+    gl.uniform2f(u.moon, v!.moon.x, v!.moon.y); gl.uniform1f(u.mr, v!.moon.r); gl.uniform1f(u.asp, w / h); veilR = v!.moon.r; ringHz = v!.horizon;
     gl.uniform2f(u.tex, 1 / (dw * dpr), 1 / (dh * dpr)); // one canvas pixel, in uv
     gl.uniform1f(u.min, texW / (dw * dpr) > 1.25 ? 1 : 0);
     // Ceilings (Designer, living-hero.md "The clouds and aurora visibly drift"), in plate pixels at a 1280 px wide picture,
@@ -185,7 +258,11 @@ export function start(canvas: HTMLCanvasElement, d: Descriptor, onReady: () => v
     if (!t0) t0 = now;
     if (t0Pause) { t0 += now - t0Pause; t0Pause = 0; } // resume where it paused, no jump
     last = now;
-    gl.uniform1f(u.t, (now - t0) / 1000);
+    const t = (now - t0) / 1000;
+    gl.uniform1f(u.t, t);
+    gl.uniform1f(u.vm, veilAtMoon(t));
+    const r = ringAt(t);
+    gl.uniform2f(u.ring, r[0], r[1]); gl.uniform2f(u.ringR, r[2], r[3]);
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     if (!ready) { ready = true; onReady(); }
