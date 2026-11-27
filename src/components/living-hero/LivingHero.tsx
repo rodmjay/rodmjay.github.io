@@ -14,6 +14,9 @@ declare global { interface Navigator { deviceMemory?: number; connection?: { sav
 // WebGL support, probed once per page and the probe context released at once (browsers cap live contexts; a leaked
 // probe could cost the real canvas its context: Security 11/27).
 let webgl: boolean | null = null;
+// Once the hero has bailed out (slow frames, a GL error, context loss) it stays off for the rest of the visit, across
+// client-side navigations too, so it never flaps on and off on a struggling device (Designer 11/27).
+let brokenThisVisit = false;
 function hasWebGL(): boolean {
   if (webgl !== null) return webgl;
   try {
@@ -39,15 +42,15 @@ export function LivingHero({ descriptor }: { descriptor: Descriptor }) {
     let d: Descriptor;
     try { d = checkDescriptor(descriptor); } catch { return; }
     if (process.env.NODE_ENV !== "production") console.debug(`living-hero: ${d.id}`);
-    let stop: (() => void) | null = null, broken = false, idle = 0;
+    let stop: (() => void) | null = null, idle = 0;
     const canvas = ref.current!;
     const off = () => { stop?.(); stop = null; canvas.classList.remove("on"); };
     const on = () => {
-      if (stop || broken || !allowed()) return;
+      if (stop || brokenThisVisit || !allowed()) return;
       import("./engine").then(({ start }) => {
-        if (stop || broken || !allowed()) return;
-        stop = start(canvas, d, () => canvas.classList.add("on"), () => { broken = true; off(); });
-      }).catch(() => { broken = true; });
+        if (stop || brokenThisVisit || !allowed()) return;
+        stop = start(canvas, d, () => canvas.classList.add("on"), () => { brokenThisVisit = true; off(); });
+      }).catch(() => { brokenThisVisit = true; });
     };
     const later = () => {
       const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
