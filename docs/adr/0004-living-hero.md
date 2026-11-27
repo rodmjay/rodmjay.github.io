@@ -1,7 +1,7 @@
 # 0004. The living hero: one WebGL fragment shader over the existing plate, driven by build-time masks
 
-Date: 2026-11-27. Status: **proposed** (Software Architect, for EA). Security reviews the script before it ships;
-Designer judges the motion on staging.
+Date: 2026-11-27. Status: **accepted** (11/27). Designer approved it from design. Security accepted the plan with the checks
+below and passes `hero.js` and its loader before they ship. Designer judges the motion on staging.
 Rod (via EA 11/27): the home's night-valley hero should "come alive" with subtle GPU motion, with the static image as the
 fallback. The same treatment applies to the Discover SLC hero: "keeping with style of image, but enhancing it."
 Design contract: personal `design/specs/living-hero.md`, which holds the ceilings, phases, fallback and safety rules.
@@ -120,7 +120,29 @@ Each effect is a displacement field `d(x, t)` or a brightness factor `b(x, t)`, 
 - Nothing new leaves the site: the script, textures and masks are served from `'self'`. The CSP stays as it is
   (`script-src 'self'`, `img-src 'self'`; WebGL needs no new directive).
 - No inline script; there's no `eval` or `new Function` in the shader loader.
-- Security passes `hero.js` and its loader before it ships.
+- Security passes `hero.js` and its loader before it ships, against these checks (Security 11/27):
+  1. **The descriptor is validated at build and at runtime.** Image and mask paths are site-relative: one leading `/`, no
+     `//`, no `..`, no scheme. They become texture URLs only and never markup. No fetch beyond the textures, nothing
+     cross-origin, no `eval`, `new Function`, `innerHTML` or string `setTimeout`.
+  2. **Privacy.** deviceMemory, hardwareConcurrency, saveData and WebGL support are read only to decide locally. They
+     are never sent or logged. `WEBGL_debug_renderer_info` and the renderer string are never read, because they are a
+     fingerprint. Bail-outs have no telemetry, which keeps the privacy page's no-tracking claim true.
+  3. **Storage.** The `motion` key is a visitor preference and is listed on the privacy page and in the cookie line.
+     Compliance and Designer are told.
+  4. **Robustness.**
+     - The shader's loops have fixed bounds, so the cost per fragment is bounded.
+     - A compile error, context loss or slow frames return to the static image for the session.
+     - `webglcontextlost` gets `preventDefault()`, then the hero stops.
+     - It pauses when the tab is hidden or the band is off screen.
+     - Nothing in the rAF loop allocates.
+  5. **The mask is uploaded raw.** `UNPACK_PREMULTIPLY_ALPHA_WEBGL` is false and `UNPACK_COLORSPACE_CONVERSION_WEBGL`
+     is `NONE`, so the alpha-channel seeds don't corrupt the R, G and B channels.
+  6. **Accessibility.** The twinkle is far below the WCAG 2.3.1 flash threshold. Motion over 5 s needs a pause control
+     (2.2.2): the footer toggle is keyboard-reachable and takes effect live, and the hero also reacts live when
+     reduced motion changes.
+  7. **The mask script** reads the repo's own images with the locked `sharp`, makes no network calls, and writes only
+     to the images folder.
+- In debug builds only, the hero logs the descriptor's `id`, so a wrong plate is easy to spot (Designer).
 
 ## Consequences
 
