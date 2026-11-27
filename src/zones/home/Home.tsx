@@ -45,8 +45,11 @@ export function Home({ lang }: { lang: Lang }) {
     DISCOVER_ON && { key: "slc", href: lang === "en" ? "/slc/" : "/es/slc/", mark: mark("/img/marks/slc-light.svg", "/img/marks/slc-dark.svg") },
     RECIPES_LIVE && { key: "recipes", href: `${home}recipes/`, mark: mark("/img/marks/recipes-light.svg", "/img/marks/recipes-dark.svg") },
     RVP_ON && { key: "test", href: rvpUrl(lang, ""), mark: TEST_MARK },
+    // Coming soon, off-site (Rod 11/27 via EA; Business Executive cleared the URLs). No sign-up, no pricing, no availability claim.
+    { key: "agencypro", href: "https://agency.squared.pro", external: true, mark: <span className="home-mark"><img src="/img/agencypro-icon.svg" width={48} height={48} alt="" /></span> },
+    { key: "privacy", href: "https://privacy.squared.pro", external: true, mark: <span className="home-mark"><img src="/img/privacy-icon.svg" width={48} height={48} alt="" /></span> },
     { key: "blog", href: `${home}blog/`, mark: <span className="home-tile"><img src="/favicon.svg" width={48} height={48} alt="" /></span> },
-  ].filter(Boolean).map((x) => ({ ...(x as { key: "slc" | "recipes" | "test" | "blog"; href: string; mark: React.ReactNode }), ...h.projects[(x as { key: string }).key] }));
+  ].filter(Boolean).map((x) => ({ ...(x as { key: "slc" | "recipes" | "test" | "agencypro" | "privacy" | "blog"; href: string; external?: boolean; mark: React.ReactNode }), ...h.projects[(x as { key: string }).key] }));
   return (
     <>
       {/* The stage (Rod 11/27, via Designer; design/specs/rodmjay-home.md): the cover's lowest part fades into the page, with
@@ -91,10 +94,18 @@ export function Home({ lang }: { lang: Lang }) {
                 <li key={x.key} className="ds-card outlined home-project">
                   <span className="home-mark">{x.mark}</span>
                   <span className="home-project-text">
-                    <Link className="ds-title-large home-project-link" href={x.href} aria-label={`${x.name}: ${x.line}`}>{x.name}</Link>
+                    {x.external ? (
+                      <a className="ds-title-large home-project-link" href={x.href} target="_blank" rel="noopener noreferrer" aria-label={`${x.name}: ${x.line} ${h.newTab}`}>{x.name}</a>
+                    ) : (
+                      <Link className="ds-title-large home-project-link" href={x.href} aria-label={`${x.name}: ${x.line}`}>{x.name}</Link>
+                    )}
                     <span className="ds-body-medium ds-variant">{x.line}</span>
                   </span>
-                  <svg viewBox="0 0 24 24" aria-hidden="true" className="ds-icon home-chevron"><path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" /></svg>
+                  {x.external ? (
+                    <svg viewBox="0 0 24 24" aria-hidden="true" className="ds-icon home-chevron" width={20} height={20}><path d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h14v-7h2v7q0 .825-.587 1.413T19 21Zm4.7-5.3-1.4-1.4L17.6 5H14V3h7v7h-2V6.4Z" /></svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" aria-hidden="true" className="ds-icon home-chevron"><path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" /></svg>
+                  )}
                 </li>
               ))}
             </ul>
