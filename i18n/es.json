@@ -21,7 +21,7 @@
   "hero": {
     "name": "Rod Johnson",
     "title": "Arquitecto de aplicaciones empresariales",
-    "lede": "Diseño cómo se construye el software: la arquitectura, los estándares y ahora las herramientas de IA detrás.",
+    "lede": "Diseño cómo se construye el software: la arquitectura, los estándares y las herramientas de IA que lo respaldan. Vivo en Salt Lake City y trabajo en inglés y español.",
     "aiLine": "La portada y el retrato fueron generados con IA.",
     "photoAlt": "Retrato generado con IA a partir de una foto de Rod Johnson",
     "ctaResume": "Pedir mi currículum",
@@ -637,7 +637,7 @@
       },
       "recipes": {
         "name": "Recetario familiar",
-        "line": "Recetas familiares con fotos y filtros."
+        "line": "Recetas familiares con fotos, filtros y notas."
       },
       "test": {
         "name": "Test de personalidad",
