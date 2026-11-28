@@ -7,7 +7,7 @@ Runs from a timer on Rod's computer (systemd user unit recipe-photos-sync.timer,
 
 1. Reads the published recipe slugs from the public-recipes feed (the same feed the site builds from).
 2. For each slug with a source photo, PHOTOS_SRC/<slug>.jpg (Health Agent's 2048x1376 dish photo), compares the photo's
-   sha256 with public/recipes/images/sources.json. A new photo, a changed one, or a missing site copy is (re)made with
+   sha256 with the local manifest (MANIFEST, kept outside the repo and never published; Security 11/27). A new photo, a changed one, or a missing site copy is (re)made with
    scripts/recipe-images.py, which re-encodes it (no EXIF, no GPS), after the slug's old copies are removed.
 3. Commits only public/recipes/images/ on a fresh photos/* branch from origin/main and opens a pull request into main. It
    never merges: .github/workflows/photos-merge.yml checks every path, size and type, waits for the `build` check, merges
@@ -27,6 +27,7 @@ from pathlib import Path
 
 FEED = os.environ.get("RECIPES_API", "https://ibrovaaqbddkhqsmadqk.supabase.co/functions/v1/public-recipes")
 SRC = Path(os.environ.get("PHOTOS_SRC", str(Path.home() / "dev/personal/nutrition/recipe-book/images")))
+MANIFEST = Path(os.environ.get("PHOTOS_MANIFEST", str(Path.home() / ".local/share/recipe-photos-sync/sources.json")))
 REPO = Path(os.environ.get("SITE_REPO", str(Path.home() / "dev/rodmjay.github.io")))
 WT = Path(os.environ.get("WORKTREE", str(Path.home() / ".local/share/recipe-photos-sync/site")))
 GH_REPO = "rodmjay/rodmjay.github.io"
@@ -63,7 +64,8 @@ def main() -> None:
     if run("git", "diff", "origin/main", "--", "scripts/", capture=True) or Path(__file__).resolve() != (WT / "scripts/recipe-photos-sync.py").resolve():
         sys.exit("recipe-photos-sync: scripts differ from origin/main (or not running from the worktree); refusing")
     out = WT / "public/recipes/images"
-    manifest_path = out / "sources.json"
+    manifest_path = MANIFEST  # outside the repo: slug -> photo hash is not published (Security 11/27)
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
 
     # One photo PR at a time: while one is open, wait for photos-merge.yml to merge it.
