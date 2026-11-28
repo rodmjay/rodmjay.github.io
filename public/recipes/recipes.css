@@ -72,7 +72,7 @@ body.rb { margin: 0; background: var(--rb-paper); color: var(--rb-ink); font: 40
 .rb-chip[aria-disabled="true"] { opacity: 0.5; cursor: default; }
 /* 48px hit areas on the 40px chips and the 32px breadcrumb links (Designer 11/27): the look stays, the tap target grows. */
 .rb-chip, .rb .rb-crumbs a { position: relative; }
-.rb-chip::before { content: ""; position: absolute; inset: -4px 0; }
+.rb-chip::before { content: ""; position: absolute; inset: -5px -1px; } /* from inside the 1px border: 38 + 10 = 48px */
 .rb .rb-crumbs a::before { content: ""; position: absolute; inset: -8px -4px; }
 .rb-courses, .rb-chips, .rb-selected-list { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 
