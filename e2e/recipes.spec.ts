@@ -176,7 +176,8 @@ test("phone: the Menu sheet has the links and the language menu; no sideways scr
   // The course chips and breadcrumb links have 48px hit areas (a ::before around the smaller look, Designer 11/27).
   await page.goto("/recipes/all/");
   for (const el of await page.locator(".rb-courses a, .rb-crumbs a").all()) {
-    const h = await el.evaluate((a) => { const r = a.getBoundingClientRect(), s = getComputedStyle(a, "::before"); return r.height - parseFloat(s.top) - parseFloat(s.bottom); });
+    // The pseudo-element's own used height (it's placed from inside the border, so the box's outer height can't be used).
+    const h = await el.evaluate((a) => Math.max(a.getBoundingClientRect().height, parseFloat(getComputedStyle(a, "::before").height)));
     expect(Math.round(h)).toBeGreaterThanOrEqual(48);
   }
   await page.goto("/es/recipes/chicken-piccata/");
